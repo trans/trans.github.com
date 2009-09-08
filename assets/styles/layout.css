@@ -1,0 +1,97 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* main */
+
+.doc {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.main {
+  width: 500px;
+  float: left;
+}
+
+.side {
+  width: 270px;
+  float: left;
+  padding-left: 30px;
+}
+
+/* header */
+
+.header {
+}
+
+.header-inner {
+  width: 800px;
+  height: 200px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.header .logo {
+  padding-top: 20px;
+  margin-left: -30px;
+}
+
+/* side */
+
+.side-title {
+  border-bottom: 1px solid #ccc;
+ }
+
+/* menu */
+
+.menu {
+  height: 32px;
+  text-align: left;
+  width: 500px;
+}
+
+.menu-inner {
+  width: 500px;
+}
+
+.menu a {
+  line-height: 20px;
+  text-align: left;
+  padding: 5px 10px;
+  /* border-left: 1px solid #ccc; */
+}
+
+.topfade {
+  width: 100%;
+  height: 32px;
+  text-align: center;
+}
+
+.btext {
+  height: 30em; overflow: hidden;
+  background: url(../images/fade-up-black.png) bottom repeat-x;
+  padding: 0 0;
+  border: 0px solid #ccc;
+  clear: both;
+}
+
+/* footer */
+
+.footer {
+  width: 100%;
+  height: 400px;
+  background: url(../images/White-Tiger-drinking-water.jpg) bottom right no-repeat;
+}
+
+.footer-inner {
+  width: 800px;
+  padding-top: 200px;
+  margin: 0 auto;
+}
+

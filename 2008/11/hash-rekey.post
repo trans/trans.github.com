@@ -1,0 +1,57 @@
+---
+title  : Facets Hash#rekey
+author : trans
+tags   : ruby facets
+date   : 2008-11-23
+
+
+--- markdown
+
+This is the first in a series of posts in which I plan to introduce my fellow Rubyists to the plethora or goodness that is [Ruby Facets](http://facets.rubyforge.org).
+
+Ruby Facets has been in development for several years, starting out as a rather rag-tag collection general purpose Ruby scripts, and has evolved into the latest release, version 2.5.0, which has reached a nice level of maturity --getting pretty close, I suppose one could say, to that stately realm of "enterprise-ready".
+
+<p>Every few weeks or so, I'll pick a library or particular extension and expound upon it. While the main intent of this series is to let others know what Facets makes available to them. I will also use it as a platform to further improve and polish Facets. So please, feel free to comment, make suggestions and point out alternatives, so that Facets might better serve the Ruby community in the future.
+
+Okay, now to the meat of this edition...
+
+I decided to start with something quite simple, but very useful, homogenizing hash keys. Currently in Ruby, this requires code like:</p>
+
+--- coderay.ruby
+
+  new_hash = {}
+  old_hash.each do |k,v|
+    k = k.to_sym
+    new_hash[k] = v
+  end
+
+--- markdown
+
+Of course, that can be golfed-down a bit, but I wanted to spell it out for clarity. In this particular example, I converted all the keys to symbols (<code>to_sym</code>). Along with strings, that is one of the most commonly needed key conversions. Common enough in fact that Rails' ActiveSupport library provides <code>symbolize_keys</code> and an alias <code>#to_options</code>. It's also provides <code>stringify_keys</code>. Facets offers these methods too, since they are certainly so well known by now. However, Facets provides and recommends a more versatile method, <code>rekey</code>. With it the above example becomes as simple as:
+
+--- coderay.ruby
+
+  old_hash.rekey
+
+--- markdown
+
+<code>Hash#rekey</code> actually takes a block, but if no block is given, as in the above, it defaults to symbol conversion. If we wanted to convert the keys to strings instead, the magic of Symbol#to_proc makes that as simple as:
+
+--- coderay.ruby
+
+  old_hash.rekey(&:to_s)
+
+--- markdown
+
+And lastly, of course, we could get crazy with it and make every key a "Turk".
+
+--- coderay.ruby
+
+  old_hash.rekey{ |k| Turk.new(k) }
+
+--- markdown
+
+I don't know about you, but I like turk-keys. Oh, the pun! It hurts! :)
+
+Happy Thanksgiving.
+

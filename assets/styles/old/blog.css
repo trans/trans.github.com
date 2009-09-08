@@ -1,0 +1,57 @@
+.about {
+  color: #666;
+}
+
+.article {
+  padding: 0;
+}
+
+.article .date {
+  color: #666;
+  padding-right: 10px;
+}
+
+.article h2 {
+  color: #4455FF;
+  margin-top: 0px;
+}
+
+.article h2 a {
+  color: #FF4455;
+  font-weight: bold;
+}
+
+.article h2 a:hover {
+  text-decoration: underline;
+}
+
+.article .tags a {
+  color: #96c;
+  text-decoration: none;
+}
+
+
+.comments {
+    margin-bottom: 2em;
+}
+
+.comments .comment {
+    margin-top: 2em;
+    border: 1px solid #ccc;
+}
+
+.comments .comment .top {
+    background: #F0F0F0;
+    color: #333;
+    padding: 3px 5px;
+}
+
+.comments .comment .top a {
+    text-decoration: none;
+}
+
+.comments .comment .text {
+    background: #F8F8F8;
+    padding: 3px 5px;
+}
+

@@ -1,0 +1,64 @@
+---
+title  : Functor
+author : trans
+tags   : ruby
+date   : 2009-09-30
+
+--- markdown
+
+# Functor : Object :: Enumerator : Enumerable
+
+In Ruby 1.9, Enumerable methods return an Enumerator when no block is provided them. This makes it very convenient to chain methods in what is often called *fluid notation*. For example, rather than the usual +#each_with_index+, one can use:
+
+--- coderay.ruby
+
+  [1,2,3].each.with_index{ |e, i| ... }
+
+--- markdown
+
+Plenty of other possibilities along these lines become possible. It's a very powerful technique.
+
+In the same spirit, I think there is another class that could be used in much the same way for more general methods, namely what Ruby Facets calls a *Functor* --a function that acts on a function. Essentially, it is defined as:
+
+--- coderay.ruby
+
+  class Functor
+    private(*instance_methods.select { |m| m !~ /(^__|^binding$)/ })
+    def initialize(&function)
+      @function = function
+    end
+    def to_proc
+      @function
+    end
+    def method_missing(op, *args, &blk)
+      @function.call(op, *args, &blk)
+    end
+  end
+
+--- markdown
+
+An interesting example of it's use if overriding +#instance_eval+ to return a functor when no block is provided.
+
+--- coderay.ruby
+
+  class Object
+    def instance_eval(*args, &blk)
+      return super if blk or !args.empty?
+      @_instance_eval ||= Functor.new do |op, *a, &b|
+        fcall(op, *a, &b)
+      end
+    end
+  end
+
+--- markdown
+
+Now we can call a single method via instance_eval using fluid notation instead of having to open a block.
+
+--- coderay.ruby
+
+  MyClass.instance_eval.attr_accessor :x
+
+--- markdown
+
+There are many other similar uses for Functors. Just as Enumerator opens up a great deal of convenience and conciseness for Enumerable methods, Functor can do the same for methods generally.
+

@@ -1,0 +1,274 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+  <title>Welcome to Webrite</title>
+
+  <!-- google verification-->
+  <meta name="verify-v1" content="p14vW7GGMohDo2YKUHm0SXXTL+tzyPbKxxp35/WIQLA=" />
+
+  <meta name="DESCRIPTION"
+        content="Webrite is a K.I.S.S. website builder."/>
+
+  <link rel="icon" href="../../assets/images/icon.gif" type="image/x-icon" />
+
+  <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
+
+  <!-- STYLESHEETS -->
+
+  <link href="../../assets/styles/reset.css"  rel="stylesheet" type="text/css" />
+
+  <link href="../../assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
+  <link href="../../assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
+
+  <!--[if IE]>
+      <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+  <link href="../../assets/styles/layout.css"  rel="stylesheet" type="text/css" />
+  <link href="../../assets/styles/font.css"    rel="stylesheet" type="text/css" />
+  <link href="../../assets/styles/color.css"   rel="stylesheet" type="text/css" />
+  <link href="../../assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
+
+  <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="title">
+      <img src="../../assets/images/sevenhand.gif" style="float: right; height: 210px; margin-top: -5px;"/>
+      <img class="logo" src="../../assets/images/transcode.png" width="500px" align="top" />
+    </div>
+    <div class="menu">
+      <div class="menu-inner">
+        <a href="../../blog.html">Blog</a> &middot;
+        <a href="../../tags.html">Tags</a> &middot;
+        <a href="http://groups.google.com/group/tigerops-community?hl=en">Mail</a> &middot;
+        <a href="pussy.html">Pussy</a> &middot;
+        <a href="../../about.html">About</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc">
+  
+<div class="page">
+
+  <h1>Taskable</h1>
+
+  <h1>Taskable</h1>
+
+<p>On more than a few occasions I have taken a stab at writing a general
+purpose task system, akin to Rake's, but one that works within the
+framework of Ruby class inheritance. I recall my first attempt was
+quite an unwieldy beast, and my subsequent attempts were fairly
+unwieldy too, but over time they became more concise. Below is the
+most concise variation yet, and I was wondering what other thought
+of it -- do you see any flaws in the design; does it satisfy all the
+criteria of such a system; would you find it useful; etc.</p>
+
+<p>One issue to note about the code, is the use of the *_trigger methods.
+I'm not sure that's the best approach. My original approach was
+to provide a #run method (you can see it commented out), but this
+requires dividing Taskable into two parts, a module for extending and
+a module for including, and I try to avoid that design when I can.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+  <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Taskable</span>
+
+    <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.append_features(base)
+      base.extend(<span style="color:#038;font-weight:bold">self</span>)
+    <span style="color:#080;font-weight:bold">end</span>
+
+    <span style="color:#888"># Without an argument, returns list of tasks defined for this class.</span>
+    <span style="color:#888">#</span>
+    <span style="color:#888"># If a task's target name is given, will return the first</span>
+    <span style="color:#888"># task matching the name found in the class' inheritance chain.</span>
+    <span style="color:#888"># This is important to ensure tasks are inherited in the same manner</span>
+    <span style="color:#888"># that methods are.</span>
+    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">tasks</span>(target=<span style="color:#038;font-weight:bold">nil</span>)
+      <span style="color:#080;font-weight:bold">if</span> target
+        target = target.to_sym
+        anc = ancestors.select{|a| a &lt; <span style="color:#036;font-weight:bold">Taskable</span>} <span style="color:#888">#DSL</span>
+        t = <span style="color:#038;font-weight:bold">nil</span>; anc.find{|a| t = a.tasks[target]}
+        <span style="color:#080;font-weight:bold">return</span> t
+      <span style="color:#080;font-weight:bold">else</span>
+        <span style="color:#33B">@tasks</span> ||= {}
+      <span style="color:#080;font-weight:bold">end</span>
+    <span style="color:#080;font-weight:bold">end</span>
+
+    <span style="color:#888"># Set a description to be used by then next defined task in this class.</span>
+    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">desc</span>(description)
+      <span style="color:#33B">@desc</span> = description
+    <span style="color:#080;font-weight:bold">end</span>
+
+    <span style="color:#888"># Define a task.</span>
+    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">task</span>(target_and_requisite, &amp;function)
+      target, requisite, function = *<span style="color:#036;font-weight:bold">Task</span>.parse_arguments(target_and_requisite, &amp;function)
+      task = tasks[target.to_sym] ||= (
+        tdesc = <span style="color:#33B">@desc</span>
+        <span style="color:#33B">@desc</span> = <span style="color:#038;font-weight:bold">nil</span>
+        <span style="color:#036;font-weight:bold">Task</span>.new(<span style="color:#038;font-weight:bold">self</span>, target, tdesc)
+      )
+      task.update(requisite, &amp;function)
+      define_method(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#eee;color:black"><span style="font-weight:bold;color:#777">#{</span>target<span style="font-weight:bold;color:#777">}</span></span><span style="">_trigger</span><span style="color:#710">&quot;</span></span>){ task.run(<span style="color:#038;font-weight:bold">self</span>) }  <span style="color:#888"># or use #run?</span>
+      define_method(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#eee;color:black"><span style="font-weight:bold;color:#777">#{</span>target<span style="font-weight:bold;color:#777">}</span></span><span style="">:task</span><span style="color:#710">&quot;</span></span>, &amp;function) <span style="color:#888"># TODO: in 1.9 use instance_exec instead.</span>
+    <span style="color:#080;font-weight:bold">end</span>
+
+    <span style="color:#888"># Run a task.</span>
+    <span style="color:#888"># Hmmm... to add this would require another module (to include).</span>
+    <span style="color:#888"># But I'm not sure. Maybe trigger method is the better way?</span>
+    <span style="color:#888">#</span>
+    <span style="color:#888">#def run(target)</span>
+    <span style="color:#888">#  #t = self.class.tasks(target)</span>
+    <span style="color:#888">#  #t.run(self)</span>
+    <span style="color:#888">#  send(&quot;#{target}_trigger&quot;)</span>
+    <span style="color:#888">#end</span>
+
+    <span style="color:#888"># = Task Class</span>
+    <span style="color:#888">#</span>
+    <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Task</span>
+      attr <span style="color:#A60">:base</span>
+      attr <span style="color:#A60">:target</span>
+      attr <span style="color:#A60">:requisite</span>
+      attr <span style="color:#A60">:function</span>
+      attr <span style="color:#A60">:description</span>
+
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(base, target, description=<span style="color:#038;font-weight:bold">nil</span>, requisite=<span style="color:#038;font-weight:bold">nil</span>, &amp;function)
+        <span style="color:#33B">@base</span>        = base
+        <span style="color:#33B">@target</span>      = target.to_sym
+        <span style="color:#33B">@description</span> = description
+        <span style="color:#33B">@requisite</span>   = requisite || []
+        <span style="color:#33B">@function</span>    = function
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#888">#</span>
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">update</span>(requisite, &amp;function)
+        <span style="color:#33B">@requisite</span>.concat(requisite).uniq!
+        <span style="color:#33B">@function</span> = function <span style="color:#080;font-weight:bold">if</span> function
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#888">#</span>
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">prerequisite</span>
+        base.ancestors.select{ |a| a.is_a?(<span style="color:#036;font-weight:bold">Taskable</span>) }.collect{ |a|
+          a.tasks[target].requisite
+        }.flatten.uniq
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#888"># invoke target</span>
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">run</span>(object)
+        rd = rule_dag
+        rd.each <span style="color:#080;font-weight:bold">do</span> |t|
+          object.send(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#eee;color:black"><span style="font-weight:bold;color:#777">#{</span>t<span style="font-weight:bold;color:#777">}</span></span><span style="">:task</span><span style="color:#710">&quot;</span></span>)
+        <span style="color:#080;font-weight:bold">end</span>
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#888">#</span>
+      <span style="color:#888">#def call(object)</span>
+      <span style="color:#888">#  object.instance_eval(&amp;function)</span>
+      <span style="color:#888">#end</span>
+
+      <span style="color:#888"># Collect task dependencies for running.</span>
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">rule_dag</span>(cache=[])
+        prerequisite.each <span style="color:#080;font-weight:bold">do</span> |r|
+          <span style="color:#080;font-weight:bold">next</span> <span style="color:#080;font-weight:bold">if</span> cache.include?(r)
+          t = base.tasks[r]
+          t.rule_dag(cache)
+          <span style="color:#888">#cache &lt;&lt; dep</span>
+        <span style="color:#080;font-weight:bold">end</span>
+        cache &lt;&lt; target.to_s
+        cache
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#888">#</span>
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.parse_arguments(name_and_reqs, &amp;action)
+        <span style="color:#080;font-weight:bold">if</span> <span style="color:#036;font-weight:bold">Hash</span>===name_and_reqs
+          target = name_and_reqs.keys.first.to_s
+          reqs = [name_and_reqs.values.first].flatten
+        <span style="color:#080;font-weight:bold">else</span>
+          target = name_and_reqs.to_s
+          reqs = []
+        <span style="color:#080;font-weight:bold">end</span>
+        <span style="color:#080;font-weight:bold">return</span> target, reqs, action
+      <span style="color:#080;font-weight:bold">end</span>
+    <span style="color:#080;font-weight:bold">end</span>
+  <span style="color:#080;font-weight:bold">end</span>
+
+</pre></div>
+</div>
+
+<p>Here's a very simple <a href="http://quarry.rubyforge.org">QEDoc</a> demo/spec:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Example</span>
+    include <span style="color:#036;font-weight:bold">Taskable</span>
+
+    task <span style="color:#A60">:task_with_no_requisites</span> <span style="color:#080;font-weight:bold">do</span>
+      cache &lt;&lt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">task_with_no_requisites</span><span style="color:#710">&quot;</span></span>
+    <span style="color:#080;font-weight:bold">end</span>
+
+    task <span style="color:#A60">:task_with_one_requisite</span> =&gt; [<span style="color:#A60">:task_with_no_requisites</span>] <span style="color:#080;font-weight:bold">do</span>
+      cache &lt;&lt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">task_with_one_requisite</span><span style="color:#710">&quot;</span></span>
+    <span style="color:#080;font-weight:bold">end</span>
+ 
+    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">cache</span>
+      <span style="color:#33B">@cache</span> ||= []
+    <span style="color:#080;font-weight:bold">end</span>
+  <span style="color:#080;font-weight:bold">end</span>
+
+  example = <span style="color:#036;font-weight:bold">Example</span>.new
+  <span style="color:#888">#example.run :task_with_no_requisites</span>
+  example.task_with_no_requisites_trigger
+  example.cache.assert == [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">task_with_no_requisites</span><span style="color:#710">&quot;</span></span>]
+
+  example = <span style="color:#036;font-weight:bold">Example</span>.new
+  <span style="color:#888">#example.run :task_with_one_requisite</span>
+  example.task_with_one_requisite_trigger
+  example.cache.assert == [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">task_with_no_requisites</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">task_with_one_requisite</span><span style="color:#710">&quot;</span></span>]
+
+</pre></div>
+</div>
+
+<p>So, what do you think?</p>
+
+
+  <small>Written by Anonymous, 2008-09-12</small>
+
+  <ul class="posts">
+    
+    
+  </ul>
+
+</div>
+
+
+</div>
+
+<br style="clear: both;"/><br/><br/>
+
+<div class="footer">
+<div class="footer-inner">
+  Copyright (c) 2005,2009 Thomas Sawyer
+</div>
+</div>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2883355-2";
+urchinTracker();
+</script>
+
+</body>
+</html>
+

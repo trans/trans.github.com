@@ -1,0 +1,198 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+  <title>Welcome to Webrite</title>
+
+  <!-- google verification-->
+  <meta name="verify-v1" content="p14vW7GGMohDo2YKUHm0SXXTL+tzyPbKxxp35/WIQLA=" />
+
+  <meta name="DESCRIPTION"
+        content="Webrite is a K.I.S.S. website builder."/>
+
+  <link rel="icon" href="../../assets/images/icon.gif" type="image/x-icon" />
+
+  <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
+
+  <!-- STYLESHEETS -->
+
+  <link href="../../assets/styles/reset.css"  rel="stylesheet" type="text/css" />
+
+  <link href="../../assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
+  <link href="../../assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
+
+  <!--[if IE]>
+      <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+  <link href="../../assets/styles/layout.css"  rel="stylesheet" type="text/css" />
+  <link href="../../assets/styles/font.css"    rel="stylesheet" type="text/css" />
+  <link href="../../assets/styles/color.css"   rel="stylesheet" type="text/css" />
+  <link href="../../assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
+
+  <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="title">
+      <img src="../../assets/images/sevenhand.gif" style="float: right; height: 210px; margin-top: -5px;"/>
+      <img class="logo" src="../../assets/images/transcode.png" width="500px" align="top" />
+    </div>
+    <div class="menu">
+      <div class="menu-inner">
+        <a href="../../blog.html">Blog</a> &middot;
+        <a href="../../tags.html">Tags</a> &middot;
+        <a href="http://groups.google.com/group/tigerops-community?hl=en">Mail</a> &middot;
+        <a href="pussy.html">Pussy</a> &middot;
+        <a href="../../about.html">About</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc">
+  
+<div class="page">
+
+  <h1>If and OOPy If</h1>
+
+  <h1>An Ally OOP for If-Conditions</h1>
+
+<p>Ruby takes a unique approach to conditional evaluation: <i>All
+objects are equivalent to <code>true</code> except <code>nil</code>
+and <code>false</code></i>. No doubt this is a more object-oriented
+approach than, say, C's use of <code>0</code> as false, but it's far
+from the ideal of OOP all the way down, as any
+<a href="http://pozorvlak.livejournal.com/94558.html">Smalltalker</a>
+can attest.</p>
+
+<p>Consider the following case. For a while now. I have wanted in my arsonal
+of Ruby classes a NullClass defined basically as:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">NullClass</span> &lt; <span style="color:#036;font-weight:bold">NilClass</span>
+    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">method_missing</span>(*a)
+      <span style="color:#038;font-weight:bold">self</span>
+    <span style="color:#080;font-weight:bold">end</span>
+  <span style="color:#080;font-weight:bold">end</span>
+
+  <span style="color:#036;font-weight:bold">NULL</span> = <span style="color:#036;font-weight:bold">NullClass</span>.new
+
+  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">null</span>
+    <span style="color:#036;font-weight:bold">NULL</span>
+  <span style="color:#080;font-weight:bold">end</span>
+
+</pre></div>
+</div>
+
+<p>This object would greatly benefit fluent interfaces. Instead of returning
+<code>nil</code>, such intefaces could return <code>null</code>, and no
+error would be thrown when invoking any method against it.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+  obj = null
+  obj.it.does.not.matter  <span style="color:#888">#=&gt; null</span>
+
+</pre></div>
+</div>
+
+<p>Unfortunately <code>null</code> is not very viable in Ruby
+because <code>null</code> still evaluates as <code>true</code>
+when used as the expression of a condition. The fact remains,
+Ruby is hardcoded to see only the singleton instances of
+<code>NilClass<c/code> and <code>FalseClass</code> as false.</p>
+
+<p>I've requested that <code>NullClass</code> be added to core Ruby in
+the past (as of yet to no avail) and though I still would like to
+see it included, it may be better still to take an altogether
+object-oriented approach to conditions --in the spirit of Smalltalk.
+This would allow us to freely create "false" objects, like the
+<code>NullClass</code>, ourselves.</p>
+
+<p>The adoption of such a capability does not require the odd syntax
+used by Smalltalk (<code>ifTrue</code> / <code>ifFalse</code>).
+Rather, it can take an approach more akin to Ruby's own <code>case</code>
+statements. As with <code>case</code>'s use of <code>#===</code>,
+a particular method would be used to evaluate the "truthiness" of
+a value. This would apply for all types of conditions:
+<code>while</code>, <code>until</code>, etc.</p>
+
+<p>To clarify, let's say this special method is simply called #if, then...</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">IfExample</span>
+    attr <span style="color:#A60">:if</span>
+    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(<span style="color:#33B">@if</span>)
+      <span style="color:#33B">@if</span> = <span style="color:#080;font-weight:bold">if</span>
+    <span style="color:#080;font-weight:bold">end</span>
+  <span style="color:#080;font-weight:bold">end</span>
+
+  x = <span style="color:#036;font-weight:bold">IfExample</span>.new(<span style="color:#038;font-weight:bold">false</span>)
+
+  <span style="color:#080;font-weight:bold">if</span> x
+    <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Yes</span><span style="color:#710">&quot;</span></span>
+  <span style="color:#080;font-weight:bold">else</span>
+    <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">No</span><span style="color:#710">&quot;</span></span>
+  <span style="color:#080;font-weight:bold">end</span>
+
+</pre></div>
+</div>
+
+<p>The result of this condition would be <code>"No"</code>.</p>
+
+<p>While it may not be an earth shattering adjustment, the additional
+flexibility opens up some interesting doors. Not only would classes
+like the previously mentioned <code>NullClass</code> become possible,
+but conditions themselves become <i>dynamically controllable</i>.</p>
+
+<p>For example, it would allow method probes to fully map method
+signatures (the Halting Problem not withstanding). This is not
+currently possible in Ruby because a probe cannot pretend to evaluate
+to false in order to walk through the false side of a condition.</p>
+
+<p>The idea would require some getting used to --after all a simple
+if-statement would no longer do what we Rubyists presently take
+for granted. But then, that's the nature of progress, is it not?</p>
+
+
+  <small>Written by Anonymous, 2008-09-28</small>
+
+  <ul class="posts">
+    
+    
+  </ul>
+
+</div>
+
+
+</div>
+
+<br style="clear: both;"/><br/><br/>
+
+<div class="footer">
+<div class="footer-inner">
+  Copyright (c) 2005,2009 Thomas Sawyer
+</div>
+</div>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2883355-2";
+urchinTracker();
+</script>
+
+</body>
+</html>
+

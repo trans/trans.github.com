@@ -1,0 +1,20 @@
+---
+
+layout: page
+
+--- markdown
+
+# Markdown
+
+Yep this is Markdown alright.
+
+* Item 1
+* Item 2
+* Item 3
+
+--- rdoc
+
+= RDoc Simple Markup
+
+I love RDoc's simple format.
+

@@ -1,0 +1,25 @@
+---
+layout  : page
+title   : TigerOps
+stencil : liquid
+---
+
+<div class="page">
+
+{% for post in site.posts %}
+  <div class="post">
+    <div class="heading">
+      <span class="date" style="float: right; padding-top: 20px;">{{ post.date | date_to_string }}</span>
+      <a class="title" href="{{ post.url }}">{{ post.title }}</a>
+    </div>
+    <div class="btext">
+      {{ post.content }}
+    </div>
+    <p><a href="{{ post.url }}">Continue Reading</a></p>
+    <!-- <small>Written by {{ post.author }}</small> -->
+  </div>
+  <br/>
+{% endfor %}
+
+</div>
+
