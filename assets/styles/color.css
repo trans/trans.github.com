@@ -46,5 +46,14 @@ p {
 
 .footer {
   color: #777;
+  background: url(../images/White-Tiger-drinking-water.jpg) bottom right no-repeat;
 }
 
+
+.btext {
+  background: url(../images/fade-up-black.png) bottom repeat-x;
+}
+
+#github-badge .footer {
+  background: transparent;
+}

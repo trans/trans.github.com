@@ -1,78 +1,20 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+ <title>blog.crantastic.org</title>
+ <link href="http://blog.crantastic.org/atom.xml" rel="self"/>
+ <link href="http://blog.crantastic.org/"/>
+ <updated></updated>
+ <id>http://blog.crantastic.org/</id>
 
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-
-  <title>Welcome to Webrite</title>
-
-  <!-- google verification-->
-  <meta name="verify-v1" content="p14vW7GGMohDo2YKUHm0SXXTL+tzyPbKxxp35/WIQLA=" />
-
-  <meta name="DESCRIPTION"
-        content="Webrite is a K.I.S.S. website builder."/>
-
-  <link rel="icon" href="assets/images/icon.gif" type="image/x-icon" />
-
-  <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
-
-  <!-- STYLESHEETS -->
-
-  <link href="assets/styles/reset.css"  rel="stylesheet" type="text/css" />
-
-  <link href="assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
-  <link href="assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
-
-  <!--[if IE]>
-      <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
-  <![endif]-->
-
-  <link href="assets/styles/layout.css"  rel="stylesheet" type="text/css" />
-  <link href="assets/styles/font.css"    rel="stylesheet" type="text/css" />
-  <link href="assets/styles/color.css"   rel="stylesheet" type="text/css" />
-  <link href="assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
-
-  <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
-</head>
-<body>
-
-<div class="header">
-  <div class="header-inner">
-    <div class="title">
-      <img src="assets/images/sevenhand.gif" style="float: right; height: 210px; margin-top: -5px;"/>
-      <img class="logo" src="assets/images/transcode.png" width="500px" align="top" />
-    </div>
-    <div class="menu">
-      <div class="menu-inner">
-        <a href="blog.html">Blog</a> &middot;
-        <a href="tags.html">Tags</a> &middot;
-        <a href="http://groups.google.com/group/tigerops-community?hl=en">Mail</a> &middot;
-        <a href="putty.html">Putty</a> &middot;
-        <a href="about.html">About</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="doc">
-  
-<div class="main">
-  <div id="content">
-    
-<div class="page">
-
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-09-30</span>
-      <a class="title" href="2009/09/functor.html">Functor</a>
-    </div>
-    <div class="btext">
-      <h1>Functor : Object :: Enumerator : Enumerable</h1>
+ 
+ <entry>
+   <title>Functor</title>
+   <link href="2009/09/functor.html"/>
+   <updated>2009-09-30</updated>
+   <id></id>
+   <content type="html"><h1>Functor : Object :: Enumerator : Enumerable</h1>
 
 <p>In Ruby 1.9, Enumerable methods return an Enumerator when no block is provided them. This makes it very convenient to chain methods in what is often called <em>fluid notation</em>. For example, rather than the usual +#each_with_index+, one can use:</p>
 
@@ -131,20 +73,15 @@
 </div>
 
 <p>There are many other similar uses for Functors. Just as Enumerator opens up a great deal of convenience and conciseness for Enumerable methods, Functor can do the same for methods generally.</p>
-
-    </div>
-    <p><a href="2009/09/functor.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-08-24</span>
-      <a class="title" href="2009/09/new-website.html">This is Exciting!</a>
-    </div>
-    <div class="btext">
-      <h1>Another Static Website/Blogging Tool</h1>
+</content>
+ </entry>
+ 
+ <entry>
+   <title>This is Exciting!</title>
+   <link href="2009/09/new-website.html"/>
+   <updated>2009-08-24</updated>
+   <id></id>
+   <content type="html"><h1>Another Static Website/Blogging Tool</h1>
 
 <p>TigerOps.org is now running <a href="http://webrite.rubyforge.org">Webrite</a>, a  home grown static
 website and weblog construction tool.</p>
@@ -192,20 +129,15 @@ publishing.</p>
 pagination and tagclouds. But it is coming along rapidly, and I look forward to what is
 coming downt he road. Future innovations may include <em>aquisition</em> (a la Zope and UserLand Frontier),
 as well as a realtime Rack-based server.</p>
-
-    </div>
-    <p><a href="2009/09/new-website.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-06-07</span>
-      <a class="title" href="2009/06/wxruby-for-the-lazy.html">WxRuby for the Lazy</a>
-    </div>
-    <div class="btext">
-      <p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It's far from the "Ruby Way".</p>
+</content>
+ </entry>
+ 
+ <entry>
+   <title>WxRuby for the Lazy</title>
+   <link href="2009/06/wxruby-for-the-lazy.html"/>
+   <updated>2009-06-07</updated>
+   <id></id>
+   <content type="html"><p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It's far from the "Ruby Way".</p>
 
 <p>So how did I mange to get fairly nice Ruby code despite a binding that is essentially a straight port of the underlying C API? I built it from the bottom-up using a lazy coding technique. And I mean "bottom-up" literally --the following code might actually be easier to read if you start from the bottom and work your way up to the top. The trick is to break down one's interface into individual widgets and create an instance method for each using the <code>||=</code> memoization trick.</p>
 
@@ -216,20 +148,15 @@ as well as a realtime Rack-based server.</p>
 <p>The thing to notice, if you haven't caught it yet, is how calling <code>#search_toolbar</code> leads to calling <code>#search_sizer</code> which in turn leads to calling <code>#search_panel</code>, and so forth all the way to the top <code>#frame_panel</code>. This code is a striped down version of actual code I am using. I hope it helps others create wxRuby application more easily. As I said in my previous post, I found in mind-numbingly difficult to create WxRuby interfaces until I worked out this approach. WxRuby is still a difficult API to master, but this technique makes the effort more manageable, and therefore more likely to succeed.</p>
 
 <p>For another example of building structures lazily, have a look at <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/122593">my solution</a> for <a href="http://rubyquiz.com/quiz10.html">Ruby Quiz 10 - Crosswords</a>.</p>
-
-    </div>
-    <p><a href="2009/06/wxruby-for-the-lazy.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-03-20</span>
-      <a class="title" href="2009/03/gutopia.html">GUtopIa Revisited</a>
-    </div>
-    <div class="btext">
-      <p>Recently I had to buckle down and create and honest to goodness desktop GUI application in Ruby. So once again, after some six years, I set down to weigh my options. It saddens me to say, after all these years, the state of desktop GUI programming with Ruby is still a rather sorry affair. Yes, there have been many improvements --thanks to the hard work of many a good programmer, but the task of creating a Ruby-based GUI application still remains a very non-Ruby-esque ordeal.</p>
+</content>
+ </entry>
+ 
+ <entry>
+   <title>GUtopIa Revisited</title>
+   <link href="2009/03/gutopia.html"/>
+   <updated>2009-03-20</updated>
+   <id></id>
+   <content type="html"><p>Recently I had to buckle down and create and honest to goodness desktop GUI application in Ruby. So once again, after some six years, I set down to weigh my options. It saddens me to say, after all these years, the state of desktop GUI programming with Ruby is still a rather sorry affair. Yes, there have been many improvements --thanks to the hard work of many a good programmer, but the task of creating a Ruby-based GUI application still remains a very non-Ruby-esque ordeal.</p>
 
 <p>My first attempt at it this time was with <a href="http://shoooes.net/">Shoes</a>. Shoes is a new and very nice GUI engine written largely from scratch by the well known WhyTheLuckyStiff. It's a noble effort and some really <a href="http://the-shoebox.org/">neat programs</a> can come from using Shoes. Unfortunately for my needs Shoes proved to be too buggy and immature --at times I saw visual artifacts and there are a very limited number of controls. And worst of all, the fact that it includes it's own Ruby interpretor and manges it's own gems caused it not to work well with some other libraries. For instance, I could not get it to use the latest version of Mechanize.</p>
 
@@ -254,20 +181,15 @@ as well as a realtime Rack-based server.</p>
 </div>
 
 <p>Yes, believe it or not, that's a fairly complete GUI layout. In an upcoming post I'll explain how it all works in more detail. But before I get into that, I still need a working desktop GUI application ASAP! I don't have time to develop GUtopIa for this. So now I've tried again at coding wxRuby from hand, but this time using a very Ruby-esque lazy evaluation approach I had experimented with a long time ago in a <a href="http://www.rubyquiz.com/">Ruby Quiz</a> on <a href="http://www.rubyquiz.com/quiz10.html">crossword puzzle drawing</a>. Finally I got the results I wanted with out going cross-eyed looking at the code. Amazing how a well organized approach can make all the difference. I'll demonstrate my design in my next blog post.</p>
-
-    </div>
-    <p><a href="2009/03/gutopia.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-02-10</span>
-      <a class="title" href="2009/02/xml-css.html">XML+CSS</a>
-    </div>
-    <div class="btext">
-      <h1>The Future of Web Design?</h1>
+</content>
+ </entry>
+ 
+ <entry>
+   <title>XML+CSS</title>
+   <link href="2009/02/xml-css.html"/>
+   <updated>2009-02-10</updated>
+   <id></id>
+   <content type="html"><h1>The Future of Web Design?</h1>
 
 <p>In a <a href="http://tigerops.org/2009/01/mf-vs-xml.html">previous post</a>, I point out that microformats bring an additional layer of useful information to a document, which I dubbed <em>semantic structure</em>. In short, HTML tags provide useful <em>type</em> information about the data they contain. A good example of this has been the insistent push to use <code>div</code>s rather than <code>table</code>s for page layout. The reason is that tables describe a semantic structure, a table of data, and not layout. I for one have found this a frustrating haggle in the design of my pages. Time and time again I have been stymied by unwieldy <code>div</code>s. Tables are much easier to use, despite additional verbosity. But I have stuck to <code>div</code>s because it is "the right thing to do". Thankfully my saving grace will soon be here. The 3rd revision the CSS standard supports a new <code>display</code> style. With it, one can specify that a div is to behave like a table, table row or table cell. Woohoo! Three cheers for tabley divs!!</p>
 
@@ -286,20 +208,15 @@ as well as a realtime Rack-based server.</p>
 <p>  [gist id=61730]</p>
 
 <p>I think this is a rather remarkable outcome. And you might be surprised to learn that Firefox handles it just fine. What we have achieved is an ultra-clean separation between the data and it's semantic meaning, via XML, and it's semantic structure, via CSS. If this approach were embraced by the XHTML and CSS standards bodies, I would not be surprised to see it revolutionize web design.</p>
-
-    </div>
-    <p><a href="2009/02/xml-css.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-01-24</span>
-      <a class="title" href="2009/01/mf-vs-xml.html">What's &micro;F got on XML?</a>
-    </div>
-    <div class="btext">
-      <p>Decisions, decisions. Therein lies the reason why convention over configuration is so bloody great, precisely because it requires fewer decisions. <a href="http://proutils.rubyforge.org/syckle">Syckle</a>, my humble build tool, outputs log files. Yea, logs are good. But the decision I have to make is, "in what format?"</p>
+</content>
+ </entry>
+ 
+ <entry>
+   <title>What's &micro;F got on XML?</title>
+   <link href="2009/01/mf-vs-xml.html"/>
+   <updated>2009-01-24</updated>
+   <id></id>
+   <content type="html"><p>Decisions, decisions. Therein lies the reason why convention over configuration is so bloody great, precisely because it requires fewer decisions. <a href="http://proutils.rubyforge.org/syckle">Syckle</a>, my humble build tool, outputs log files. Yea, logs are good. But the decision I have to make is, "in what format?"</p>
 
 <p>Now old-school would just put out some asterisk-studded text files with plenty of precise timestamps, maybe some nice long <code>------------------------------</code> lines to divide things up. No doubt these files are easy to access and fairly readable. We like out text files. But hey wait. This is the age of magical markups. At the very least we can coax that log into a Wiki-tongue. For us Rubyists, we have rdoc, markdown and textile's just a few gemy fingertips away. These formats can be even easier to read thanks to structural consistency from log to log. Plus, fire-up a web server and we can get some really nice looking HTML too. That's the beauty of Wiki Wiki markup after all.</p>
 
@@ -338,20 +255,15 @@ as well as a realtime Rack-based server.</p>
 <p>So what semantic structures do micorformats via HTML make available to us? The quick rundown: we have layouts using <em>div</em> and <em>span</em>, lists using <em>ol</em>, <em>ul</em> and <em>li</em>; definition lists using <em>dl</em>, <em>dd</em> and <em>dt</em>; and tables using <em>table</em>, <em>tr</em>, <em>th</em> and <em>td</em>. Those are the obvious structures. There are still other smaller structure's like <em>a</em> for links, and the hefty set of <em>form</em> elements. All these elements provide us a way to say what type of thing our data is or partakes in, not just what the data is.</p>
 
 <p>Clearly, the creators of XML saw the need for something like this and tried to achieve it through XML Namespaces. But namespaces are less effective because they are completely arbitrary, whereas HTML gives us a limited but universal structural language. Seems to me there is a principle to be found here that can be a guide for both the future of HTML and Microformats.</p>
-
-    </div>
-    <p><a href="2009/01/mf-vs-xml.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-11-23</span>
-      <a class="title" href="2008/11/hash-rekey.html">Facets Hash#rekey</a>
-    </div>
-    <div class="btext">
-      <p>This is the first in a series of posts in which I plan to introduce my fellow Rubyists to the plethora or goodness that is <a href="http://facets.rubyforge.org">Ruby Facets</a>.</p>
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Facets Hash#rekey</title>
+   <link href="2008/11/hash-rekey.html"/>
+   <updated>2008-11-23</updated>
+   <id></id>
+   <content type="html"><p>This is the first in a series of posts in which I plan to introduce my fellow Rubyists to the plethora or goodness that is <a href="http://facets.rubyforge.org">Ruby Facets</a>.</p>
 
 <p>Ruby Facets has been in development for several years, starting out as a rather rag-tag collection general purpose Ruby scripts, and has evolved into the latest release, version 2.5.0, which has reached a nice level of maturity --getting pretty close, I suppose one could say, to that stately realm of "enterprise-ready".</p>
 
@@ -403,20 +315,15 @@ I decided to start with something quite simple, but very useful, homogenizing ha
 <p>I don't know about you, but I like turk-keys. Oh, the pun! It hurts! :)</p>
 
 <p>Happy Thanksgiving.</p>
-
-    </div>
-    <p><a href="2008/11/hash-rekey.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-11-04</span>
-      <a class="title" href="2008/11/yadsl.html">The YADSL Rule</a>
-    </div>
-    <div class="btext">
-      <p>Looks like the Ruby world is a fire with new DSLs for BDD/TDD. There's
+</content>
+ </entry>
+ 
+ <entry>
+   <title>The YADSL Rule</title>
+   <link href="2008/11/yadsl.html"/>
+   <updated>2008-11-04</updated>
+   <id></id>
+   <content type="html"><p>Looks like the Ruby world is a fire with new DSLs for BDD/TDD. There's
 <a href="http://rspec.info/">RSpec</a>,
 <a href="http://blog.zenspider.com/minitest/">minitest</a>,
 <a href="http://test-unit.rubyforge.org/test-unit/">Test::Unit 2.x</a>,
@@ -479,20 +386,15 @@ test framework soon.</p>
 
 <p>Don't worry, there's no new DSL to learn. And that's what makes my framework
 so very special. I'll keep you posted.</p>
-
-    </div>
-    <p><a href="2008/11/yadsl.html">Continue Reading</a></p>
-    <!-- <small>Written by Anonymous</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-10-06</span>
-      <a class="title" href="2008/10/hash.html">This Old Hash</a>
-    </div>
-    <div class="btext">
-      <h1>This Old Hash</h1>
+</content>
+ </entry>
+ 
+ <entry>
+   <title>This Old Hash</title>
+   <link href="2008/10/hash.html"/>
+   <updated>2008-10-06</updated>
+   <id></id>
+   <content type="html"><h1>This Old Hash</h1>
 
 <p>The Hash may well be the most used class in Ruby. Sure, our programs
 have arrays and strings galore, but they generally come and go without
@@ -557,20 +459,15 @@ life as programmers a good bit more productive.</p>
 <cite>--Albert Einstein</cite>
 </blockquote>
 
-
-    </div>
-    <p><a href="2008/10/hash.html">Continue Reading</a></p>
-    <!-- <small>Written by Anonymous</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-09-28</span>
-      <a class="title" href="2008/09/oop-if.html">If and OOPy If</a>
-    </div>
-    <div class="btext">
-      <h1>An Ally OOP for If-Conditions</h1>
+</content>
+ </entry>
+ 
+ <entry>
+   <title>If and OOPy If</title>
+   <link href="2008/09/oop-if.html"/>
+   <updated>2008-09-28</updated>
+   <id></id>
+   <content type="html"><h1>An Ally OOP for If-Conditions</h1>
 
 <p>Ruby takes a unique approach to conditional evaluation: <i>All
 objects are equivalent to <code>true</code> except <code>nil</code>
@@ -670,20 +567,15 @@ to false in order to walk through the false side of a condition.</p>
 <p>The idea would require some getting used to --after all a simple
 if-statement would no longer do what we Rubyists presently take
 for granted. But then, that's the nature of progress, is it not?</p>
-
-    </div>
-    <p><a href="2008/09/oop-if.html">Continue Reading</a></p>
-    <!-- <small>Written by Anonymous</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-09-12</span>
-      <a class="title" href="2008/09/taskable.html">Taskable</a>
-    </div>
-    <div class="btext">
-      <h1>Taskable</h1>
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Taskable</title>
+   <link href="2008/09/taskable.html"/>
+   <updated>2008-09-12</updated>
+   <id></id>
+   <content type="html"><h1>Taskable</h1>
 
 <p>On more than a few occasions I have taken a stab at writing a general
 purpose task system, akin to Rake's, but one that works within the
@@ -859,67 +751,9 @@ a module for including, and I try to avoid that design when I can.</p>
 </div>
 
 <p>So, what do you think?</p>
+</content>
+ </entry>
+ 
 
-    </div>
-    <p><a href="2008/09/taskable.html">Continue Reading</a></p>
-    <!-- <small>Written by Anonymous</small> -->
-  </div>
-  <br/>
-
-
-</div>
-
-
-  </div>
-</div>
-
-<div class="side">
-  <h2 class="side-title">I Am</h2>
-  <p>Trans has been coding Ruby since 2002. Now he shares with you. Kazaam!</p>
-
-  <h2 class="side-title">I Make</h2>
-  <a href="http://facets.rubyforge.org"><img src="assets/images/RubyFacets.png" style="width: 270px;"/></a><br/>
-  <a href="http://proutils.rubyforge.org"><img src="assets/images/proutils.png"/></a><br/>
-  <a href="http://death.rubyforge.org"><img src="assets/images/skull4.png" style="margin-top: 24px;"/></a><br/>
-
-  <h2 class="side-title">I Use</h2>
-  <a href="http://ruby-lang.org"><img src="assets/images/ruby-lang.png"/></a><br/>
-  <a href="http://github.org"><img src="assets/images/github-logov3.png" style="float: left; margin-left: 5px;"/></a>
-  <a href="http://github.org"><img src="assets/images/jquery-logo.gif" style="margin-left: 10px;"/></a>
-  <a href="http://cukes.info/"><img src="assets/images/cuke_logo.png"/></a>
-
-  <br/><br/>
-  <h2 class="side-title">I Read</h2>
-  <a href="http://rubyinside.com/"><img src="http://www.rubyinside.com/wp-content/themes/rubyinside2009/images/logo2.png" align="center"/></a>
-
-  <br/><br/>
-  <h2 class="side-title">I Work</h2>
-
-  <div id="github-badge"></div>
-  <script type="text/javascript" charset="utf-8">
-    GITHUB_USERNAME="trans";
-  </script>
-  <script src="http://drnic.github.com/github-badges/dist/github-badge-launcher.js" type="text/javascript"></script>
-</div>
-
-
-</div>
-
-<br style="clear: both;"/><br/><br/>
-
-<div class="footer">
-<div class="footer-inner">
-  Copyright (c) 2005,2009 Thomas Sawyer
-</div>
-</div>
-
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
-</script>
-<script type="text/javascript">
-_uacct = "UA-2883355-2";
-urchinTracker();
-</script>
-
-</body>
-</html>
+</feed>
 

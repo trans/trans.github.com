@@ -31,6 +31,10 @@ p {
   line-height: 1.6em;
 }
 
+pre {
+  font-size: 12px;
+}
+
 .heading { font-size: 2em; }
 .heading .title { font-size: 1.2em; font-weight: bold; }
 .heading .date  { font-size: 0.7em; }
@@ -44,3 +48,5 @@ p {
   font-size: 1.4em;
   font-weight: bold;
 }
+
+
