@@ -3,7 +3,7 @@ body {
 }
 
 a {
-  color: #2454ad;
+  color: green; /* #2454ad; */
   font-weight: bold;
 }
 
@@ -19,21 +19,19 @@ p {
   background: url(../images/orange-fade-up-sm.png) repeat-x white;
 }
 
-.menu {
+#header {
+  background: url(../images/u.jpg) 0px 0px repeat-x #111;
+  color: #111;
 }
 
-.menu a {
-  color: #12339c; /* #2454ad; */
+#header .menu a {
   font-weight: bold;
 }
 
-.menu a:hover {
+#header .menu a:hover {
   color: #222;
   font-weight: bold;
   text-decoration: underline;
-}
-
-.menu li:hover {
 }
 
 .heading .title {
@@ -49,9 +47,18 @@ p {
   background: url(../images/White-Tiger-drinking-water.jpg) bottom right no-repeat;
 }
 
-
 .btext {
-  background: url(../images/fade-up-black.png) bottom repeat-x;
+  position: relative;
+}
+
+.continue {
+  margin: 0; padding: 0;
+  position: absolute;
+  bottom: 0;
+  padding-top: 70px;
+  background: url(../images/fade-up-sm.png) repeat-x;
+  width: 100%;
+  text-align: right;
 }
 
 #github-badge .footer {

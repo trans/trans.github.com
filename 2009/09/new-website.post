@@ -8,13 +8,16 @@ date   : 2009-08-24
 
 # Another Static Website/Blogging Tool
 
-TigerOps.org is now running [Webrite](http://webrite.rubyforge.org), a  home grown static
-website and weblog construction tool.
+If you were wondering, you are reading the old TigerOps.org blog. I have discontinued that
+Wordpress-based blog due to spam overload, and have replaced it with this new site. Rather
+than use Wordpress, this site is now running on [Brite](http://proutils.github.com/brite),
+a home grown static website and weblog construction tool.
 
 Now I know there are plenty of these out there, in particluar you have the [GitHub](http://github.com)
-backed [Jekyll](http://) and the very nicely designed [Shinmun](http://), not to mention some of
-the more senior tools like [Webby](http://) and [who?](http://). So, why do we need yet another?
-The reasoning is essentially two-fold.
+backed [Jekyll](http://wiki.github.com/mojombo/jekyll) and the very nicely designed
+[Shinmun](http://www.matthias-georgi.de/shinmun), not to mention some of the senior tools 
+like [Webby](http://webby.rubyforge.org/) and [Rote](http://rote.rubyforge.org/).
+So, why do we need yet another? The reasoning is essentially two-fold.
 
 1.     I am a knit pick. With each alternitive I found a few nagging points upon which I
        wanted to see a different approach taken.
@@ -23,7 +26,7 @@ The reasoning is essentially two-fold.
        earlier systems (including my own stalled attempts) and contruct something
        more intuitve and yet more powerful.
 
-With inline formats I think Webrite has achieved that. You can easily have multiple types
+With inline formats I think Brite has achieved that. You can easily have multiple types
 of markups in a single page, in an elegant and relatively unobtrusive manner. (Yea, Wow!)
 
 For example the document I am currently writing is in Markdown format. But...

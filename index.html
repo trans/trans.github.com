@@ -16,7 +16,7 @@
   <meta name="DESCRIPTION"
         content="Webrite is a K.I.S.S. website builder."/>
 
-  <link rel="icon" href="assets/images/icon.gif" type="image/x-icon" />
+  <link rel="icon" href="assets/images/trans-logo.png" type="image/x-icon" />
 
   <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
 
@@ -40,13 +40,9 @@
 </head>
 <body>
 
-<div class="header">
-  <div class="header-inner">
-    <div class="title">
-      <img src="assets/images/sevenhand.gif" style="float: right; height: 210px; margin-top: -5px;"/>
-      <img class="logo" src="assets/images/transcode.png" width="500px" align="top" />
-    </div>
-    <div class="menu">
+<div id="header">
+  <div id="header-inner">
+    <div class="menu" style="float: right;">
       <div class="menu-inner">
         <a href="blog.html">Blog</a> &middot;
         <a href="tags.html">Tags</a> &middot;
@@ -54,6 +50,10 @@
         <a href="putty.html">Putty</a> &middot;
         <a href="about.html">About</a>
       </div>
+    </div>
+    <div class="title">
+      <img class="logo" src="assets/images/trans-logo.png" align="left" />
+      <img class="logo" src="assets/images/alltrans.png" width="480px" align="top" style="margin-left: 10px;" />
     </div>
   </div>
 </div>
@@ -68,91 +68,22 @@
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-09-30</span>
-      <a class="title" href="2009/09/functor.html">Functor</a>
-    </div>
-    <div class="btext">
-      <h1>Functor : Object :: Enumerator : Enumerable</h1>
-
-<p>In Ruby 1.9, Enumerable methods return an Enumerator when no block is provided them. This makes it very convenient to chain methods in what is often called <em>fluid notation</em>. For example, rather than the usual +#each_with_index+, one can use:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  [<span style="color:#00D;font-weight:bold">1</span>,<span style="color:#00D;font-weight:bold">2</span>,<span style="color:#00D;font-weight:bold">3</span>].each.with_index{ |e, i| ... }
-
-</pre></div>
-</div>
-
-<p>Plenty of other possibilities along these lines become possible. It's a very powerful technique.</p>
-
-<p>In the same spirit, I think there is another class that could be used in much the same way for more general methods, namely what Ruby Facets calls a <em>Functor</em> --a function that acts on a function. Essentially, it is defined as:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Functor</span>
-    private(*instance_methods.select { |m| m !~ <span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">(^__|^binding$)</span><span style="color:#404">/</span></span> })
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(&amp;function)
-      <span style="color:#33B">@function</span> = function
-    <span style="color:#080;font-weight:bold">end</span>
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">to_proc</span>
-      <span style="color:#33B">@function</span>
-    <span style="color:#080;font-weight:bold">end</span>
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">method_missing</span>(op, *args, &amp;blk)
-      <span style="color:#33B">@function</span>.call(op, *args, &amp;blk)
-    <span style="color:#080;font-weight:bold">end</span>
-  <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>An interesting example of it's use if overriding +#instance_eval+ to return a functor when no block is provided.</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Object</span>
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">instance_eval</span>(*args, &amp;blk)
-      <span style="color:#080;font-weight:bold">return</span> <span style="color:#080;font-weight:bold">super</span> <span style="color:#080;font-weight:bold">if</span> blk <span style="color:#080;font-weight:bold">or</span> !args.empty?
-      <span style="color:#33B">@_instance_eval</span> ||= <span style="color:#036;font-weight:bold">Functor</span>.new <span style="color:#080;font-weight:bold">do</span> |op, *a, &amp;b|
-        fcall(op, *a, &amp;b)
-      <span style="color:#080;font-weight:bold">end</span>
-    <span style="color:#080;font-weight:bold">end</span>
-  <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>Now we can call a single method via instance_eval using fluid notation instead of having to open a block.</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#036;font-weight:bold">MyClass</span>.instance_eval.attr_accessor <span style="color:#A60">:x</span>
-
-</pre></div>
-</div>
-
-<p>There are many other similar uses for Functors. Just as Enumerator opens up a great deal of convenience and conciseness for Enumerable methods, Functor can do the same for methods generally.</p>
-
-    </div>
-    <p><a href="2009/09/functor.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
-  </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-08-24</span>
       <a class="title" href="2009/09/new-website.html">This is Exciting!</a>
     </div>
     <div class="btext">
       <h1>Another Static Website/Blogging Tool</h1>
 
-<p>TigerOps.org is now running <a href="http://webrite.rubyforge.org">Webrite</a>, a  home grown static
-website and weblog construction tool.</p>
+<p>If you were wondering, you are reading the old TigerOps.org blog. I have discontinued that
+Wordpress-based blog due to spam overload, and have replaced it with this new site. Rather
+than use Wordpress, this site is now running on <a href="http://proutils.github.com/brite">Brite</a>,
+a home grown static website and weblog construction tool.</p>
 
 <p>Now I know there are plenty of these out there, in particluar you have the <a href="http://github.com">GitHub</a>
-backed <a href="http://">Jekyll</a> and the very nicely designed <a href="http://">Shinmun</a>, not to mention some of
-the more senior tools like <a href="http://">Webby</a> and <a href="http://">who?</a>. So, why do we need yet another?
-The reasoning is essentially two-fold.</p>
+backed <a href="http://wiki.github.com/mojombo/jekyll">Jekyll</a> and the very nicely designed
+<a href="http://www.matthias-georgi.de/shinmun">Shinmun</a>, not to mention some of the senior tools
+like <a href="http://webby.rubyforge.org/">Webby</a> and <a href="http://rote.rubyforge.org/">Rote</a>.
+So, why do we need yet another? The reasoning is essentially two-fold.</p>
 
 <ol>
 <li><p>I am a knit pick. With each alternitive I found a few nagging points upon which I
@@ -163,7 +94,7 @@ more intuitve and yet more powerful.</p></li>
 </ol>
 
 
-<p>With inline formats I think Webrite has achieved that. You can easily have multiple types
+<p>With inline formats I think Brite has achieved that. You can easily have multiple types
 of markups in a single page, in an elegant and relatively unobtrusive manner. (Yea, Wow!)</p>
 
 <p>For example the document I am currently writing is in Markdown format. But...</p>
@@ -193,11 +124,11 @@ pagination and tagclouds. But it is coming along rapidly, and I look forward to 
 coming downt he road. Future innovations may include <em>aquisition</em> (a la Zope and UserLand Frontier),
 as well as a realtime Rack-based server.</p>
 
+      <div class="continue"><a href="2009/09/new-website.html">Continue Reading ...</a></div>
+      <!-- <small>Written by trans</small> -->
     </div>
-    <p><a href="2009/09/new-website.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
   </div>
-  <br/>
+  <br/><br/>
 
   <div class="post">
     <div class="heading">
@@ -217,11 +148,11 @@ as well as a realtime Rack-based server.</p>
 
 <p>For another example of building structures lazily, have a look at <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/122593">my solution</a> for <a href="http://rubyquiz.com/quiz10.html">Ruby Quiz 10 - Crosswords</a>.</p>
 
+      <div class="continue"><a href="2009/06/wxruby-for-the-lazy.html">Continue Reading ...</a></div>
+      <!-- <small>Written by trans</small> -->
     </div>
-    <p><a href="2009/06/wxruby-for-the-lazy.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
   </div>
-  <br/>
+  <br/><br/>
 
   <div class="post">
     <div class="heading">
@@ -255,11 +186,11 @@ as well as a realtime Rack-based server.</p>
 
 <p>Yes, believe it or not, that's a fairly complete GUI layout. In an upcoming post I'll explain how it all works in more detail. But before I get into that, I still need a working desktop GUI application ASAP! I don't have time to develop GUtopIa for this. So now I've tried again at coding wxRuby from hand, but this time using a very Ruby-esque lazy evaluation approach I had experimented with a long time ago in a <a href="http://www.rubyquiz.com/">Ruby Quiz</a> on <a href="http://www.rubyquiz.com/quiz10.html">crossword puzzle drawing</a>. Finally I got the results I wanted with out going cross-eyed looking at the code. Amazing how a well organized approach can make all the difference. I'll demonstrate my design in my next blog post.</p>
 
+      <div class="continue"><a href="2009/03/gutopia.html">Continue Reading ...</a></div>
+      <!-- <small>Written by trans</small> -->
     </div>
-    <p><a href="2009/03/gutopia.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
   </div>
-  <br/>
+  <br/><br/>
 
   <div class="post">
     <div class="heading">
@@ -287,11 +218,11 @@ as well as a realtime Rack-based server.</p>
 
 <p>I think this is a rather remarkable outcome. And you might be surprised to learn that Firefox handles it just fine. What we have achieved is an ultra-clean separation between the data and it's semantic meaning, via XML, and it's semantic structure, via CSS. If this approach were embraced by the XHTML and CSS standards bodies, I would not be surprised to see it revolutionize web design.</p>
 
+      <div class="continue"><a href="2009/02/xml-css.html">Continue Reading ...</a></div>
+      <!-- <small>Written by trans</small> -->
     </div>
-    <p><a href="2009/02/xml-css.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
   </div>
-  <br/>
+  <br/><br/>
 
   <div class="post">
     <div class="heading">
@@ -339,76 +270,11 @@ as well as a realtime Rack-based server.</p>
 
 <p>Clearly, the creators of XML saw the need for something like this and tried to achieve it through XML Namespaces. But namespaces are less effective because they are completely arbitrary, whereas HTML gives us a limited but universal structural language. Seems to me there is a principle to be found here that can be a guide for both the future of HTML and Microformats.</p>
 
+      <div class="continue"><a href="2009/01/mf-vs-xml.html">Continue Reading ...</a></div>
+      <!-- <small>Written by trans</small> -->
     </div>
-    <p><a href="2009/01/mf-vs-xml.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
   </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-11-23</span>
-      <a class="title" href="2008/11/hash-rekey.html">Facets Hash#rekey</a>
-    </div>
-    <div class="btext">
-      <p>This is the first in a series of posts in which I plan to introduce my fellow Rubyists to the plethora or goodness that is <a href="http://facets.rubyforge.org">Ruby Facets</a>.</p>
-
-<p>Ruby Facets has been in development for several years, starting out as a rather rag-tag collection general purpose Ruby scripts, and has evolved into the latest release, version 2.5.0, which has reached a nice level of maturity --getting pretty close, I suppose one could say, to that stately realm of "enterprise-ready".</p>
-
-<p>Every few weeks or so, I'll pick a library or particular extension and expound upon it. While the main intent of this series is to let others know what Facets makes available to them. I will also use it as a platform to further improve and polish Facets. So please, feel free to comment, make suggestions and point out alternatives, so that Facets might better serve the Ruby community in the future.
-
-Okay, now to the meat of this edition...
-
-I decided to start with something quite simple, but very useful, homogenizing hash keys. Currently in Ruby, this requires code like:</p>
-
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  new_hash = {}
-  old_hash.each <span style="color:#080;font-weight:bold">do</span> |k,v|
-    k = k.to_sym
-    new_hash[k] = v
-  <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>Of course, that can be golfed-down a bit, but I wanted to spell it out for clarity. In this particular example, I converted all the keys to symbols (<code>to_sym</code>). Along with strings, that is one of the most commonly needed key conversions. Common enough in fact that Rails' ActiveSupport library provides <code>symbolize_keys</code> and an alias <code>#to_options</code>. It's also provides <code>stringify_keys</code>. Facets offers these methods too, since they are certainly so well known by now. However, Facets provides and recommends a more versatile method, <code>rekey</code>. With it the above example becomes as simple as:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  old_hash.rekey
-
-</pre></div>
-</div>
-
-<p><code>Hash#rekey</code> actually takes a block, but if no block is given, as in the above, it defaults to symbol conversion. If we wanted to convert the keys to strings instead, the magic of Symbol#to_proc makes that as simple as:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  old_hash.rekey(&amp;<span style="color:#A60">:to_s</span>)
-
-</pre></div>
-</div>
-
-<p>And lastly, of course, we could get crazy with it and make every key a "Turk".</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  old_hash.rekey{ |k| <span style="color:#036;font-weight:bold">Turk</span>.new(k) }
-
-</pre></div>
-</div>
-
-<p>I don't know about you, but I like turk-keys. Oh, the pun! It hurts! :)</p>
-
-<p>Happy Thanksgiving.</p>
-
-    </div>
-    <p><a href="2008/11/hash-rekey.html">Continue Reading</a></p>
-    <!-- <small>Written by trans</small> -->
-  </div>
-  <br/>
+  <br/><br/>
 
   <div class="post">
     <div class="heading">
@@ -480,89 +346,11 @@ test framework soon.</p>
 <p>Don't worry, there's no new DSL to learn. And that's what makes my framework
 so very special. I'll keep you posted.</p>
 
+      <div class="continue"><a href="2008/11/yadsl.html">Continue Reading ...</a></div>
+      <!-- <small>Written by Anonymous</small> -->
     </div>
-    <p><a href="2008/11/yadsl.html">Continue Reading</a></p>
-    <!-- <small>Written by Anonymous</small> -->
   </div>
-  <br/>
-
-  <div class="post">
-    <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-10-06</span>
-      <a class="title" href="2008/10/hash.html">This Old Hash</a>
-    </div>
-    <div class="btext">
-      <h1>This Old Hash</h1>
-
-<p>The Hash may well be the most used class in Ruby. Sure, our programs
-have arrays and strings galore, but they generally come and go without
-much ado. Hashes on the other hand get <em>used</em>; and by that I mean to
-say, we spend a lot of time fussing with them. I think there are two
-significant reasons for this and I will focus on the first, and
-the more important of the two, here.</p>
-
-<p>Now, I suspect you would agree, if I were to present you with a class
-which was clearly overkill for vast majority of its intended uses, and
-its use required repeated mitigation of its unused features, I have no
-doubt, you'd unequivocally advise me to select a "<i>better tool for the job</i>".
-And yet, that's the situation all Ruby programmers face, day in and
-day out, with Ruby's Hash.</p>
-
-<p>Ruby's Hash is exceptionally powerful because it supports any type of
-object as a hash key. That's really really cool... for all of about
-five minutes. The truth is, the vast majority of cases only require
-one type of key --for Ruby that will either be a Symbol or a String,
-and because of this, a great deal of time and code is wasted ensuring
-all keys are that single type. Because of this, methods like
-<code>#to_sym</code> often riddle our scripts.</p>
-
-<p>The issue is undeniably attested to by real world "solutions"
-others have created to address it, such as Ruby Facets'
-<a href="http://facets.rubyforge.org/doc/api/core/classes/Hash.html#M000124">Hash#rekey</a>.
-and Ruby on Rails'
-<a href="http://api.rubyonrails.org/classes/HashWithIndifferentAccess.html">HashWithIndifferentAccess</a>.
-But let's face it, these are both underwhelming attempts at mitigating
-the fundamental problem.</p>
-
-<p>A real solution would have the current Hash class renamed, and a new
-limited-key structure put in its place. The old class would still be
-available, of course, for those special cases when a key of any object
-type is required, but the new, more utilitarian Hash class would be
-the literally-constructed default. The end effect of this change would
-be simple:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  h[<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">a</span><span style="color:#710">'</span></span>] == h[<span style="color:#A60">:a</span>]
-  h[<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">1</span><span style="color:#710">'</span></span>] == h[<span style="color:#00D;font-weight:bold">1</span>]
-
-</pre></div>
-</div>
-
-<p>This means reducing all hash keys to a single <em>symbolic</em> index type.
-It does not matter what the actual reference is, a String, Symbol,
-Integer, etc. just so long as it has a predictable symbolic
-representation.</p>
-
-<p>It may feel a bit strange to consider a suggestion that actually calls
-for the reduction of features. More often change requests call for just
-the opposite and YAGNI has to be peddled out on them. But, I think, we
-often underestimate the power of simplicity. Consider ideas such as
-convention-over-configuration and duck-typing --simplifications that
-are not necessarily intuitive at first. But in the end, they make our
-life as programmers a good bit more productive.</p>
-
-<blockquote>
-"Make everything as simple as possible, but not simpler."
-<cite>--Albert Einstein</cite>
-</blockquote>
-
-
-    </div>
-    <p><a href="2008/10/hash.html">Continue Reading</a></p>
-    <!-- <small>Written by Anonymous</small> -->
-  </div>
-  <br/>
+  <br/><br/>
 
   <div class="post">
     <div class="heading">
@@ -671,11 +459,11 @@ to false in order to walk through the false side of a condition.</p>
 if-statement would no longer do what we Rubyists presently take
 for granted. But then, that's the nature of progress, is it not?</p>
 
+      <div class="continue"><a href="2008/09/oop-if.html">Continue Reading ...</a></div>
+      <!-- <small>Written by Anonymous</small> -->
     </div>
-    <p><a href="2008/09/oop-if.html">Continue Reading</a></p>
-    <!-- <small>Written by Anonymous</small> -->
   </div>
-  <br/>
+  <br/><br/>
 
   <div class="post">
     <div class="heading">
@@ -860,11 +648,11 @@ a module for including, and I try to avoid that design when I can.</p>
 
 <p>So, what do you think?</p>
 
+      <div class="continue"><a href="2008/09/taskable.html">Continue Reading ...</a></div>
+      <!-- <small>Written by Anonymous</small> -->
     </div>
-    <p><a href="2008/09/taskable.html">Continue Reading</a></p>
-    <!-- <small>Written by Anonymous</small> -->
   </div>
-  <br/>
+  <br/><br/>
 
 
 </div>
@@ -884,7 +672,7 @@ a module for including, and I try to avoid that design when I can.</p>
 
   <h2 class="side-title">I Use</h2>
   <a href="http://ruby-lang.org"><img src="assets/images/ruby-lang.png"/></a><br/>
-  <a href="http://github.org"><img src="assets/images/github-logov3.png" style="float: left; margin-left: 5px;"/></a>
+  <a href="http://github.org"><img src="assets/images/github-logo.png" style="float: left; margin-left: 5px; width: 115px;"/></a>
   <a href="http://github.org"><img src="assets/images/jquery-logo.gif" style="margin-left: 10px;"/></a>
   <a href="http://cukes.info/"><img src="assets/images/cuke_logo.png"/></a>
 

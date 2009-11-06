@@ -21,7 +21,7 @@ layout : main
 
   <h2 class="side-title">I Use</h2>
   <a href="http://ruby-lang.org"><img src="{{root}}assets/images/ruby-lang.png"/></a><br/>
-  <a href="http://github.org"><img src="{{root}}assets/images/github-logov3.png" style="float: left; margin-left: 5px;"/></a>
+  <a href="http://github.org"><img src="{{root}}assets/images/github-logo.png" style="float: left; margin-left: 5px; width: 115px;"/></a>
   <a href="http://github.org"><img src="{{root}}assets/images/jquery-logo.gif" style="margin-left: 10px;"/></a>
   <a href="http://cukes.info/"><img src="{{root}}assets/images/cuke_logo.png"/></a>
 

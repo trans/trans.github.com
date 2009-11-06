@@ -35,13 +35,20 @@ pre {
   font-size: 12px;
 }
 
+#header .title {
+  font-size: 64px;
+  line-height: 1em;
+  font-weight: bold;
+}
+
 .heading { font-size: 2em; }
 .heading .title { font-size: 1.2em; font-weight: bold; }
 .heading .date  { font-size: 0.7em; }
 
 .menu a {
-  font-size: 1.0em;
+  font-size: 1.5em;
   font-style: normal;
+  background: white;
 }
 
 .footer {

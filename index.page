@@ -14,11 +14,11 @@ stencil : liquid
     </div>
     <div class="btext">
       {{ post.content }}
+      <div class="continue"><a href="{{ post.url }}">Continue Reading ...</a></div>
+      <!-- <small>Written by {{ post.author }}</small> -->
     </div>
-    <p><a href="{{ post.url }}">Continue Reading</a></p>
-    <!-- <small>Written by {{ post.author }}</small> -->
   </div>
-  <br/>
+  <br/><br/>
 {% endfor %}
 
 </div>

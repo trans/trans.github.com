@@ -20,7 +20,7 @@ stencil: liquid
   <meta name="DESCRIPTION"
         content="Webrite is a K.I.S.S. website builder."/>
 
-  <link rel="icon" href="{{root}}assets/images/icon.gif" type="image/x-icon" />
+  <link rel="icon" href="{{root}}assets/images/trans-logo.png" type="image/x-icon" />
 
   <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
 
@@ -44,13 +44,9 @@ stencil: liquid
 </head>
 <body>
 
-<div class="header">
-  <div class="header-inner">
-    <div class="title">
-      <img src="{{root}}assets/images/sevenhand.gif" style="float: right; height: 210px; margin-top: -5px;"/>
-      <img class="logo" src="{{root}}assets/images/transcode.png" width="500px" align="top" />
-    </div>
-    <div class="menu">
+<div id="header">
+  <div id="header-inner">
+    <div class="menu" style="float: right;">
       <div class="menu-inner">
         <a href="{{root}}blog.html">Blog</a> &middot;
         <a href="{{root}}tags.html">Tags</a> &middot;
@@ -58,6 +54,10 @@ stencil: liquid
         <a href="putty.html">Putty</a> &middot;
         <a href="{{root}}about.html">About</a>
       </div>
+    </div>
+    <div class="title">
+      <img class="logo" src="{{root}}assets/images/trans-logo.png" align="left" />
+      <img class="logo" src="{{root}}assets/images/alltrans.png" width="480px" align="top" style="margin-left: 10px;" />
     </div>
   </div>
 </div>

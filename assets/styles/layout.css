@@ -10,34 +10,37 @@ a {
 /* main */
 
 .doc {
-  width: 900px;
+  width: 960px;
   margin: 0 auto;
 }
 
 .main {
-  width: 600px;
+  width: 620px;
   float: left;
 }
 
 .side {
   width: 270px;
   float: left;
-  padding-left: 30px;
+  padding-left: 70px;
 }
 
 /* header */
 
-.header {
+#header {
+  padding-top: 5px;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 150px;
 }
 
-.header-inner {
-  width: 900px;
-  height: 200px;
+#header-inner {
+  width: 960px;
+  height: 140px;
   margin: 0 auto;
   text-align: left;
 }
 
-.header .logo {
+#header .logo {
   padding-top: 20px;
   margin-left: -30px;
 }
@@ -51,8 +54,10 @@ a {
 /* menu */
 
 .menu {
+  width: 50%;
+  padding-top: 10px;
   height: 32px;
-  text-align: left;
+  text-align: center;
   width: 500px;
 }
 
@@ -88,8 +93,9 @@ a {
 }
 
 .footer-inner {
-  width: 800px;
+  width: 960px;
   padding-top: 200px;
   margin: 0 auto;
+  text-align: left;
 }
 
