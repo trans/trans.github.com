@@ -1,0 +1,182 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+  <title>Welcome to Webrite</title>
+
+  <!-- google verification-->
+  <meta name="verify-v1" content="p14vW7GGMohDo2YKUHm0SXXTL+tzyPbKxxp35/WIQLA=" />
+
+  <meta name="DESCRIPTION"
+        content="Webrite is a K.I.S.S. website builder."/>
+
+  <link rel="icon" href="../../../assets/images/trans-logo.png" type="image/x-icon" />
+
+  <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
+
+  <!-- STYLESHEETS -->
+
+  <link href="../../../assets/styles/reset.css"  rel="stylesheet" type="text/css" />
+  <link href="../../../assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
+  <link href="../../../assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
+
+  <!--[if IE]>
+      <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+  <link href="../../../assets/styles/tag.css"    rel="stylesheet" type="text/css" />
+  <link href="../../../assets/styles/class.css"  rel="stylesheet" type="text/css" />
+
+  <link href="../../../assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
+
+  <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
+</head>
+<body>
+
+<div id="header">
+  <div id="header-inner">
+    <div class="menu" style="float: right;">
+      <div class="menu-inner">
+        <a href="../../../blog.html">Blog</a> &middot;
+        <a href="../../../tags.html">Tags</a> &middot;
+        <a href="http://groups.google.com/group/tigerops-community?hl=en">Mail</a> &middot;
+        <a href="putty.html">Putty</a> &middot;
+        <a href="../../../about.html">About</a>
+      </div>
+    </div>
+    <div class="title">
+      <img class="logo" src="../../../assets/images/trans-logo.png" align="left" />
+      <img class="logo" src="../../../assets/images/alltrans.png" width="480px" align="top" style="margin-left: 10px;" />
+    </div>
+  </div>
+</div>
+
+<div class="doc">
+  
+<div class="page">
+
+  <div class="article-title">A Failure of Precedence</div>
+
+  <h1>Ruby's Operator Precedence Can Be Improved</h1>
+
+<p>There's a lot to love about Ruby. Most of us know well the many great advantages it provides, as they
+say, "making programming fun". However, Ruby is also notoriously dogged by a few small gotchas and inconsistancies.
+Some of these are understandable, such as the <a href="http://eigenclass.org/hiki/The+double+inclusion+problem">Double Inclusion Problem</a>;
+issues that are not worth the extensive effort to fix. On the other hand, some simple issues doggedly persist for little good
+reason (backward compatibility not withstanding).</p>
+
+<p>One of these issues is operator precedence. Not only is operator precedence set in stone, it is also
+woefully <i>bottom heavy</i> --there is only one binary operator available for use above the common arthmetic operations.</p>
+
+<p>Here is the table as given by the <a href="https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html">PickAxe</a>:</p>
+
+<pre><code>Method    Operator                Description
+Y         [ ] [ ]=                Element reference, element set
+Y         **                      Exponentiation
+Y         ! ~ + -                 Not, complement, unary plus and minus (method names for the last two are +@ and -@)
+Y         * / %                   Multiply, divide, and modulo
+Y         + -                     Plus and minus
+Y         &gt;&gt; &lt;&lt;                   Right and left shift
+Y         &amp;                       Bitwise `and'
+Y         ^ |                     Bitwise exclusive `or' and regular `or'
+Y         &lt;= &lt; &gt; &gt;=               Comparison operators
+Y         &lt;=&gt; == === != =~ !~     Equality and pattern match operators (!= and !~ may not be defined as methods)
+          &amp;&amp;                      Logical `and'
+          ||                      Logical `or'
+          .. ...                  Range (inclusive and exclusive)
+            ? :                     Ternary if-then-else
+          = %= { /= -= += |= &amp;=   Assignment
+          &gt;&gt;= &lt;&lt;= *= &amp;&amp;= ||= **=   
+          defined?                Check if symbol defined
+          not                     Logical negation
+          or and                  Logical composition
+          if unless while until   Expression modifiers
+          begin/end               Block expression
+</code></pre>
+
+<p>The lack of any operators other then <tt>**</tt>, above the most commonly used, <tt>* / % + -</tt>, puts
+a frustrating limitation on the flexibility of this system. On this account, the most puzzling misplacement of an operator
+has to be Bitwise Exlusive Or, <tt>^</tt>. In many, if not most, programming languages <tt>^</tt> is the power operator.
+But in Ruby that function is delegated to <tt>**</tt>. While I personally do not favor <tt>**</tt> for the use,
+it's not something I mind either. However, that <tt>^</tt> doesn't share the same precedence is very awkward.</p>
+
+<p>Consider for instance, the implementation of a unit system.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+    <span style="color:#00D;font-weight:bold">2</span>.meters ** <span style="color:#00D;font-weight:bold">2</span>  =&gt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">4 square meters</span><span style="color:#710">&quot;</span></span>
+
+</pre></div>
+</div>
+
+<p>Notice the power operator effects the unit and the value. So how would we go about notating <code>2 square meters</code>?
+We need some other means. The obvious answer is to redefine <tt>^</tt>:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+    <span style="color:#00D;font-weight:bold">2</span>.meters ^ <span style="color:#00D;font-weight:bold">2</span>  =&gt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">2 square meters</span><span style="color:#710">&quot;</span></span>
+
+</pre></div>
+</div>
+
+<p>Great. But wait, there is an ugliness now upon us.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+    <span style="color:#00D;font-weight:bold">2</span>.meters ^ <span style="color:#00D;font-weight:bold">2</span> / <span style="color:#00D;font-weight:bold">2</span>  =&gt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">2 meters</span><span style="color:#710">&quot;</span></span>
+
+</pre></div>
+</div>
+
+<p>The answer should have been <tt>1 square meter</tt>, but due to precedence <tt>2 / 2</tt> is barring a <tt>1</tt> before
+the <tt>^</tt> power operator kicks-in.</p>
+
+<p>It is truly wonderful that Ruby's first 27 operators are actually methods, which means they can be defined to perform whatever
+function we would like of them. But despite being able to define these operators, there is no means of changing their
+precedence. Thus, the actual options we have defining new operations to suite our needs are hindered.</p>
+
+<p>Ideally we would be able to alter precedence on a per-class basis. While, some might argue that would create too much confusion,
+I would retort that good libraries would use the feature effectively, limiting the changes to the appropriate use-cases, so that
+it would not be an issue. After all, a library that scrambles precedence for no damn good reason will get little use.</p>
+
+<p>While we wait the day of true precedence freedom, I would like to see Ruby move <tt>^</tt> up with <tt>**</tt> and find a new
+Exclusive Or operator. Backward compatibility can be largely, although not completely, preserved by aliasing <tt>^</tt>
+to the new symbol. It's an obvious and simple improvement --a naggling issue that has been around for quite some time.</p>
+
+
+  <small>Written by trans, 2009-12-13</small>
+
+  <ul class="posts">
+    
+    
+  </ul>
+
+</div>
+
+
+</div>
+
+<br style="clear: both;"/><br/><br/>
+
+<div class="footer">
+<div class="footer-inner">
+  Copyright (c) 2005,2009 Thomas Sawyer
+</div>
+</div>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2883355-2";
+urchinTracker();
+</script>
+
+</body>
+</html>
+

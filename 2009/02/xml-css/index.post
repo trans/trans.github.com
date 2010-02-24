@@ -1,0 +1,28 @@
+---
+title  : XML+CSS
+author : trans
+tags   : ruby
+date   : 2009-02-10
+
+--- markdown
+
+# The Future of Web Design?
+
+In a [previous post](http://tigerops.org/2009/01/mf-vs-xml.html), I point out that microformats bring an additional layer of useful information to a document, which I dubbed *semantic structure*. In short, HTML tags provide useful *type* information about the data they contain. A good example of this has been the insistent push to use <code>div</code>s rather than <code>table</code>s for page layout. The reason is that tables describe a semantic structure, a table of data, and not layout. I for one have found this a frustrating haggle in the design of my pages. Time and time again I have been stymied by unwieldy <code>div</code>s. Tables are much easier to use, despite additional verbosity. But I have stuck to <code>div</code>s because it is "the right thing to do". Thankfully my saving grace will soon be here. The 3rd revision the CSS standard supports a new <code>display</code> style. With it, one can specify that a div is to behave like a table, table row or table cell. Woohoo! Three cheers for tabley divs!!
+
+This display style led me to think about semantic structure again. If we can designate that a <code>div</code> is a <code>table</code> structure via CSS, then why not any structure? And if <code>div</code>s, why not any tag? If we were able to do that, then semantic structure could be specified solely through CSS. And our HTML pages could go from rather simple, repetitive occurrences of <code>div</code> to ... can you guess?... pure XML.
+
+Let's got through it step by step. Here some HTML:
+
+  [gist id=61726]
+
+Now with CSS 3:
+
+  [gist id=61729]
+
+Of course no one would recommend doing this to something that really is a table of data. But bare with me, because now we are coming full circle:
+
+  [gist id=61730]
+
+I think this is a rather remarkable outcome. And you might be surprised to learn that Firefox handles it just fine. What we have achieved is an ultra-clean separation between the data and it's semantic meaning, via XML, and it's semantic structure, via CSS. If this approach were embraced by the XHTML and CSS standards bodies, I would not be surprised to see it revolutionize web design.
+

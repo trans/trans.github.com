@@ -1,0 +1,136 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+  <title>Welcome to Webrite</title>
+
+  <!-- google verification-->
+  <meta name="verify-v1" content="p14vW7GGMohDo2YKUHm0SXXTL+tzyPbKxxp35/WIQLA=" />
+
+  <meta name="DESCRIPTION"
+        content="Webrite is a K.I.S.S. website builder."/>
+
+  <link rel="icon" href="../../../assets/images/trans-logo.png" type="image/x-icon" />
+
+  <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
+
+  <!-- STYLESHEETS -->
+
+  <link href="../../../assets/styles/reset.css"  rel="stylesheet" type="text/css" />
+  <link href="../../../assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
+  <link href="../../../assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
+
+  <!--[if IE]>
+      <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+  <link href="../../../assets/styles/tag.css"    rel="stylesheet" type="text/css" />
+  <link href="../../../assets/styles/class.css"  rel="stylesheet" type="text/css" />
+
+  <link href="../../../assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
+
+  <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
+</head>
+<body>
+
+<div id="header">
+  <div id="header-inner">
+    <div class="menu" style="float: right;">
+      <div class="menu-inner">
+        <a href="../../../blog.html">Blog</a> &middot;
+        <a href="../../../tags.html">Tags</a> &middot;
+        <a href="http://groups.google.com/group/tigerops-community?hl=en">Mail</a> &middot;
+        <a href="putty.html">Putty</a> &middot;
+        <a href="../../../about.html">About</a>
+      </div>
+    </div>
+    <div class="title">
+      <img class="logo" src="../../../assets/images/trans-logo.png" align="left" />
+      <img class="logo" src="../../../assets/images/alltrans.png" width="480px" align="top" style="margin-left: 10px;" />
+    </div>
+  </div>
+</div>
+
+<div class="doc">
+  
+<div class="page">
+
+  <div class="article-title">What's &micro;F got on XML?</div>
+
+  <p>Decisions, decisions. Therein lies the reason why convention over configuration is so bloody great, precisely because it requires fewer decisions. <a href="http://proutils.rubyforge.org/syckle">Syckle</a>, my humble build tool, outputs log files. Yea, logs are good. But the decision I have to make is, "in what format?"</p>
+
+<p>Now old-school would just put out some asterisk-studded text files with plenty of precise timestamps, maybe some nice long <code>------------------------------</code> lines to divide things up. No doubt these files are easy to access and fairly readable. We like out text files. But hey wait. This is the age of magical markups. At the very least we can coax that log into a Wiki-tongue. For us Rubyists, we have rdoc, markdown and textile's just a few gemy fingertips away. These formats can be even easier to read thanks to structural consistency from log to log. Plus, fire-up a web server and we can get some really nice looking HTML too. That's the beauty of Wiki Wiki markup after all.</p>
+
+<p>Now if beauty were all that matter, then there would be no point in looking further. But like America's continental shelves there is untapped wealth going to waste here. There is data in them there logs! The modern buzzword is <em>semantic</em>. Taking logs to the next level requires us to ensure their semantic value. On that account, XML was created, and long predicted the format of the future. Certainly XML has made great strides, but it is still far from meeting its promise. There is simply too much complexity involved in both marking up the content and in generating nice output.</p>
+
+<p>Then comes along the <em>microformat</em>. The microformat combines the semantic capabilities of XML with the layout capabilities of HTML. Microformats are relatively new and still finding their footing. Indeed, I think a <em>Universal Uniform Microformat Specification</em> is ultimately the necessary outcome. In that vain I make a first rough estimate of what such unifying system might look like, and why, contrary to many arguments otherwise, microformats do in fact bring more to the table than XML.</p>
+
+<p>Where XML provides semantic information within a doubly linked hierarchy (via attributes and body), microformats provide the same plus a set of well defined data structures. Microformats provide semantics through a small set of tag attributes, <em>role</em>, <em>rel</em>, <em>rev</em> and primarily the <em>class</em> attribute. The <em>class</em> attribute alone is enough to make microformats fully equatable to XML. We can easily map the same data set in either format:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+  <span style="color:#070">&lt;people&gt;</span>
+    <span style="color:#070">&lt;person&gt;</span>
+      <span style="color:#070">&lt;name&gt;</span>John Jay<span style="color:#070">&lt;/name&gt;</span>
+    <span style="color:#070">&lt;/person&gt;</span>
+  <span style="color:#070">&lt;/people&gt;</span><span style="color:#070">&lt;/pre&gt;</span>
+
+</pre></div>
+</div>
+
+<p>As opposed to...</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+  <span style="color:#070">&lt;div</span> <span style="color:#007">class</span>=<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">people</span><span style="color:#710">&quot;</span></span><span style="color:#070">&gt;</span>
+    <span style="color:#070">&lt;div</span> <span style="color:#007">class</span>=<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">person</span><span style="color:#710">&quot;</span></span><span style="color:#070">&gt;</span>
+      <span style="color:#070">&lt;span</span> <span style="color:#007">class</span>=<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">name</span><span style="color:#710">&quot;</span></span><span style="color:#070">&gt;</span>John Jay<span style="color:#070">&lt;/span&gt;</span>
+    <span style="color:#070">&lt;/div&gt;</span>
+  <span style="color:#070">&lt;/div&gt;</span><span style="color:#070">&lt;/pre&gt;</span>
+
+</pre></div>
+</div>
+
+<p>Although the microformat is more verbose, the two contian the same original semantic value. But the extra verbosity isn't just a waste of UTF bytecodes, it says something. Specifically it gives us a <em>semantic structure</em>. It just so happens that HTML evolved to offer these structures precisely because that is what data presenters require to do their jobs well. And for the same reason, why you are always being beat with the <code>div</code>-stick when you try to take the load road of laying out your pages with tables.</p>
+
+<p>So what semantic structures do micorformats via HTML make available to us? The quick rundown: we have layouts using <em>div</em> and <em>span</em>, lists using <em>ol</em>, <em>ul</em> and <em>li</em>; definition lists using <em>dl</em>, <em>dd</em> and <em>dt</em>; and tables using <em>table</em>, <em>tr</em>, <em>th</em> and <em>td</em>. Those are the obvious structures. There are still other smaller structure's like <em>a</em> for links, and the hefty set of <em>form</em> elements. All these elements provide us a way to say what type of thing our data is or partakes in, not just what the data is.</p>
+
+<p>Clearly, the creators of XML saw the need for something like this and tried to achieve it through XML Namespaces. But namespaces are less effective because they are completely arbitrary, whereas HTML gives us a limited but universal structural language. Seems to me there is a principle to be found here that can be a guide for both the future of HTML and Microformats.</p>
+
+
+  <small>Written by trans, 2009-01-24</small>
+
+  <ul class="posts">
+    
+    
+  </ul>
+
+</div>
+
+
+</div>
+
+<br style="clear: both;"/><br/><br/>
+
+<div class="footer">
+<div class="footer-inner">
+  Copyright (c) 2005,2009 Thomas Sawyer
+</div>
+</div>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2883355-2";
+urchinTracker();
+</script>
+
+</body>
+</html>
+
