@@ -23,7 +23,6 @@
   <!-- STYLESHEETS -->
 
   <link href="assets/styles/reset.css"  rel="stylesheet" type="text/css" />
-
   <link href="assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
   <link href="assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
 
@@ -31,9 +30,9 @@
       <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
   <![endif]-->
 
-  <link href="assets/styles/layout.css"  rel="stylesheet" type="text/css" />
-  <link href="assets/styles/font.css"    rel="stylesheet" type="text/css" />
-  <link href="assets/styles/color.css"   rel="stylesheet" type="text/css" />
+  <link href="assets/styles/tag.css"    rel="stylesheet" type="text/css" />
+  <link href="assets/styles/class.css"  rel="stylesheet" type="text/css" />
+
   <link href="assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
 
   <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
@@ -68,8 +67,307 @@
 
   <div class="post">
     <div class="heading">
+      <span class="date" style="float: right; padding-top: 20px;">2010-02-25</span>
+      <a class="article-title" href="2010/02/code-identity/index.html">Code Identity</a>
+    </div>
+    <div class="btext">
+      <h1>A Little Fun with Code Generation</h1>
+
+<p>A couple of years ago, a
+<a href="http://blade.nagaokaut.ac.jp/cgi-bin/vframe.rb/ruby/ruby-talk/293058?292931-293646+split-mode-vertical">Ruby Quiz</a>
+asked us <i>to print "Hello, world!" to standard output using Ruby in atypical fashion.</i>
+Being the resolute over-achiever-to-a-fault that I am, I decided to take the proverbial
+pie-in-the-sky highroad to metaland. If, I thought, I could define code <i>identities</i>,
+akin to the mathematical kind, I should be able to have the computer simply
+generate an endless stream of equivalent solutions. Indeed, it turned out that it wasn't
+all that hard to code.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+    <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">CodeIdentity</span>
+
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">identities</span>
+        <span style="color:#33B">@identities</span> ||= []
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">identity</span>(&amp;block)
+        identities &lt;&lt; block
+      <span style="color:#080;font-weight:bold">end</span>
+
+      attr_reader   <span style="color:#A60">:original</span>
+      attr_accessor <span style="color:#A60">:alternates</span>
+
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(original)
+        <span style="color:#33B">@original</span> = original
+        <span style="color:#33B">@alternates</span> = [original]
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">generate</span>(limit=<span style="color:#00D;font-weight:bold">100</span>)
+        work  = original.dup
+        <span style="color:#080;font-weight:bold">while</span>(alternates.size &lt; limit) <span style="color:#080;font-weight:bold">do</span>
+          alts = alternates.dup
+          size = alternates.size
+          alts.each <span style="color:#080;font-weight:bold">do</span> |alt|
+            <span style="color:#038;font-weight:bold">self</span>.class.identities.each <span style="color:#080;font-weight:bold">do</span> |identity|
+              <span style="color:#038;font-weight:bold">self</span>.alternates |= [identity[alt]]
+              <span style="color:#080;font-weight:bold">break</span> <span style="color:#080;font-weight:bold">if</span> alternates.size &gt;= limit
+            <span style="color:#080;font-weight:bold">end</span>
+          <span style="color:#080;font-weight:bold">end</span>
+        <span style="color:#080;font-weight:bold">end</span>
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">show_code</span>
+        alternates.each{ |code| puts code }
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">show_output</span>
+        alternates.each{ |code| puts run(code) }
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">generate_tests</span>
+        require <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">test/unit</span><span style="color:#710">'</span></span>
+        original_run = run(original)
+        runner = method(<span style="color:#A60">:run</span>)
+        testcase = <span style="color:#036;font-weight:bold">Class</span>.new(<span style="color:#036;font-weight:bold">Test</span>::<span style="color:#036;font-weight:bold">Unit</span>::<span style="color:#036;font-weight:bold">TestCase</span>)
+        alternates.each_with_index <span style="color:#080;font-weight:bold">do</span> |code, index|
+          testcase.class_eval <span style="color:#080;font-weight:bold">do</span>  
+            define_method(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">test_</span><span style="background:#ddd;color:black"><span style="background:#ddd;font-weight:bold;color:#666">#{</span>index<span style="background:#ddd;font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>) <span style="color:#080;font-weight:bold">do</span>
+              assert_equal(original_run, runner[code])
+            <span style="color:#080;font-weight:bold">end</span>
+          <span style="color:#080;font-weight:bold">end</span>
+        <span style="color:#080;font-weight:bold">end</span>
+      <span style="color:#080;font-weight:bold">end</span>
+
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">run</span>(code)
+        so = <span style="color:#d70;font-weight:bold">$stdout</span>
+        sio = <span style="color:#036;font-weight:bold">StringIO</span>.new
+        <span style="color:#d70;font-weight:bold">$stdout</span>, <span style="color:#d70;font-weight:bold">$stderr</span> = sio, sio
+        eval code, <span style="color:#d70;font-weight:bold">$TOPLEVEL_BINDING</span>
+        result = <span style="color:#d70;font-weight:bold">$stdout</span>.string
+        <span style="color:#d70;font-weight:bold">$stdout</span> = so
+        result
+      <span style="color:#080;font-weight:bold">end</span>
+
+    <span style="color:#080;font-weight:bold">end</span>
+
+</pre></div>
+</div>
+
+<p>You can see from the #generate_tests method I was able to ensure that the results
+were indeed equivalent (an interesting strategy in dynamic testing, perhaps
+worth further exploration for production code).</p>
+
+<p>After the <code>CodeIdentity</code> class all was required was to apply a little
+<i>Brain Power</i> to come up some identities. I came up with a pretty simplistic lot,
+just as proof of concept. By following the original email thread, no doubt we can see
+their a assuredly an infinite number of possibilities that could be defined.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+    <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">CodeIdentity</span>
+
+      identity <span style="color:#080;font-weight:bold">do</span> |code|
+        code.sub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">puts [&quot;](.*)[&quot;]</span><span style="color:#404">/</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">print &quot;</span><span style="">\1</span><span style="">\n</span><span style="">&quot;</span><span style="color:#710">'</span></span>)
+      <span style="color:#080;font-weight:bold">end</span>
+
+      identity <span style="color:#080;font-weight:bold">do</span> |code|
+        code.sub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">puts [&quot;](.*)[&quot;]</span><span style="color:#404">/</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">printf &quot;%s</span><span style="">\n</span><span style="">&quot; % [&quot;</span><span style="">\1</span><span style="">&quot;]</span><span style="color:#710">'</span></span>)
+      <span style="color:#080;font-weight:bold">end</span>
+
+      identity <span style="color:#080;font-weight:bold">do</span> |code|
+        code.gsub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">[&quot;](.*)[&quot;]</span><span style="color:#404">/</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">&quot;</span><span style="">\1</span><span style="">&quot;.reverse.reverse</span><span style="color:#710">'</span></span>)
+      <span style="color:#080;font-weight:bold">end</span>
+
+      identity <span style="color:#080;font-weight:bold">do</span> |code|
+        code.gsub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">['](.*)[']</span><span style="color:#404">/</span></span>){ <span style="color:#d70;font-weight:bold">$1</span>.inspect }
+      <span style="color:#080;font-weight:bold">end</span>
+
+      identity <span style="color:#080;font-weight:bold">do</span> |code|
+        code.gsub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">['](.*)[']</span><span style="color:#404">/</span></span>){ <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#ddd;color:black"><span style="background:#ddd;font-weight:bold;color:#666">#{</span><span style="color:#d70;font-weight:bold">$1</span>.split(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#404">/</span></span>).inspect<span style="background:#ddd;font-weight:bold;color:#666">}</span></span><span style="">.join('')</span><span style="color:#710">&quot;</span></span> }
+      <span style="color:#080;font-weight:bold">end</span>
+
+    <span style="color:#080;font-weight:bold">end</span>
+
+</pre></div>
+</div>
+
+<p>To finish if off I wrote a small command-line interface that allow us to try any
+piece of code and generate as many solutions as desired.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+    <span style="color:#080;font-weight:bold">if</span> <span style="color:#038;font-weight:bold">__FILE__</span> == <span style="color:#d70;font-weight:bold">$0</span>
+      require <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">optparse</span><span style="color:#710">'</span></span>
+      cnt = <span style="color:#00D;font-weight:bold">20</span>
+      <span style="color:#036;font-weight:bold">OptionParser</span>.new <span style="color:#080;font-weight:bold">do</span> |opt|
+        opt.on(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">-n</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">number of solutions</span><span style="color:#710">&quot;</span></span>){ |n| cnt = n }
+      <span style="color:#080;font-weight:bold">end</span>.parse!
+      <span style="color:#080;font-weight:bold">if</span> <span style="color:#038;font-weight:bold">ARGV</span>.last == <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">-</span><span style="color:#710">'</span></span>
+        code = <span style="color:#038;font-weight:bold">ARGF</span>.read
+        <span style="color:#038;font-weight:bold">ARGV</span>.pop
+      <span style="color:#080;font-weight:bold">else</span>
+        code = <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">puts 'Hello World!'</span><span style="color:#710">&quot;</span></span>
+      <span style="color:#080;font-weight:bold">end</span>
+      cmd = <span style="color:#038;font-weight:bold">ARGV</span>.first
+
+      scg = <span style="color:#036;font-weight:bold">CodeIdentity</span>.new(code)
+      scg.generate(cnt)
+
+      <span style="color:#080;font-weight:bold">case</span> cmd
+      <span style="color:#080;font-weight:bold">when</span> <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">test</span><span style="color:#710">'</span></span>
+        scg.generate_tests
+      <span style="color:#080;font-weight:bold">when</span> <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">output</span><span style="color:#710">'</span></span>
+        scg.show_output
+      <span style="color:#080;font-weight:bold">else</span>
+        scg.show_code
+      <span style="color:#080;font-weight:bold">end</span>
+    <span style="color:#080;font-weight:bold">end</span>
+
+</pre></div>
+</div>
+
+<p>Without any options it works on the old favorite <code>puts 'Hello, World'</code>
+and produces 20 solutions. Here's the output:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+    puts <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">Hello, World!</span><span style="color:#710">'</span></span>
+    puts <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>
+    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>)
+    print <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span>
+    printf <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">%s</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span> % [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>]
+    puts <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>.reverse.reverse
+    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>.reverse.reverse].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>)
+    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>)
+    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join([].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>))
+    print <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span>.reverse.reverse
+    printf <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">%s</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span> % [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>.reverse.reverse]
+    printf <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">%s</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span> % [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>].reverse.reverse
+    puts <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>.reverse.reverse.reverse.reverse
+    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>.reverse.reverse.reverse.reverse].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>)
+    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>.reverse.reverse].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>)
+    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>.reverse.reverse].join([].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>))
+    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>.reverse.reverse)
+    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join([].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>))
+    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join([].join([].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>)))
+    print <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span>.reverse.reverse.reverse.reverse
+
+</pre></div>
+</div>
+
+<p>Very simplistic, but an interesting and fun diversion. Granted others came up with more intriguing
+individual solutions. But I manged to come up with an infinite set of them! ;)</p>
+
+<p>(The full code is available in <a href="http://gist.github.com/313518">Gist #313518</a>.)</p>
+
+      <div class="continue"><a href="2010/02/code-identity/index.html">Continue Reading ...</a></div>
+      <!-- <small>Written by trans</small> -->
+    </div>
+  </div>
+  <br/><br/>
+
+  <div class="post">
+    <div class="heading">
+      <span class="date" style="float: right; padding-top: 20px;">2009-12-13</span>
+      <a class="article-title" href="2009/12/precedence/index.html">A Failure of Precedence</a>
+    </div>
+    <div class="btext">
+      <h1>Ruby's Operator Precedence Can Be Improved</h1>
+
+<p>There's a lot to love about Ruby. Most of us know well the many great advantages it provides, as they
+say, "making programming fun". However, Ruby is also notoriously dogged by a few small gotchas and inconsistancies.
+Some of these are understandable, such as the <a href="http://eigenclass.org/hiki/The+double+inclusion+problem">Double Inclusion Problem</a>;
+issues that are not worth the extensive effort to fix. On the other hand, some simple issues doggedly persist for little good
+reason (backward compatibility not withstanding).</p>
+
+<p>One of these issues is operator precedence. Not only is operator precedence set in stone, it is also
+woefully <i>bottom heavy</i> --there is only one binary operator available for use above the common arthmetic operations.</p>
+
+<p>Here is the table as given by the <a href="https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html">PickAxe</a>:</p>
+
+<pre><code>Method    Operator                Description
+Y         [ ] [ ]=                Element reference, element set
+Y         **                      Exponentiation
+Y         ! ~ + -                 Not, complement, unary plus and minus (method names for the last two are +@ and -@)
+Y         * / %                   Multiply, divide, and modulo
+Y         + -                     Plus and minus
+Y         &gt;&gt; &lt;&lt;                   Right and left shift
+Y         &amp;                       Bitwise `and'
+Y         ^ |                     Bitwise exclusive `or' and regular `or'
+Y         &lt;= &lt; &gt; &gt;=               Comparison operators
+Y         &lt;=&gt; == === != =~ !~     Equality and pattern match operators (!= and !~ may not be defined as methods)
+          &amp;&amp;                      Logical `and'
+          ||                      Logical `or'
+          .. ...                  Range (inclusive and exclusive)
+            ? :                     Ternary if-then-else
+          = %= { /= -= += |= &amp;=   Assignment
+          &gt;&gt;= &lt;&lt;= *= &amp;&amp;= ||= **=   
+          defined?                Check if symbol defined
+          not                     Logical negation
+          or and                  Logical composition
+          if unless while until   Expression modifiers
+          begin/end               Block expression
+</code></pre>
+
+<p>The lack of any operators other then <tt>**</tt>, above the most commonly used, <tt>* / % + -</tt>, puts
+a frustrating limitation on the flexibility of this system. On this account, the most puzzling misplacement of an operator
+has to be Bitwise Exlusive Or, <tt>^</tt>. In many, if not most, programming languages <tt>^</tt> is the power operator.
+But in Ruby that function is delegated to <tt>**</tt>. While I personally do not favor <tt>**</tt> for the use,
+it's not something I mind either. However, that <tt>^</tt> doesn't share the same precedence is very awkward.</p>
+
+<p>Consider for instance, the implementation of a unit system.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+    <span style="color:#00D;font-weight:bold">2</span>.meters ** <span style="color:#00D;font-weight:bold">2</span>  =&gt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">4 square meters</span><span style="color:#710">&quot;</span></span>
+
+</pre></div>
+</div>
+
+<p>Notice the power operator effects the unit and the value. So how would we go about notating <code>2 square meters</code>?
+We need some other means. The obvious answer is to redefine <tt>^</tt>:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+    <span style="color:#00D;font-weight:bold">2</span>.meters ^ <span style="color:#00D;font-weight:bold">2</span>  =&gt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">2 square meters</span><span style="color:#710">&quot;</span></span>
+
+</pre></div>
+</div>
+
+<p>Great. But wait, there is an ugliness now upon us.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+    <span style="color:#00D;font-weight:bold">2</span>.meters ^ <span style="color:#00D;font-weight:bold">2</span> / <span style="color:#00D;font-weight:bold">2</span>  =&gt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">2 meters</span><span style="color:#710">&quot;</span></span>
+
+</pre></div>
+</div>
+
+<p>The answer should have been <tt>1 square meter</tt>, but due to precedence <tt>2 / 2</tt> is barring a <tt>1</tt> before
+the <tt>^</tt> power operator kicks-in.</p>
+
+<p>It is truly wonderful that Ruby's first 27 operators are actually methods, which means they can be defined to perform whatever
+function we would like of them. But despite being able to define these operators, there is no means of changing their
+precedence. Thus, the actual options we have defining new operations to suite our needs are hindered.</p>
+
+<p>Ideally we would be able to alter precedence on a per-class basis. While, some might argue that would create too much confusion,
+I would retort that good libraries would use the feature effectively, limiting the changes to the appropriate use-cases, so that
+it would not be an issue. After all, a library that scrambles precedence for no damn good reason will get little use.</p>
+
+<p>While we wait the day of true precedence freedom, I would like to see Ruby move <tt>^</tt> up with <tt>**</tt> and find a new
+Exclusive Or operator. Backward compatibility can be largely, although not completely, preserved by aliasing <tt>^</tt>
+to the new symbol. It's an obvious and simple improvement --a naggling issue that has been around for quite some time.</p>
+
+      <div class="continue"><a href="2009/12/precedence/index.html">Continue Reading ...</a></div>
+      <!-- <small>Written by trans</small> -->
+    </div>
+  </div>
+  <br/><br/>
+
+  <div class="post">
+    <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-08-24</span>
-      <a class="title" href="2009/09/new-website.html">This is Exciting!</a>
+      <a class="article-title" href="2009/09/new-website/index.html">This is Exciting!</a>
     </div>
     <div class="btext">
       <h1>Another Static Website/Blogging Tool</h1>
@@ -124,7 +422,7 @@ pagination and tagclouds. But it is coming along rapidly, and I look forward to 
 coming downt he road. Future innovations may include <em>aquisition</em> (a la Zope and UserLand Frontier),
 as well as a realtime Rack-based server.</p>
 
-      <div class="continue"><a href="2009/09/new-website.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/09/new-website/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -133,7 +431,7 @@ as well as a realtime Rack-based server.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-06-07</span>
-      <a class="title" href="2009/06/wxruby-for-the-lazy.html">WxRuby for the Lazy</a>
+      <a class="article-title" href="2009/06/wxruby-for-the-lazy/index.html">WxRuby for the Lazy</a>
     </div>
     <div class="btext">
       <p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It's far from the "Ruby Way".</p>
@@ -148,7 +446,7 @@ as well as a realtime Rack-based server.</p>
 
 <p>For another example of building structures lazily, have a look at <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/122593">my solution</a> for <a href="http://rubyquiz.com/quiz10.html">Ruby Quiz 10 - Crosswords</a>.</p>
 
-      <div class="continue"><a href="2009/06/wxruby-for-the-lazy.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/06/wxruby-for-the-lazy/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -157,7 +455,7 @@ as well as a realtime Rack-based server.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-03-20</span>
-      <a class="title" href="2009/03/gutopia.html">GUtopIa Revisited</a>
+      <a class="article-title" href="2009/03/gutopia/index.html">GUtopIa Revisited</a>
     </div>
     <div class="btext">
       <p>Recently I had to buckle down and create and honest to goodness desktop GUI application in Ruby. So once again, after some six years, I set down to weigh my options. It saddens me to say, after all these years, the state of desktop GUI programming with Ruby is still a rather sorry affair. Yes, there have been many improvements --thanks to the hard work of many a good programmer, but the task of creating a Ruby-based GUI application still remains a very non-Ruby-esque ordeal.</p>
@@ -186,7 +484,7 @@ as well as a realtime Rack-based server.</p>
 
 <p>Yes, believe it or not, that's a fairly complete GUI layout. In an upcoming post I'll explain how it all works in more detail. But before I get into that, I still need a working desktop GUI application ASAP! I don't have time to develop GUtopIa for this. So now I've tried again at coding wxRuby from hand, but this time using a very Ruby-esque lazy evaluation approach I had experimented with a long time ago in a <a href="http://www.rubyquiz.com/">Ruby Quiz</a> on <a href="http://www.rubyquiz.com/quiz10.html">crossword puzzle drawing</a>. Finally I got the results I wanted with out going cross-eyed looking at the code. Amazing how a well organized approach can make all the difference. I'll demonstrate my design in my next blog post.</p>
 
-      <div class="continue"><a href="2009/03/gutopia.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/03/gutopia/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -195,7 +493,7 @@ as well as a realtime Rack-based server.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-02-10</span>
-      <a class="title" href="2009/02/xml-css.html">XML+CSS</a>
+      <a class="article-title" href="2009/02/xml-css/index.html">XML+CSS</a>
     </div>
     <div class="btext">
       <h1>The Future of Web Design?</h1>
@@ -218,7 +516,7 @@ as well as a realtime Rack-based server.</p>
 
 <p>I think this is a rather remarkable outcome. And you might be surprised to learn that Firefox handles it just fine. What we have achieved is an ultra-clean separation between the data and it's semantic meaning, via XML, and it's semantic structure, via CSS. If this approach were embraced by the XHTML and CSS standards bodies, I would not be surprised to see it revolutionize web design.</p>
 
-      <div class="continue"><a href="2009/02/xml-css.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/02/xml-css/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -227,7 +525,7 @@ as well as a realtime Rack-based server.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-01-24</span>
-      <a class="title" href="2009/01/mf-vs-xml.html">What's &micro;F got on XML?</a>
+      <a class="article-title" href="2009/01/mf-vs-xml/index.html">What's &micro;F got on XML?</a>
     </div>
     <div class="btext">
       <p>Decisions, decisions. Therein lies the reason why convention over configuration is so bloody great, precisely because it requires fewer decisions. <a href="http://proutils.rubyforge.org/syckle">Syckle</a>, my humble build tool, outputs log files. Yea, logs are good. But the decision I have to make is, "in what format?"</p>
@@ -270,7 +568,7 @@ as well as a realtime Rack-based server.</p>
 
 <p>Clearly, the creators of XML saw the need for something like this and tried to achieve it through XML Namespaces. But namespaces are less effective because they are completely arbitrary, whereas HTML gives us a limited but universal structural language. Seems to me there is a principle to be found here that can be a guide for both the future of HTML and Microformats.</p>
 
-      <div class="continue"><a href="2009/01/mf-vs-xml.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/01/mf-vs-xml/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -279,7 +577,7 @@ as well as a realtime Rack-based server.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2008-11-04</span>
-      <a class="title" href="2008/11/yadsl.html">The YADSL Rule</a>
+      <a class="article-title" href="2008/11/yadsl.html">The YADSL Rule</a>
     </div>
     <div class="btext">
       <p>Looks like the Ruby world is a fire with new DSLs for BDD/TDD. There's
@@ -355,7 +653,7 @@ so very special. I'll keep you posted.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2008-09-28</span>
-      <a class="title" href="2008/09/oop-if.html">If and OOPy If</a>
+      <a class="article-title" href="2008/09/oop-if/index.html">If and OOPy If</a>
     </div>
     <div class="btext">
       <h1>An Ally OOP for If-Conditions</h1>
@@ -459,7 +757,7 @@ to false in order to walk through the false side of a condition.</p>
 if-statement would no longer do what we Rubyists presently take
 for granted. But then, that's the nature of progress, is it not?</p>
 
-      <div class="continue"><a href="2008/09/oop-if.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2008/09/oop-if/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by Anonymous</small> -->
     </div>
   </div>
@@ -468,7 +766,7 @@ for granted. But then, that's the nature of progress, is it not?</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2008-09-12</span>
-      <a class="title" href="2008/09/taskable.html">Taskable</a>
+      <a class="article-title" href="2008/09/taskable/index.html">Taskable</a>
     </div>
     <div class="btext">
       <h1>Taskable</h1>
@@ -492,7 +790,7 @@ a module for including, and I try to avoid that design when I can.</p>
   <div class="code"><pre>
   <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Taskable</span>
 
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.append_features(base)
+    <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">append_features</span>(base)
       base.extend(<span style="color:#038;font-weight:bold">self</span>)
     <span style="color:#080;font-weight:bold">end</span>
 
@@ -527,8 +825,8 @@ a module for including, and I try to avoid that design when I can.</p>
         <span style="color:#036;font-weight:bold">Task</span>.new(<span style="color:#038;font-weight:bold">self</span>, target, tdesc)
       )
       task.update(requisite, &amp;function)
-      define_method(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#eee;color:black"><span style="font-weight:bold;color:#777">#{</span>target<span style="font-weight:bold;color:#777">}</span></span><span style="">_trigger</span><span style="color:#710">&quot;</span></span>){ task.run(<span style="color:#038;font-weight:bold">self</span>) }  <span style="color:#888"># or use #run?</span>
-      define_method(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#eee;color:black"><span style="font-weight:bold;color:#777">#{</span>target<span style="font-weight:bold;color:#777">}</span></span><span style="">:task</span><span style="color:#710">&quot;</span></span>, &amp;function) <span style="color:#888"># TODO: in 1.9 use instance_exec instead.</span>
+      define_method(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#ddd;color:black"><span style="background:#ddd;font-weight:bold;color:#666">#{</span>target<span style="background:#ddd;font-weight:bold;color:#666">}</span></span><span style="">_trigger</span><span style="color:#710">&quot;</span></span>){ task.run(<span style="color:#038;font-weight:bold">self</span>) }  <span style="color:#888"># or use #run?</span>
+      define_method(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#ddd;color:black"><span style="background:#ddd;font-weight:bold;color:#666">#{</span>target<span style="background:#ddd;font-weight:bold;color:#666">}</span></span><span style="">:task</span><span style="color:#710">&quot;</span></span>, &amp;function) <span style="color:#888"># TODO: in 1.9 use instance_exec instead.</span>
     <span style="color:#080;font-weight:bold">end</span>
 
     <span style="color:#888"># Run a task.</span>
@@ -575,7 +873,7 @@ a module for including, and I try to avoid that design when I can.</p>
       <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">run</span>(object)
         rd = rule_dag
         rd.each <span style="color:#080;font-weight:bold">do</span> |t|
-          object.send(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#eee;color:black"><span style="font-weight:bold;color:#777">#{</span>t<span style="font-weight:bold;color:#777">}</span></span><span style="">:task</span><span style="color:#710">&quot;</span></span>)
+          object.send(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#ddd;color:black"><span style="background:#ddd;font-weight:bold;color:#666">#{</span>t<span style="background:#ddd;font-weight:bold;color:#666">}</span></span><span style="">:task</span><span style="color:#710">&quot;</span></span>)
         <span style="color:#080;font-weight:bold">end</span>
       <span style="color:#080;font-weight:bold">end</span>
 
@@ -597,7 +895,7 @@ a module for including, and I try to avoid that design when I can.</p>
       <span style="color:#080;font-weight:bold">end</span>
 
       <span style="color:#888">#</span>
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.parse_arguments(name_and_reqs, &amp;action)
+      <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">parse_arguments</span>(name_and_reqs, &amp;action)
         <span style="color:#080;font-weight:bold">if</span> <span style="color:#036;font-weight:bold">Hash</span>===name_and_reqs
           target = name_and_reqs.keys.first.to_s
           reqs = [name_and_reqs.values.first].flatten
@@ -648,7 +946,7 @@ a module for including, and I try to avoid that design when I can.</p>
 
 <p>So, what do you think?</p>
 
-      <div class="continue"><a href="2008/09/taskable.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2008/09/taskable/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by Anonymous</small> -->
     </div>
   </div>

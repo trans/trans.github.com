@@ -27,7 +27,6 @@ stencil: liquid
   <!-- STYLESHEETS -->
 
   <link href="{{root}}assets/styles/reset.css"  rel="stylesheet" type="text/css" />
-
   <link href="{{root}}assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
   <link href="{{root}}assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
 
@@ -35,9 +34,9 @@ stencil: liquid
       <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
   <![endif]-->
 
-  <link href="{{root}}assets/styles/layout.css"  rel="stylesheet" type="text/css" />
-  <link href="{{root}}assets/styles/font.css"    rel="stylesheet" type="text/css" />
-  <link href="{{root}}assets/styles/color.css"   rel="stylesheet" type="text/css" />
+  <link href="{{root}}assets/styles/tag.css"    rel="stylesheet" type="text/css" />
+  <link href="{{root}}assets/styles/class.css"  rel="stylesheet" type="text/css" />
+
   <link href="{{root}}assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
 
   <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
