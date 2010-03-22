@@ -3,12 +3,14 @@
   <title>TigerOps :: The Pussy Page</title>
   <style>
     body{ margin: 0; padding: 0; }
+    input { border: 1px solid #111; }
   </style>
   <script>
     function gateway(ans){
-      alert('here');
-      var body = getElementById('body');
-      var.style.background('url(assets/images/catwoman.jpg) center center no-repeat;');
+      if (ans.value == 'tiger') {
+        var body = document.getElementById('body');
+        body.style.backgroundImage = 'url(assets/images/catwoman.jpg)';
+      };
     };
   </script>
 </head>

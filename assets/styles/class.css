@@ -1,12 +1,12 @@
 /* main */
 
 .doc {
-  width: 960px;
+  width: 980px;
   margin: 0 auto;
 }
 
 .main {
-  width: 620px;
+  width: 640px;
   float: left;
 }
 
@@ -16,24 +16,35 @@
   padding-left: 70px;
 }
 
-/* header */
+
+/* HEADER */
 
 #header {
   padding-top: 5px;
-  border-bottom: 2px solid #ccc;
-  margin-bottom: 150px;
+  margin-bottom: 10px;
+  height: 260px;
+  color: #111;
+  background: url(../images/paper-edge.png) bottom repeat-x #000;
 }
 
 #header-inner {
-  width: 960px;
-  height: 140px;
+  width: 980px;
+  height: 260px;
   margin: 0 auto;
   text-align: left;
+  border-bottom: 0px solid #ccc;
+}
+
+#header .title {
+  height: 100px;
+  font-size: 64px;
+  line-height: 1em;
+  font-weight: bold;
 }
 
 #header .logo {
   padding-top: 20px;
-  margin-left: -30px;
+  margin-left: -10px;
 }
 
 /* side */
@@ -42,18 +53,20 @@
   border-bottom: 1px solid #ccc;
  }
 
-/* menu */
+
+/* MENU */
 
 .menu {
   width: 50%;
   padding-top: 10px;
+  padding-left: 50px;
   height: 32px;
-  text-align: center;
-  width: 500px;
+  text-align: left;
+  width: 100%;
+  height: 20px;
 }
 
 .menu-inner {
-  width: 500px;
 }
 
 .menu a {
@@ -61,7 +74,37 @@
   text-align: left;
   padding: 5px 10px;
   /* border-left: 1px solid #ccc; */
+  font-family: monospace;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: bold;
+  color: #ccc;
 }
+
+.menu a:hover {
+  color: red;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.menu ul {
+  list-style: none;
+  margin: 0;
+}
+
+.menu li {
+  float: left;
+  line-height: 20px;
+  text-align: center;
+  width: 75px;
+  border-left: 1px solid #ccc;
+}
+
+.menu li:hover {
+  background: #ccc;
+}
+
+
 
 .topfade {
   width: 100%;
@@ -76,11 +119,16 @@
   clear: both;
 }
 
-/* footer */
+
+/* FOOTER */
 
 .footer {
   width: 100%;
   height: 400px;
+  color: #777;
+  background: url(../images/White-Tiger-drinking-water.jpg) bottom right no-repeat;
+  font-size: 1.4em;
+  font-weight: bold;
 }
 
 .footer-inner {
@@ -94,20 +142,8 @@
   background: url(../images/orange-fade-up-sm.png) repeat-x white;
 }
 
-#header {
-  background: url(../images/u.jpg) 0px 0px repeat-x #111;
-  color: #111;
-}
 
-#header .menu a {
-  font-weight: bold;
-}
-
-#header .menu a:hover {
-  color: #222;
-  font-weight: bold;
-  text-decoration: underline;
-}
+/* HEADINGS */
 
 .heading .title {
   color: #2454ad;
@@ -115,13 +151,6 @@
 
 .heading .title:hover {
   color: #ff4455;
-}
-
-.footer {
-  color: #777;
-  background: url(../images/White-Tiger-drinking-water.jpg) bottom right no-repeat;
-  font-size: 1.4em;
-  font-weight: bold;
 }
 
 .btext {
@@ -142,43 +171,9 @@
   background: transparent;
 }
 
-#header .title {
-  font-size: 64px;
-  line-height: 1em;
-  font-weight: bold;
-}
-
 .heading { font-size: 2em; }
 .heading .title { font-size: 1.2em; font-weight: bold; color: #2454ad; }
 .heading .date  { font-size: 0.7em; }
-
-.menu {
-  width: 100%;
-  height: 20px;
-}
-
-.menu a {
-  font-size: 1.5em;
-  font-style: normal;
-  background: white;
-}
-
-.menu ul {
-  list-style: none;
-  margin: 0;
-}
-
-.menu li {
-  float: left;
-  line-height: 20px;
-  text-align: center;
-  width: 75px;
-  border-left: 1px solid #ccc;
-}
-
-.menu li:hover {
-  background: #ccc;
-}
 
 
 .article-title {

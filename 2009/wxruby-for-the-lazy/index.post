@@ -12,7 +12,12 @@ So how did I mange to get fairly nice Ruby code despite a binding that is essent
 
 You can see from the following code I was able to apply this "trick" to everything but toolbar buttons (aka 'tools'). This is because the toolbar itself is needed to create them. So I simply defined attributes for each tool, but actually created the tool buttons in the toolbar's method. Have a look.
 
-  [gist id="182301"]
+--- html
+
+<!-- [gist id="182301"] -->
+<script src="http://gist.github.com/182301.js"></script>
+
+--- markdown
 
 The thing to notice, if you haven't caught it yet, is how calling <code>#search_toolbar</code> leads to calling <code>#search_sizer</code> which in turn leads to calling <code>#search_panel</code>, and so forth all the way to the top <code>#frame_panel</code>. This code is a striped down version of actual code I am using. I hope it helps others create wxRuby application more easily. As I said in my previous post, I found in mind-numbingly difficult to create WxRuby interfaces until I worked out this approach. WxRuby is still a difficult API to master, but this technique makes the effort more manageable, and therefore more likely to succeed. 
 

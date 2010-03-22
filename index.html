@@ -8,7 +8,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 
-  <title>Welcome to Webrite</title>
+  <title>7ranscode</title>
 
   <!-- google verification-->
   <meta name="verify-v1" content="p14vW7GGMohDo2YKUHm0SXXTL+tzyPbKxxp35/WIQLA=" />
@@ -41,18 +41,16 @@
 
 <div id="header">
   <div id="header-inner">
-    <div class="menu" style="float: right;">
+    <div class="title">
+      <img class="logo" src="assets/images/transcode.png" width="480px" align="top" />
+    </div>
+    <div class="menu" style="text-align: left;">
       <div class="menu-inner">
-        <a href="">Blog</a> &middot;
+        <a href="index.html">Home</a> &middot;
         <a href="tags.html">Tags</a> &middot;
-        <a href="http://groups.google.com/group/tigerops-community?hl=en">Mail</a> &middot;
         <a href="putty.html">Putty</a> &middot;
         <a href="about.html">About</a>
       </div>
-    </div>
-    <div class="title">
-      <img class="logo" src="assets/images/trans-logo.png" align="left" />
-      <img class="logo" src="assets/images/alltrans.png" width="480px" align="top" style="margin-left: 10px;" />
     </div>
   </div>
 </div>
@@ -68,7 +66,7 @@
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2010-02-25</span>
-      <a class="article-title" href="2010/02/code-identity/index.html">Code Identity</a>
+      <a class="article-title" href="2010/code-identity/index.html">Code Identity</a>
     </div>
     <div class="btext">
       <h1>A Little Fun with Code Generation</h1>
@@ -260,7 +258,7 @@ individual solutions. But I manged to come up with an infinite set of them! ;)</
 
 <p>(The full code is available in <a href="http://gist.github.com/313518">Gist #313518</a>.)</p>
 
-      <div class="continue"><a href="2010/02/code-identity/index.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2010/code-identity/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -269,7 +267,7 @@ individual solutions. But I manged to come up with an infinite set of them! ;)</
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-12-13</span>
-      <a class="article-title" href="2009/12/precedence/index.html">A Failure of Precedence</a>
+      <a class="article-title" href="2009/precedence/index.html">A Failure of Precedence</a>
     </div>
     <div class="btext">
       <h1>Ruby's Operator Precedence Can Be Improved</h1>
@@ -358,7 +356,7 @@ it would not be an issue. After all, a library that scrambles precedence for no 
 Exclusive Or operator. Backward compatibility can be largely, although not completely, preserved by aliasing <tt>^</tt>
 to the new symbol. It's an obvious and simple improvement --a naggling issue that has been around for quite some time.</p>
 
-      <div class="continue"><a href="2009/12/precedence/index.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/precedence/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -367,7 +365,7 @@ to the new symbol. It's an obvious and simple improvement --a naggling issue tha
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-08-24</span>
-      <a class="article-title" href="2009/09/new-website/index.html">This is Exciting!</a>
+      <a class="article-title" href="2009/new-website/index.html">This is Exciting!</a>
     </div>
     <div class="btext">
       <h1>Another Static Website/Blogging Tool</h1>
@@ -422,7 +420,7 @@ pagination and tagclouds. But it is coming along rapidly, and I look forward to 
 coming downt he road. Future innovations may include <em>aquisition</em> (a la Zope and UserLand Frontier),
 as well as a realtime Rack-based server.</p>
 
-      <div class="continue"><a href="2009/09/new-website/index.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/new-website/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -431,7 +429,7 @@ as well as a realtime Rack-based server.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-06-07</span>
-      <a class="article-title" href="2009/06/wxruby-for-the-lazy/index.html">WxRuby for the Lazy</a>
+      <a class="article-title" href="2009/wxruby-for-the-lazy/index.html">WxRuby for the Lazy</a>
     </div>
     <div class="btext">
       <p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It's far from the "Ruby Way".</p>
@@ -440,13 +438,16 @@ as well as a realtime Rack-based server.</p>
 
 <p>You can see from the following code I was able to apply this "trick" to everything but toolbar buttons (aka 'tools'). This is because the toolbar itself is needed to create them. So I simply defined attributes for each tool, but actually created the tool buttons in the toolbar's method. Have a look.</p>
 
-<p>  [gist id="182301"]</p>
+
+<!-- [gist id="182301"] -->
+<script src="http://gist.github.com/182301.js"></script>
+
 
 <p>The thing to notice, if you haven't caught it yet, is how calling <code>#search_toolbar</code> leads to calling <code>#search_sizer</code> which in turn leads to calling <code>#search_panel</code>, and so forth all the way to the top <code>#frame_panel</code>. This code is a striped down version of actual code I am using. I hope it helps others create wxRuby application more easily. As I said in my previous post, I found in mind-numbingly difficult to create WxRuby interfaces until I worked out this approach. WxRuby is still a difficult API to master, but this technique makes the effort more manageable, and therefore more likely to succeed.</p>
 
 <p>For another example of building structures lazily, have a look at <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/122593">my solution</a> for <a href="http://rubyquiz.com/quiz10.html">Ruby Quiz 10 - Crosswords</a>.</p>
 
-      <div class="continue"><a href="2009/06/wxruby-for-the-lazy/index.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/wxruby-for-the-lazy/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -455,7 +456,7 @@ as well as a realtime Rack-based server.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-03-20</span>
-      <a class="article-title" href="2009/03/gutopia/index.html">GUtopIa Revisited</a>
+      <a class="article-title" href="2009/gutopia/index.html">GUtopIa Revisited</a>
     </div>
     <div class="btext">
       <p>Recently I had to buckle down and create and honest to goodness desktop GUI application in Ruby. So once again, after some six years, I set down to weigh my options. It saddens me to say, after all these years, the state of desktop GUI programming with Ruby is still a rather sorry affair. Yes, there have been many improvements --thanks to the hard work of many a good programmer, but the task of creating a Ruby-based GUI application still remains a very non-Ruby-esque ordeal.</p>
@@ -484,7 +485,7 @@ as well as a realtime Rack-based server.</p>
 
 <p>Yes, believe it or not, that's a fairly complete GUI layout. In an upcoming post I'll explain how it all works in more detail. But before I get into that, I still need a working desktop GUI application ASAP! I don't have time to develop GUtopIa for this. So now I've tried again at coding wxRuby from hand, but this time using a very Ruby-esque lazy evaluation approach I had experimented with a long time ago in a <a href="http://www.rubyquiz.com/">Ruby Quiz</a> on <a href="http://www.rubyquiz.com/quiz10.html">crossword puzzle drawing</a>. Finally I got the results I wanted with out going cross-eyed looking at the code. Amazing how a well organized approach can make all the difference. I'll demonstrate my design in my next blog post.</p>
 
-      <div class="continue"><a href="2009/03/gutopia/index.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/gutopia/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -493,7 +494,7 @@ as well as a realtime Rack-based server.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-02-10</span>
-      <a class="article-title" href="2009/02/xml-css/index.html">XML+CSS</a>
+      <a class="article-title" href="2009/xml-css/index.html">XML+CSS</a>
     </div>
     <div class="btext">
       <h1>The Future of Web Design?</h1>
@@ -516,7 +517,7 @@ as well as a realtime Rack-based server.</p>
 
 <p>I think this is a rather remarkable outcome. And you might be surprised to learn that Firefox handles it just fine. What we have achieved is an ultra-clean separation between the data and it's semantic meaning, via XML, and it's semantic structure, via CSS. If this approach were embraced by the XHTML and CSS standards bodies, I would not be surprised to see it revolutionize web design.</p>
 
-      <div class="continue"><a href="2009/02/xml-css/index.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/xml-css/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -525,7 +526,7 @@ as well as a realtime Rack-based server.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2009-01-24</span>
-      <a class="article-title" href="2009/01/mf-vs-xml/index.html">What's &micro;F got on XML?</a>
+      <a class="article-title" href="2009/mf-vs-xml/index.html">What's &micro;F got on XML?</a>
     </div>
     <div class="btext">
       <p>Decisions, decisions. Therein lies the reason why convention over configuration is so bloody great, precisely because it requires fewer decisions. <a href="http://proutils.rubyforge.org/syckle">Syckle</a>, my humble build tool, outputs log files. Yea, logs are good. But the decision I have to make is, "in what format?"</p>
@@ -568,7 +569,7 @@ as well as a realtime Rack-based server.</p>
 
 <p>Clearly, the creators of XML saw the need for something like this and tried to achieve it through XML Namespaces. But namespaces are less effective because they are completely arbitrary, whereas HTML gives us a limited but universal structural language. Seems to me there is a principle to be found here that can be a guide for both the future of HTML and Microformats.</p>
 
-      <div class="continue"><a href="2009/01/mf-vs-xml/index.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2009/mf-vs-xml/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
   </div>
@@ -577,7 +578,7 @@ as well as a realtime Rack-based server.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2008-11-04</span>
-      <a class="article-title" href="2008/11/yadsl.html">The YADSL Rule</a>
+      <a class="article-title" href="2008/yadsl/index.html">The YADSL Rule</a>
     </div>
     <div class="btext">
       <p>Looks like the Ruby world is a fire with new DSLs for BDD/TDD. There's
@@ -644,7 +645,7 @@ test framework soon.</p>
 <p>Don't worry, there's no new DSL to learn. And that's what makes my framework
 so very special. I'll keep you posted.</p>
 
-      <div class="continue"><a href="2008/11/yadsl.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2008/yadsl/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by Anonymous</small> -->
     </div>
   </div>
@@ -653,7 +654,7 @@ so very special. I'll keep you posted.</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2008-09-28</span>
-      <a class="article-title" href="2008/09/oop-if/index.html">If and OOPy If</a>
+      <a class="article-title" href="2008/oop-if/index.html">If and OOPy If</a>
     </div>
     <div class="btext">
       <h1>An Ally OOP for If-Conditions</h1>
@@ -757,7 +758,7 @@ to false in order to walk through the false side of a condition.</p>
 if-statement would no longer do what we Rubyists presently take
 for granted. But then, that's the nature of progress, is it not?</p>
 
-      <div class="continue"><a href="2008/09/oop-if/index.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2008/oop-if/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by Anonymous</small> -->
     </div>
   </div>
@@ -766,7 +767,7 @@ for granted. But then, that's the nature of progress, is it not?</p>
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">2008-09-12</span>
-      <a class="article-title" href="2008/09/taskable/index.html">Taskable</a>
+      <a class="article-title" href="2008/taskable/index.html">Taskable</a>
     </div>
     <div class="btext">
       <h1>Taskable</h1>
@@ -946,7 +947,7 @@ a module for including, and I try to avoid that design when I can.</p>
 
 <p>So, what do you think?</p>
 
-      <div class="continue"><a href="2008/09/taskable/index.html">Continue Reading ...</a></div>
+      <div class="continue"><a href="2008/taskable/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by Anonymous</small> -->
     </div>
   </div>
@@ -967,6 +968,21 @@ a module for including, and I try to avoid that design when I can.</p>
   <a href="http://facets.rubyforge.org"><img src="assets/images/RubyFacets.png" style="width: 270px;"/></a><br/>
   <a href="http://proutils.rubyforge.org"><img src="assets/images/proutils.png"/></a><br/>
   <a href="http://death.rubyforge.org"><img src="assets/images/skull4.png" style="margin-top: 24px;"/></a><br/>
+
+  <h2 class="side-title">I Advertise</h2>
+  <div style="text-align: center;">
+    <script type="text/javascript"><!--
+    google_ad_client = "pub-1126154564663472";
+    /* TRANS 200x200 8/5/08 */
+    google_ad_slot = "1837158473";
+    google_ad_width = 200;
+    google_ad_height = 200;
+    //-->
+    </script>
+    <script type="text/javascript"
+    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+  </div>
 
   <h2 class="side-title">I Use</h2>
   <a href="http://ruby-lang.org"><img src="assets/images/ruby-lang.png"/></a><br/>

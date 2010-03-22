@@ -12,7 +12,7 @@ stencil: liquid
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 
-  <title>Welcome to Webrite</title>
+  <title>7ranscode</title>
 
   <!-- google verification-->
   <meta name="verify-v1" content="p14vW7GGMohDo2YKUHm0SXXTL+tzyPbKxxp35/WIQLA=" />
@@ -45,18 +45,16 @@ stencil: liquid
 
 <div id="header">
   <div id="header-inner">
-    <div class="menu" style="float: right;">
+    <div class="title">
+      <img class="logo" src="{{root}}assets/images/transcode.png" width="480px" align="top" />
+    </div>
+    <div class="menu" style="text-align: left;">
       <div class="menu-inner">
-        <a href="{{root}}">Blog</a> &middot;
+        <a href="{{root}}index.html">Home</a> &middot;
         <a href="{{root}}tags.html">Tags</a> &middot;
-        <a href="http://groups.google.com/group/tigerops-community?hl=en">Mail</a> &middot;
-        <a href="putty.html">Putty</a> &middot;
+        <a href="{{root}}putty.html">Putty</a> &middot;
         <a href="{{root}}about.html">About</a>
       </div>
-    </div>
-    <div class="title">
-      <img class="logo" src="{{root}}assets/images/trans-logo.png" align="left" />
-      <img class="logo" src="{{root}}assets/images/alltrans.png" width="480px" align="top" style="margin-left: 10px;" />
     </div>
   </div>
 </div>

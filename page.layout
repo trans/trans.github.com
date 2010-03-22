@@ -19,6 +19,21 @@ layout : main
   <a href="http://proutils.rubyforge.org"><img src="{{root}}assets/images/proutils.png"/></a><br/>
   <a href="http://death.rubyforge.org"><img src="{{root}}assets/images/skull4.png" style="margin-top: 24px;"/></a><br/>
 
+  <h2 class="side-title">I Advertise</h2>
+  <div style="text-align: center;">
+    <script type="text/javascript"><!--
+    google_ad_client = "pub-1126154564663472";
+    /* TRANS 200x200 8/5/08 */
+    google_ad_slot = "1837158473";
+    google_ad_width = 200;
+    google_ad_height = 200;
+    //-->
+    </script>
+    <script type="text/javascript"
+    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+  </div>
+
   <h2 class="side-title">I Use</h2>
   <a href="http://ruby-lang.org"><img src="{{root}}assets/images/ruby-lang.png"/></a><br/>
   <a href="http://github.org"><img src="{{root}}assets/images/github-logo.png" style="float: left; margin-left: 5px; width: 115px;"/></a>

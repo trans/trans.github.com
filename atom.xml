@@ -11,7 +11,7 @@
  
  <entry>
    <title>Code Identity</title>
-   <link href="2010/02/code-identity/index.html"/>
+   <link href="2010/code-identity/index.html"/>
    <updated>2010-02-25</updated>
    <id></id>
    <content type="html"><h1>A Little Fun with Code Generation</h1>
@@ -207,7 +207,7 @@ individual solutions. But I manged to come up with an infinite set of them! ;)</
  
  <entry>
    <title>A Failure of Precedence</title>
-   <link href="2009/12/precedence/index.html"/>
+   <link href="2009/precedence/index.html"/>
    <updated>2009-12-13</updated>
    <id></id>
    <content type="html"><h1>Ruby's Operator Precedence Can Be Improved</h1>
@@ -300,7 +300,7 @@ to the new symbol. It's an obvious and simple improvement --a naggling issue tha
  
  <entry>
    <title>This is Exciting!</title>
-   <link href="2009/09/new-website/index.html"/>
+   <link href="2009/new-website/index.html"/>
    <updated>2009-08-24</updated>
    <id></id>
    <content type="html"><h1>Another Static Website/Blogging Tool</h1>
@@ -359,7 +359,7 @@ as well as a realtime Rack-based server.</p>
  
  <entry>
    <title>WxRuby for the Lazy</title>
-   <link href="2009/06/wxruby-for-the-lazy/index.html"/>
+   <link href="2009/wxruby-for-the-lazy/index.html"/>
    <updated>2009-06-07</updated>
    <id></id>
    <content type="html"><p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It's far from the "Ruby Way".</p>
@@ -368,7 +368,10 @@ as well as a realtime Rack-based server.</p>
 
 <p>You can see from the following code I was able to apply this "trick" to everything but toolbar buttons (aka 'tools'). This is because the toolbar itself is needed to create them. So I simply defined attributes for each tool, but actually created the tool buttons in the toolbar's method. Have a look.</p>
 
-<p>  [gist id="182301"]</p>
+
+<!-- [gist id="182301"] -->
+<script src="http://gist.github.com/182301.js"></script>
+
 
 <p>The thing to notice, if you haven't caught it yet, is how calling <code>#search_toolbar</code> leads to calling <code>#search_sizer</code> which in turn leads to calling <code>#search_panel</code>, and so forth all the way to the top <code>#frame_panel</code>. This code is a striped down version of actual code I am using. I hope it helps others create wxRuby application more easily. As I said in my previous post, I found in mind-numbingly difficult to create WxRuby interfaces until I worked out this approach. WxRuby is still a difficult API to master, but this technique makes the effort more manageable, and therefore more likely to succeed.</p>
 
@@ -378,7 +381,7 @@ as well as a realtime Rack-based server.</p>
  
  <entry>
    <title>GUtopIa Revisited</title>
-   <link href="2009/03/gutopia/index.html"/>
+   <link href="2009/gutopia/index.html"/>
    <updated>2009-03-20</updated>
    <id></id>
    <content type="html"><p>Recently I had to buckle down and create and honest to goodness desktop GUI application in Ruby. So once again, after some six years, I set down to weigh my options. It saddens me to say, after all these years, the state of desktop GUI programming with Ruby is still a rather sorry affair. Yes, there have been many improvements --thanks to the hard work of many a good programmer, but the task of creating a Ruby-based GUI application still remains a very non-Ruby-esque ordeal.</p>
@@ -411,7 +414,7 @@ as well as a realtime Rack-based server.</p>
  
  <entry>
    <title>XML+CSS</title>
-   <link href="2009/02/xml-css/index.html"/>
+   <link href="2009/xml-css/index.html"/>
    <updated>2009-02-10</updated>
    <id></id>
    <content type="html"><h1>The Future of Web Design?</h1>
@@ -438,7 +441,7 @@ as well as a realtime Rack-based server.</p>
  
  <entry>
    <title>What's &micro;F got on XML?</title>
-   <link href="2009/01/mf-vs-xml/index.html"/>
+   <link href="2009/mf-vs-xml/index.html"/>
    <updated>2009-01-24</updated>
    <id></id>
    <content type="html"><p>Decisions, decisions. Therein lies the reason why convention over configuration is so bloody great, precisely because it requires fewer decisions. <a href="http://proutils.rubyforge.org/syckle">Syckle</a>, my humble build tool, outputs log files. Yea, logs are good. But the decision I have to make is, "in what format?"</p>
@@ -485,7 +488,7 @@ as well as a realtime Rack-based server.</p>
  
  <entry>
    <title>The YADSL Rule</title>
-   <link href="2008/11/yadsl.html"/>
+   <link href="2008/yadsl/index.html"/>
    <updated>2008-11-04</updated>
    <id></id>
    <content type="html"><p>Looks like the Ruby world is a fire with new DSLs for BDD/TDD. There's
@@ -556,7 +559,7 @@ so very special. I'll keep you posted.</p>
  
  <entry>
    <title>If and OOPy If</title>
-   <link href="2008/09/oop-if/index.html"/>
+   <link href="2008/oop-if/index.html"/>
    <updated>2008-09-28</updated>
    <id></id>
    <content type="html"><h1>An Ally OOP for If-Conditions</h1>
@@ -664,7 +667,7 @@ for granted. But then, that's the nature of progress, is it not?</p>
  
  <entry>
    <title>Taskable</title>
-   <link href="2008/09/taskable/index.html"/>
+   <link href="2008/taskable/index.html"/>
    <updated>2008-09-12</updated>
    <id></id>
    <content type="html"><h1>Taskable</h1>
