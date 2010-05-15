@@ -80,25 +80,24 @@ I imagine most of you are already aware of it and are now considering how it fit
 with your future development plans. So I want so ask a more fundamental question:
 Why does Bundler even exist?</p>
 
-<p>On the surface, we can of course thank (or blame) Rails. The deployment of web
-applications stands apart from the distribution of Ruby packages. Deploying a Rails
-application usually means copying an app's files up to a server, as opposed to creating a
-distributable package file (like a gem) and installing that on the remote machine.
-Technically the later could be done, but is not because most web apps are
-usually proprietary and do not need wider distribution. Because Rails developers
-do not use the normal RubyGems distribution mechanism, which automatically installs
-dependencies, they need another way to ensure an apps dependencies are present.
-Hence the use of <code>bundle install</code>.</p>
+<p>On the surface, we can of course thank Rails. The deployment of web applications
+stands apart from the distribution of Ruby packages. Deploying a Rails
+application usually means copying an app's files up to a server, as opposed to
+creating a distributable package file (like a gem) and installing that on
+the remote machine. Technically the later could be done, but it isn't because
+most web apps are proprietary and do not need wider distribution. Because Rails
+developers do not use the normal RubyGems distribution mechanism, which automatically
+installs dependencies, it's they need another way to ensure an apps dependencies
+are present hence the use of something like <code>bundle install</code>.
+An alternateive might have been create a <code>gem deploy</code> command that
+pushed a gem to a server and installed it, dependencies and all. However
+<code>bunlde install</code> also make it easier for developers to install all
+the gems a Rails app needs needs. In addition, the Bundler folks saw a couple
+of other deficiencies in RubyGems that Bundler could handle.</p>
 
-<p>Technically it would have been easier and more convenient to have created
-a <code>gem deploy</code> command that pushed a gem to a server
-and installed it, dependencies and all. However the Bundler folks saw a couple
-of other deficiencies, or at least what they perceived as deficiencies, in RubyGems
-that Bundler could handle.</p>
-
-<p>Primary of these, and hence the name "Bundler", is the ability pull down the
-gems an application is dependent upon and install them directly within the
-project itself. These gems end up in a project's <code>vendor/gems/<code> directory.
+<p>Primary of these, and hence the name "Bundler", is the ability pull download the
+gems an application is dependent upon and store them directly within the
+project itself. These gems get stored a project's <code>vendor/gems/</code> directory.
 The rationalized benefit being that you need never worry about remote services
 going down (e.g. <code>rubygems.org</code>) in order to deploy your application,
 nor ever worry about any potential changes in a dependent gem. So in brief,
