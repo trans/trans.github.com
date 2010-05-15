@@ -25,7 +25,7 @@ wonder what track we were even on.</p>
  </entry>
  
  <entry>
-   <title>A Case for Module Inheritence</title>
+   <title>A Case for Module Inheritance</title>
    <link href=""/>
    <updated>2010-04-13</updated>
    <id></id>
@@ -35,11 +35,11 @@ language sometimes clash with requirements of the implementation. While
 Ruby goes a long way toward making beautifully written code common place.
 It still has some shortcomings I'd like to see improved.</p>
 
-<p>Case in point are my endeaors of the last few days. I've been struggling
+<p>Case in point are my endeavors of the last few days. I've been struggling
 to re-structure the code of the <a href="http://github.com/rubyworks/english/">English</a>
-project. The primary puporse of the project is to provide extension methods to String,
-pertaining to the English language. A good exmample are number inflection
-methods #singluar and #plural. At the same time I am trying to design
+project. The primary purpose of the project is to provide extension methods to String,
+pertaining to the English language. A good example are number inflection
+methods #singular and #plural. At the same time I am trying to design
 the library in such a way that other language modules can be built following
 the same basic structure, and they could all work together if need be.</p>
 
