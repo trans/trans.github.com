@@ -19,46 +19,47 @@ I imagine most of you are already aware of it and are now considering how it fit
 with your future development plans. So I want so ask a more fundamental question:
 Why does Bundler even exist?
 
-On the surface, we can of course thank (or blame) Rails. The deployment of web
-applications stands apart from the distribution of Ruby packages. Deploying a Rails
-application usually means copying an app's files up to a server, as opposed to creating a
-distributable package file (like a gem) and installing that on the remote machine.
-Technically the later could be done, but is not because most web apps are
-usually proprietary and do not need wider distribution. Because Rails developers
-do not use the normal RubyGems distribution mechanism, which automatically installs
-dependencies, they need another way to ensure an apps dependencies are present.
-Hence the use of <code>bundle install</code>.
+On the surface, we can of course thank Rails. The deployment of web applications
+stands apart from the distribution of Ruby packages. Deploying a Rails
+application usually means copying an app's files up to a server, as opposed to
+creating a distributable package file (like a gem) and installing that on
+the remote machine. Technically the later could be done, but it isn't, probably
+because most web apps are proprietary and do not need wider distribution. Because
+Rails developers do not use the normal RubyGems distribution mechanism, which
+automatically installs dependencies, they need another way to ensure their apps
+dependencies are present, hence the convenience of <code>bundle install</code>.
 
-Technically it would have been easier and more convenient to have created
-a <code>gem deploy</code> command that pushed a gem to a server
-and installed it, dependencies and all. However the Bundler folks saw a couple
-of other deficiencies, or at least what they perceived as deficiencies, in RubyGems
-that Bundler could handle.
+No doubt, this was not the driving cause for the existance of Bundler. It probably
+wasn't even much more than a passing thought in the minds of Bundler's developers,
+but nonetheless I beleive it is the <i>first need</i> that has more or less gotten
+the ball rolling, for it and many related projects
+(e.g. <a href="http://www.capify.org/index.php/Capistrano">Capistrano</a>).
 
-Primary of these, and hence the name "Bundler", is the ability pull down the
-gems an application is dependent upon and install them directly within the
-project itself. These gems end up in a project's <code>vendor/gems/<code> directory.
-The rationalized benefit being that you need never worry about remote services
-going down (e.g. `rubygems.org`) in order to deploy your application,
-nor ever worry about any potential changes in a dependent gem. So in brief,
-one can *bundle* dependent gems with ones application.
+The driving cause, on the other hand, is probably Bundler's name-sake --it's ability
+to download the gems an application is dependent upon and store them directly
+within the project itself. These gems get stored in a project's
+<code>vendor/gems/</code> directory. The rationalized benefit being that you
+need never worry about remote services going down (e.g. `rubygems.org`)
+in order to deploy your application, nor ever worry about any potential changes in
+a dependent gem. So in brief, one can *bundle* dependent gems with ones application.
 
 At first blush it seem like great idea. After all developers use vendoring to 
 do something similar while developing an application. But lets consider this
-a bit more carefully. The worry of a remote service being down is, honestly, 
-paranoia. That's why mirrors of RubyGems.org exist. If one goes down, the others remain.
-The odds of all mirrors going down at the same time are extremely remote, and as you
-might imagine such a situation would be corrected very quickly, if it ever did occur.
-In fact, if it did happen, there is a good chance the servers you host your app on
-will be down too. So the solution here is not bundling, but redundancy. As for the
+a bit more carefully. The worry of a remote service going down is, honestly, bordering
+on paranoia. That's why mirrors of RubyGems.org exist. If one goes down, the others
+remain. The odds of all mirrors going down at the same time are extremely small, and
+as you might imagine, such a situation would be corrected very quickly, if it ever did
+occur. In fact, if it did happen, there is a good chance the servers you host your app
+on will be down too. So the solution here is not bundling, but redundancy. As for the
 fear of "monkey releases", i.e. new versions of a gem that that might break an app,
-this is somewhat understandable but redistributing every dependency with each app
-is shear overkill. If you are that concerned a gem will break an application, one can
+this is somewhat understandable, but redistributing every dependency with each app
+is shear overkill. If you are that concerned a gem will break an application you can
 always specify exact requirements in the gemspec, and use the `gem` method to nail the
 version down. That, in fact, is the whole point of the `gem` method. And it is a
 perfectly good solution for applications such as a Rails app. Unfortunately is is not
 a very good solution for general purpose libraries. (As can be read about in any number
-of blog posts by searching <a href="http://www.google.com/search?q=Don%27t+require+%27rubygems%27">Don't require 'rubygems'</a>.)
+of blog posts by searching
+<a href="http://www.google.com/search?q=Don%27t+require+%27rubygems%27">Don't require 'rubygems'</a>.)
 
 I should mention that the latest version of Bundler (v0.9) has a light-weight rendition
 of bundling, called *locking*, which doesn't actually store the gem in the application,
@@ -70,7 +71,7 @@ and to Bundler's credit it makes it easy to keep those `gem` calls current.
 However, it still ties your program to RubyGems, so again it's not a perfect solution
 for reusable libraries.
 
-Another "feature" Bundler sets out of handle are *groups*. They are "gem environments"
+Another feature Bundler sets out of handle are *groups*. They are "gem environments"
 which can be loaded as a collective, or even omitted during an install. In other words,
 they are a way to specify a specific group of gems to the `bundle` command or in an
 ones code with `Bundler.require`. The most common groups you are likely to see are `runtime`
@@ -92,21 +93,20 @@ they track a .gemspec. This feature is a clear address to vendoring, but
 via gem dependencies. I won't even go into all the issues that arise with this
 (and seem to contradict some of the Bundler's primary purpose). You can read
 some of the back and forth on this idea <a href="http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/">here</a>.
-I will say, however, what really strikes me most about this is how an unproven system takes
-on such fanfare that it's proponents now declare that a `.gemspec` should never be
-generated by some "extraneous build tool", but ought to be edited by hand and checked
-into the scm repository. --Wow.
+I will say, however, what really strikes me most about this is how an unproven system
+takes on such fanfare that it's proponents now declare we have all been doing it wrong!
+A `.gemspec` should never be generated by some "extraneous build tool", but ought to be
+edited by hand and checked into the scm repository. Wow.
 
 I realized the Bundler is addressing certain needs, primarily of the Rails community.
 The problem with Bundler is that it is trying to correct something that is fundamentally
 problematic from the start. On two fronts... The first being that RubyGems ties
 a packaging system to versioning, so using the `gem` command will never be a universally
-applicable solution to lock down versions. And the second, more significant issue that RubyGems,
-and hence Bundler, cannot resolve being <b>version conflicts</b>. RubyGems blows-up when it
+applicable solution to lock down versions. And the second, more significant issue, that RubyGems,
+and hence Bundler, cannot resolve <b>version conflicts</b>. RubyGems blows-up when it
 encounters a conflict. Bundler only mitigates this issue by giving you a heads up before you
-ever run your tests. This is the real heart of the matter, and it stems from the fundamental
+ever run a test. This is the real heart of the matter, and it stems from the fundamental
 lack of version support in Ruby itself. Until that is addressed, all of these fancy solutions
 are simply trains headed up the wrong track.
-
 
 
