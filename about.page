@@ -1,20 +1,8 @@
 ---
-
 layout: page
 
 --- markdown
 
-# Markdown
+I am Trans, the Coder. And this is my personal programming blog.
 
-Yep this is Markdown alright.
-
-* Item 1
-* Item 2
-* Item 3
-
---- rdoc
-
-= RDoc Simple Markup
-
-I love RDoc's simple format.
 

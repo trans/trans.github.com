@@ -1,0 +1,158 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+  <title>7ranscode</title>
+
+  <!-- google verification-->
+  <meta name="verify-v1" content="p14vW7GGMohDo2YKUHm0SXXTL+tzyPbKxxp35/WIQLA=" />
+
+  <meta name="DESCRIPTION"
+        content="Webrite is a K.I.S.S. website builder."/>
+
+  <link rel="icon" href="../assets/images/trans-logo.png" type="image/x-icon" />
+
+  <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
+
+  <!-- STYLESHEETS -->
+
+  <link href="../assets/styles/reset.css"  rel="stylesheet" type="text/css" />
+  <link href="../assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
+  <link href="../assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
+
+  <!--[if IE]>
+      <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+  <link href="../assets/styles/tag.css"    rel="stylesheet" type="text/css" />
+  <link href="../assets/styles/class.css"  rel="stylesheet" type="text/css" />
+
+  <link href="../assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
+
+  <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
+</head>
+<body>
+
+<div id="header">
+  <div id="header-inner">
+    <div class="title">
+      <img class="logo" src="../assets/images/transcode.png" width="480px" align="top" />
+    </div>
+    <div class="menu" style="text-align: left;">
+      <div class="menu-inner">
+        <a href="../index.html">Home</a> &middot;
+        <a href="../tags.html">Tags</a> &middot;
+        <a href="../putty.html">Putty</a> &middot;
+        <a href="../about.html">About</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc">
+  
+<div class="page">
+
+  <div class="article-title">This Old Hash</div>
+
+  <p>The Hash may well be the most used class in Ruby. Sure, our programs
+have arrays and strings galore, but they generally come and go without
+much ado. Hashes on the other hand get <em>used</em>; and by that I mean to
+say, we spend a lot of time fussing with them. I think there are two
+significant reasons for this and I will focus on the first, and
+the more important of the two, here.</p>
+
+<p>Now, I suspect you would agree, if I were to present you with a class
+which was clearly overkill for vast majority of its intended uses, and
+its use required repeated mitigation of its unused features, I have no
+doubt, you'd unequivocally advise me to select a "<i>better tool for the job</i>".
+And yet, that's the situation all Ruby programmers face, day in and
+day out, with Ruby's Hash.</p>
+
+<p>Ruby's Hash is exceptionally powerful because it supports any type of
+object as a hash key. That's really really cool... for all of about
+five minutes. The truth is, the vast majority of cases only require
+one type of key --for Ruby that will either be a Symbol or a String,
+and because of this, a great deal of time and code is wasted ensuring
+all keys are that single type. Because of this, methods like
+<code>#to_sym</code> often riddle our scripts.</p>
+
+<p>The issue is undeniably attested to by real world "solutions"
+others have created to address it, such as Ruby Facets'
+<a href="http://facets.rubyforge.org/doc/api/core/classes/Hash.html#M000124">Hash#rekey</a>.
+and Ruby on Rails'
+<a href="http://api.rubyonrails.org/classes/HashWithIndifferentAccess.html">HashWithIndifferentAccess</a>.
+But let's face it, these are both underwhelming attempts at mitigating
+the fundamental problem.</p>
+
+<p>A real solution would have the current Hash class renamed, and a new
+limited-key structure put in its place. The old class would still be
+available, of course, for those special cases when a key of any object
+type is required, but the new, more utilitarian Hash class would be
+the literally-constructed default. The end effect of this change would
+be simple:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+  h[<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">a</span><span style="color:#710">'</span></span>] == h[<span style="color:#A60">:a</span>]
+  h[<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">1</span><span style="color:#710">'</span></span>] == h[<span style="color:#00D;font-weight:bold">1</span>]
+
+</pre></div>
+</div>
+
+<p>This means reducing all hash keys to a single <em>symbolic</em> index type.
+It does not matter what the actual reference is, a String, Symbol,
+Integer, etc. just so long as it has a predictable symbolic
+representation.</p>
+
+<p>It may feel a bit strange to consider a suggestion that actually calls
+for the reduction of features. More often change requests call for just
+the opposite and YAGNI has to be peddled out on them. But, I think, we
+often underestimate the power of simplicity. Consider ideas such as
+convention-over-configuration and duck-typing --simplifications that
+are not necessarily intuitive at first. But in the end, they make our
+life as programmers a good bit more productive.</p>
+
+<blockquote>
+"Make everything as simple as possible, but not simpler."
+<cite>--Albert Einstein</cite>
+</blockquote>
+
+
+
+  <small>Written by Anonymous, 2008-10-06</small>
+
+  <ul class="posts">
+    
+    
+  </ul>
+
+</div>
+
+
+</div>
+
+<br style="clear: both;"/><br/><br/>
+
+<div class="footer">
+<div class="footer-inner">
+  Copyright (c) 2005,2009 Thomas Sawyer
+</div>
+</div>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2883355-2";
+urchinTracker();
+</script>
+
+</body>
+</html>
+

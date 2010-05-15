@@ -1,0 +1,183 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+  <title>7ranscode</title>
+
+  <!-- google verification-->
+  <meta name="verify-v1" content="p14vW7GGMohDo2YKUHm0SXXTL+tzyPbKxxp35/WIQLA=" />
+
+  <meta name="DESCRIPTION"
+        content="Webrite is a K.I.S.S. website builder."/>
+
+  <link rel="icon" href="../assets/images/trans-logo.png" type="image/x-icon" />
+
+  <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
+
+  <!-- STYLESHEETS -->
+
+  <link href="../assets/styles/reset.css"  rel="stylesheet" type="text/css" />
+  <link href="../assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
+  <link href="../assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
+
+  <!--[if IE]>
+      <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+  <link href="../assets/styles/tag.css"    rel="stylesheet" type="text/css" />
+  <link href="../assets/styles/class.css"  rel="stylesheet" type="text/css" />
+
+  <link href="../assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
+
+  <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
+</head>
+<body>
+
+<div id="header">
+  <div id="header-inner">
+    <div class="title">
+      <img class="logo" src="../assets/images/transcode.png" width="480px" align="top" />
+    </div>
+    <div class="menu" style="text-align: left;">
+      <div class="menu-inner">
+        <a href="../index.html">Home</a> &middot;
+        <a href="../tags.html">Tags</a> &middot;
+        <a href="../putty.html">Putty</a> &middot;
+        <a href="../about.html">About</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc">
+  
+<div class="page">
+
+  <div class="article-title">A Case for Module Inheritence</div>
+
+  <p>I love beautifully written code. Unfortunately the realities of the
+language sometimes clash with requirements of the implementation. While
+Ruby goes a long way toward making beautifully written code common place.
+It still has some shortcomings I'd like to see improved.</p>
+
+<p>Case in point are my endeaors of the last few days. I've been struggling
+to re-structure the code of the <a href="http://github.com/rubyworks/english/">English</a>
+project. The primary puporse of the project is to provide extension methods to String,
+pertaining to the English language. A good exmample are number inflection
+methods #singluar and #plural. At the same time I am trying to design
+the library in such a way that other language modules can be built following
+the same basic structure, and they could all work together if need be.</p>
+
+<p>In the course of this endeavor I decided the best approach, kepping the future
+squarely in mind, is to create a Language module, upon which English depends,
+to house all the common logic of (most) langauges. For example, the logic for
+storing plural and singular special cases might be a good candidate since nearly
+every language has to account for these. So the relationship between English
+and Language is cleary one of "inheritence" --I want to encapsulate logic at
+a general level of abstraction, upon which more specific cases can inherit and
+augment to fit their particular requirements.</p>
+
+<p>In Ruby this kind of relationship is generally handled by class inheritence.
+But here I run into an issue. <code>English</code> and <code>Language</code>
+are modules, and they are modules because they are <i>singleton</i>. Now even
+though we can include a module into another, which is akin to class inheritence,
+it does not work quite like class inheritence. For one thing, metaclass methods
+are not inherited via <code>include</code>. Of course, I could tip-toe around
+this issue by using <code>extend</code>, since in this case I do not need
+includable instance methods. But there is a much more subtle issues that
+raises it's head: the dreaded Double Inclusion Problem. That't a serious
+headache in my case becuase I want my end users to have the option to load
+only the components they want to use as needed, rather than forcing them to
+load the entire system up-front.</p>
+
+<p>So, despite the many <a href="">calls for the death of the Singleton Pattern</a>,
+it looks like I will require it for my implmentation of English. Using
+modules simply comes with too many headaches and hackish work arounds.
+Now I agree with all the Singleton nay-sayers. It is sort of an anti-pattern to
+create a class that will only ever have one instantiation and no state, but
+the trade-off here is worse. If only...</p>
+
+<p>It seems to me the truly fantastic solution to this would be if one module
+could inherit from another just as we do with classes. And honestly, is there
+really any reason we shouldn't be able to do this?</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+  <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Language</span>
+
+    <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">words</span>(string)
+      <span style="color:#888"># generic definition</span>
+    <span style="color:#080;font-weight:bold">end</span>
+
+  <span style="color:#080;font-weight:bold">end</span>
+
+  <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">English</span> &lt; <span style="color:#036;font-weight:bold">Language</span>
+
+    <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">words</span>(string)
+      <span style="color:#888"># override</span>
+    <span style="color:#080;font-weight:bold">end</span>
+
+  <span style="color:#080;font-weight:bold">end</span>
+
+</pre></div>
+</div>
+
+<p>What is nice about this, something I know that Matz will appreciate, is that
+it preserves single-inheritence, in contrast to the alternative of
+turning <code>include</code> into a multiple-inheritence mechinism. And
+for the love of code beauty, it would mean an end to the all too common:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre>
+  <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">included</span>(base)
+    base.extend <span style="color:#036;font-weight:bold">ClassMethods</span>
+  <span style="color:#080;font-weight:bold">end</span>
+
+  <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">ClassMethods</span>
+    <span style="color:#888"># ...</span>
+  <span style="color:#080;font-weight:bold">end</span>
+
+</pre></div>
+</div>
+
+<p>Not only is it ugly, it is even worse for those trying to inherit and
+extend the behavior. Something more elegant is clearly desireable, and
+Module Inheritence, as I have demonstrated here, might be just the ticket.</p>
+
+
+  <small>Written by trans, 2010-04-13</small>
+
+  <ul class="posts">
+    
+    
+  </ul>
+
+</div>
+
+
+</div>
+
+<br style="clear: both;"/><br/><br/>
+
+<div class="footer">
+<div class="footer-inner">
+  Copyright (c) 2005,2009 Thomas Sawyer
+</div>
+</div>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2883355-2";
+urchinTracker();
+</script>
+
+</body>
+</html>
+

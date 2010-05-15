@@ -8,19 +8,22 @@ extension : .xml
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
- <title>blog.crantastic.org</title>
- <link href="http://blog.crantastic.org/atom.xml" rel="self"/>
- <link href="http://blog.crantastic.org/"/>
+ <title>Transcode Blog</title>
+ <link href="{{ site.url }}/atom.xml" rel="self"/>
+ <link href="{{ site.url }}"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
- <id>http://blog.crantastic.org/</id>
+ <id>{{ site.url }}</id>
 
  {% for post in site.posts %}
  <entry>
    <title>{{ post.title | xml_escape }}</title>
-   <link href="{{ site.url }}{{ post.url }}"/>
+   <link href="{{ post.full_url }}"/>
    <updated>{{ post.date | date_to_xmlschema }}</updated>
    <id>{{ site.url }}{{ post.id }}</id>
-   <content type="html">{{ post.content | xml_escape }}</content>
+   <content type="html">
+     {{ post.summary | xml_escape }}
+     [<a href="{{ post.full_url }}">Read More</a>]
+   </content>
  </entry>
  {% endfor %}
 

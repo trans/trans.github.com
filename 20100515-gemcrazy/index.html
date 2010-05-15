@@ -1,0 +1,195 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+  <title>7ranscode</title>
+
+  <!-- google verification-->
+  <meta name="verify-v1" content="p14vW7GGMohDo2YKUHm0SXXTL+tzyPbKxxp35/WIQLA=" />
+
+  <meta name="DESCRIPTION"
+        content="Webrite is a K.I.S.S. website builder."/>
+
+  <link rel="icon" href="../assets/images/trans-logo.png" type="image/x-icon" />
+
+  <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
+
+  <!-- STYLESHEETS -->
+
+  <link href="../assets/styles/reset.css"  rel="stylesheet" type="text/css" />
+  <link href="../assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
+  <link href="../assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
+
+  <!--[if IE]>
+      <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+  <link href="../assets/styles/tag.css"    rel="stylesheet" type="text/css" />
+  <link href="../assets/styles/class.css"  rel="stylesheet" type="text/css" />
+
+  <link href="../assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
+
+  <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
+</head>
+<body>
+
+<div id="header">
+  <div id="header-inner">
+    <div class="title">
+      <img class="logo" src="../assets/images/transcode.png" width="480px" align="top" />
+    </div>
+    <div class="menu" style="text-align: left;">
+      <div class="menu-inner">
+        <a href="../index.html">Home</a> &middot;
+        <a href="../tags.html">Tags</a> &middot;
+        <a href="../putty.html">Putty</a> &middot;
+        <a href="../about.html">About</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc">
+  
+<div class="page">
+
+  <div class="article-title">Gem Crazy</div>
+
+  <p><b>I believe the Ruby community may have finally gone off the rails in it's collective
+crazy train.</b> I have been readying about <a href="http://gembundler.com/">Bundler</a>,
+the spiffy new RubyGems manager to be default part of Rails 3.0, and I can't help but
+wonder what track we were even on.</p>
+
+<p>If you don't now about Bundler yet, you can learn about it
+<a href="http://yehudakatz.com/2009/11/03/using-the-new-gem-bundler-today/">here</a>.
+I imagine most of you are already aware of it and are now considering how it fits in
+with your future development plans. So I want so ask a more fundamental question:
+Why does Bundler even exist?</p>
+
+<p>On the surface, we can of course thank (or blame) Rails. The deployment of web
+applications stands apart from the distribution of Ruby packages. Deploying a Rails
+application usually means copying an apps files up to a server, as opposed to creating a
+distributable package file (like a gem) and installing that on the remote machine.
+Technically the later could be done, but we don't because most web apps are
+proprietary and do not want wider distribution. Because Rails developers
+do not use the normal RubyGems distribution mechanism, which automatically installs
+dependencies, they need another way to ensure an apps dependencies are present.
+Hence the need to run <code>bundle install</code>.</p>
+
+<p>Technically it would have been easier and more convenient to have created
+a <code>gem deploy</code> command that pushed a gem to a server
+and installed it, dependencies and all. However the Bundler folks saw a couple
+of other deficiencies, or at least what they perceived as deficiencies, in RubyGems
+that Bundler could handle.</p>
+
+<p>Primary of these, and hence the name "Bundler", is the ability pull down the
+gems an application is dependent upon and install them directly within the
+project itself. These gems end up in a project's @vendor/gems/@ directory.
+The rationalized benefit being that you need never worry about remote services
+going down (e.g. @rubygems.org@) in order to deploy your application,
+nor ever worry about any potential changes in a dependent gem. So in brief,
+one can <em>bundle</em> dependent gems within ones application.</p>
+
+<p>At first blush it seem like great idea --after all developers use vendoring to
+do something similar while developing an application. But lets consider this
+a bit more carefully. The worry of a remote service being down is honestly,
+paranoia. That's why mirrors of RubyGems.org exist. If one goes down, the others remain.
+The odds of all mirrors going down at the same time are extremely remote, and as you
+might imagine such a situation would be corrected very quickly if it ever did occur.
+In fact, if it did happen, there is a good chance the servers you host your app on
+will be down too. So the solution here is not bundling, but redundancy. As for the
+fear of "monkey releases", i.e. new versions of a gem that that might break an app,
+this is somewhat understandable but redistributing every dependency with each app
+is shear overkill. If you are that concerned a gem will break an application, one can
+always specify exact requirements in the gemspec, and use the @gem@ method to nail the
+version down. That, in fact, is the whole point of the @gem@ method. And it is a
+perfectly good solution for applications such as a Rails app. Unfortunately is is not
+a very good solution for general purpose libraries. (As can be read about in any number
+of blog posts by searching<br/>
+<a href="http://www.google.com/search?q=Don%27t+require+%27rubygems%27">Don't require 'rubygems'</a>.)</p>
+
+<p>I should mention that the latest version of Bundler (0.9) has a light-weight rendition
+of "bundling", called <em>locking</em>, which doesn't actually store the gem in the application,
+but automatically locks the gems your application uses to specific versions. In other
+words, it generates a file which will call the @gem@ method to nail down the exact
+versions of gems your application is using at the time the file is generated. As mentioned
+above, this is a much better approach than bloating your application with .gem files,
+and to Bundler's credit it makes it easy to keep those @gem@ calls current.
+However, it still has the ties your program to RubyGems, so again it's not a
+perfect solution for reusable libraries.</p>
+
+<p>Another "feature" Bundler sets out of handle are <em>groups</em>. They are "gem environments"
+which can be loaded as a collective, or even omitted in an install. In other words,
+a way to specify a specific group of gems to the @bundle@ command or in an application
+with @Bundler.require@. The most common groups you are likely to see are @runtime@
+or @production@, @test@ and @development@, patterned after Rails own database
+environments. While I will not dismiss out-of-hand the potential of deriving some
+utility from this feature, on the whole I suspect it is a YAGNI. Moreover,
+it exposes the developer to even more potential deployment errors. I can only
+imagine the failures that will arise because a testing environment
+had a gem that the runtime environment forgot to add, but actually needed.</p>
+
+<p>In addition, the use of Bundler promotes the use of @Bundler.require@. How many
+countless hours have been spent reminding people not to put <code>require 'rubygems'</code>
+in their lib code? Now the issue will be doubly compounded. While we can hope
+that Bundler never makes it's way beyond Rails, I have already seen it in at
+least two non-Rails programs.</p>
+
+<p>Lastly, Bundler also provides an ability to depend on git repos, so long as
+they track a .gemspec. This feature is clear address to vendoring, but
+via gem dependencies. I won't even go into all the issues that arise with this
+(and seem to contradict some of the Bundler's primary purpose). You can read
+some of the back and forth on this idea <a href="http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/">here</a>.
+I will say, however, what really strikes me most about this is how an unproven system takes
+on such fanfare that it's proponents now declare that a @.gemspec@ should never be
+generated by some "extraneous build tool", but should be edited by hand and checked
+into the scm repository. Wow.</p>
+
+<p>I realized the Bundler is addressing certain needs, primarily of the Rails community.
+The problem with Bundler is that it is trying to correct something that is fundamentally
+problematic from the start. On two fronts, the first being that RubyGems ties
+a packaging system to versioning, so using the @gem@ command will never be a universally
+applicable solution to lock down versions. More significantly, RubyGems and hence Bundler
+cannot resolve the </i>true issue</i> behind all this: <b>version conflicts</b>.
+RubyGems blows when it encounters a conflict. Bundler only mitigates this issue by giving
+you a heads up before you ever run your tests. The real issue stems from the fundamental
+lack of version support in Ruby itself. Until that is addressed, all of this fancy
+solutions remain trains on the wrong side of the tracks.</p>
+
+
+  <small>Written by trans, 2010-05-15</small>
+
+  <ul class="posts">
+    
+    
+  </ul>
+
+</div>
+
+
+</div>
+
+<br style="clear: both;"/><br/><br/>
+
+<div class="footer">
+<div class="footer-inner">
+  Copyright (c) 2005,2009 Thomas Sawyer
+</div>
+</div>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2883355-2";
+urchinTracker();
+</script>
+
+</body>
+</html>
+
