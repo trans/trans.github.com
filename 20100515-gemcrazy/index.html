@@ -80,17 +80,15 @@ the remote machine. Technically the later could be done, but it isn't, probably
 because most web apps are proprietary and do not need wider distribution. Because
 Rails developers do not use the normal RubyGems distribution mechanism, which
 automatically installs dependencies, they need another way to ensure their apps
-dependencies are present, hence the convenience of <code>bundle install</code>.</p>
+dependencies are present, hence the convenience of <code>bundle install</code>.
+To be clear, I do not think this was the driving cause for the existance of Bundler.
+It probably wasn't much more than a passing thought in the minds of Bundler's developers,
+but I beleive it is the <i>unspoken need</i> that has gotten the ball rolling, for Bundler
+and many related projects (e.g. <a href="http://www.capify.org/index.php/Capistrano">Capistrano</a>).</p>
 
-<p>No doubt, this was not the driving cause for the existance of Bundler. It probably
-wasn't even much more than a passing thought in the minds of Bundler's developers,
-but nonetheless I beleive it is the <i>first need</i> that has more or less gotten
-the ball rolling, for it and many related projects
-(e.g. <a href="http://www.capify.org/index.php/Capistrano">Capistrano</a>).</p>
-
-<p>The driving cause, on the other hand, is probably Bundler's name-sake --it's ability
-to download the gems an application is dependent upon and store them directly
-within the project itself. These gems get stored in a project's
+<p>The driving cause, on the other hand, is almost certainly Bundler's name-sake
+--it's ability to download the gems an application is dependent upon and
+store them directly within the project itself. These gems get stored in a project's
 <code>vendor/gems/</code> directory. The rationalized benefit being that you
 need never worry about remote services going down (e.g. <code>rubygems.org</code>)
 in order to deploy your application, nor ever worry about any potential changes in
