@@ -88,19 +88,21 @@ the remote machine. Technically the later could be done, but it isn't, probably
 because most web apps are proprietary and do not need wider distribution. Because
 Rails developers do not use the normal RubyGems distribution mechanism, which
 automatically installs dependencies, they need another way to ensure their apps
-dependencies are present, hence the convenience of <code>bundle install</code>.
-To be clear, I do not think this was the driving cause for the existance of Bundler.
-It probably wasn't much more than a passing thought in the minds of Bundler's developers,
-but I beleive it is the <i>unspoken need</i> that has gotten the ball rolling, for Bundler
-and many related projects (e.g. <a href="http://www.capify.org/index.php/Capistrano">Capistrano</a>).</p>
+dependencies are present, hence the convenience of <code>bundle install</code>.</p>
 
-<p>The driving cause, on the other hand, is almost certainly Bundler's name-sake
---it's ability to download the gems an application is dependent upon and
-store them directly within the project itself. These gems get stored in a project's
-<code>vendor/gems/</code> directory. The rationalized benefit being that you
-need never worry about remote services going down (e.g. <code>rubygems.org</code>)
-in order to deploy your application, nor ever worry about any potential changes in
-a dependent gem. So in brief, one can <em>bundle</em> dependent gems with ones application.</p>
+<p>I may be wrong about this, at least in so far as the developers' direct goals
+are concerned. But even so, I beleive this is the <i>unspoken need</i> that has
+gotten the ball rolling, for Bundler and many related projects
+(e.g. <a href="http://www.capify.org/index.php/Capistrano">Capistrano</a>).</p>
+
+<p>Bundler sets out to achieve this goal in a grand fashion. As it name implies
+it does so giving us the means to download the gems an application is dependent
+upon and store them directly within the project itself. These gems get stored in
+a project's <code>vendor/gems/</code> directory. The rationalized benefit being
+that you need never worry about remote services going down (e.g. <code>rubygems.org</code>)
+in order to deploy your application, nor ever worry about any potential changes
+in a dependent gem. So in brief, one can <em>bundle</em> dependent gems with ones
+application.</p>
 
 <p>At first blush it seem like great idea. After all developers use vendoring to
 do something similar while developing an application. But lets consider this
@@ -109,13 +111,13 @@ on paranoia. That's why mirrors of RubyGems.org exist. If one goes down, the oth
 remain. The odds of all mirrors going down at the same time are extremely small, and
 as you might imagine, such a situation would be corrected very quickly, if it ever did
 occur. In fact, if it did happen, there is a fair chance your host will be down too.
-So the solution here is not bundling, but redundancy. As for the
-fear of "monkey releases", i.e. new versions of a gem that that might break an app,
+So the solution here is not bundling, but redundancy. As for the fear
+of "monkey releases" --new versions of a gem that that might break things,
 this is somewhat understandable, but redistributing every dependency with each app
 is shear overkill. If you are that concerned a gem will break an application you can
 always specify exact requirements in the gemspec, and use the <code>gem</code> method to nail the
 version down. That, in fact, is the whole point of the <code>gem</code> method. And it is a
-perfectly good solution for applications such as a Rails app. Unfortunately is is not
+perfectly good solution for applications such as a Rails app. Unfortunately is not
 a very good solution for general purpose libraries. (As can be read about in any number
 of blog posts by searching
 <a href="http://www.google.com/search?q=Don%27t+require+%27rubygems%27">Don't require 'rubygems'</a>.)</p>
@@ -144,14 +146,15 @@ had a gem that the runtime environment forgot to add, but actually needed.</p>
 <p>In addition, the use of Bundler promotes the use of <code>Bundler.require</code>. How many
 countless hours have been spent reminding people not to put <code>require 'rubygems'</code>
 in their lib code? Now the issue will be doubly compounded. While we can hope
-that Bundler never makes it's way beyond Rails, I have already seen it in at
-least two non-Rails programs.</p>
+that Bundler never makes it's way beyond Rails (or at least end-user apps), I have
+already seen it in at least two non-Rails programs.</p>
 
 <p>Lastly, Bundler also provides an ability to depend on git repos, so long as
 they track a .gemspec. This feature is a clear address to vendoring, but
 via gem dependencies. I won't even go into all the issues that arise with this
 (and seems to somewhat contradict Bundler's primary purpose --or at least compound it's need!).
-You can read some of the back and forth on this idea <a href="http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/">here</a>. I will say, however, what really strikes me most about this is
+You can read some of the back and forth on this idea <a href="http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/">here</a>.
+I will say, however, what really strikes me most about this is
 how an unproven system takes on such fanfare that it's proponents now declare we have
 all been doing it wrong! A <code>.gemspec</code> should never be generated by some "extraneous
 build tool", but ought to be edited by hand and checked into the scm repository. Wow.</p>
@@ -163,7 +166,7 @@ a packaging system to versioning, so using the <code>gem</code> command will nev
 applicable solution to lock down versions. And the second, more significant issue, that RubyGems,
 and hence Bundler, cannot resolve <b>version conflicts</b>. RubyGems blows-up when it
 encounters a conflict. Bundler only mitigates this issue by giving you a heads up before you
-ever run a test. This is the real heart of the matter, and it stems from the fundamental
+ever run your code. This is the real heart of the matter, and it stems from the fundamental
 lack of version support in Ruby itself. Until that is addressed, all of these fancy solutions
 are simply trains headed up the wrong track.</p>
 
