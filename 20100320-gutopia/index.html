@@ -16,24 +16,24 @@
   <meta name="DESCRIPTION"
         content="Webrite is a K.I.S.S. website builder."/>
 
-  <link rel="icon" href="../assets/images/trans-logo.png" type="image/x-icon" />
+  <link rel="icon" href="/images/trans-logo.png" type="image/x-icon" />
 
   <link href="atom.xml" rel="alternate" title="blog.webrite.rubyforge.org" type="application/atom+xml" />
 
   <!-- STYLESHEETS -->
 
-  <link href="../assets/styles/reset.css"  rel="stylesheet" type="text/css" />
-  <link href="../assets/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
-  <link href="../assets/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
+  <link href="/styles/reset.css"  rel="stylesheet" type="text/css" />
+  <link href="/styles/screen.css" rel="stylesheet" type="text/css" media="screen, projection" />
+  <link href="/styles/print.css"  rel="stylesheet" type="text/css" media="print" />
 
   <!--[if IE]>
       <link href="/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
   <![endif]-->
 
-  <link href="../assets/styles/tag.css"    rel="stylesheet" type="text/css" />
-  <link href="../assets/styles/class.css"  rel="stylesheet" type="text/css" />
+  <link href="/styles/tag.css"    rel="stylesheet" type="text/css" />
+  <link href="/styles/class.css"  rel="stylesheet" type="text/css" />
 
-  <link href="../assets/styles/syntax.css"  rel="stylesheet" type="text/css" />
+  <link href="/styles/syntax.css"  rel="stylesheet" type="text/css" />
 
   <!-- <script src="js/rdocs.js" type="text/javascript"></script> -->
 </head>
@@ -42,7 +42,7 @@
 <div id="header">
   <div id="header-inner">
     <div class="title">
-      <img class="logo" src="../assets/images/transcode.png" width="480px" align="top" />
+      <img class="logo" src="/images/transcode.png" width="480px" align="top" />
     </div>
     <div class="menu" style="text-align: left;">
       <div class="menu-inner">
@@ -95,6 +95,23 @@
     
   </ul>
 
+  <br/><br/>
+
+  <!-- Commment vis Disqus -->
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+      * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+      */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
 </div>
 
 
@@ -108,6 +125,23 @@
 </div>
 </div>
 
+<!-- Disqus Comment Counter -->
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/transcode/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+
+<!-- Google Analytics -->
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
 </script>
 <script type="text/javascript">

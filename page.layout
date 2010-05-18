@@ -15,9 +15,9 @@ layout : main
   <p>Trans has been coding Ruby since 2002. Now he shares with you. Kazaam!</p>
 
   <h2 class="side-title">I Make</h2>
-  <a href="http://facets.rubyforge.org"><img src="{{root}}assets/images/RubyFacets.png" style="width: 270px;"/></a><br/>
-  <a href="http://proutils.rubyforge.org"><img src="{{root}}assets/images/proutils.png"/></a><br/>
-  <a href="http://death.rubyforge.org"><img src="{{root}}assets/images/skull4.png" style="margin-top: 24px;"/></a><br/>
+  <a href="http://facets.rubyforge.org"><img src="/images/RubyFacets.png" style="width: 270px;"/></a><br/>
+  <a href="http://proutils.rubyforge.org"><img src="/images/proutils.png"/></a><br/>
+  <a href="http://death.rubyforge.org"><img src="/images/skull4.png" style="margin-top: 24px;"/></a><br/>
 
   <h2 class="side-title">I Advertise</h2>
   <div style="text-align: center;">
@@ -35,10 +35,10 @@ layout : main
   </div>
 
   <h2 class="side-title">I Use</h2>
-  <a href="http://ruby-lang.org"><img src="{{root}}assets/images/ruby-lang.png"/></a><br/>
-  <a href="http://github.org"><img src="{{root}}assets/images/github-logo.png" style="float: left; margin-left: 5px; width: 115px;"/></a>
-  <a href="http://github.org"><img src="{{root}}assets/images/jquery-logo.gif" style="margin-left: 10px;"/></a>
-  <a href="http://cukes.info/"><img src="{{root}}assets/images/cuke_logo.png"/></a>
+  <a href="http://ruby-lang.org"><img src="/images/ruby-lang.png"/></a><br/>
+  <a href="http://github.org"><img src="/images/github-logo.png" style="float: left; margin-left: 5px; width: 115px;"/></a>
+  <a href="http://github.org"><img src="/images/jquery-logo.gif" style="margin-left: 10px;"/></a>
+  <a href="http://cukes.info/"><img src="/images/cuke_logo.png"/></a>
 
   <br/><br/>
   <h2 class="side-title">I Read</h2>

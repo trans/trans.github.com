@@ -3,17 +3,17 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>Transcode Blog</title>
- <link href="/atom.xml" rel="self"/>
- <link href=""/>
+ <link href="http://trans.github.com/atom.xml" rel="self"/>
+ <link href="http://trans.github.com"/>
  <updated></updated>
- <id></id>
+ <id>http://trans.github.com</id>
 
  
  <entry>
    <title>Gem Crazy</title>
    <link href=""/>
    <updated>2010-05-15</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <p><b>I believe the Ruby community may have finally gone off the rails in it's collective
 crazy train.</b> I have been readying about <a href="http://gembundler.com/">Bundler</a>,
@@ -28,7 +28,7 @@ wonder what track we were even on.</p>
    <title>A Case for Module Inheritance</title>
    <link href=""/>
    <updated>2010-04-13</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <p>I love beautifully written code. Unfortunately the realities of the
 language sometimes clash with requirements of the implementation. While
@@ -51,7 +51,7 @@ the same basic structure, and they could all work together if need be.</p>
    <title>Code Identity</title>
    <link href=""/>
    <updated>2010-02-25</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <h1>A Little Fun with Code Generation</h1>
 
@@ -72,7 +72,7 @@ all that hard to code.</p>
    <title>A Failure of Precedence</title>
    <link href=""/>
    <updated>2009-12-13</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <h1>Ruby's Operator Precedence Can Be Improved</h1>
 
@@ -127,7 +127,7 @@ it's not something I mind either. However, that <tt>^</tt> doesn't share the sam
    <title>This is Exciting!</title>
    <link href=""/>
    <updated>2009-08-24</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <h1>Another Static Website/Blogging Tool</h1>
 
@@ -164,7 +164,7 @@ of markups in a single page, in an elegant and relatively unobtrusive manner. (Y
    <title>WxRuby for the Lazy</title>
    <link href=""/>
    <updated>2009-06-07</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It's far from the "Ruby Way".</p>
 
@@ -180,7 +180,7 @@ of markups in a single page, in an elegant and relatively unobtrusive manner. (Y
    <title>GUtopIa Revisited</title>
    <link href=""/>
    <updated>2009-03-20</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <p>Recently I had to buckle down and create and honest to goodness desktop GUI application in Ruby. So once again, after some six years, I set down to weigh my options. It saddens me to say, after all these years, the state of desktop GUI programming with Ruby is still a rather sorry affair. Yes, there have been many improvements --thanks to the hard work of many a good programmer, but the task of creating a Ruby-based GUI application still remains a very non-Ruby-esque ordeal.</p>
 
@@ -202,7 +202,7 @@ of markups in a single page, in an elegant and relatively unobtrusive manner. (Y
    <title>XML+CSS</title>
    <link href=""/>
    <updated>2009-02-10</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <h1>The Future of Web Design?</h1>
 
@@ -232,7 +232,7 @@ of markups in a single page, in an elegant and relatively unobtrusive manner. (Y
    <title>What's &micro;F got on XML?</title>
    <link href=""/>
    <updated>2009-01-24</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <p>Decisions, decisions. Therein lies the reason why convention over configuration is so bloody great, precisely because it requires fewer decisions. <a href="http://proutils.rubyforge.org/syckle">Syckle</a>, my humble build tool, outputs log files. Yea, logs are good. But the decision I have to make is, "in what format?"</p>
 
@@ -252,7 +252,7 @@ of markups in a single page, in an elegant and relatively unobtrusive manner. (Y
    <title>The YADSL Rule</title>
    <link href=""/>
    <updated>2008-11-04</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <p>Looks like the Ruby world is a fire with new DSLs for BDD/TDD. There's
 <a href="http://rspec.info/">RSpec</a>,
@@ -326,7 +326,7 @@ so very special. I'll keep you posted.</p>
    <title>This Old Hash</title>
    <link href=""/>
    <updated>2008-10-06</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <p>The Hash may well be the most used class in Ruby. Sure, our programs
 have arrays and strings galore, but they generally come and go without
@@ -373,7 +373,7 @@ be simple:</p>
    <title>If and OOPy If</title>
    <link href=""/>
    <updated>2008-09-28</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <h1>An Ally OOP for If-Conditions</h1>
 
@@ -396,7 +396,7 @@ of Ruby classes a NullClass defined basically as:</p>
    <title>Taskable</title>
    <link href=""/>
    <updated>2008-09-12</updated>
-   <id></id>
+   <id>http://trans.github.com</id>
    <content type="html">
      <h1>Taskable</h1>
 
