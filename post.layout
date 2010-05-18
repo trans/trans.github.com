@@ -9,7 +9,7 @@ layout : main
   <div class="article-title">
     {{ page.title }}
     <span style="font-size: 0.5em;">
-    <a href="{{ page.path }}#disqus_thread">Comments</a>
+    <a href="{{ page.url }}#disqus_thread">Comments</a>
     </span>
   </div>
 
