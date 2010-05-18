@@ -6,7 +6,12 @@ layout : main
 
 <div class="page">
 
-  <div class="article-title">{{ page.title }}</div>
+  <div class="article-title">
+    {{ page.title }}
+    <span style="font-size: 0.5em;">
+    <a href="{{ page.path }}#disqus_thread">Comments</a>
+    </span>
+  </div>
 
   {{ content }}
 
@@ -14,10 +19,10 @@ layout : main
 
   <ul class="posts">
     {% assign p = page.previous %}{% if p %}
-    <li><span>Previous: {{ p.date | date_to_string }}</span> &raquo; <a href="{{ p.url }}">{{ p.title }}</a></li>
+    <li><span>Previous: {{ p.date | date_to_string }}</span> &raquo; <a href="{{ p.path }}">{{ p.title }}</a></li>
     {% endif %}
     {% assign p = page.next %}{% if p %}
-    <li><span> Next: {{ p.date | date_to_string }}</span> &raquo; <a href="{{ p.url }}">{{ p.title }}</a></li>
+    <li><span> Next: {{ p.date | date_to_string }}</span> &raquo; <a href="{{ p.path }}">{{ p.title }}</a></li>
     {% endif %}
   </ul>
 

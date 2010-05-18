@@ -16,7 +16,7 @@
    <id>http://trans.github.com</id>
    <content type="html">
      <p><b>I believe the Ruby community may have finally gone off the rails in it's collective
-crazy train.</b> I have been readying about <a href="http://gembundler.com/">Bundler</a>,
+crazy train.</b> I have been reading about <a href="http://gembundler.com/">Bundler</a>,
 the spiffy new RubyGems manager to be default part of Rails 3.0, and I can't help but
 wonder what track we were even on.</p>
 

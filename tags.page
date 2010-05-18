@@ -14,7 +14,7 @@ stencil : liquid
   {% for post in site.posts_by_tag[tag] %}
     <div class="" style="margin: 0; padding: 0;">
       <span class="date">{{ post.date | date_to_string }}</span>
-      <a class="" href="{{ post.url }}">{{ post.title }}</a>
+      <a class="" href="{{ post.path }}">{{ post.title }}</a>
     </div>
   {% endfor %}
   </div>

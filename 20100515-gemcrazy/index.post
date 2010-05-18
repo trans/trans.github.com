@@ -7,7 +7,7 @@ date   : 2010-05-15
 --- markdown
 
 <b>I believe the Ruby community may have finally gone off the rails in it's collective
-crazy train.</b> I have been readying about <a href="http://gembundler.com/">Bundler</a>,
+crazy train.</b> I have been reading about <a href="http://gembundler.com/">Bundler</a>,
 the spiffy new RubyGems manager to be default part of Rails 3.0, and I can't help but
 wonder what track we were even on.
 
@@ -28,14 +28,12 @@ because most web apps are proprietary and do not need wider distribution. Becaus
 Rails developers do not use the normal RubyGems distribution mechanism, which
 automatically installs dependencies, they need another way to ensure their apps
 dependencies are present, hence the convenience of <code>bundle install</code>.
+Even if this was not the develpoer's <i>conscious goal</i>, I beleive it is the
+<i>unspoken need</i> that has gets the ball rolling, for Bundler and many
+related projects (e.g. <a href="http://www.capify.org/index.php/Capistrano">Capistrano</a>).
 
-I may be wrong about this, at least in so far as the developers' direct goals
-are concerned. But even so, I beleive this is the <i>unspoken need</i> that has
-gotten the ball rolling, for Bundler and many related projects
-(e.g. <a href="http://www.capify.org/index.php/Capistrano">Capistrano</a>).
-
-Bundler sets out to achieve this goal in a grand fashion. As it name implies
-it does so giving us the means to download the gems an application is dependent
+Bundler achieves this goal in a grand fashion. As its name implies
+it does so by giving us the means to download the gems an application is dependent
 upon and store them directly within the project itself. These gems get stored in
 a project's <code>vendor/gems/</code> directory. The rationalized benefit being 
 that you need never worry about remote services going down (e.g. `rubygems.org`)
@@ -61,17 +59,21 @@ a very good solution for general purpose libraries. (As can be read about in any
 of blog posts by searching
 <a href="http://www.google.com/search?q=Don%27t+require+%27rubygems%27">Don't require 'rubygems'</a>.)
 
+[Update: I have been informed that the real benefit of bundling is to make
+it easier to install an application on machines that has limited Internet access.
+In such cases, I can see that Bundler might be handly.]
+
 I should mention that the latest version of Bundler (v0.9) has a light-weight rendition
 of bundling, called *locking*, which doesn't actually store the gem in the application,
 but automatically locks the gems your application uses to specific versions. In other
-words, it generates a file which will call the `gem` method to nail down the exact
-versions of gems your application is using at that time. As mentioned
-above, this is a much better approach than bloating your application with .gem files,
-and to Bundler's credit it makes it easy to keep those `gem` calls current.
+words, it generates a file which (I assume) will ulitmately be used with the `gem` method
+to nail down the exact versions of gems your application is using at that time of the lock.
+This is a much better approach than bloating your application with .gem files, to achieve
+the same end, and to Bundler's credit it makes it easy to keep those `gem` calls current.
 However, it still ties your program to RubyGems, so again it's not a perfect solution
 for reusable libraries.
 
-Another feature Bundler sets out of handle are *groups*. They are "gem environments"
+Another feature Bundler sets out to handle are *groups*. They are "gem environments"
 which can be loaded as a collective, or even omitted during an install. In other words,
 they are a way to specify a specific group of gems to the `bundle` command or in ones
 code with `Bundler.require`. The most common groups you are likely to see are `runtime`
@@ -91,7 +93,7 @@ already seen it in at least two non-Rails programs.
 Lastly, Bundler also provides an ability to depend on git repos, so long as
 they track a .gemspec. This feature is a clear address to vendoring, but
 via gem dependencies. I won't even go into all the issues that arise with this
-(and seems to somewhat contradict Bundler's primary purpose --or at least compound it's need!).
+(and seems to somewhat contradict Bundler's primary purpose --or at least compound its need!).
 You can read some of the back and forth on this idea <a href="http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/">here</a>.
 I will say, however, what really strikes me most about this is
 how an unproven system takes on such fanfare that it's proponents now declare we have
@@ -103,10 +105,10 @@ The problem with Bundler is that it is trying to correct something that is funda
 problematic from the start. On two fronts... The first being that RubyGems ties
 a packaging system to versioning, so using the `gem` command will never be a universally
 applicable solution to lock down versions. And the second, more significant issue, that RubyGems,
-and hence Bundler, cannot resolve <b>version conflicts</b>. RubyGems blows-up when it
-encounters a conflict. Bundler only mitigates this issue by giving you a heads up before you
-ever run your code. This is the real heart of the matter, and it stems from the fundamental
-lack of version support in Ruby itself. Until that is addressed, all of these fancy solutions
-are simply trains headed up the wrong track.
-
+and hence Bundler, cannot avoid <b>version conflicts</b>. RubyGems blows-up when it
+encounters a conflict. Bundler only mitigates this issue by selectin suiable version before
+runtime. But niether allow different versions to run simultatneously. This is the real heart
+of the matter, and it stems from the fundamental lack of version support in Ruby itself.
+In my opinion, until that is addressed, all of these fancy solutions are simply trains headed
+up the wrong track.
 

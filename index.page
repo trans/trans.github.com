@@ -10,11 +10,11 @@ stencil : liquid
   <div class="post">
     <div class="heading">
       <span class="date" style="float: right; padding-top: 20px;">{{ post.date | date_to_string }}</span>
-      <a class="article-title" href="{{ post.url }}">{{ post.title }}</a>
+      <a class="article-title" href="{{ post.path }}">{{ post.title }}</a>
     </div>
     <div class="btext">
       {{ post.content }}
-      <div class="continue"><a href="{{ post.url }}">Continue Reading ...</a></div>
+      <div class="continue"><a href="{{ post.path }}">Continue Reading ...</a></div>
       <!-- <small>Written by {{ post.author }}</small> -->
     </div>
   </div>
