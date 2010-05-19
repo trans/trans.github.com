@@ -65,77 +65,13 @@
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2010-05-19</span>
+      <span class="date" style="float: right;">2010-05-19</span>
       <a class="article-title" href="/20100519-bundler/index.html">A Second Look at Bundler</a>
     </div>
     <div class="btext">
       <p><b>DRAFT</b></p>
 
-<p>A few days ago I wrote an article on my concerns with Bundler. Since then I have had enough feedback to refine my thoughts. My opinion that the Ruby/Rails community is on a "crazy train" with regards to Bundler stems from the level of COMPLEXITY it further adds to the development and deployment process. Of course, it's intent is to do just the opposite. But that's the danger of new technologies that we must always be cautious about --there are always unexpected consequences. So, taking the feedback I gotten into account, here's a better breakdown of the ups and downs of Bundler as I now see them.</p>
-
-<h2>On the Upside</h2>
-
-<h3>Bundle</h3>
-
-<p>I have been informed that the ability to bundle gems is a useful feature for administrators of systems with limited Internet access. I did not expect this to be common enough to even warrant a tool (just use a tarball). But apparently is common enough. For this use Bundler is understandably useful. It's ability to resolve dependencies pre-runtime makes it especially good at doing so.</p>
-
-<h3>Install</h3>
-
-<p>The bundle install feature has similar applications to bundle. It can be used to ease deployment. More specifically, a deployment script can contain a simple invoke 'bundle install', rather then handle the installation of each gem itself. In addition it makes it easier for developers to get up and running quickly, a simple 'bundle install' will install everything you need to develop a project. So this feature has it's clear benefits.</p>
-
-<h3>Groups</h3>
-
-<p>Groups are convenient when selecting certain gems from the list of all requirement, as a means to specialize usage to the end-users needs. Although perhaps a minor benefit, one can see how it can be useful to the developer. As currently implemented Bundler only supports opt-out groups. It might be nice if it also provided for opt-in selections.</p>
-
-<h3>Lock</h3>
-
-<p>The locking feature is probably Bundler's most significant feature. It allows the developer to nail down their application to the latest gems that best meet all the requirements as given in the Gemfile.</p>
-
-<h3>Gemfile</h3>
-
-<p>Of course, Rubyists are accustomed to nice DSL to "describe" code. The Gemfile makes excellent use of this ability and it is especially nice to have a single clear file to describe all the dependencies of a project.</p>
-
-<h2>On the Downside</h2>
-
-<h3>Bundle</h3>
-
-<p>The downside of bundling comes when developers misuse the feature. Because Bundler does more than just bundle gems for special deployments, there may be a tendency towards using it in this way regardless of the need to do so. For example, yesterday I cloned the Gemcutter repository. The download consumed 22.61 MiB of space. On close inspection I found out way. The <code>vendor/cache</code> directory contains a copy of every gem on which Gemcutter depends. Consider what this means. In effect, Bundler has undermined the entire purpose of having a package manger!</p>
-
-<p>If Bundler were an application that handled this feature and only this feature, then I think it would be a much better tool. In doing so it would help deter misuse. And the other features could be left to the domain of another library, or even better, RubyGems proper.</p>
-
-<h3>Install</h3>
-
-<p>The downside of <code>bundle install</code>, is the lack of refinement it grants the end user. An example is the Rails Gemfile which will installs the sqlite3, postgresql and mysql bindings, regardless of what databases the system actually supports. There may also be other subtle conditions that need to be taken into account on installation. To account for these, the temptation will be to add conditions to the Gemfile itself, blurring the lines between it and a Capfile (as an example). But this will in turn effect the developer's use of the other features. In the end, the inter-complexities this will cause will simply prove too much.</p>
-
-<h3>Groups</h3>
-
-<p>You'll be happy to know there is nothing intrinsically problematic with groups. Other than the additional complexities they add to the process of designing a Gemfile and the installation thereof, they server their purpose. Sometimes additional complexity is the necessity of capability.</p>
-
-<h3>Lock</h3>
-
-<p>Ironically, Bundler's most useful feature is probably it's most problematic. First, in order to achieve this level of functionality, Bundler must download a slew of gems to your system in order to calculate the best fitting requirements. But worse than this, locking brings <code>Bundler.require</code> into play. <code>Bundler.require</code> admits of the same issues as <code>require 'rubygems'</code>. It can not be used without limiting an program to the RubyGems package manager. If it is to be used congenially, special conditions will need to be put in place by the developer to ensure a program still runs whether RubyGems is being used or not. Bundler might mitigate this issue by gracefully downgrading if RubyGems is not loaded, but then it must also consider where Bundler's lock file will be located, say if setup.rb is used for installation.</p>
-
-<h3>Gemfile</h3>
-
-<p>As mentioned, the Gemfile is great to have as a single configuration file to describe dependencies. However, if a project has a gemspec, it still requires dependencies be stated there as well. RubyGems is not able to utilize the Gemfile. Having to state requirements twice violates the DRY principle.</p>
-
-<p>In addition, because the Gemfile is Ruby code it can be full of conditional statements, dynamic code, and all sorts of other spaghetti. All of which make the file unusable to anything but a Ruby script. Worse still, the ability to use conditions has the potential for creating a very unwieldy level of complexity. There is no way, for instance, to query the Gemfile for all requirements that may be need because some of them may be hidden by the current state of an environment variable. The clear remedy to this is to switch to a static file format. Such a format could be utilized by many tools, not just Bundler, including RubyGems itself. This would also help resolve some the issues with bundle install as mentioned above.</p>
-
-<h2>In Conclusion</h2>
-
-<p>Taking the "good, the bad and ugly" into account as we have, the end result would indicate the following points of action:</p>
-
-<ul>
-<li>Use a static file format for the Gemfile.</li>
-<li>Allow groups to be opt-in as well as opt-out.</li>
-<li>Split Bundler into two projects. One strictly for bundling</li>
-<li>Non-bundling features might be integrated into RubyGems proper.</li>
-<li>At the very least allow RubyGems to utilize the Gemfile for gem building.</li>
-<li>Gracefully downgrade when RubyGems/Bundler is not used.</li>
-</ul>
-
-
-<p>I will touch on one more concern before I say ado. I was reading over the issues list for the Bundler project. Many new feature are in the works --and thus additional levels of complexity are on the way. I would urge a bit of caution, and a focus on simplicity over feature bloat. Features are nice if they are truly needed, and I suppose to give one enough stuff to write a book about. But in end it can easily prove a projects undoing. In fact, the "crazy train" to which I refer has everything to do with state of complexity of Rails code these days and it's infiltration into plain vanilla Ruby projects.</p>
+<p>A few days ago I wrote an article on my concerns with Bundler. Since then I've received enough feedback to refine my thoughts. My opinion that the Ruby/Rails community is on a "crazy train" with regards to Bundler stems from the level of COMPLEXITY it further adds to the development and deployment process. Of course, it's intent is to do just the opposite. But that's the danger of new technologies that we must always be cautious about --there are always unexpected consequences. So, taking the feedback into account, here's a better breakdown of the ups and downs of Bundler as I now see them.</p>
 
       <div class="continue"><a href="/20100519-bundler/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
@@ -145,7 +81,7 @@
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2010-05-15</span>
+      <span class="date" style="float: right;">2010-05-15</span>
       <a class="article-title" href="/20100515-gemcrazy/index.html">Gem Crazy</a>
     </div>
     <div class="btext">
@@ -160,96 +96,6 @@ I imagine most of you are already aware of it and are now considering how it fit
 with your future development plans. So I want so ask a more fundamental question:
 Why does Bundler even exist?</p>
 
-<p>On the surface, we can of course thank Rails. The deployment of web applications
-stands apart from the distribution of Ruby packages. Deploying a Rails
-application usually means copying an app's files up to a server, as opposed to
-creating a distributable package file (like a gem) and installing that on
-the remote machine. Technically the later could be done, but it isn't, probably
-because most web apps are proprietary and do not need wider distribution. Because
-Rails developers do not use the normal RubyGems distribution mechanism, which
-automatically installs dependencies, they need another way to ensure their apps
-dependencies are present, hence the convenience of <code>bundle install</code>.</p>
-
-<p>Bundler achieves this goal in a grand fashion. As its name implies
-it does so by giving us the means to download the gems an application is dependent
-upon and store them directly within the project itself. These gems get stored in
-a project's <code>vendor/gems/</code> directory. The rationalized benefit being
-that you need never worry about remote services going down (e.g. <code>rubygems.org</code>)
-in order to deploy your application, nor ever worry about any potential changes
-in a dependent gem. So in brief, one can <em>bundle</em> dependent gems with ones
-application.</p>
-
-<p>At first blush it seem like great idea. After all developers use vendoring to
-do something similar while developing an application. But lets consider this
-a bit more carefully. The worry of a remote service going down is, honestly, bordering
-on paranoia. That's why mirrors of RubyGems.org exist. If one goes down, the others
-remain. The odds of all mirrors going down at the same time are extremely small, and
-as you might imagine, such a situation would be corrected very quickly, if it ever did
-occur. In fact, if it did happen, there is a fair chance your host will be down too.
-So the solution here is not bundling, but redundancy. As for the fear
-of "monkey releases" --new versions of a gem that that might break things,
-this is somewhat understandable, but redistributing every dependency with each app
-is shear overkill. If you are that concerned a gem will break an application you can
-always specify exact requirements in the gemspec, and use the <code>gem</code> method to nail the
-version down. That, in fact, is the whole point of the <code>gem</code> method. And it is a
-perfectly good solution for applications such as a Rails app. Unfortunately is not
-a very good solution for general purpose libraries. (As can be read about in any number
-of blog posts by searching
-<a href="http://www.google.com/search?q=Don%27t+require+%27rubygems%27">Don't require 'rubygems'</a>.)</p>
-
-<p>[Update: I have been informed that the real benefit of bundling is to make
-it easier to install an application on machines that has limited Internet access.
-In such cases, I can see that Bundler might be handly.]</p>
-
-<p>I should mention that the latest version of Bundler (v0.9) has a light-weight rendition
-of bundling, called <em>locking</em>, which doesn't actually store the gem in the application,
-but automatically locks the gems your application uses to specific versions. In other
-words, it generates a file which (I assume) will ulitmately be used with the <code>gem</code> method
-to nail down the exact versions of gems your application is using at that time of the lock.
-This is a much better approach than bloating your application with .gem files, to achieve
-the same end, and to Bundler's credit it makes it easy to keep those <code>gem</code> calls current.
-However, it still ties your program to RubyGems, so again it's not a perfect solution
-for reusable libraries.</p>
-
-<p>Another feature Bundler sets out to handle are <em>groups</em>. They are "gem environments"
-which can be loaded as a collective, or even omitted during an install. In other words,
-they are a way to specify a specific group of gems to the <code>bundle</code> command or in ones
-code with <code>Bundler.require</code>. The most common groups you are likely to see are <code>runtime</code>
-or <code>production</code>, <code>test</code> and <code>development</code>, patterned after Rails own database
-environments. While I will not dismiss out-of-hand the potential of deriving some
-utility from this feature, on the whole I suspect it is a YAGNI. Moreover,
-it exposes the developer to even more potential deployment errors. I can only
-imagine the failures that will arise because a testing environment
-had a gem that the runtime environment forgot to add, but actually needed.</p>
-
-<p>In addition, the use of Bundler promotes the use of <code>Bundler.require</code>. How many
-countless hours have been spent reminding people not to put <code>require 'rubygems'</code>
-in their lib code? Now the issue will be doubly compounded. While we can hope
-that Bundler never makes it's way beyond Rails (or at least end-user apps), I have
-already seen it in at least two non-Rails programs.</p>
-
-<p>Lastly, Bundler also provides an ability to depend on git repos, so long as
-they track a .gemspec. This feature is a clear address to vendoring, but
-via gem dependencies. I won't even go into all the issues that arise with this
-(and seems to somewhat contradict Bundler's primary purpose --or at least compound its need!).
-You can read some of the back and forth on this idea <a href="http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/">here</a>.
-I will say, however, what really strikes me most about this is
-how an unproven system takes on such fanfare that it's proponents now declare we have
-all been doing it wrong! A <code>.gemspec</code> should never be generated by some "extraneous
-build tool", but ought to be edited by hand and checked into the scm repository. Wow.</p>
-
-<p>I realized the Bundler is addressing certain needs, primarily of the Rails community.
-The problem with Bundler is that it is trying to correct something that is fundamentally
-problematic from the start. On two fronts... The first being that RubyGems ties
-a packaging system to versioning, so using the <code>gem</code> command will never be a universally
-applicable solution to lock down versions. And the second, more significant issue, that RubyGems,
-and hence Bundler, cannot avoid <b>version conflicts</b>. RubyGems blows-up when it
-encounters a conflict. Bundler only mitigates this issue by selectin suiable version before
-runtime. But niether allow different versions to run simultatneously. This is the real heart
-of the matter, and it stems from the fundamental lack of version support in Ruby itself.
-In my opinion, until that is addressed, all of these fancy solutions are simply trains headed
-up the wrong track.</p>
-
       <div class="continue"><a href="/20100515-gemcrazy/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
@@ -258,7 +104,7 @@ up the wrong track.</p>
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2010-04-13</span>
+      <span class="date" style="float: right;">2010-04-13</span>
       <a class="article-title" href="/20100413-module-inheritence/index.html">A Case for Module Inheritance</a>
     </div>
     <div class="btext">
@@ -275,84 +121,6 @@ methods #singular and #plural. At the same time I am trying to design
 the library in such a way that other language modules can be built following
 the same basic structure, and they could all work together if need be.</p>
 
-<p>In the course of this endeavor I decided the best approach, keeping the future
-squarely in mind, is to create a Language module, upon which English depends,
-to house all the common logic of (most) languages. For example, the logic for
-storing plural and singular special cases might be a good candidate since nearly
-every language has to account for these. So the relationship between English
-and Language is clearly one of "inheritance" --I want to encapsulate logic at
-a general level of abstraction, upon which more specific cases can inherit and
-augment to fit their particular requirements.</p>
-
-<p>In Ruby this kind of relationship is generally handled by class inheritance.
-But here I run into an issue. <code>English</code> and <code>Language</code>
-are modules, and they are modules because they are <i>singleton</i>. Now even
-though we can include a module into another, which is akin to class inheritance,
-it does not work quite like class inheritance. For one thing, metaclass methods
-are not inherited via <code>include</code>. Of course, I could tip-toe around
-this issue by using <code>extend</code>, since in this case I do not need
-includable instance methods. But there is a much more subtle issues that
-raises it's head: the dreaded Double Inclusion Problem. That's a serious
-headache in my case because I want my end users to have the option to load
-only the components they want to use as needed, rather than forcing them to
-load the entire system up-front.</p>
-
-<p>So, despite the many
-<a href="http://www.google.com/search?q=singleton+pattern+evil">calls for the death
-of the Singleton Pattern</a>, it looks like I might require it for my implementation
-of English. Using modules simply comes with too many headaches and hackish work arounds.
-Now I agree with all the Singleton nay-sayers. It is sort of an anti-pattern to
-create a class that will only ever have one instantiation and no state, but
-the trade-off here is worse. If only...</p>
-
-<p>It seems to me the truly fantastic solution to this would be if one module
-could inherit from another just as we do with classes. And honestly, is there
-really any reason we shouldn't be able to do this?</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Language</span>
-
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">words</span>(string)
-      <span style="color:#888"># generic definition</span>
-    <span style="color:#080;font-weight:bold">end</span>
-
-  <span style="color:#080;font-weight:bold">end</span>
-
-  <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">English</span> &lt; <span style="color:#036;font-weight:bold">Language</span>
-
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">words</span>(string)
-      <span style="color:#888"># override</span>
-    <span style="color:#080;font-weight:bold">end</span>
-
-  <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>What is nice about this, something I know that Matz will appreciate, is that
-it preserves single-inheritance, in contrast to the alternative of
-turning <code>include</code> into a multiple-inheritance mechanism. And
-for the love of code beauty, it would mean at least a reduction in use of the
-all too common:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">included</span>(base)
-    base.extend <span style="color:#036;font-weight:bold">ClassMethods</span>
-  <span style="color:#080;font-weight:bold">end</span>
-
-  <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">ClassMethods</span>
-    <span style="color:#888"># ...</span>
-  <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>Not only is it ugly, it is even worse for those trying to inherit and
-extend the behavior. Something more elegant is clearly desirable, and
-Module Inheritance, as I have demonstrated here, might be just the ticket.</p>
-
       <div class="continue"><a href="/20100413-module-inheritence/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
@@ -361,7 +129,7 @@ Module Inheritance, as I have demonstrated here, might be just the ticket.</p>
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2010-02-25</span>
+      <span class="date" style="float: right;">2010-02-25</span>
       <a class="article-title" href="/20100225-code-identity/index.html">Code Identity</a>
     </div>
     <div class="btext">
@@ -376,184 +144,6 @@ akin to the mathematical kind, I should be able to have the computer simply
 generate an endless stream of equivalent solutions. Indeed, it turned out that it wasn't
 all that hard to code.</p>
 
-<div class="CodeRay">
-  <div class="code"><pre>
-    <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">CodeIdentity</span>
-
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">identities</span>
-        <span style="color:#33B">@identities</span> ||= []
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">identity</span>(&amp;block)
-        identities &lt;&lt; block
-      <span style="color:#080;font-weight:bold">end</span>
-
-      attr_reader   <span style="color:#A60">:original</span>
-      attr_accessor <span style="color:#A60">:alternates</span>
-
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(original)
-        <span style="color:#33B">@original</span> = original
-        <span style="color:#33B">@alternates</span> = [original]
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">generate</span>(limit=<span style="color:#00D;font-weight:bold">100</span>)
-        work  = original.dup
-        <span style="color:#080;font-weight:bold">while</span>(alternates.size &lt; limit) <span style="color:#080;font-weight:bold">do</span>
-          alts = alternates.dup
-          size = alternates.size
-          alts.each <span style="color:#080;font-weight:bold">do</span> |alt|
-            <span style="color:#038;font-weight:bold">self</span>.class.identities.each <span style="color:#080;font-weight:bold">do</span> |identity|
-              <span style="color:#038;font-weight:bold">self</span>.alternates |= [identity[alt]]
-              <span style="color:#080;font-weight:bold">break</span> <span style="color:#080;font-weight:bold">if</span> alternates.size &gt;= limit
-            <span style="color:#080;font-weight:bold">end</span>
-          <span style="color:#080;font-weight:bold">end</span>
-        <span style="color:#080;font-weight:bold">end</span>
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">show_code</span>
-        alternates.each{ |code| puts code }
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">show_output</span>
-        alternates.each{ |code| puts run(code) }
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">generate_tests</span>
-        require <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">test/unit</span><span style="color:#710">'</span></span>
-        original_run = run(original)
-        runner = method(<span style="color:#A60">:run</span>)
-        testcase = <span style="color:#036;font-weight:bold">Class</span>.new(<span style="color:#036;font-weight:bold">Test</span>::<span style="color:#036;font-weight:bold">Unit</span>::<span style="color:#036;font-weight:bold">TestCase</span>)
-        alternates.each_with_index <span style="color:#080;font-weight:bold">do</span> |code, index|
-          testcase.class_eval <span style="color:#080;font-weight:bold">do</span>  
-            define_method(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">test_</span><span style="background:#ddd;color:black"><span style="background:#ddd;font-weight:bold;color:#666">#{</span>index<span style="background:#ddd;font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>) <span style="color:#080;font-weight:bold">do</span>
-              assert_equal(original_run, runner[code])
-            <span style="color:#080;font-weight:bold">end</span>
-          <span style="color:#080;font-weight:bold">end</span>
-        <span style="color:#080;font-weight:bold">end</span>
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">run</span>(code)
-        so = <span style="color:#d70;font-weight:bold">$stdout</span>
-        sio = <span style="color:#036;font-weight:bold">StringIO</span>.new
-        <span style="color:#d70;font-weight:bold">$stdout</span>, <span style="color:#d70;font-weight:bold">$stderr</span> = sio, sio
-        eval code, <span style="color:#d70;font-weight:bold">$TOPLEVEL_BINDING</span>
-        result = <span style="color:#d70;font-weight:bold">$stdout</span>.string
-        <span style="color:#d70;font-weight:bold">$stdout</span> = so
-        result
-      <span style="color:#080;font-weight:bold">end</span>
-
-    <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>You can see from the #generate_tests method I was able to ensure that the results
-were indeed equivalent (an interesting strategy in dynamic testing, perhaps
-worth further exploration for production code).</p>
-
-<p>After the <code>CodeIdentity</code> class all was required was to apply a little
-<i>Brain Power</i> to come up some identities. I came up with a pretty simplistic lot,
-just as proof of concept. By following the original email thread, no doubt we can see
-their a assuredly an infinite number of possibilities that could be defined.</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-    <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">CodeIdentity</span>
-
-      identity <span style="color:#080;font-weight:bold">do</span> |code|
-        code.sub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">puts [&quot;](.*)[&quot;]</span><span style="color:#404">/</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">print &quot;</span><span style="">\1</span><span style="">\n</span><span style="">&quot;</span><span style="color:#710">'</span></span>)
-      <span style="color:#080;font-weight:bold">end</span>
-
-      identity <span style="color:#080;font-weight:bold">do</span> |code|
-        code.sub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">puts [&quot;](.*)[&quot;]</span><span style="color:#404">/</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">printf &quot;%s</span><span style="">\n</span><span style="">&quot; % [&quot;</span><span style="">\1</span><span style="">&quot;]</span><span style="color:#710">'</span></span>)
-      <span style="color:#080;font-weight:bold">end</span>
-
-      identity <span style="color:#080;font-weight:bold">do</span> |code|
-        code.gsub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">[&quot;](.*)[&quot;]</span><span style="color:#404">/</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">&quot;</span><span style="">\1</span><span style="">&quot;.reverse.reverse</span><span style="color:#710">'</span></span>)
-      <span style="color:#080;font-weight:bold">end</span>
-
-      identity <span style="color:#080;font-weight:bold">do</span> |code|
-        code.gsub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">['](.*)[']</span><span style="color:#404">/</span></span>){ <span style="color:#d70;font-weight:bold">$1</span>.inspect }
-      <span style="color:#080;font-weight:bold">end</span>
-
-      identity <span style="color:#080;font-weight:bold">do</span> |code|
-        code.gsub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">['](.*)[']</span><span style="color:#404">/</span></span>){ <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#ddd;color:black"><span style="background:#ddd;font-weight:bold;color:#666">#{</span><span style="color:#d70;font-weight:bold">$1</span>.split(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#404">/</span></span>).inspect<span style="background:#ddd;font-weight:bold;color:#666">}</span></span><span style="">.join('')</span><span style="color:#710">&quot;</span></span> }
-      <span style="color:#080;font-weight:bold">end</span>
-
-    <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>To finish if off I wrote a small command-line interface that allow us to try any
-piece of code and generate as many solutions as desired.</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-    <span style="color:#080;font-weight:bold">if</span> <span style="color:#038;font-weight:bold">__FILE__</span> == <span style="color:#d70;font-weight:bold">$0</span>
-      require <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">optparse</span><span style="color:#710">'</span></span>
-      cnt = <span style="color:#00D;font-weight:bold">20</span>
-      <span style="color:#036;font-weight:bold">OptionParser</span>.new <span style="color:#080;font-weight:bold">do</span> |opt|
-        opt.on(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">-n</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">number of solutions</span><span style="color:#710">&quot;</span></span>){ |n| cnt = n }
-      <span style="color:#080;font-weight:bold">end</span>.parse!
-      <span style="color:#080;font-weight:bold">if</span> <span style="color:#038;font-weight:bold">ARGV</span>.last == <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">-</span><span style="color:#710">'</span></span>
-        code = <span style="color:#038;font-weight:bold">ARGF</span>.read
-        <span style="color:#038;font-weight:bold">ARGV</span>.pop
-      <span style="color:#080;font-weight:bold">else</span>
-        code = <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">puts 'Hello World!'</span><span style="color:#710">&quot;</span></span>
-      <span style="color:#080;font-weight:bold">end</span>
-      cmd = <span style="color:#038;font-weight:bold">ARGV</span>.first
-
-      scg = <span style="color:#036;font-weight:bold">CodeIdentity</span>.new(code)
-      scg.generate(cnt)
-
-      <span style="color:#080;font-weight:bold">case</span> cmd
-      <span style="color:#080;font-weight:bold">when</span> <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">test</span><span style="color:#710">'</span></span>
-        scg.generate_tests
-      <span style="color:#080;font-weight:bold">when</span> <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">output</span><span style="color:#710">'</span></span>
-        scg.show_output
-      <span style="color:#080;font-weight:bold">else</span>
-        scg.show_code
-      <span style="color:#080;font-weight:bold">end</span>
-    <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>Without any options it works on the old favorite <code>puts 'Hello, World'</code>
-and produces 20 solutions. Here's the output:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-    puts <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">Hello, World!</span><span style="color:#710">'</span></span>
-    puts <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>
-    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>)
-    print <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span>
-    printf <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">%s</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span> % [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>]
-    puts <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>.reverse.reverse
-    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>.reverse.reverse].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>)
-    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>)
-    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join([].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>))
-    print <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span>.reverse.reverse
-    printf <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">%s</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span> % [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>.reverse.reverse]
-    printf <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">%s</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span> % [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>].reverse.reverse
-    puts <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#710">&quot;</span></span>.reverse.reverse.reverse.reverse
-    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>.reverse.reverse.reverse.reverse].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>)
-    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>.reverse.reverse].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>)
-    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>.reverse.reverse].join([].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>))
-    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>.reverse.reverse)
-    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join([].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>))
-    puts [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">H</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">e</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">,</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style=""> </span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">W</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">o</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">r</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">l</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">d</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">!</span><span style="color:#710">&quot;</span></span>].join([].join([].join(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="color:#710">'</span></span>)))
-    print <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Hello, World!</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span>.reverse.reverse.reverse.reverse
-
-</pre></div>
-</div>
-
-<p>Very simplistic, but an interesting and fun diversion. Granted others came up with more intriguing
-individual solutions. But I manged to come up with an infinite set of them! ;)</p>
-
-<p>(The full code is available in <a href="http://gist.github.com/313518">Gist #313518</a>.)</p>
-
       <div class="continue"><a href="/20100225-code-identity/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
@@ -562,7 +152,7 @@ individual solutions. But I manged to come up with an infinite set of them! ;)</
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-12-13</span>
+      <span class="date" style="float: right;">2009-12-13</span>
       <a class="article-title" href="/20091213-precedence/index.html">A Failure of Precedence</a>
     </div>
     <div class="btext">
@@ -577,81 +167,6 @@ reason (backward compatibility not withstanding).</p>
 <p>One of these issues is operator precedence. Not only is operator precedence set in stone, it is also
 woefully <i>bottom heavy</i> --there is only one binary operator available for use above the common arthmetic operations.</p>
 
-<p>Here is the table as given by the <a href="https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html">PickAxe</a>:</p>
-
-<pre><code>Method    Operator                Description
-Y         [ ] [ ]=                Element reference, element set
-Y         **                      Exponentiation
-Y         ! ~ + -                 Not, complement, unary plus and minus (method names for the last two are +@ and -@)
-Y         * / %                   Multiply, divide, and modulo
-Y         + -                     Plus and minus
-Y         &gt;&gt; &lt;&lt;                   Right and left shift
-Y         &amp;                       Bitwise `and'
-Y         ^ |                     Bitwise exclusive `or' and regular `or'
-Y         &lt;= &lt; &gt; &gt;=               Comparison operators
-Y         &lt;=&gt; == === != =~ !~     Equality and pattern match operators (!= and !~ may not be defined as methods)
-          &amp;&amp;                      Logical `and'
-          ||                      Logical `or'
-          .. ...                  Range (inclusive and exclusive)
-            ? :                     Ternary if-then-else
-          = %= { /= -= += |= &amp;=   Assignment
-          &gt;&gt;= &lt;&lt;= *= &amp;&amp;= ||= **=   
-          defined?                Check if symbol defined
-          not                     Logical negation
-          or and                  Logical composition
-          if unless while until   Expression modifiers
-          begin/end               Block expression
-</code></pre>
-
-<p>The lack of any operators other then <tt>**</tt>, above the most commonly used, <tt>* / % + -</tt>, puts
-a frustrating limitation on the flexibility of this system. On this account, the most puzzling misplacement of an operator
-has to be Bitwise Exlusive Or, <tt>^</tt>. In many, if not most, programming languages <tt>^</tt> is the power operator.
-But in Ruby that function is delegated to <tt>**</tt>. While I personally do not favor <tt>**</tt> for the use,
-it's not something I mind either. However, that <tt>^</tt> doesn't share the same precedence is very awkward.</p>
-
-<p>Consider for instance, the implementation of a unit system.</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-    <span style="color:#00D;font-weight:bold">2</span>.meters ** <span style="color:#00D;font-weight:bold">2</span>  =&gt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">4 square meters</span><span style="color:#710">&quot;</span></span>
-
-</pre></div>
-</div>
-
-<p>Notice the power operator effects the unit and the value. So how would we go about notating <code>2 square meters</code>?
-We need some other means. The obvious answer is to redefine <tt>^</tt>:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-    <span style="color:#00D;font-weight:bold">2</span>.meters ^ <span style="color:#00D;font-weight:bold">2</span>  =&gt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">2 square meters</span><span style="color:#710">&quot;</span></span>
-
-</pre></div>
-</div>
-
-<p>Great. But wait, there is an ugliness now upon us.</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-    <span style="color:#00D;font-weight:bold">2</span>.meters ^ <span style="color:#00D;font-weight:bold">2</span> / <span style="color:#00D;font-weight:bold">2</span>  =&gt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">2 meters</span><span style="color:#710">&quot;</span></span>
-
-</pre></div>
-</div>
-
-<p>The answer should have been <tt>1 square meter</tt>, but due to precedence <tt>2 / 2</tt> is barring a <tt>1</tt> before
-the <tt>^</tt> power operator kicks-in.</p>
-
-<p>It is truly wonderful that Ruby's first 27 operators are actually methods, which means they can be defined to perform whatever
-function we would like of them. But despite being able to define these operators, there is no means of changing their
-precedence. Thus, the actual options we have defining new operations to suite our needs are hindered.</p>
-
-<p>Ideally we would be able to alter precedence on a per-class basis. While, some might argue that would create too much confusion,
-I would retort that good libraries would use the feature effectively, limiting the changes to the appropriate use-cases, so that
-it would not be an issue. After all, a library that scrambles precedence for no damn good reason will get little use.</p>
-
-<p>While we wait the day of true precedence freedom, I would like to see Ruby move <tt>^</tt> up with <tt>**</tt> and find a new
-Exclusive Or operator. Backward compatibility can be largely, although not completely, preserved by aliasing <tt>^</tt>
-to the new symbol. It's an obvious and simple improvement --a naggling issue that has been around for quite some time.</p>
-
       <div class="continue"><a href="/20091213-precedence/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
@@ -660,7 +175,7 @@ to the new symbol. It's an obvious and simple improvement --a naggling issue tha
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-08-24</span>
+      <span class="date" style="float: right;">2009-08-24</span>
       <a class="article-title" href="/20090824-new-website/index.html">This is Exciting!</a>
     </div>
     <div class="btext">
@@ -677,45 +192,6 @@ backed <a href="http://wiki.github.com/mojombo/jekyll">Jekyll</a> and the very n
 like <a href="http://webby.rubyforge.org/">Webby</a> and <a href="http://rote.rubyforge.org/">Rote</a>.
 So, why do we need yet another? The reasoning is essentially two-fold.</p>
 
-<ol>
-<li><p>I am a knit pick. With each alternitive I found a few nagging points upon which I
-wanted to see a different approach taken.</p></li>
-<li><p>I wanted to see if I could push the boundries, absorbing what good I may from
-earlier systems (including my own stalled attempts) and contruct something
-more intuitve and yet more powerful.</p></li>
-</ol>
-
-
-<p>With inline formats I think Brite has achieved that. You can easily have multiple types
-of markups in a single page, in an elegant and relatively unobtrusive manner. (Yea, Wow!)</p>
-
-<p>For example the document I am currently writing is in Markdown format. But...</p>
-
-<p>This is using textile, and&#8230;</p>
-<p>
-This is using RDoc&#8217;s Simple Markup format.
-</p>
-
-
-<p>And this is raw HTML.</p>
-
-
-<p>Furthermore, formats are plugable. We already have <a href="http://coderay.rubyforge.org">Coderay</a>
-syntax highlighter support and are looking to add MathML support soon too. So this feature
-allows for some truly amazing quick and easy contruction of web documents.</p>
-
-<p>Another innovation of Webrite is the non-separation of markup files from their
-generated output. This means one does not have to worry about dealing with source
-subdirectory and site desitnations and the copying static files. All the files stay right
-where they are frist created. The markup files use special extensions (.post, .page, .layout)
-to differentiate then from the .html results. One simply filters the list of files when
-publishing.</p>
-
-<p>Webrite is still in the very early stages of development. It still needs features such as
-pagination and tagclouds. But it is coming along rapidly, and I look forward to what is
-coming downt he road. Future innovations may include <em>aquisition</em> (a la Zope and UserLand Frontier),
-as well as a realtime Rack-based server.</p>
-
       <div class="continue"><a href="/20090824-new-website/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
     </div>
@@ -724,24 +200,13 @@ as well as a realtime Rack-based server.</p>
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-06-07</span>
+      <span class="date" style="float: right;">2009-06-07</span>
       <a class="article-title" href="/20090607-wxruby-for-the-lazy/index.html">WxRuby for the Lazy</a>
     </div>
     <div class="btext">
       <p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It's far from the "Ruby Way".</p>
 
 <p>So how did I mange to get fairly nice Ruby code despite a binding that is essentially a straight port of the underlying C API? I built it from the bottom-up using a lazy coding technique. And I mean "bottom-up" literally --the following code might actually be easier to read if you start from the bottom and work your way up to the top. The trick is to break down one's interface into individual widgets and create an instance method for each using the <code>||=</code> memoization trick.</p>
-
-<p>You can see from the following code I was able to apply this "trick" to everything but toolbar buttons (aka 'tools'). This is because the toolbar itself is needed to create them. So I simply defined attributes for each tool, but actually created the tool buttons in the toolbar's method. Have a look.</p>
-
-
-<!-- [gist id="182301"] -->
-<script src="http://gist.github.com/182301.js"></script>
-
-
-<p>The thing to notice, if you haven't caught it yet, is how calling <code>#search_toolbar</code> leads to calling <code>#search_sizer</code> which in turn leads to calling <code>#search_panel</code>, and so forth all the way to the top <code>#frame_panel</code>. This code is a striped down version of actual code I am using. I hope it helps others create wxRuby application more easily. As I said in my previous post, I found in mind-numbingly difficult to create WxRuby interfaces until I worked out this approach. WxRuby is still a difficult API to master, but this technique makes the effort more manageable, and therefore more likely to succeed.</p>
-
-<p>For another example of building structures lazily, have a look at <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/122593">my solution</a> for <a href="http://rubyquiz.com/quiz10.html">Ruby Quiz 10 - Crosswords</a>.</p>
 
       <div class="continue"><a href="/20090607-wxruby-for-the-lazy/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
@@ -751,35 +216,13 @@ as well as a realtime Rack-based server.</p>
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-03-20</span>
+      <span class="date" style="float: right;">2009-03-20</span>
       <a class="article-title" href="/20100320-gutopia/index.html">GUtopIa Revisited</a>
     </div>
     <div class="btext">
       <p>Recently I had to buckle down and create and honest to goodness desktop GUI application in Ruby. So once again, after some six years, I set down to weigh my options. It saddens me to say, after all these years, the state of desktop GUI programming with Ruby is still a rather sorry affair. Yes, there have been many improvements --thanks to the hard work of many a good programmer, but the task of creating a Ruby-based GUI application still remains a very non-Ruby-esque ordeal.</p>
 
 <p>My first attempt at it this time was with <a href="http://shoooes.net/">Shoes</a>. Shoes is a new and very nice GUI engine written largely from scratch by the well known WhyTheLuckyStiff. It's a noble effort and some really <a href="http://the-shoebox.org/">neat programs</a> can come from using Shoes. Unfortunately for my needs Shoes proved to be too buggy and immature --at times I saw visual artifacts and there are a very limited number of controls. And worst of all, the fact that it includes it's own Ruby interpretor and manges it's own gems caused it not to work well with some other libraries. For instance, I could not get it to use the latest version of Mechanize.</p>
-
-<p>After examining other choices, such as creating one GUI script per major platform (too much work), or using the old standby FxRuby (never been happy with the lack of native look-and-feel), I decided to try a different course. I was well versed in web application design, so I tried my hand at rigging a web app to act like a desktop app via a locally running server using Ajax calls. The end result certainly looked good and basically worked. But there was a troubling lack of robustness in the interaction between the front-end and back-end. I had to poll the back-end to see what was going on, and the back-end had to spawn threads in order to provide a response to the browser while continuing to work on long-running processes. So it worked, but barely. I'm sure it could be improved, but for a devote POLSer like myself, that meant getting into mucky waters I really didn't feel like I should need to be diving into anyway. Too bad. Web GUI design is quite advanced compared to Desktop GUI. Why no one has tried to map it directly to the desktop before is beyond me (but you can believe me when I tell you, I can't wait to delve into Plam's pre and it's <a href="http://developer.palm.com/webos_book/book1.html">webOS</a> development platform, which apparently does exactly this).</p>
-
-<p>So where did this leave me? Well, I figured I had one last good shot with <a href="http://wxruby.rubyforge.org/wiki/wiki.pl">wxRuby</a>. Ironically I had something to do with the birth of that project. It was those six years ago that I first looked into GUI frameworks for Ruby. Rich Kilmer was talking about his Utopia/Alpha ideas and I was just starting to feel comfortable with writing scripts in Ruby. I decided there needed to be something better, and working off of Rich's idea's for an API I came up the idea of GUtopIa, which would supply a font-end API that anyone could interface to a back-end GUI framework. Sort of a best of all worlds kind of design. A number of people were psyched about the idea, and joined with me to discuss and pursue the project. Unfortunately, I was still wet behind the ears, and the fellow programmers who first entertained working with me didn't care much for my new-boy-brash style. They told me so, and decided on their own course, to create bindings for wxWidgets instead. I wasn't happy about it personally. Having studied wxWidgets some, I knew it would be a long time before anything really useful was to come of that project --if at all. In hindsight, while I still believe GUtopIa is a good idea, I am glad it's didn't proceed back then --I still had a lot to learn about Ruby before I could do something like that as well as I would really like.</p>
-
-<p>So it was time to check out what the wxRuby team had accomplished. My first handful, or so, attempts were miserable failures. WxRuby has some issues. It is tempermental, and so much like the C API I felt like I was actually programming in C. This is not how Ruby programming is supposed to be! I was having real trouble getting anything more then a basic frame and menu to work. Frustrated with the straight coding approach, I decided to see what WYSIWYG form builders were to be had. I knew wxWidgets touted these, so I looked around and found the precisely named wxFormBuilder. This made it fairly easy to design my complex form and best of all it made it clearer to me how wxWidget GUIs are built. Unfortunately the generated markup, called an XRC file, had issues of it's own and wouldn't load properly into Ruby. Once again, I was at a dead end.</p>
-
-<p>Something really needed to be done about this state of affairs. And so I have decided to resurrect the GUtopIa project. I found my old code, looked at it, scrapped it, and started fresh. I'm going to proceed by specifying the front-end API as much as possible, before even considering back-end implementations. With any luck others will see what I'm doing and offer to build a an interface to their favorite framework. So far what I have looks very sweet. Just to wet your whistle, here's a potential example.</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  layout = <span style="color:#036;font-weight:bold">GUtopIa</span>::<span style="color:#036;font-weight:bold">Layout</span>.new <span style="color:#080;font-weight:bold">do</span>
-    [ [ <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">Name</span><span style="color:#710">'</span></span>  ], [ entry ] ]
-    [ [ <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">Phone</span><span style="color:#710">'</span></span> ], [ entry ] ]
-    [ [ <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">EMail</span><span style="color:#710">'</span></span> ], [ entry ] ]
-  <span style="color:#080;font-weight:bold">end</span>
-  layout.show
-
-</pre></div>
-</div>
-
-<p>Yes, believe it or not, that's a fairly complete GUI layout. In an upcoming post I'll explain how it all works in more detail. But before I get into that, I still need a working desktop GUI application ASAP! I don't have time to develop GUtopIa for this. So now I've tried again at coding wxRuby from hand, but this time using a very Ruby-esque lazy evaluation approach I had experimented with a long time ago in a <a href="http://www.rubyquiz.com/">Ruby Quiz</a> on <a href="http://www.rubyquiz.com/quiz10.html">crossword puzzle drawing</a>. Finally I got the results I wanted with out going cross-eyed looking at the code. Amazing how a well organized approach can make all the difference. I'll demonstrate my design in my next blog post.</p>
 
       <div class="continue"><a href="/20100320-gutopia/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
@@ -789,29 +232,13 @@ as well as a realtime Rack-based server.</p>
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-02-10</span>
+      <span class="date" style="float: right;">2009-02-10</span>
       <a class="article-title" href="/20090210-xml-css/index.html">XML+CSS</a>
     </div>
     <div class="btext">
       <h1>The Future of Web Design?</h1>
 
 <p>In a <a href="http://tigerops.org/2009/01/mf-vs-xml.html">previous post</a>, I point out that microformats bring an additional layer of useful information to a document, which I dubbed <em>semantic structure</em>. In short, HTML tags provide useful <em>type</em> information about the data they contain. A good example of this has been the insistent push to use <code>div</code>s rather than <code>table</code>s for page layout. The reason is that tables describe a semantic structure, a table of data, and not layout. I for one have found this a frustrating haggle in the design of my pages. Time and time again I have been stymied by unwieldy <code>div</code>s. Tables are much easier to use, despite additional verbosity. But I have stuck to <code>div</code>s because it is "the right thing to do". Thankfully my saving grace will soon be here. The 3rd revision the CSS standard supports a new <code>display</code> style. With it, one can specify that a div is to behave like a table, table row or table cell. Woohoo! Three cheers for tabley divs!!</p>
-
-<p>This display style led me to think about semantic structure again. If we can designate that a <code>div</code> is a <code>table</code> structure via CSS, then why not any structure? And if <code>div</code>s, why not any tag? If we were able to do that, then semantic structure could be specified solely through CSS. And our HTML pages could go from rather simple, repetitive occurrences of <code>div</code> to ... can you guess?... pure XML.</p>
-
-<p>Let's got through it step by step. Here some HTML:</p>
-
-<p>  [gist id=61726]</p>
-
-<p>Now with CSS 3:</p>
-
-<p>  [gist id=61729]</p>
-
-<p>Of course no one would recommend doing this to something that really is a table of data. But bare with me, because now we are coming full circle:</p>
-
-<p>  [gist id=61730]</p>
-
-<p>I think this is a rather remarkable outcome. And you might be surprised to learn that Firefox handles it just fine. What we have achieved is an ultra-clean separation between the data and it's semantic meaning, via XML, and it's semantic structure, via CSS. If this approach were embraced by the XHTML and CSS standards bodies, I would not be surprised to see it revolutionize web design.</p>
 
       <div class="continue"><a href="/20090210-xml-css/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
@@ -821,49 +248,13 @@ as well as a realtime Rack-based server.</p>
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2009-01-24</span>
+      <span class="date" style="float: right;">2009-01-24</span>
       <a class="article-title" href="/20090124-mf-vs-xml/index.html">What's &micro;F got on XML?</a>
     </div>
     <div class="btext">
       <p>Decisions, decisions. Therein lies the reason why convention over configuration is so bloody great, precisely because it requires fewer decisions. <a href="http://proutils.rubyforge.org/syckle">Syckle</a>, my humble build tool, outputs log files. Yea, logs are good. But the decision I have to make is, "in what format?"</p>
 
-<p>Now old-school would just put out some asterisk-studded text files with plenty of precise timestamps, maybe some nice long <code>------------------------------</code> lines to divide things up. No doubt these files are easy to access and fairly readable. We like out text files. But hey wait. This is the age of magical markups. At the very least we can coax that log into a Wiki-tongue. For us Rubyists, we have rdoc, markdown and textile's just a few gemy fingertips away. These formats can be even easier to read thanks to structural consistency from log to log. Plus, fire-up a web server and we can get some really nice looking HTML too. That's the beauty of Wiki Wiki markup after all.</p>
-
-<p>Now if beauty were all that matter, then there would be no point in looking further. But like America's continental shelves there is untapped wealth going to waste here. There is data in them there logs! The modern buzzword is <em>semantic</em>. Taking logs to the next level requires us to ensure their semantic value. On that account, XML was created, and long predicted the format of the future. Certainly XML has made great strides, but it is still far from meeting its promise. There is simply too much complexity involved in both marking up the content and in generating nice output.</p>
-
-<p>Then comes along the <em>microformat</em>. The microformat combines the semantic capabilities of XML with the layout capabilities of HTML. Microformats are relatively new and still finding their footing. Indeed, I think a <em>Universal Uniform Microformat Specification</em> is ultimately the necessary outcome. In that vain I make a first rough estimate of what such unifying system might look like, and why, contrary to many arguments otherwise, microformats do in fact bring more to the table than XML.</p>
-
-<p>Where XML provides semantic information within a doubly linked hierarchy (via attributes and body), microformats provide the same plus a set of well defined data structures. Microformats provide semantics through a small set of tag attributes, <em>role</em>, <em>rel</em>, <em>rev</em> and primarily the <em>class</em> attribute. The <em>class</em> attribute alone is enough to make microformats fully equatable to XML. We can easily map the same data set in either format:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#070">&lt;people&gt;</span>
-    <span style="color:#070">&lt;person&gt;</span>
-      <span style="color:#070">&lt;name&gt;</span>John Jay<span style="color:#070">&lt;/name&gt;</span>
-    <span style="color:#070">&lt;/person&gt;</span>
-  <span style="color:#070">&lt;/people&gt;</span><span style="color:#070">&lt;/pre&gt;</span>
-
-</pre></div>
-</div>
-
-<p>As opposed to...</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#070">&lt;div</span> <span style="color:#007">class</span>=<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">people</span><span style="color:#710">&quot;</span></span><span style="color:#070">&gt;</span>
-    <span style="color:#070">&lt;div</span> <span style="color:#007">class</span>=<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">person</span><span style="color:#710">&quot;</span></span><span style="color:#070">&gt;</span>
-      <span style="color:#070">&lt;span</span> <span style="color:#007">class</span>=<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">name</span><span style="color:#710">&quot;</span></span><span style="color:#070">&gt;</span>John Jay<span style="color:#070">&lt;/span&gt;</span>
-    <span style="color:#070">&lt;/div&gt;</span>
-  <span style="color:#070">&lt;/div&gt;</span><span style="color:#070">&lt;/pre&gt;</span>
-
-</pre></div>
-</div>
-
-<p>Although the microformat is more verbose, the two contian the same original semantic value. But the extra verbosity isn't just a waste of UTF bytecodes, it says something. Specifically it gives us a <em>semantic structure</em>. It just so happens that HTML evolved to offer these structures precisely because that is what data presenters require to do their jobs well. And for the same reason, why you are always being beat with the <code>div</code>-stick when you try to take the load road of laying out your pages with tables.</p>
-
-<p>So what semantic structures do micorformats via HTML make available to us? The quick rundown: we have layouts using <em>div</em> and <em>span</em>, lists using <em>ol</em>, <em>ul</em> and <em>li</em>; definition lists using <em>dl</em>, <em>dd</em> and <em>dt</em>; and tables using <em>table</em>, <em>tr</em>, <em>th</em> and <em>td</em>. Those are the obvious structures. There are still other smaller structure's like <em>a</em> for links, and the hefty set of <em>form</em> elements. All these elements provide us a way to say what type of thing our data is or partakes in, not just what the data is.</p>
-
-<p>Clearly, the creators of XML saw the need for something like this and tried to achieve it through XML Namespaces. But namespaces are less effective because they are completely arbitrary, whereas HTML gives us a limited but universal structural language. Seems to me there is a principle to be found here that can be a guide for both the future of HTML and Microformats.</p>
+<p>Now old-school would just put out some asterisk-studded text files with plenty of precise timestamps, maybe some nice long lines of dashes to divide things up. No doubt these files are easy to access and fairly readable. We like out text files. But hey wait. This is the age of magical markups. At the very least we can coax that log into a Wiki-tongue. For us Rubyists, we have rdoc, markdown and textile's just a few gemy fingertips away. These formats can be even easier to read thanks to structural consistency from log to log. Plus, fire-up a web server and we can get some really nice looking HTML too. That's the beauty of Wiki Wiki markup after all.</p>
 
       <div class="continue"><a href="/20090124-mf-vs-xml/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by trans</small> -->
@@ -873,7 +264,7 @@ as well as a realtime Rack-based server.</p>
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-11-04</span>
+      <span class="date" style="float: right;">2008-11-04</span>
       <a class="article-title" href="/20081104-yadsl/index.html">The YADSL Rule</a>
     </div>
     <div class="btext">
@@ -900,47 +291,6 @@ jam it into my already overloaded brain somewhere, but you know what. I ain't
 gonna. I already have enough new stuff to learn and I'm not going to bother to
 learn another DSL when those I already know work just as well.</p>
 
-<p>So therein lies the serious downside to any new DSL. They require more brain
-cells. We're talking the old "learning yet another language" delemma here. I was
-thinking about this today, and it strikes me as one of those cool rules we oft
-hear about. So I decided to 'writ' one for the occasion.</p>
-
-<blockquote>
-  "Don't create a DSL if a native solution would be just as elegant."
-</blockquote>
-
-
-<p>In fact, a good DSL will likely need to be substantially more elegant in order
-to fully justify its existence.</p>
-
-<p>I'm calling this the <i>YADSL Rule</i>, for "Yet Another Domain Specific Language".</p>
-
-<p>Now, a quick look around the world of modern programming
-(see <a href="http://dzone.com">DZone</a>),
-just as quickly makes clear that the YADSL rule is in no short supply of
-violations. Indeed, I dare say, that most of programming today is not innovative,
-but masquerading around as such via YADSL.</p>
-
-<p>Now I don't want to seem too harsh. There is of course a certain level of
-refinement taking place in some areas. And that naturally has to play itself
-out. But it's getting a little crazy. Besides test frameworks, web frameworks
-and Javscript development frameworks seem to have hit a New Cambrian Explosion.
-I don't see how we're supposed to keep up with it.
-I can only hope that my little rule might help to cool all
-this exuberance down a bit; so we can catch our breaths and take some time
-to consider the drenchal downpour of verbage that has befallen us.</p>
-
-<p>Of course, the real problem may be that too many people want to make YANFT
-(Yet Another Name For Themselves).</p>
-
-<p>I sware to you. I'm not one of them. But I will be introducing my own Ruby
-test framework soon.</p>
-
-<p>No. I'm not kidding.</p>
-
-<p>Don't worry, there's no new DSL to learn. And that's what makes my framework
-so very special. I'll keep you posted.</p>
-
       <div class="continue"><a href="/20081104-yadsl/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by Anonymous</small> -->
     </div>
@@ -949,7 +299,7 @@ so very special. I'll keep you posted.</p>
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-10-06</span>
+      <span class="date" style="float: right;">2008-10-06</span>
       <a class="article-title" href="/20081006-old-hash/index.html">This Old Hash</a>
     </div>
     <div class="btext">
@@ -960,63 +310,6 @@ say, we spend a lot of time fussing with them. I think there are two
 significant reasons for this and I will focus on the first, and
 the more important of the two, here.</p>
 
-<p>Now, I suspect you would agree, if I were to present you with a class
-which was clearly overkill for vast majority of its intended uses, and
-its use required repeated mitigation of its unused features, I have no
-doubt, you'd unequivocally advise me to select a "<i>better tool for the job</i>".
-And yet, that's the situation all Ruby programmers face, day in and
-day out, with Ruby's Hash.</p>
-
-<p>Ruby's Hash is exceptionally powerful because it supports any type of
-object as a hash key. That's really really cool... for all of about
-five minutes. The truth is, the vast majority of cases only require
-one type of key --for Ruby that will either be a Symbol or a String,
-and because of this, a great deal of time and code is wasted ensuring
-all keys are that single type. Because of this, methods like
-<code>#to_sym</code> often riddle our scripts.</p>
-
-<p>The issue is undeniably attested to by real world "solutions"
-others have created to address it, such as Ruby Facets'
-<a href="http://facets.rubyforge.org/doc/api/core/classes/Hash.html#M000124">Hash#rekey</a>.
-and Ruby on Rails'
-<a href="http://api.rubyonrails.org/classes/HashWithIndifferentAccess.html">HashWithIndifferentAccess</a>.
-But let's face it, these are both underwhelming attempts at mitigating
-the fundamental problem.</p>
-
-<p>A real solution would have the current Hash class renamed, and a new
-limited-key structure put in its place. The old class would still be
-available, of course, for those special cases when a key of any object
-type is required, but the new, more utilitarian Hash class would be
-the literally-constructed default. The end effect of this change would
-be simple:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  h[<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">a</span><span style="color:#710">'</span></span>] == h[<span style="color:#A60">:a</span>]
-  h[<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">'</span><span style="">1</span><span style="color:#710">'</span></span>] == h[<span style="color:#00D;font-weight:bold">1</span>]
-
-</pre></div>
-</div>
-
-<p>This means reducing all hash keys to a single <em>symbolic</em> index type.
-It does not matter what the actual reference is, a String, Symbol,
-Integer, etc. just so long as it has a predictable symbolic
-representation.</p>
-
-<p>It may feel a bit strange to consider a suggestion that actually calls
-for the reduction of features. More often change requests call for just
-the opposite and YAGNI has to be peddled out on them. But, I think, we
-often underestimate the power of simplicity. Consider ideas such as
-convention-over-configuration and duck-typing --simplifications that
-are not necessarily intuitive at first. But in the end, they make our
-life as programmers a good bit more productive.</p>
-
-<blockquote>
-"Make everything as simple as possible, but not simpler."
-<cite>--Albert Einstein</cite>
-</blockquote>
-
-
       <div class="continue"><a href="/20081006-old-hash/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by Anonymous</small> -->
     </div>
@@ -1025,7 +318,7 @@ life as programmers a good bit more productive.</p>
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-09-28</span>
+      <span class="date" style="float: right;">2008-09-28</span>
       <a class="article-title" href="/20080928-oop-if/index.html">If and OOPy If</a>
     </div>
     <div class="btext">
@@ -1039,97 +332,6 @@ from the ideal of OOP all the way down, as any
 <a href="http://pozorvlak.livejournal.com/94558.html">Smalltalker</a>
 can attest.</p>
 
-<p>Consider the following case. For a while now. I have wanted in my arsonal
-of Ruby classes a NullClass defined basically as:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">NullClass</span> &lt; <span style="color:#036;font-weight:bold">NilClass</span>
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">method_missing</span>(*a)
-      <span style="color:#038;font-weight:bold">self</span>
-    <span style="color:#080;font-weight:bold">end</span>
-  <span style="color:#080;font-weight:bold">end</span>
-
-  <span style="color:#036;font-weight:bold">NULL</span> = <span style="color:#036;font-weight:bold">NullClass</span>.new
-
-  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">null</span>
-    <span style="color:#036;font-weight:bold">NULL</span>
-  <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>This object would greatly benefit fluent interfaces. Instead of returning
-<code>nil</code>, such intefaces could return <code>null</code>, and no
-error would be thrown when invoking any method against it.</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  obj = null
-  obj.it.does.not.matter  <span style="color:#888">#=&gt; null</span>
-
-</pre></div>
-</div>
-
-<p>Unfortunately <code>null</code> is not very viable in Ruby
-because <code>null</code> still evaluates as <code>true</code>
-when used as the expression of a condition. The fact remains,
-Ruby is hardcoded to see only the singleton instances of
-<code>NilClass<c/code> and <code>FalseClass</code> as false.</p>
-
-<p>I've requested that <code>NullClass</code> be added to core Ruby in
-the past (as of yet to no avail) and though I still would like to
-see it included, it may be better still to take an altogether
-object-oriented approach to conditions --in the spirit of Smalltalk.
-This would allow us to freely create "false" objects, like the
-<code>NullClass</code>, ourselves.</p>
-
-<p>The adoption of such a capability does not require the odd syntax
-used by Smalltalk (<code>ifTrue</code> / <code>ifFalse</code>).
-Rather, it can take an approach more akin to Ruby's own <code>case</code>
-statements. As with <code>case</code>'s use of <code>#===</code>,
-a particular method would be used to evaluate the "truthiness" of
-a value. This would apply for all types of conditions:
-<code>while</code>, <code>until</code>, etc.</p>
-
-<p>To clarify, let's say this special method is simply called #if, then...</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">IfExample</span>
-    attr <span style="color:#A60">:if</span>
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(<span style="color:#33B">@if</span>)
-      <span style="color:#33B">@if</span> = <span style="color:#080;font-weight:bold">if</span>
-    <span style="color:#080;font-weight:bold">end</span>
-  <span style="color:#080;font-weight:bold">end</span>
-
-  x = <span style="color:#036;font-weight:bold">IfExample</span>.new(<span style="color:#038;font-weight:bold">false</span>)
-
-  <span style="color:#080;font-weight:bold">if</span> x
-    <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">Yes</span><span style="color:#710">&quot;</span></span>
-  <span style="color:#080;font-weight:bold">else</span>
-    <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">No</span><span style="color:#710">&quot;</span></span>
-  <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>The result of this condition would be <code>"No"</code>.</p>
-
-<p>While it may not be an earth shattering adjustment, the additional
-flexibility opens up some interesting doors. Not only would classes
-like the previously mentioned <code>NullClass</code> become possible,
-but conditions themselves become <i>dynamically controllable</i>.</p>
-
-<p>For example, it would allow method probes to fully map method
-signatures (the Halting Problem not withstanding). This is not
-currently possible in Ruby because a probe cannot pretend to evaluate
-to false in order to walk through the false side of a condition.</p>
-
-<p>The idea would require some getting used to --after all a simple
-if-statement would no longer do what we Rubyists presently take
-for granted. But then, that's the nature of progress, is it not?</p>
-
       <div class="continue"><a href="/20080928-oop-if/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by Anonymous</small> -->
     </div>
@@ -1138,13 +340,11 @@ for granted. But then, that's the nature of progress, is it not?</p>
 
   <div class="post">
     <div class="heading">
-      <span class="date" style="float: right; padding-top: 20px;">2008-09-12</span>
+      <span class="date" style="float: right;">2008-09-12</span>
       <a class="article-title" href="/20080812-taskable/index.html">Taskable</a>
     </div>
     <div class="btext">
-      <h1>Taskable</h1>
-
-<p>On more than a few occasions I have taken a stab at writing a general
+      <p>On more than a few occasions I have taken a stab at writing a general
 purpose task system, akin to Rake's, but one that works within the
 framework of Ruby class inheritance. I recall my first attempt was
 quite an unwieldy beast, and my subsequent attempts were fairly
@@ -1152,172 +352,6 @@ unwieldy too, but over time they became more concise. Below is the
 most concise variation yet, and I was wondering what other thought
 of it -- do you see any flaws in the design; does it satisfy all the
 criteria of such a system; would you find it useful; etc.</p>
-
-<p>One issue to note about the code, is the use of the *_trigger methods.
-I'm not sure that's the best approach. My original approach was
-to provide a #run method (you can see it commented out), but this
-requires dividing Taskable into two parts, a module for extending and
-a module for including, and I try to avoid that design when I can.</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Taskable</span>
-
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">append_features</span>(base)
-      base.extend(<span style="color:#038;font-weight:bold">self</span>)
-    <span style="color:#080;font-weight:bold">end</span>
-
-    <span style="color:#888"># Without an argument, returns list of tasks defined for this class.</span>
-    <span style="color:#888">#</span>
-    <span style="color:#888"># If a task's target name is given, will return the first</span>
-    <span style="color:#888"># task matching the name found in the class' inheritance chain.</span>
-    <span style="color:#888"># This is important to ensure tasks are inherited in the same manner</span>
-    <span style="color:#888"># that methods are.</span>
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">tasks</span>(target=<span style="color:#038;font-weight:bold">nil</span>)
-      <span style="color:#080;font-weight:bold">if</span> target
-        target = target.to_sym
-        anc = ancestors.select{|a| a &lt; <span style="color:#036;font-weight:bold">Taskable</span>} <span style="color:#888">#DSL</span>
-        t = <span style="color:#038;font-weight:bold">nil</span>; anc.find{|a| t = a.tasks[target]}
-        <span style="color:#080;font-weight:bold">return</span> t
-      <span style="color:#080;font-weight:bold">else</span>
-        <span style="color:#33B">@tasks</span> ||= {}
-      <span style="color:#080;font-weight:bold">end</span>
-    <span style="color:#080;font-weight:bold">end</span>
-
-    <span style="color:#888"># Set a description to be used by then next defined task in this class.</span>
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">desc</span>(description)
-      <span style="color:#33B">@desc</span> = description
-    <span style="color:#080;font-weight:bold">end</span>
-
-    <span style="color:#888"># Define a task.</span>
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">task</span>(target_and_requisite, &amp;function)
-      target, requisite, function = *<span style="color:#036;font-weight:bold">Task</span>.parse_arguments(target_and_requisite, &amp;function)
-      task = tasks[target.to_sym] ||= (
-        tdesc = <span style="color:#33B">@desc</span>
-        <span style="color:#33B">@desc</span> = <span style="color:#038;font-weight:bold">nil</span>
-        <span style="color:#036;font-weight:bold">Task</span>.new(<span style="color:#038;font-weight:bold">self</span>, target, tdesc)
-      )
-      task.update(requisite, &amp;function)
-      define_method(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#ddd;color:black"><span style="background:#ddd;font-weight:bold;color:#666">#{</span>target<span style="background:#ddd;font-weight:bold;color:#666">}</span></span><span style="">_trigger</span><span style="color:#710">&quot;</span></span>){ task.run(<span style="color:#038;font-weight:bold">self</span>) }  <span style="color:#888"># or use #run?</span>
-      define_method(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#ddd;color:black"><span style="background:#ddd;font-weight:bold;color:#666">#{</span>target<span style="background:#ddd;font-weight:bold;color:#666">}</span></span><span style="">:task</span><span style="color:#710">&quot;</span></span>, &amp;function) <span style="color:#888"># TODO: in 1.9 use instance_exec instead.</span>
-    <span style="color:#080;font-weight:bold">end</span>
-
-    <span style="color:#888"># Run a task.</span>
-    <span style="color:#888"># Hmmm... to add this would require another module (to include).</span>
-    <span style="color:#888"># But I'm not sure. Maybe trigger method is the better way?</span>
-    <span style="color:#888">#</span>
-    <span style="color:#888">#def run(target)</span>
-    <span style="color:#888">#  #t = self.class.tasks(target)</span>
-    <span style="color:#888">#  #t.run(self)</span>
-    <span style="color:#888">#  send(&quot;#{target}_trigger&quot;)</span>
-    <span style="color:#888">#end</span>
-
-    <span style="color:#888"># = Task Class</span>
-    <span style="color:#888">#</span>
-    <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Task</span>
-      attr <span style="color:#A60">:base</span>
-      attr <span style="color:#A60">:target</span>
-      attr <span style="color:#A60">:requisite</span>
-      attr <span style="color:#A60">:function</span>
-      attr <span style="color:#A60">:description</span>
-
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(base, target, description=<span style="color:#038;font-weight:bold">nil</span>, requisite=<span style="color:#038;font-weight:bold">nil</span>, &amp;function)
-        <span style="color:#33B">@base</span>        = base
-        <span style="color:#33B">@target</span>      = target.to_sym
-        <span style="color:#33B">@description</span> = description
-        <span style="color:#33B">@requisite</span>   = requisite || []
-        <span style="color:#33B">@function</span>    = function
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#888">#</span>
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">update</span>(requisite, &amp;function)
-        <span style="color:#33B">@requisite</span>.concat(requisite).uniq!
-        <span style="color:#33B">@function</span> = function <span style="color:#080;font-weight:bold">if</span> function
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#888">#</span>
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">prerequisite</span>
-        base.ancestors.select{ |a| a.is_a?(<span style="color:#036;font-weight:bold">Taskable</span>) }.collect{ |a|
-          a.tasks[target].requisite
-        }.flatten.uniq
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#888"># invoke target</span>
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">run</span>(object)
-        rd = rule_dag
-        rd.each <span style="color:#080;font-weight:bold">do</span> |t|
-          object.send(<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="background:#ddd;color:black"><span style="background:#ddd;font-weight:bold;color:#666">#{</span>t<span style="background:#ddd;font-weight:bold;color:#666">}</span></span><span style="">:task</span><span style="color:#710">&quot;</span></span>)
-        <span style="color:#080;font-weight:bold">end</span>
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#888">#</span>
-      <span style="color:#888">#def call(object)</span>
-      <span style="color:#888">#  object.instance_eval(&amp;function)</span>
-      <span style="color:#888">#end</span>
-
-      <span style="color:#888"># Collect task dependencies for running.</span>
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">rule_dag</span>(cache=[])
-        prerequisite.each <span style="color:#080;font-weight:bold">do</span> |r|
-          <span style="color:#080;font-weight:bold">next</span> <span style="color:#080;font-weight:bold">if</span> cache.include?(r)
-          t = base.tasks[r]
-          t.rule_dag(cache)
-          <span style="color:#888">#cache &lt;&lt; dep</span>
-        <span style="color:#080;font-weight:bold">end</span>
-        cache &lt;&lt; target.to_s
-        cache
-      <span style="color:#080;font-weight:bold">end</span>
-
-      <span style="color:#888">#</span>
-      <span style="color:#080;font-weight:bold">def</span> <span style="color:#038;font-weight:bold">self</span>.<span style="color:#06B;font-weight:bold">parse_arguments</span>(name_and_reqs, &amp;action)
-        <span style="color:#080;font-weight:bold">if</span> <span style="color:#036;font-weight:bold">Hash</span>===name_and_reqs
-          target = name_and_reqs.keys.first.to_s
-          reqs = [name_and_reqs.values.first].flatten
-        <span style="color:#080;font-weight:bold">else</span>
-          target = name_and_reqs.to_s
-          reqs = []
-        <span style="color:#080;font-weight:bold">end</span>
-        <span style="color:#080;font-weight:bold">return</span> target, reqs, action
-      <span style="color:#080;font-weight:bold">end</span>
-    <span style="color:#080;font-weight:bold">end</span>
-  <span style="color:#080;font-weight:bold">end</span>
-
-</pre></div>
-</div>
-
-<p>Here's a very simple <a href="http://quarry.rubyforge.org">QEDoc</a> demo/spec:</p>
-
-<div class="CodeRay">
-  <div class="code"><pre>
-  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Example</span>
-    include <span style="color:#036;font-weight:bold">Taskable</span>
-
-    task <span style="color:#A60">:task_with_no_requisites</span> <span style="color:#080;font-weight:bold">do</span>
-      cache &lt;&lt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">task_with_no_requisites</span><span style="color:#710">&quot;</span></span>
-    <span style="color:#080;font-weight:bold">end</span>
-
-    task <span style="color:#A60">:task_with_one_requisite</span> =&gt; [<span style="color:#A60">:task_with_no_requisites</span>] <span style="color:#080;font-weight:bold">do</span>
-      cache &lt;&lt; <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">task_with_one_requisite</span><span style="color:#710">&quot;</span></span>
-    <span style="color:#080;font-weight:bold">end</span>
- 
-    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">cache</span>
-      <span style="color:#33B">@cache</span> ||= []
-    <span style="color:#080;font-weight:bold">end</span>
-  <span style="color:#080;font-weight:bold">end</span>
-
-  example = <span style="color:#036;font-weight:bold">Example</span>.new
-  <span style="color:#888">#example.run :task_with_no_requisites</span>
-  example.task_with_no_requisites_trigger
-  example.cache.assert == [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">task_with_no_requisites</span><span style="color:#710">&quot;</span></span>]
-
-  example = <span style="color:#036;font-weight:bold">Example</span>.new
-  <span style="color:#888">#example.run :task_with_one_requisite</span>
-  example.task_with_one_requisite_trigger
-  example.cache.assert == [<span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">task_with_no_requisites</span><span style="color:#710">&quot;</span></span>, <span style="background-color:#fff0f0;color:#D20"><span style="color:#710">&quot;</span><span style="">task_with_one_requisite</span><span style="color:#710">&quot;</span></span>]
-
-</pre></div>
-</div>
-
-<p>So, what do you think?</p>
 
       <div class="continue"><a href="/20080812-taskable/index.html">Continue Reading ...</a></div>
       <!-- <small>Written by Anonymous</small> -->

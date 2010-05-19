@@ -14,6 +14,8 @@ say, we spend a lot of time fussing with them. I think there are two
 significant reasons for this and I will focus on the first, and
 the more important of the two, here.
 
+--- markdown
+
 Now, I suspect you would agree, if I were to present you with a class
 which was clearly overkill for vast majority of its intended uses, and
 its use required repeated mitigation of its unused features, I have no

@@ -113,7 +113,7 @@
 }
 
 .btext {
-  height: 30em; overflow: hidden;
+  max-height: 30em; overflow: hidden;
   padding: 0 0;
   border: 0px solid #ccc;
   clear: both;
@@ -173,10 +173,9 @@
 
 .heading { font-size: 2em; }
 .heading .title { font-size: 1.2em; font-weight: bold; color: #2454ad; }
-.heading .date  { font-size: 0.7em; }
-
+.heading .date  { font-size: 0.6em; }
 
 .article-title {
-  font-size: 36px; font-weight: bold; color: #2454ad;
+  font-size: 32px; font-weight: bold; color: #2454ad; line-height: 1em;
 }
 

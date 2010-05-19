@@ -18,6 +18,8 @@ from the ideal of OOP all the way down, as any
 <a href="http://pozorvlak.livejournal.com/94558.html">Smalltalker</a>
 can attest.
 
+--- markdown
+
 Consider the following case. For a while now. I have wanted in my arsonal
 of Ruby classes a NullClass defined basically as:
 

@@ -19,6 +19,8 @@ backed [Jekyll](http://wiki.github.com/mojombo/jekyll) and the very nicely desig
 like [Webby](http://webby.rubyforge.org/) and [Rote](http://rote.rubyforge.org/).
 So, why do we need yet another? The reasoning is essentially two-fold.
 
+--- markdown
+
 1.     I am a knit pick. With each alternitive I found a few nagging points upon which I
        wanted to see a different approach taken.
 

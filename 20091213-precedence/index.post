@@ -17,6 +17,8 @@ reason (backward compatibility not withstanding).
 One of these issues is operator precedence. Not only is operator precedence set in stone, it is also
 woefully <i>bottom heavy</i> --there is only one binary operator available for use above the common arthmetic operations.
 
+--- markdown
+
 Here is the table as given by the [PickAxe](https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html):
 
     Method    Operator                Description

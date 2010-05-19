@@ -11,13 +11,13 @@ crazy train.</b> I have been reading about <a href="http://gembundler.com/">Bund
 the spiffy new RubyGems manager to be default part of Rails 3.0, and I can't help but
 wonder what track we were even on.
 
---- markdown
-
 If you don't know about Bundler yet, you can learn about it
 <a href="http://yehudakatz.com/2009/11/03/using-the-new-gem-bundler-today/">here</a>.
 I imagine most of you are already aware of it and are now considering how it fits in
 with your future development plans. So I want so ask a more fundamental question:
 Why does Bundler even exist?
+
+--- markdown
 
 On the surface, we can of course thank Rails. The deployment of web applications
 stands apart from the distribution of Ruby packages. Deploying a Rails

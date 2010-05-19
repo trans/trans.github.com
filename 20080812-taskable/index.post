@@ -7,9 +7,6 @@ layout   : post
 
 --- markdown
 
-Taskable
-========
-
 On more than a few occasions I have taken a stab at writing a general
 purpose task system, akin to Rake's, but one that works within the
 framework of Ruby class inheritance. I recall my first attempt was
@@ -19,12 +16,13 @@ most concise variation yet, and I was wondering what other thought
 of it -- do you see any flaws in the design; does it satisfy all the
 criteria of such a system; would you find it useful; etc.
 
+--- markdown
+
 One issue to note about the code, is the use of the *_trigger methods.
 I'm not sure that's the best approach. My original approach was
 to provide a #run method (you can see it commented out), but this
 requires dividing Taskable into two parts, a module for extending and
 a module for including, and I try to avoid that design when I can.
-
 
 --- coderay.ruby
 

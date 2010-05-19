@@ -17,71 +17,7 @@
    <content type="html">
      <p><b>DRAFT</b></p>
 
-<p>A few days ago I wrote an article on my concerns with Bundler. Since then I have had enough feedback to refine my thoughts. My opinion that the Ruby/Rails community is on a "crazy train" with regards to Bundler stems from the level of COMPLEXITY it further adds to the development and deployment process. Of course, it's intent is to do just the opposite. But that's the danger of new technologies that we must always be cautious about --there are always unexpected consequences. So, taking the feedback I gotten into account, here's a better breakdown of the ups and downs of Bundler as I now see them.</p>
-
-<h2>On the Upside</h2>
-
-<h3>Bundle</h3>
-
-<p>I have been informed that the ability to bundle gems is a useful feature for administrators of systems with limited Internet access. I did not expect this to be common enough to even warrant a tool (just use a tarball). But apparently is common enough. For this use Bundler is understandably useful. It's ability to resolve dependencies pre-runtime makes it especially good at doing so.</p>
-
-<h3>Install</h3>
-
-<p>The bundle install feature has similar applications to bundle. It can be used to ease deployment. More specifically, a deployment script can contain a simple invoke 'bundle install', rather then handle the installation of each gem itself. In addition it makes it easier for developers to get up and running quickly, a simple 'bundle install' will install everything you need to develop a project. So this feature has it's clear benefits.</p>
-
-<h3>Groups</h3>
-
-<p>Groups are convenient when selecting certain gems from the list of all requirement, as a means to specialize usage to the end-users needs. Although perhaps a minor benefit, one can see how it can be useful to the developer. As currently implemented Bundler only supports opt-out groups. It might be nice if it also provided for opt-in selections.</p>
-
-<h3>Lock</h3>
-
-<p>The locking feature is probably Bundler's most significant feature. It allows the developer to nail down their application to the latest gems that best meet all the requirements as given in the Gemfile.</p>
-
-<h3>Gemfile</h3>
-
-<p>Of course, Rubyists are accustomed to nice DSL to "describe" code. The Gemfile makes excellent use of this ability and it is especially nice to have a single clear file to describe all the dependencies of a project.</p>
-
-<h2>On the Downside</h2>
-
-<h3>Bundle</h3>
-
-<p>The downside of bundling comes when developers misuse the feature. Because Bundler does more than just bundle gems for special deployments, there may be a tendency towards using it in this way regardless of the need to do so. For example, yesterday I cloned the Gemcutter repository. The download consumed 22.61 MiB of space. On close inspection I found out way. The <code>vendor/cache</code> directory contains a copy of every gem on which Gemcutter depends. Consider what this means. In effect, Bundler has undermined the entire purpose of having a package manger!</p>
-
-<p>If Bundler were an application that handled this feature and only this feature, then I think it would be a much better tool. In doing so it would help deter misuse. And the other features could be left to the domain of another library, or even better, RubyGems proper.</p>
-
-<h3>Install</h3>
-
-<p>The downside of <code>bundle install</code>, is the lack of refinement it grants the end user. An example is the Rails Gemfile which will installs the sqlite3, postgresql and mysql bindings, regardless of what databases the system actually supports. There may also be other subtle conditions that need to be taken into account on installation. To account for these, the temptation will be to add conditions to the Gemfile itself, blurring the lines between it and a Capfile (as an example). But this will in turn effect the developer's use of the other features. In the end, the inter-complexities this will cause will simply prove too much.</p>
-
-<h3>Groups</h3>
-
-<p>You'll be happy to know there is nothing intrinsically problematic with groups. Other than the additional complexities they add to the process of designing a Gemfile and the installation thereof, they server their purpose. Sometimes additional complexity is the necessity of capability.</p>
-
-<h3>Lock</h3>
-
-<p>Ironically, Bundler's most useful feature is probably it's most problematic. First, in order to achieve this level of functionality, Bundler must download a slew of gems to your system in order to calculate the best fitting requirements. But worse than this, locking brings <code>Bundler.require</code> into play. <code>Bundler.require</code> admits of the same issues as <code>require 'rubygems'</code>. It can not be used without limiting an program to the RubyGems package manager. If it is to be used congenially, special conditions will need to be put in place by the developer to ensure a program still runs whether RubyGems is being used or not. Bundler might mitigate this issue by gracefully downgrading if RubyGems is not loaded, but then it must also consider where Bundler's lock file will be located, say if setup.rb is used for installation.</p>
-
-<h3>Gemfile</h3>
-
-<p>As mentioned, the Gemfile is great to have as a single configuration file to describe dependencies. However, if a project has a gemspec, it still requires dependencies be stated there as well. RubyGems is not able to utilize the Gemfile. Having to state requirements twice violates the DRY principle.</p>
-
-<p>In addition, because the Gemfile is Ruby code it can be full of conditional statements, dynamic code, and all sorts of other spaghetti. All of which make the file unusable to anything but a Ruby script. Worse still, the ability to use conditions has the potential for creating a very unwieldy level of complexity. There is no way, for instance, to query the Gemfile for all requirements that may be need because some of them may be hidden by the current state of an environment variable. The clear remedy to this is to switch to a static file format. Such a format could be utilized by many tools, not just Bundler, including RubyGems itself. This would also help resolve some the issues with bundle install as mentioned above.</p>
-
-<h2>In Conclusion</h2>
-
-<p>Taking the "good, the bad and ugly" into account as we have, the end result would indicate the following points of action:</p>
-
-<ul>
-<li>Use a static file format for the Gemfile.</li>
-<li>Allow groups to be opt-in as well as opt-out.</li>
-<li>Split Bundler into two projects. One strictly for bundling</li>
-<li>Non-bundling features might be integrated into RubyGems proper.</li>
-<li>At the very least allow RubyGems to utilize the Gemfile for gem building.</li>
-<li>Gracefully downgrade when RubyGems/Bundler is not used.</li>
-</ul>
-
-
-<p>I will touch on one more concern before I say ado. I was reading over the issues list for the Bundler project. Many new feature are in the works --and thus additional levels of complexity are on the way. I would urge a bit of caution, and a focus on simplicity over feature bloat. Features are nice if they are truly needed, and I suppose to give one enough stuff to write a book about. But in end it can easily prove a projects undoing. In fact, the "crazy train" to which I refer has everything to do with state of complexity of Rails code these days and it's infiltration into plain vanilla Ruby projects.</p>
+<p>A few days ago I wrote an article on my concerns with Bundler. Since then I've received enough feedback to refine my thoughts. My opinion that the Ruby/Rails community is on a "crazy train" with regards to Bundler stems from the level of COMPLEXITY it further adds to the development and deployment process. Of course, it's intent is to do just the opposite. But that's the danger of new technologies that we must always be cautious about --there are always unexpected consequences. So, taking the feedback into account, here's a better breakdown of the ups and downs of Bundler as I now see them.</p>
 
      [<a href="">Read More</a>]
    </content>
@@ -97,6 +33,12 @@
 crazy train.</b> I have been reading about <a href="http://gembundler.com/">Bundler</a>,
 the spiffy new RubyGems manager to be default part of Rails 3.0, and I can't help but
 wonder what track we were even on.</p>
+
+<p>If you don't know about Bundler yet, you can learn about it
+<a href="http://yehudakatz.com/2009/11/03/using-the-new-gem-bundler-today/">here</a>.
+I imagine most of you are already aware of it and are now considering how it fits in
+with your future development plans. So I want so ask a more fundamental question:
+Why does Bundler even exist?</p>
 
      [<a href="">Read More</a>]
    </content>
@@ -163,40 +105,6 @@ reason (backward compatibility not withstanding).</p>
 <p>One of these issues is operator precedence. Not only is operator precedence set in stone, it is also
 woefully <i>bottom heavy</i> --there is only one binary operator available for use above the common arthmetic operations.</p>
 
-<p>Here is the table as given by the <a href="https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html">PickAxe</a>:</p>
-
-<pre><code>Method    Operator                Description
-Y         [ ] [ ]=                Element reference, element set
-Y         **                      Exponentiation
-Y         ! ~ + -                 Not, complement, unary plus and minus (method names for the last two are +@ and -@)
-Y         * / %                   Multiply, divide, and modulo
-Y         + -                     Plus and minus
-Y         &gt;&gt; &lt;&lt;                   Right and left shift
-Y         &amp;                       Bitwise `and'
-Y         ^ |                     Bitwise exclusive `or' and regular `or'
-Y         &lt;= &lt; &gt; &gt;=               Comparison operators
-Y         &lt;=&gt; == === != =~ !~     Equality and pattern match operators (!= and !~ may not be defined as methods)
-          &amp;&amp;                      Logical `and'
-          ||                      Logical `or'
-          .. ...                  Range (inclusive and exclusive)
-            ? :                     Ternary if-then-else
-          = %= { /= -= += |= &amp;=   Assignment
-          &gt;&gt;= &lt;&lt;= *= &amp;&amp;= ||= **=   
-          defined?                Check if symbol defined
-          not                     Logical negation
-          or and                  Logical composition
-          if unless while until   Expression modifiers
-          begin/end               Block expression
-</code></pre>
-
-<p>The lack of any operators other then <tt>**</tt>, above the most commonly used, <tt>* / % + -</tt>, puts
-a frustrating limitation on the flexibility of this system. On this account, the most puzzling misplacement of an operator
-has to be Bitwise Exlusive Or, <tt>^</tt>. In many, if not most, programming languages <tt>^</tt> is the power operator.
-But in Ruby that function is delegated to <tt>**</tt>. While I personally do not favor <tt>**</tt> for the use,
-it's not something I mind either. However, that <tt>^</tt> doesn't share the same precedence is very awkward.</p>
-
-<p>Consider for instance, the implementation of a unit system.</p>
-
      [<a href="">Read More</a>]
    </content>
  </entry>
@@ -220,20 +128,6 @@ backed <a href="http://wiki.github.com/mojombo/jekyll">Jekyll</a> and the very n
 like <a href="http://webby.rubyforge.org/">Webby</a> and <a href="http://rote.rubyforge.org/">Rote</a>.
 So, why do we need yet another? The reasoning is essentially two-fold.</p>
 
-<ol>
-<li><p>I am a knit pick. With each alternitive I found a few nagging points upon which I
-wanted to see a different approach taken.</p></li>
-<li><p>I wanted to see if I could push the boundries, absorbing what good I may from
-earlier systems (including my own stalled attempts) and contruct something
-more intuitve and yet more powerful.</p></li>
-</ol>
-
-
-<p>With inline formats I think Brite has achieved that. You can easily have multiple types
-of markups in a single page, in an elegant and relatively unobtrusive manner. (Yea, Wow!)</p>
-
-<p>For example the document I am currently writing is in Markdown format. But...</p>
-
      [<a href="">Read More</a>]
    </content>
  </entry>
@@ -247,8 +141,6 @@ of markups in a single page, in an elegant and relatively unobtrusive manner. (Y
      <p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It's far from the "Ruby Way".</p>
 
 <p>So how did I mange to get fairly nice Ruby code despite a binding that is essentially a straight port of the underlying C API? I built it from the bottom-up using a lazy coding technique. And I mean "bottom-up" literally --the following code might actually be easier to read if you start from the bottom and work your way up to the top. The trick is to break down one's interface into individual widgets and create an instance method for each using the <code>||=</code> memoization trick.</p>
-
-<p>You can see from the following code I was able to apply this "trick" to everything but toolbar buttons (aka 'tools'). This is because the toolbar itself is needed to create them. So I simply defined attributes for each tool, but actually created the tool buttons in the toolbar's method. Have a look.</p>
 
      [<a href="">Read More</a>]
    </content>
@@ -264,14 +156,6 @@ of markups in a single page, in an elegant and relatively unobtrusive manner. (Y
 
 <p>My first attempt at it this time was with <a href="http://shoooes.net/">Shoes</a>. Shoes is a new and very nice GUI engine written largely from scratch by the well known WhyTheLuckyStiff. It's a noble effort and some really <a href="http://the-shoebox.org/">neat programs</a> can come from using Shoes. Unfortunately for my needs Shoes proved to be too buggy and immature --at times I saw visual artifacts and there are a very limited number of controls. And worst of all, the fact that it includes it's own Ruby interpretor and manges it's own gems caused it not to work well with some other libraries. For instance, I could not get it to use the latest version of Mechanize.</p>
 
-<p>After examining other choices, such as creating one GUI script per major platform (too much work), or using the old standby FxRuby (never been happy with the lack of native look-and-feel), I decided to try a different course. I was well versed in web application design, so I tried my hand at rigging a web app to act like a desktop app via a locally running server using Ajax calls. The end result certainly looked good and basically worked. But there was a troubling lack of robustness in the interaction between the front-end and back-end. I had to poll the back-end to see what was going on, and the back-end had to spawn threads in order to provide a response to the browser while continuing to work on long-running processes. So it worked, but barely. I'm sure it could be improved, but for a devote POLSer like myself, that meant getting into mucky waters I really didn't feel like I should need to be diving into anyway. Too bad. Web GUI design is quite advanced compared to Desktop GUI. Why no one has tried to map it directly to the desktop before is beyond me (but you can believe me when I tell you, I can't wait to delve into Plam's pre and it's <a href="http://developer.palm.com/webos_book/book1.html">webOS</a> development platform, which apparently does exactly this).</p>
-
-<p>So where did this leave me? Well, I figured I had one last good shot with <a href="http://wxruby.rubyforge.org/wiki/wiki.pl">wxRuby</a>. Ironically I had something to do with the birth of that project. It was those six years ago that I first looked into GUI frameworks for Ruby. Rich Kilmer was talking about his Utopia/Alpha ideas and I was just starting to feel comfortable with writing scripts in Ruby. I decided there needed to be something better, and working off of Rich's idea's for an API I came up the idea of GUtopIa, which would supply a font-end API that anyone could interface to a back-end GUI framework. Sort of a best of all worlds kind of design. A number of people were psyched about the idea, and joined with me to discuss and pursue the project. Unfortunately, I was still wet behind the ears, and the fellow programmers who first entertained working with me didn't care much for my new-boy-brash style. They told me so, and decided on their own course, to create bindings for wxWidgets instead. I wasn't happy about it personally. Having studied wxWidgets some, I knew it would be a long time before anything really useful was to come of that project --if at all. In hindsight, while I still believe GUtopIa is a good idea, I am glad it's didn't proceed back then --I still had a lot to learn about Ruby before I could do something like that as well as I would really like.</p>
-
-<p>So it was time to check out what the wxRuby team had accomplished. My first handful, or so, attempts were miserable failures. WxRuby has some issues. It is tempermental, and so much like the C API I felt like I was actually programming in C. This is not how Ruby programming is supposed to be! I was having real trouble getting anything more then a basic frame and menu to work. Frustrated with the straight coding approach, I decided to see what WYSIWYG form builders were to be had. I knew wxWidgets touted these, so I looked around and found the precisely named wxFormBuilder. This made it fairly easy to design my complex form and best of all it made it clearer to me how wxWidget GUIs are built. Unfortunately the generated markup, called an XRC file, had issues of it's own and wouldn't load properly into Ruby. Once again, I was at a dead end.</p>
-
-<p>Something really needed to be done about this state of affairs. And so I have decided to resurrect the GUtopIa project. I found my old code, looked at it, scrapped it, and started fresh. I'm going to proceed by specifying the front-end API as much as possible, before even considering back-end implementations. With any luck others will see what I'm doing and offer to build a an interface to their favorite framework. So far what I have looks very sweet. Just to wet your whistle, here's a potential example.</p>
-
      [<a href="">Read More</a>]
    </content>
  </entry>
@@ -286,22 +170,6 @@ of markups in a single page, in an elegant and relatively unobtrusive manner. (Y
 
 <p>In a <a href="http://tigerops.org/2009/01/mf-vs-xml.html">previous post</a>, I point out that microformats bring an additional layer of useful information to a document, which I dubbed <em>semantic structure</em>. In short, HTML tags provide useful <em>type</em> information about the data they contain. A good example of this has been the insistent push to use <code>div</code>s rather than <code>table</code>s for page layout. The reason is that tables describe a semantic structure, a table of data, and not layout. I for one have found this a frustrating haggle in the design of my pages. Time and time again I have been stymied by unwieldy <code>div</code>s. Tables are much easier to use, despite additional verbosity. But I have stuck to <code>div</code>s because it is "the right thing to do". Thankfully my saving grace will soon be here. The 3rd revision the CSS standard supports a new <code>display</code> style. With it, one can specify that a div is to behave like a table, table row or table cell. Woohoo! Three cheers for tabley divs!!</p>
 
-<p>This display style led me to think about semantic structure again. If we can designate that a <code>div</code> is a <code>table</code> structure via CSS, then why not any structure? And if <code>div</code>s, why not any tag? If we were able to do that, then semantic structure could be specified solely through CSS. And our HTML pages could go from rather simple, repetitive occurrences of <code>div</code> to ... can you guess?... pure XML.</p>
-
-<p>Let's got through it step by step. Here some HTML:</p>
-
-<p>  [gist id=61726]</p>
-
-<p>Now with CSS 3:</p>
-
-<p>  [gist id=61729]</p>
-
-<p>Of course no one would recommend doing this to something that really is a table of data. But bare with me, because now we are coming full circle:</p>
-
-<p>  [gist id=61730]</p>
-
-<p>I think this is a rather remarkable outcome. And you might be surprised to learn that Firefox handles it just fine. What we have achieved is an ultra-clean separation between the data and it's semantic meaning, via XML, and it's semantic structure, via CSS. If this approach were embraced by the XHTML and CSS standards bodies, I would not be surprised to see it revolutionize web design.</p>
-
      [<a href="">Read More</a>]
    </content>
  </entry>
@@ -314,13 +182,7 @@ of markups in a single page, in an elegant and relatively unobtrusive manner. (Y
    <content type="html">
      <p>Decisions, decisions. Therein lies the reason why convention over configuration is so bloody great, precisely because it requires fewer decisions. <a href="http://proutils.rubyforge.org/syckle">Syckle</a>, my humble build tool, outputs log files. Yea, logs are good. But the decision I have to make is, "in what format?"</p>
 
-<p>Now old-school would just put out some asterisk-studded text files with plenty of precise timestamps, maybe some nice long <code>------------------------------</code> lines to divide things up. No doubt these files are easy to access and fairly readable. We like out text files. But hey wait. This is the age of magical markups. At the very least we can coax that log into a Wiki-tongue. For us Rubyists, we have rdoc, markdown and textile's just a few gemy fingertips away. These formats can be even easier to read thanks to structural consistency from log to log. Plus, fire-up a web server and we can get some really nice looking HTML too. That's the beauty of Wiki Wiki markup after all.</p>
-
-<p>Now if beauty were all that matter, then there would be no point in looking further. But like America's continental shelves there is untapped wealth going to waste here. There is data in them there logs! The modern buzzword is <em>semantic</em>. Taking logs to the next level requires us to ensure their semantic value. On that account, XML was created, and long predicted the format of the future. Certainly XML has made great strides, but it is still far from meeting its promise. There is simply too much complexity involved in both marking up the content and in generating nice output.</p>
-
-<p>Then comes along the <em>microformat</em>. The microformat combines the semantic capabilities of XML with the layout capabilities of HTML. Microformats are relatively new and still finding their footing. Indeed, I think a <em>Universal Uniform Microformat Specification</em> is ultimately the necessary outcome. In that vain I make a first rough estimate of what such unifying system might look like, and why, contrary to many arguments otherwise, microformats do in fact bring more to the table than XML.</p>
-
-<p>Where XML provides semantic information within a doubly linked hierarchy (via attributes and body), microformats provide the same plus a set of well defined data structures. Microformats provide semantics through a small set of tag attributes, <em>role</em>, <em>rel</em>, <em>rev</em> and primarily the <em>class</em> attribute. The <em>class</em> attribute alone is enough to make microformats fully equatable to XML. We can easily map the same data set in either format:</p>
+<p>Now old-school would just put out some asterisk-studded text files with plenty of precise timestamps, maybe some nice long lines of dashes to divide things up. No doubt these files are easy to access and fairly readable. We like out text files. But hey wait. This is the age of magical markups. At the very least we can coax that log into a Wiki-tongue. For us Rubyists, we have rdoc, markdown and textile's just a few gemy fingertips away. These formats can be even easier to read thanks to structural consistency from log to log. Plus, fire-up a web server and we can get some really nice looking HTML too. That's the beauty of Wiki Wiki markup after all.</p>
 
      [<a href="">Read More</a>]
    </content>
@@ -355,47 +217,6 @@ jam it into my already overloaded brain somewhere, but you know what. I ain't
 gonna. I already have enough new stuff to learn and I'm not going to bother to
 learn another DSL when those I already know work just as well.</p>
 
-<p>So therein lies the serious downside to any new DSL. They require more brain
-cells. We're talking the old "learning yet another language" delemma here. I was
-thinking about this today, and it strikes me as one of those cool rules we oft
-hear about. So I decided to 'writ' one for the occasion.</p>
-
-<blockquote>
-  "Don't create a DSL if a native solution would be just as elegant."
-</blockquote>
-
-
-<p>In fact, a good DSL will likely need to be substantially more elegant in order
-to fully justify its existence.</p>
-
-<p>I'm calling this the <i>YADSL Rule</i>, for "Yet Another Domain Specific Language".</p>
-
-<p>Now, a quick look around the world of modern programming
-(see <a href="http://dzone.com">DZone</a>),
-just as quickly makes clear that the YADSL rule is in no short supply of
-violations. Indeed, I dare say, that most of programming today is not innovative,
-but masquerading around as such via YADSL.</p>
-
-<p>Now I don't want to seem too harsh. There is of course a certain level of
-refinement taking place in some areas. And that naturally has to play itself
-out. But it's getting a little crazy. Besides test frameworks, web frameworks
-and Javscript development frameworks seem to have hit a New Cambrian Explosion.
-I don't see how we're supposed to keep up with it.
-I can only hope that my little rule might help to cool all
-this exuberance down a bit; so we can catch our breaths and take some time
-to consider the drenchal downpour of verbage that has befallen us.</p>
-
-<p>Of course, the real problem may be that too many people want to make YANFT
-(Yet Another Name For Themselves).</p>
-
-<p>I sware to you. I'm not one of them. But I will be introducing my own Ruby
-test framework soon.</p>
-
-<p>No. I'm not kidding.</p>
-
-<p>Don't worry, there's no new DSL to learn. And that's what makes my framework
-so very special. I'll keep you posted.</p>
-
      [<a href="">Read More</a>]
    </content>
  </entry>
@@ -412,36 +233,6 @@ much ado. Hashes on the other hand get <em>used</em>; and by that I mean to
 say, we spend a lot of time fussing with them. I think there are two
 significant reasons for this and I will focus on the first, and
 the more important of the two, here.</p>
-
-<p>Now, I suspect you would agree, if I were to present you with a class
-which was clearly overkill for vast majority of its intended uses, and
-its use required repeated mitigation of its unused features, I have no
-doubt, you'd unequivocally advise me to select a "<i>better tool for the job</i>".
-And yet, that's the situation all Ruby programmers face, day in and
-day out, with Ruby's Hash.</p>
-
-<p>Ruby's Hash is exceptionally powerful because it supports any type of
-object as a hash key. That's really really cool... for all of about
-five minutes. The truth is, the vast majority of cases only require
-one type of key --for Ruby that will either be a Symbol or a String,
-and because of this, a great deal of time and code is wasted ensuring
-all keys are that single type. Because of this, methods like
-<code>#to_sym</code> often riddle our scripts.</p>
-
-<p>The issue is undeniably attested to by real world "solutions"
-others have created to address it, such as Ruby Facets'
-<a href="http://facets.rubyforge.org/doc/api/core/classes/Hash.html#M000124">Hash#rekey</a>.
-and Ruby on Rails'
-<a href="http://api.rubyonrails.org/classes/HashWithIndifferentAccess.html">HashWithIndifferentAccess</a>.
-But let's face it, these are both underwhelming attempts at mitigating
-the fundamental problem.</p>
-
-<p>A real solution would have the current Hash class renamed, and a new
-limited-key structure put in its place. The old class would still be
-available, of course, for those special cases when a key of any object
-type is required, but the new, more utilitarian Hash class would be
-the literally-constructed default. The end effect of this change would
-be simple:</p>
 
      [<a href="">Read More</a>]
    </content>
@@ -463,9 +254,6 @@ from the ideal of OOP all the way down, as any
 <a href="http://pozorvlak.livejournal.com/94558.html">Smalltalker</a>
 can attest.</p>
 
-<p>Consider the following case. For a while now. I have wanted in my arsonal
-of Ruby classes a NullClass defined basically as:</p>
-
      [<a href="">Read More</a>]
    </content>
  </entry>
@@ -476,9 +264,7 @@ of Ruby classes a NullClass defined basically as:</p>
    <updated>2008-09-12</updated>
    <id>http://trans.github.com</id>
    <content type="html">
-     <h1>Taskable</h1>
-
-<p>On more than a few occasions I have taken a stab at writing a general
+     <p>On more than a few occasions I have taken a stab at writing a general
 purpose task system, akin to Rake's, but one that works within the
 framework of Ruby class inheritance. I recall my first attempt was
 quite an unwieldy beast, and my subsequent attempts were fairly
@@ -486,12 +272,6 @@ unwieldy too, but over time they became more concise. Below is the
 most concise variation yet, and I was wondering what other thought
 of it -- do you see any flaws in the design; does it satisfy all the
 criteria of such a system; would you find it useful; etc.</p>
-
-<p>One issue to note about the code, is the use of the *_trigger methods.
-I'm not sure that's the best approach. My original approach was
-to provide a #run method (you can see it commented out), but this
-requires dividing Taskable into two parts, a module for extending and
-a module for including, and I try to avoid that design when I can.</p>
 
      [<a href="">Read More</a>]
    </content>
