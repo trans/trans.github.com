@@ -1,0 +1,75 @@
+---
+title  : A Second Look at Bundler
+author : trans
+tags   : bundler, rubygems
+date   : 2010-05-19
+
+--- markdown
+
+<b>DRAFT</b>
+
+A few days ago I wrote an article on my concerns with Bundler. Since then I have had enough feedback to refine my thoughts. My opinion that the Ruby/Rails community is on a "crazy train" with regards to Bundler stems from the level of COMPLEXITY it further adds to the development and deployment process. Of course, it's intent is to do just the opposite. But that's the danger of new technologies that we must always be cautious about --there are always unexpected consequences. So, taking the feedback I gotten into account, here's a better breakdown of the ups and downs of Bundler as I now see them.
+
+## On the Upside
+
+### Bundle
+
+I have been informed that the ability to bundle gems is a useful feature for administrators of systems with limited Internet access. I did not expect this to be common enough to even warrant a tool (just use a tarball). But apparently is common enough. For this use Bundler is understandably useful. It's ability to resolve dependencies pre-runtime makes it especially good at doing so.
+
+### Install
+
+The bundle install feature has similar applications to bundle. It can be used to ease deployment. More specifically, a deployment script can contain a simple invoke 'bundle install', rather then handle the installation of each gem itself. In addition it makes it easier for developers to get up and running quickly, a simple 'bundle install' will install everything you need to develop a project. So this feature has it's clear benefits.
+
+### Groups
+
+Groups are convenient when selecting certain gems from the list of all requirement, as a means to specialize usage to the end-users needs. Although perhaps a minor benefit, one can see how it can be useful to the developer. As currently implemented Bundler only supports opt-out groups. It might be nice if it also provided for opt-in selections.
+
+### Lock
+
+The locking feature is probably Bundler's most significant feature. It allows the developer to nail down their application to the latest gems that best meet all the requirements as given in the Gemfile. 
+
+### Gemfile
+
+Of course, Rubyists are accustomed to nice DSL to "describe" code. The Gemfile makes excellent use of this ability and it is especially nice to have a single clear file to describe all the dependencies of a project.
+
+
+## On the Downside
+
+### Bundle
+
+The downside of bundling comes when developers misuse the feature. Because Bundler does more than just bundle gems for special deployments, there may be a tendency towards using it in this way regardless of the need to do so. For example, yesterday I cloned the Gemcutter repository. The download consumed 22.61 MiB of space. On close inspection I found out way. The `vendor/cache` directory contains a copy of every gem on which Gemcutter depends. Consider what this means. In effect, Bundler has undermined the entire purpose of having a package manger!
+
+If Bundler were an application that handled this feature and only this feature, then I think it would be a much better tool. In doing so it would help deter misuse. And the other features could be left to the domain of another library, or even better, RubyGems proper.
+
+### Install
+
+The downside of `bundle install`, is the lack of refinement it grants the end user. An example is the Rails Gemfile which will installs the sqlite3, postgresql and mysql bindings, regardless of what databases the system actually supports. There may also be other subtle conditions that need to be taken into account on installation. To account for these, the temptation will be to add conditions to the Gemfile itself, blurring the lines between it and a Capfile (as an example). But this will in turn effect the developer's use of the other features. In the end, the inter-complexities this will cause will simply prove too much.
+
+### Groups
+
+You'll be happy to know there is nothing intrinsically problematic with groups. Other than the additional complexities they add to the process of designing a Gemfile and the installation thereof, they server their purpose. Sometimes additional complexity is the necessity of capability.
+
+### Lock
+
+Ironically, Bundler's most useful feature is probably it's most problematic. First, in order to achieve this level of functionality, Bundler must download a slew of gems to your system in order to calculate the best fitting requirements. But worse than this, locking brings `Bundler.require` into play. `Bundler.require` admits of the same issues as `require 'rubygems'`. It can not be used without limiting an program to the RubyGems package manager. If it is to be used congenially, special conditions will need to be put in place by the developer to ensure a program still runs whether RubyGems is being used or not. Bundler might mitigate this issue by gracefully downgrading if RubyGems is not loaded, but then it must also consider where Bundler's lock file will be located, say if setup.rb is used for installation.
+
+### Gemfile
+
+As mentioned, the Gemfile is great to have as a single configuration file to describe dependencies. However, if a project has a gemspec, it still requires dependencies be stated there as well. RubyGems is not able to utilize the Gemfile. Having to state requirements twice violates the DRY principle.
+
+In addition, because the Gemfile is Ruby code it can be full of conditional statements, dynamic code, and all sorts of other spaghetti. All of which make the file unusable to anything but a Ruby script. Worse still, the ability to use conditions has the potential for creating a very unwieldy level of complexity. There is no way, for instance, to query the Gemfile for all requirements that may be need because some of them may be hidden by the current state of an environment variable. The clear remedy to this is to switch to a static file format. Such a format could be utilized by many tools, not just Bundler, including RubyGems itself. This would also help resolve some the issues with bundle install as mentioned above.
+
+## In Conclusion
+
+Taking the "good, the bad and ugly" into account as we have, the end result would indicate the following points of action:
+
+* Use a static file format for the Gemfile.
+* Allow groups to be opt-in as well as opt-out.
+* Split Bundler into two projects. One strictly for bundling
+* Non-bundling features might be integrated into RubyGems proper.
+* At the very least allow RubyGems to utilize the Gemfile for gem building.
+* Gracefully downgrade when RubyGems/Bundler is not used.
+
+I will touch on one more concern before I say ado. I was reading over the issues list for the Bundler project. Many new feature are in the works --and thus additional levels of complexity are on the way. I would urge a bit of caution, and a focus on simplicity over feature bloat. Features are nice if they are truly needed, and I suppose to give one enough stuff to write a book about. But in end it can easily prove a projects undoing. In fact, the "crazy train" to which I refer has everything to do with state of complexity of Rails code these days and it's infiltration into plain vanilla Ruby projects.
+
+
