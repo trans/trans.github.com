@@ -1,3 +1,4 @@
 ---
-exclude: [_wiki, _drafts, _trash]
+markdown : redcarpet
+exclude  : [_wiki, _drafts, _trash]
 
