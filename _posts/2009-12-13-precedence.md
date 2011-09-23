@@ -3,6 +3,7 @@ title      : A Failure of Precedence
 author     : trans
 categories : [website]
 date       : 2009-12-13
+layout     : post
 ---
 
 # Ruby's Operator Precedence Can Be Improved
@@ -14,7 +15,7 @@ woefully <i>bottom heavy</i> --there is only one binary operator available for u
 
 Here is the table as given by the [PickAxe](https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html):
 
-```
+
     Method    Operator                Description
     Y         [ ] [ ]=                Element reference, element set
     Y         **                      Exponentiation
@@ -37,7 +38,6 @@ Here is the table as given by the [PickAxe](https://www.cs.auckland.ac.nz/refere
               or and                  Logical composition
               if unless while until   Expression modifiers
               begin/end               Block expression
-```
 
 The lack of any operators other then <tt>\*\*</tt>, above the most commonly used, <tt>* / % + -</tt>, puts
 a frustrating limitation on the flexibility of this system. On this account, the most puzzling misplacement of an operator
@@ -47,22 +47,16 @@ it's not something I mind either. However, that <tt>^</tt> doesn't share the sam
 
 Consider for instance, the implementation of a unit system.
 
-```ruby
-  2.meters ** 2  => "4 square meters"
-```
+    2.meters ** 2  => "4 square meters"
 
 Notice the power operator effects the unit and the value. So how would we go about notating <code>2 square meters</code>?
 We need some other means. The obvious answer is to redefine <tt>^</tt>:
 
-```ruby
-  2.meters ^ 2  => "2 square meters"
-```
+    2.meters ^ 2  => "2 square meters"
 
 Great. But wait, there is an ugliness now upon us.
 
-```ruby
-  2.meters ^ 2 / 2  => "2 meters"
-```
+    2.meters ^ 2 / 2  => "2 meters"
 
 The answer should have been <tt>1 square meter</tt>, but due to precedence <tt>2 / 2</tt> is barring a <tt>1</tt> before the <tt>^</tt> power operator kicks-in.
 

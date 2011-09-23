@@ -1,8 +1,9 @@
 ---
 title      : Ruby AOP Made Simple
 author     : trans
-categories : [aop, cuts, ruby]
 date       : 2010-10-13
+categories : [aop, cuts, ruby]
+layout     : post
 ---
 
 # Quick Recap
@@ -22,21 +23,19 @@ an easier approach would be to forgo the Cut class and simply allow modules
 to be "prepended" to the class or module to which they are applied. So for
 instance we might write:
 
-```ruby
-  class C
-    def x(s); "#{s}" ; end
-  end
+    class C
+      def x(s); "#{s}" ; end
+    end
 
-  module A
-    def x(s); '{' + s + '}' ; end
-  end
+    module A
+      def x(s); '{' + s + '}' ; end
+    end
 
-  class C
-    prepend A
-  end
+    class C
+      prepend A
+    end
 
-  C.new.x('hello')  #=> "{hello}"
-```
+    C.new.x('hello')  #=> "{hello}"
 
 Cut-based AOP is a general OOP design that can be applied to any
 object-oriented programming language. But for Ruby, the idea of `prepend`,
@@ -50,24 +49,22 @@ extending Ruby in any special way. The trick is simply to design classes
 and module to be "AOP-ready". Here is an example of the above using nothing
 more than standard Ruby.
 
-```ruby
-  class C
-    module Joinable
-      def x(s); "#{s}" ; end
+    class C
+      module Joinable
+        def x(s); "#{s}" ; end
+      end
+      include Joinable
     end
-    include Joinable
-  end
 
-  module A
-    def x(s); '{' + s + '}' ; end
-  end
+    module A
+      def x(s); '{' + s + '}' ; end
+    end
 
-  class C
-    include A
-  end
+    class C
+      include A
+    end
 
-  C.new.x('hello')  #=> "{hello}"
-```
+    C.new.x('hello')  #=> "{hello}"
 
 Pretty easy. We have simply encapsulate C's instance methods in a "Joinable"
 module, thus any new inclusions into C itself will actually come _before_
@@ -76,38 +73,34 @@ these methods.
 This of course raises the issue of including modules in the normal fashion,
 in which case we would need in include them in Joinable itself, e.g.
 
-```ruby
-  class C
-    module Joinable
-      include Foo
+    class C
+      module Joinable
+        include Foo
+      end
     end
-  end
-```
 
 We could facilitate this will a little bit of Ruby magic.
 
-```ruby
-  class Module
-    alias_method :_include, :include
+    class Module
+      alias_method :_include, :include
 
-    def include(*mods)
-      if const_defined?(:Joinable)
-        core = const_get(:Joinable)
-        core._include(*mods)
-      else
-        _include(*mods)
+      def include(*mods)
+        if const_defined?(:Joinable)
+          core = const_get(:Joinable)
+          core._include(*mods)
+        else
+          _include(*mods)
+        end
+      end
+
+      def prepend(*mods)
+        if const_defined?(:Joinable)
+          _include(*mods)
+        else
+          raise "#{self} is not Joinable"
+        end
       end
     end
-
-    def prepend(*mods)
-      if const_defined?(:Joinable)
-        _include(*mods)
-      else
-        raise "#{self} is not Joinable"
-      end
-    end
-  end
-```
 
 This is a very simplistic implementation, but a robust implementation would
 be only slightly more complex. Now, as along as we use <code>Joinable</code>,

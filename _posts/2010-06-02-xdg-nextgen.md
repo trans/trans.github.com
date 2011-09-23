@@ -3,6 +3,7 @@ title      : XDG Next Generation
 author     : trans
 categories : [xdg, fhs]
 date       : 2010-06-02
+layout     : post
 published  : false
 ---
 
@@ -22,7 +23,7 @@ over configuration. By doing so the standard can be further simplified and thus
 become even more trivial, and hopfully in this manner become widely supported to 
 the benefit of us all.
 
-  ~/.cache
-  ~/.config
-  ~/.data
+    ~/.cache
+    ~/.config
+    ~/.data
 

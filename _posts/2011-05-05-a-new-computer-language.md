@@ -3,6 +3,7 @@ title      : A New Programming Language
 author     : trans
 categories : [ruby, programming]
 date       : 2011-05-05
+layout     : post
 published  : false
 ---
 
@@ -40,23 +41,22 @@ the *semantic specification* of the problem set.
 The next layer is the *procedural scheduling*. This is written with a simple
 DSL over a procedural language, such as Ruby, Javascript or forth++.
 
-```ruby
-  When "requires a deck of cards" do
-     cards = Hash[*%{! 1 @ 2 # 3 $ 4 % 5 ^ 6 & 7 * 8 ( 9 ) 0}]
-    @cards = cards.map{ |k,v| Card.new(k,v) }
-  end
 
-  class Card
-    attr :face
-    attr :back
-    def initialize(face, back)
-      @face, @back = face, back
+    When "requires a deck of cards" do
+      cards = Hash[*%{! 1 @ 2 # 3 $ 4 % 5 ^ 6 & 7 * 8 ( 9 ) 0}]
+      @cards = cards.map{ |k,v| Card.new(k,v) }
     end
-    def match?(guess)
-      guess == back
+
+    class Card
+      attr :face
+      attr :back
+      def initialize(face, back)
+        @face, @back = face, back
+      end
+      def match?(guess)
+        guess == back
+      end
     end
-  end
-```
 
 The procedural scheduling consists a set of match rules. As the the
 semantic sepcification is read-in, it triggers events in the procedural
@@ -66,43 +66,42 @@ so create a Card class.
 
 Lets continue...
 
-```ruby
-  When "dealer takes a card" do
-    if @cards.empty?
-      @cards = @discard_pile.shuffle
+
+    When "dealer takes a card" do
+      if @cards.empty?
+        @cards = @discard_pile.shuffle
+      end
+      @dealers_card = @cards.pop
     end
-    @dealers_card = @cards.pop
-  end
 
-  When "shows the back of the card" do
-    print "#{@dealers_card} ?"
-  end
-
-  When "trys to guess" do
-    ans = ask
-    if ans == @dealers_card.match(ans)
-      @right ||= 0
-      @right += 1
-    else
-      @wrong ||= 0
-      @wrong += 1
+    When "shows the back of the card" do
+      print "#{@dealers_card} ?"
     end
-  end
 
-  When "winning player is one who gets 99%" do
-    if 0.99 == (@right / @right + @wrong)
-      puts "You Win!"
-      exit
-    else
-      goto "dealer takes a card"
+    When "trys to guess" do
+      ans = ask
+      if ans == @dealers_card.match(ans)
+        @right ||= 0
+        @right += 1
+      else
+        @wrong ||= 0
+        @wrong += 1
+      end
     end
-  end
 
-  When "places the card is the discard pile" do
-    @discard_pile ||= []
-    @discard_pile << @dealers_card
-  end
-```
+    When "winning player is one who gets 99%" do
+      if 0.99 == (@right / @right + @wrong)
+        puts "You Win!"
+        exit
+      else
+        goto "dealer takes a card"
+      end
+    end
+
+    When "places the card is the discard pile" do
+      @discard_pile ||= []
+      @discard_pile << @dealers_card
+    end
 
 We are not quite finished yet, but we are far enough along to really
 demonstrate the magic of this approach --and after all are a'mamatter

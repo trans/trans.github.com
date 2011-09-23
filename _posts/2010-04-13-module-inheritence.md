@@ -1,6 +1,6 @@
 ---
 title      : A Case for Module Inheritance
-author     : Trans
+author     : trans
 categories : [ruby]
 date       : 2010-04-13
 layout     : post
@@ -53,23 +53,21 @@ It seems to me the truly fantastic solution to this would be if one module
 could inherit from another just as we do with classes. And honestly, is there
 really any reason we shouldn't be able to do this?
 
-```ruby
-  module Language
+    module Language
 
-    def self.words(string)
-      # generic definition
+      def self.words(string)
+        # generic definition
+      end
+
     end
 
-  end
+    module English < Language
 
-  module English < Language
+      def self.words(string)
+        # override
+      end
 
-    def self.words(string)
-      # override
     end
-
-  end
-```
 
 What is nice about this, something I know that Matz will appreciate, is that
 it preserves single-inheritance, in contrast to the alternative of
@@ -77,15 +75,13 @@ turning <code>include</code> into a multiple-inheritance mechanism. And
 for the love of code beauty, it would mean at least a reduction in use of the
 all too common: 
 
-```ruby
-  def self.included(base)
-    base.extend ClassMethods
-  end
+    def self.included(base)
+      base.extend ClassMethods
+    end
 
-  module ClassMethods
-    # ...
-  end
-```
+    module ClassMethods
+      # ...
+    end
 
 Not only is it ugly, it is even worse for those trying to inherit and
 extend the behavior. Something more elegant is clearly desirable, and

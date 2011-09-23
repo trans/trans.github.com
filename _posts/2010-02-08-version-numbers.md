@@ -1,6 +1,6 @@
 ---
 title      : Damn Version Numbers
-author     : Trans
+author     : trans
 date       : 2010-02-08
 categories : [versions, scm, development]
 layout     : post
@@ -54,16 +54,12 @@ after date versions, a la Ubuntu, and augmented with informational
 letter tags to tell us what kind of release with which we are dealing.
 Let's consider some possible examples.
 
-```html
-<pre>
    10.01.04      # major release
    10.01.05-m    # minor interface changes from previous release
    10.01.06-p    # patch release / bug fix to previous release
    10.02.11-s    # security fix to previous version
    10.04.06-a    # alpha release of next major version
    10.09.21-b    # beta release of next major version
-</pre>
-```
 
 That's a refreshingly simple scheme. All we would have to manually
 specify at release time is the type via a single letter, the dating

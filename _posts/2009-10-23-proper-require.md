@@ -3,6 +3,7 @@ title      : A Proper Require
 author     : trans
 categories : [ruby, require]
 date       : 2009-10-23
+layout     : post
 ---
 
 Recently I [posted](http://groups.google.com/group/ruby-talk-google/browse_thread/thread/6a46c837ffc84761)
@@ -10,9 +11,7 @@ a light diatribe against improper use of relative requires in Ruby programs.
 I pointed-out a bit of code, I recently came across, that added a relative path to Ruby's
 <code>$LOAD_PATH</code> from within a <code>bin/</code> executable.
 
-```ruby
-  $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
-```
+    $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
 
 I suspect the author little realized that his program would not function if it were installed
 according to traditional [FHS](http://www.pathname.com/fhs/)-based standards. And I fear many

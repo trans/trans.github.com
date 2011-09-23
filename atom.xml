@@ -21,7 +21,7 @@ layout: nil
    <updated>{{ post.date | date_to_xmlschema }}</updated>
    <id>{{ site.url }}{{ post.id }}</id>
    <content type="html">
-     {{ post.summary | xml_escape }}
+     {{ post.content | xml_escape }}
      [<a href="{{ post.full_url }}">Read More</a>]
    </content>
  </entry>

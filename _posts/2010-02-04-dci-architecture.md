@@ -1,6 +1,6 @@
 ---
 title      : Trygve Reenskaug's DCI Architecture
-author     : Trans
+author     : trans
 date       : 2010-02-04
 categories : [oop, development]
 layout     : post

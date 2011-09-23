@@ -3,6 +3,7 @@ title      : Quiet Revolt Against the FHS?
 author     : trans
 categories : [ruby, require]
 date       : 2009-10-26
+layout     : post
 ---
 
 Prompted by the disocvery of improper use of relative require in a number or Ruby project's executables, my last [post](http://protuils.github.com/2009/10/proper-require.html) dicussed <i>why</i> and <i>when</i> to avoid using relative require. To summarize, there are two broad reasons to avoid relative loading. The first is simply YAGNI. In most cases you simply don't need to do it. Your script is on the $LOAD_PATH and all that is needed is the normal <code>require 'mylib/mydir/myfile'</code> to load it. The second, and up until today I felt the more important concern, is conformance to the [File Hierarchy Standard](http://www.pathname.com/fhs/). While there is plenty of room to use relative requires and not tread on the FHS, it is easy enough to run afoul if one is not careful and aware of the issues. Such was the case with the executables.

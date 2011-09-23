@@ -1,6 +1,6 @@
 ---
 title      : Directory-based Configuration
-author     : Trans
+author     : trans
 date       : 2010-05-13
 categories : [pom, metadata, configuration]
 layout     : post
@@ -16,29 +16,25 @@ use the file system itself.
 
 For example, lets say we have a config file `pom.yaml`:
 
-```yaml
-  ---
-  name: POM
-  summary: Project Object Model for Ruby
-  authors:
-    - Trans
-  sites:
-    homepage: http://proutils.github.com/pom
-    development: http://github.com/proutils/pom
-```
+    ---
+    name: POM
+    summary: Project Object Model for Ruby
+    authors:
+      - Trans
+    sites:
+      homepage: http://proutils.github.com/pom
+      development: http://github.com/proutils/pom
 
 Using the a directory-based configuration system instead
 we would have this file hierachy:
 
-```
-  pom/
-    name
-    summary
-    authors
-    sites/
-      homepage
-      development
-```
+    pom/
+      name
+      summary
+      authors
+      sites/
+        homepage
+        development
 
 And each file would contain the data in plain text given in the YAML example above.
 
