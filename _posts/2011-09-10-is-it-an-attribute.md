@@ -1,4 +1,10 @@
-# Is It An Attribute?
+---
+title      : Is it an Attribute?
+author     : trans
+categories : [attributes, oop]
+date       : 2011-09-10
+layout     : post
+---
 
 What exactly is an attribute? In OOP a Ruby attribute is what is generally
 referred to as an <i>accessor method</i>. An accessor method is a means of
