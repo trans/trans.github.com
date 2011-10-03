@@ -65,28 +65,19 @@ defined as follows:
       attr_writer :baz
 
       # Method #foo.
-      def foo
-        @foo + 1
-      end
+      def foo; @foo + 1; end
 
       # Method #foo=.
-      def foo=(i)
-        @foo = i.to_i - 1
-      end
+      def foo=(i); @foo = i.to_i - 1; end
 
       # Method #bar.
-      def bar
-      end
+      def bar; end
 
       # Method #bar=(i)
-      def bar=(i)
-        @bar = i
-      end
+      def bar=(i); @bar = i; end
 
       # Method #baz.
-      def baz
-        @baz
-      end
+      def baz; @baz; end
     end
 
 In the case of <a href="/examples/is-it-an-attribute/rdoc/index.html">RDoc</a>,
