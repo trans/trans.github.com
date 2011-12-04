@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>7R4N5.C0D3 - Home</title>
+    <title>7R4N5.C0D3 - A Case for Module Inheritance</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -130,53 +130,102 @@
     </div>
 
 		<article>
+			<h1>A Case for Module Inheritance</h1>
     	<div id="content">
-<p>Welcome to the 7ranscode Wiki!</p>
+<h1>A Case for Module Inheritance</h1>
 
-<h2>2011</h2>
+<p>I love beautifully written code. Unfortunately the realities of the
+language sometimes clash with requirements of the implementation. While
+Ruby goes a long way toward making beautifully written code common place.
+It still has some shortcomings I'd like to see improved.</p>
 
-<ul><li><a class="internal present" href="/2011-10-04-do-you-know-denumerable">2011 10 04 Do You Know Denumerable</a></li>
-<li><a class="internal present" href="/2011-10-02-indentured-stringitude">2011 10 02 Indentured Stringitude</a></li>
-<li><a class="internal present" href="/2011-09-10-is-it-an-attribute">2011 09 10 Is it an Attribute</a></li>
-<li><a class="internal present" href="/2011-07-09-We-Don%27t-Need-No-Stinking-Modules">2011 07 09 We Don't Need No Stinking Modules</a></li>
-</ul><h2>2010</h2>
+<p>Case in point are my endeavors of the last few days. I've been struggling
+to re-structure the code of the <a href="http://github.com/rubyworks/english/">English</a>
+project. The primary purpose of the project is to provide extension methods to String,
+pertaining to the English language. A good example are number inflection
+methods #singular and #plural. At the same time I am trying to design
+the library in such a way that other language modules can be built following
+the same basic structure, and they could all work together if need be.</p>
 
-<ul><li><a class="internal present" href="/2010-10-13-ruby-aop-made-simple">2010 10 13 Ruby AOP Made Simple</a></li>
-<li><a class="internal present" href="/2010-06-02-xdg-next-generation">2010 06 02 XDG Next Generation</a></li>
-<li><a class="internal present" href="/2010-05-19-a-second-look-at-bundler">2010 05 19 A Second Look at Bundler</a></li>
-<li><a class="internal present" href="/2010-05-15-gem-crazy">2010 05 15 Gem Crazy</a></li>
-<li><a class="internal present" href="/2010-05-13-directory-based-configuration">2010 05 13 Directory-based Configuration</a></li>
-<li><a class="internal present" href="/2010-04-13-a-case-for-module-inheritance">2010 04 13 A Case for Module Inheritance</a></li>
-<li><a class="internal present" href="/2010-03-20-gutopia-revisited">2010 03 20 GUtopIa Revisited</a></li>
-<li><a class="internal present" href="/2010-02-25-code-identity">2010 02 25 Code Identity</a></li>
-<li><a class="internal present" href="/2010-02-14-mocking-mocks">2010 02 14 Mocking Mocks</a></li>
-<li><a class="internal present" href="/2010-02-08-those-damn-version-numbers">2010 02 08 Those Damn Version Numbers</a></li>
-<li><a class="internal present" href="/2010-02-04-trygve-reenskaug%27s-dci-architecture">2010 02 04 Trygve Reenskaug's DCI Architecture</a></li>
-</ul><h2>2009</h2>
+<p>In the course of this endeavor I decided the best approach, keeping the future
+squarely in mind, is to create a Language module, upon which English depends,
+to house all the common logic of (most) languages. For example, the logic for
+storing plural and singular special cases might be a good candidate since nearly
+every language has to account for these. So the relationship between English 
+and Language is clearly one of "inheritance" --I want to encapsulate logic at
+a general level of abstraction, upon which more specific cases can inherit and
+augment to fit their particular requirements.</p>
 
-<ul><li><a class="internal present" href="/2009-12-13-a-failure-of-precedence">2009 12 13 A Failure of Precedence</a></li>
-<li><a class="internal present" href="/2009-10-26-quiet-revolt-against-the-fhs">2009 10 26 Quiet Revolt Against the FHS</a></li>
-<li><a class="internal present" href="/2009-10-23-a-proper-require">2009 10 23 A Proper Require</a></li>
-<li><a class="internal present" href="/2009-06-07-wxruby-for-the-lazy">2009 06 07 WxRuby for the Lazy</a></li>
-<li><a class="internal present" href="/2009-02-10-xml-meet-css">2009 02 10 XML meet CSS</a></li>
-<li><a class="internal present" href="/2009-01-24-what%27s-uf-got-on-xml">2009 01 24 What's uf got on xml</a></li>
-</ul><h2>2008</h2>
+<p>In Ruby this kind of relationship is generally handled by class inheritance.
+But here I run into an issue. <code>English</code> and <code>Language</code>
+are modules, and they are modules because they are <i>singleton</i>. Now even
+though we can include a module into another, which is akin to class inheritance,
+it does not work quite like class inheritance. For one thing, metaclass methods
+are not inherited via <code>include</code>. Of course, I could tip-toe around
+this issue by using <code>extend</code>, since in this case I do not need
+includable instance methods. But there is a much more subtle issues that
+raises it's head: the dreaded Double Inclusion Problem. That's a serious
+headache in my case because I want my end users to have the option to load
+only the components they want to use as needed, rather than forcing them to
+load the entire system up-front.</p>
 
-<ul><li><a class="internal present" href="/2008-11-04-the-yadsl-rule">2008 11 04 The YADSL Rule</a></li>
-<li><a class="internal present" href="/2008-10-06-this-old-hash">2008 10 06 This Old Hash</a></li>
-<li><a class="internal present" href="/2008-09-28-if-and-oopy-if">2008 09 28 If and OOPy If</a></li>
-<li><a class="internal present" href="/2008-09-12-taskable">2008 09 12 Taskable</a></li>
-</ul><h2>Drafts</h2>
+<p>So, despite the many
+<a href="http://www.google.com/search?q=singleton+pattern+evil">calls for the death
+of the Singleton Pattern</a>, it looks like I might require it for my implementation
+of English. Using modules simply comes with too many headaches and hackish work arounds.
+Now I agree with all the Singleton nay-sayers. It is sort of an anti-pattern to 
+create a class that will only ever have one instantiation and no state, but
+the trade-off here is worse. If only...</p>
 
-<ul><li><a class="internal absent" href="/DRAFT-2011-09-08-Autoload-Smells-Like-Denmark">DRAFT 2011 09 08 Autoload Smells Like Denmark</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-I-Heart-High-Order-Functions">DRAFT 2011 09 07 I Heart High-Order Functions</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-Instance-Variables-as-Syntax-Sugar">DRAFT 2011 09 07 Instance Variables as Syntax Sugar</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-Kill-the-Proxy-and-Save-Toplevel">DRAFT 2011 09 07 Kill the Proxy and Save Toplevel</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-06-Give-Me-Your-Common-Core-Extensions">DRAFT 2011 09 06 Give Me Your Common Core Extensions</a></li>
-<li><a class="internal present" href="/Draft-2011-09-05-on-the-meaninglessness-of-class-vs-module">DRAFT 2011 09 05 On the Meaninglessness of Class vs Module</a></li>
-<li><a class="internal present" href="/Draft-2011-08-19">DRAFT 2011 08 19</a></li>
-<li><a class="internal present" href="/Draft-2011-05-05-a-new-programming-language">DRAFT 2011 05 05 A New Programming Language</a></li>
-</ul>
+<p>It seems to me the truly fantastic solution to this would be if one module
+could inherit from another just as we do with classes. And honestly, is there
+really any reason we shouldn't be able to do this?</p>
+
+<pre>
+  <code>module Language
+
+  def self.words(string)
+    # generic definition
+  end
+
+end
+
+module English &lt; Language
+
+  def self.words(string)
+    # override
+  end
+
+end
+</code>
+</pre>
+
+<p>What is nice about this, something I know that Matz will appreciate, is that
+it preserves single-inheritance, in contrast to the alternative of
+turning <code>include</code> into a multiple-inheritance mechanism. And
+for the love of code beauty, it would mean at least a reduction in use of the
+all too common: </p>
+
+<pre>
+  <code>def self.included(base)
+  base.extend ClassMethods
+end
+
+module ClassMethods
+  # ...
+end
+</code>
+</pre>
+
+<p>Not only is it ugly, it is even worse for those trying to inherit and
+extend the behavior. Something more elegant is clearly desirable, and
+Module Inheritance, as I have demonstrated here, might be just the ticket.</p>
+
+<hr /><p>title      : A Case for Module Inheritance
+author     : trans
+categories : [ruby]
+date       : 2010-04-13
+layout     : post</p>
 			</div>
 		</article>
 

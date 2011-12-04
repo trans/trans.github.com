@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>7R4N5.C0D3 - Home</title>
+    <title>7R4N5.C0D3 - Quiet Revolt Against the FHS?</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -130,53 +130,31 @@
     </div>
 
 		<article>
+			<h1>Quiet Revolt Against the FHS?</h1>
     	<div id="content">
-<p>Welcome to the 7ranscode Wiki!</p>
+<h1>Quiet Revolt Against the FHS?</h1>
 
-<h2>2011</h2>
+<p>Prompted by the disocvery of improper use of relative require in a number or Ruby project's executables, my last <a href="http://protuils.github.com/2009/10/proper-require.html">post</a> dicussed <i>why</i> and <i>when</i> to avoid using relative require. To summarize, there are two broad reasons to avoid relative loading. The first is simply YAGNI. In most cases you simply don't need to do it. Your script is on the $LOAD_PATH and all that is needed is the normal <code>require 'mylib/mydir/myfile'</code> to load it. The second, and up until today I felt the more important concern, is conformance to the <a href="http://www.pathname.com/fhs/">File Hierarchy Standard</a>. While there is plenty of room to use relative requires and not tread on the FHS, it is easy enough to run afoul if one is not careful and aware of the issues. Such was the case with the executables.</p>
 
-<ul><li><a class="internal present" href="/2011-10-04-do-you-know-denumerable">2011 10 04 Do You Know Denumerable</a></li>
-<li><a class="internal present" href="/2011-10-02-indentured-stringitude">2011 10 02 Indentured Stringitude</a></li>
-<li><a class="internal present" href="/2011-09-10-is-it-an-attribute">2011 09 10 Is it an Attribute</a></li>
-<li><a class="internal present" href="/2011-07-09-We-Don%27t-Need-No-Stinking-Modules">2011 07 09 We Don't Need No Stinking Modules</a></li>
-</ul><h2>2010</h2>
+<p>Now I have discovered that another popular Ruby program is "broken" with regards to the FHS -- RDoc. In more recent versions, RDoc designed it's auto-loading of 3rd party templates to use <code>lib/rdoc/discover.rb</code>. In other words, if you want to create a template "plug-in" for RDoc you need to have a <code>lib/rdoc/discover.rb</code> file in your project in which you require the file(s) that contain your actual plug-in code. There is one serious problem with this. If more than one such 3rd-party template project is installed via an old-fashioned site_ruby install (eg. using setup.rb), then the last installed project's <code>discover.rb</code> file will clobber the prior's.</p>
 
-<ul><li><a class="internal present" href="/2010-10-13-ruby-aop-made-simple">2010 10 13 Ruby AOP Made Simple</a></li>
-<li><a class="internal present" href="/2010-06-02-xdg-next-generation">2010 06 02 XDG Next Generation</a></li>
-<li><a class="internal present" href="/2010-05-19-a-second-look-at-bundler">2010 05 19 A Second Look at Bundler</a></li>
-<li><a class="internal present" href="/2010-05-15-gem-crazy">2010 05 15 Gem Crazy</a></li>
-<li><a class="internal present" href="/2010-05-13-directory-based-configuration">2010 05 13 Directory-based Configuration</a></li>
-<li><a class="internal present" href="/2010-04-13-a-case-for-module-inheritance">2010 04 13 A Case for Module Inheritance</a></li>
-<li><a class="internal present" href="/2010-03-20-gutopia-revisited">2010 03 20 GUtopIa Revisited</a></li>
-<li><a class="internal present" href="/2010-02-25-code-identity">2010 02 25 Code Identity</a></li>
-<li><a class="internal present" href="/2010-02-14-mocking-mocks">2010 02 14 Mocking Mocks</a></li>
-<li><a class="internal present" href="/2010-02-08-those-damn-version-numbers">2010 02 08 Those Damn Version Numbers</a></li>
-<li><a class="internal present" href="/2010-02-04-trygve-reenskaug%27s-dci-architecture">2010 02 04 Trygve Reenskaug's DCI Architecture</a></li>
-</ul><h2>2009</h2>
+<p>As a gem user you might not think it a big deal, but I can tell you that Linux distro maintainers do care. Any Ruby library they decide is worthy of a distro package, in particular a <code>.deb</code> package, they must ensure it conforms to the FHS. <a href="http://facets.rubyforge.org">Ruby Facets</a>, for instance, is slightly difficult in site install because it has two separate load paths. I received more that one nasty email about that when I no longer shipped a <code>setup.rb</code> script with the package. I have since updated the stand-alone version of <a href="http://proutils.github.com/setup">Ruby Setup</a> to handle such an install properly so long a <code>meta/loadpath</code> file is provided.</p>
 
-<ul><li><a class="internal present" href="/2009-12-13-a-failure-of-precedence">2009 12 13 A Failure of Precedence</a></li>
-<li><a class="internal present" href="/2009-10-26-quiet-revolt-against-the-fhs">2009 10 26 Quiet Revolt Against the FHS</a></li>
-<li><a class="internal present" href="/2009-10-23-a-proper-require">2009 10 23 A Proper Require</a></li>
-<li><a class="internal present" href="/2009-06-07-wxruby-for-the-lazy">2009 06 07 WxRuby for the Lazy</a></li>
-<li><a class="internal present" href="/2009-02-10-xml-meet-css">2009 02 10 XML meet CSS</a></li>
-<li><a class="internal present" href="/2009-01-24-what%27s-uf-got-on-xml">2009 01 24 What's uf got on xml</a></li>
-</ul><h2>2008</h2>
+<p>But now I have to wonder. If RDoc has a site install flaw in it's latest design, and the aforementioned use of relative loading in bin scripts in other projects is likewise flawed, not to mention the numerous other violations that are surely out there... Is there a quiet revolution against the FHS going-on? Perhaps a revolution by default, because people don't know any better or forget to take it into account?</p>
 
-<ul><li><a class="internal present" href="/2008-11-04-the-yadsl-rule">2008 11 04 The YADSL Rule</a></li>
-<li><a class="internal present" href="/2008-10-06-this-old-hash">2008 10 06 This Old Hash</a></li>
-<li><a class="internal present" href="/2008-09-28-if-and-oopy-if">2008 09 28 If and OOPy If</a></li>
-<li><a class="internal present" href="/2008-09-12-taskable">2008 09 12 Taskable</a></li>
-</ul><h2>Drafts</h2>
+<p>Honestly, I have to say I hope so. In years past I had attempted to rail against the FHS. I even used <a href="http://gobolinux.org/">GoboLinux</a> as my main platform for a while. But as much as I would spout about the need to move beyond the FHS, along with <a href="http://gobolinux.org/index.php?lang=en_US&amp;page=doc/articles/clueless">other voices</a>, there never seemed to be any progress. We were stuck. And so I had given up and settled myself with the FHS way of doing things. (No doubt, this accounts in part for why I am so acutely aware Ruby code  that breaks under the standard.) But I have never been happy with it. I could only hope that one day, somehow, it would change. And maybe it has...</p>
 
-<ul><li><a class="internal absent" href="/DRAFT-2011-09-08-Autoload-Smells-Like-Denmark">DRAFT 2011 09 08 Autoload Smells Like Denmark</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-I-Heart-High-Order-Functions">DRAFT 2011 09 07 I Heart High-Order Functions</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-Instance-Variables-as-Syntax-Sugar">DRAFT 2011 09 07 Instance Variables as Syntax Sugar</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-Kill-the-Proxy-and-Save-Toplevel">DRAFT 2011 09 07 Kill the Proxy and Save Toplevel</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-06-Give-Me-Your-Common-Core-Extensions">DRAFT 2011 09 06 Give Me Your Common Core Extensions</a></li>
-<li><a class="internal present" href="/Draft-2011-09-05-on-the-meaninglessness-of-class-vs-module">DRAFT 2011 09 05 On the Meaninglessness of Class vs Module</a></li>
-<li><a class="internal present" href="/Draft-2011-08-19">DRAFT 2011 08 19</a></li>
-<li><a class="internal present" href="/Draft-2011-05-05-a-new-programming-language">DRAFT 2011 05 05 A New Programming Language</a></li>
-</ul>
+<p>Are those of you using RubyGems, and using relative requires, ready to stand with your code, in defiance of the FHS, indifferent to site_ruby installation? Can we finally all say "f@#k setup.rb"? Can I discontinue my maintenance of the setup.rb code base? Can I now feel free to use relative require and RDoc-like <code>discover.rb</code>'s to my joyous hearts abandon?</p>
+
+<p>I wonder, is this kind of thing occurring in other language domains too, such as Perl, Python and Rebol? It would appear so. I recently learned, as one might expect, that the guys over at GoboLinux are on the forefront of this. Check out the article, <a href="http://mwh.geek.nz/2009/07/23/an-overview-of-systemaliens/">An overview of /System/Aliens</a>.</p>
+
+<p>Is the revolt under way?</p>
+
+<hr /><p>title      : Quiet Revolt Against the FHS?
+author     : trans
+categories : [ruby, require]
+date       : 2009-10-26
+layout     : post</p>
 			</div>
 		</article>
 

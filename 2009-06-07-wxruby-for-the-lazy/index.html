@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>7R4N5.C0D3 - Home</title>
+    <title>7R4N5.C0D3 - WxRuby for the Lazy</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -130,53 +130,27 @@
     </div>
 
 		<article>
+			<h1>WxRuby for the Lazy</h1>
     	<div id="content">
-<p>Welcome to the 7ranscode Wiki!</p>
+<h1>WxRuby for the Lazy</h1>
 
-<h2>2011</h2>
+<p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It's far from the "Ruby Way".</p>
 
-<ul><li><a class="internal present" href="/2011-10-04-do-you-know-denumerable">2011 10 04 Do You Know Denumerable</a></li>
-<li><a class="internal present" href="/2011-10-02-indentured-stringitude">2011 10 02 Indentured Stringitude</a></li>
-<li><a class="internal present" href="/2011-09-10-is-it-an-attribute">2011 09 10 Is it an Attribute</a></li>
-<li><a class="internal present" href="/2011-07-09-We-Don%27t-Need-No-Stinking-Modules">2011 07 09 We Don't Need No Stinking Modules</a></li>
-</ul><h2>2010</h2>
+<p>So how did I mange to get fairly nice Ruby code despite a binding that is essentially a straight port of the underlying C API? I built it from the bottom-up using a lazy coding technique. And I mean "bottom-up" literally --the following code might actually be easier to read if you start from the bottom and work your way up to the top. The trick is to break down one's interface into individual widgets and create an instance method for each using the <code>||=</code> memoization trick. </p>
 
-<ul><li><a class="internal present" href="/2010-10-13-ruby-aop-made-simple">2010 10 13 Ruby AOP Made Simple</a></li>
-<li><a class="internal present" href="/2010-06-02-xdg-next-generation">2010 06 02 XDG Next Generation</a></li>
-<li><a class="internal present" href="/2010-05-19-a-second-look-at-bundler">2010 05 19 A Second Look at Bundler</a></li>
-<li><a class="internal present" href="/2010-05-15-gem-crazy">2010 05 15 Gem Crazy</a></li>
-<li><a class="internal present" href="/2010-05-13-directory-based-configuration">2010 05 13 Directory-based Configuration</a></li>
-<li><a class="internal present" href="/2010-04-13-a-case-for-module-inheritance">2010 04 13 A Case for Module Inheritance</a></li>
-<li><a class="internal present" href="/2010-03-20-gutopia-revisited">2010 03 20 GUtopIa Revisited</a></li>
-<li><a class="internal present" href="/2010-02-25-code-identity">2010 02 25 Code Identity</a></li>
-<li><a class="internal present" href="/2010-02-14-mocking-mocks">2010 02 14 Mocking Mocks</a></li>
-<li><a class="internal present" href="/2010-02-08-those-damn-version-numbers">2010 02 08 Those Damn Version Numbers</a></li>
-<li><a class="internal present" href="/2010-02-04-trygve-reenskaug%27s-dci-architecture">2010 02 04 Trygve Reenskaug's DCI Architecture</a></li>
-</ul><h2>2009</h2>
+<p>You can see from the following code I was able to apply this "trick" to everything but toolbar buttons (aka 'tools'). This is because the toolbar itself is needed to create them. So I simply defined attributes for each tool, but actually created the tool buttons in the toolbar's method. Have a look.</p>
 
-<ul><li><a class="internal present" href="/2009-12-13-a-failure-of-precedence">2009 12 13 A Failure of Precedence</a></li>
-<li><a class="internal present" href="/2009-10-26-quiet-revolt-against-the-fhs">2009 10 26 Quiet Revolt Against the FHS</a></li>
-<li><a class="internal present" href="/2009-10-23-a-proper-require">2009 10 23 A Proper Require</a></li>
-<li><a class="internal present" href="/2009-06-07-wxruby-for-the-lazy">2009 06 07 WxRuby for the Lazy</a></li>
-<li><a class="internal present" href="/2009-02-10-xml-meet-css">2009 02 10 XML meet CSS</a></li>
-<li><a class="internal present" href="/2009-01-24-what%27s-uf-got-on-xml">2009 01 24 What's uf got on xml</a></li>
-</ul><h2>2008</h2>
+<p>[gist id="182301"]</p>
 
-<ul><li><a class="internal present" href="/2008-11-04-the-yadsl-rule">2008 11 04 The YADSL Rule</a></li>
-<li><a class="internal present" href="/2008-10-06-this-old-hash">2008 10 06 This Old Hash</a></li>
-<li><a class="internal present" href="/2008-09-28-if-and-oopy-if">2008 09 28 If and OOPy If</a></li>
-<li><a class="internal present" href="/2008-09-12-taskable">2008 09 12 Taskable</a></li>
-</ul><h2>Drafts</h2>
+<p>The thing to notice, if you haven't caught it yet, is how calling <code>#search_toolbar</code> leads to calling <code>#search_sizer</code> which in turn leads to calling <code>#search_panel</code>, and so forth all the way to the top <code>#frame_panel</code>. This code is a striped down version of actual code I am using. I hope it helps others create wxRuby application more easily. As I said in my previous post, I found in mind-numbingly difficult to create WxRuby interfaces until I worked out this approach. WxRuby is still a difficult API to master, but this technique makes the effort more manageable, and therefore more likely to succeed. </p>
 
-<ul><li><a class="internal absent" href="/DRAFT-2011-09-08-Autoload-Smells-Like-Denmark">DRAFT 2011 09 08 Autoload Smells Like Denmark</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-I-Heart-High-Order-Functions">DRAFT 2011 09 07 I Heart High-Order Functions</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-Instance-Variables-as-Syntax-Sugar">DRAFT 2011 09 07 Instance Variables as Syntax Sugar</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-Kill-the-Proxy-and-Save-Toplevel">DRAFT 2011 09 07 Kill the Proxy and Save Toplevel</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-06-Give-Me-Your-Common-Core-Extensions">DRAFT 2011 09 06 Give Me Your Common Core Extensions</a></li>
-<li><a class="internal present" href="/Draft-2011-09-05-on-the-meaninglessness-of-class-vs-module">DRAFT 2011 09 05 On the Meaninglessness of Class vs Module</a></li>
-<li><a class="internal present" href="/Draft-2011-08-19">DRAFT 2011 08 19</a></li>
-<li><a class="internal present" href="/Draft-2011-05-05-a-new-programming-language">DRAFT 2011 05 05 A New Programming Language</a></li>
-</ul>
+<p>For another example of building structures lazily, have a look at <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/122593">my solution</a> for <a href="http://rubyquiz.com/quiz10.html">Ruby Quiz 10 - Crosswords</a>.</p>
+
+<hr /><p>title      : WxRuby for the Lazy
+author     : trans
+categories : [ruby, gui]
+date       : 2009-06-07
+layout     : post</p>
 			</div>
 		</article>
 

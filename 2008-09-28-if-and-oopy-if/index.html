@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>7R4N5.C0D3 - Home</title>
+    <title>7R4N5.C0D3 - An Ally OOP for If-Conditions</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -130,53 +130,108 @@
     </div>
 
 		<article>
+			<h1>An Ally OOP for If-Conditions</h1>
     	<div id="content">
-<p>Welcome to the 7ranscode Wiki!</p>
+<h1>An Ally OOP for If-Conditions</h1>
 
-<h2>2011</h2>
+<p>Ruby takes a unique approach to conditional evaluation: <i>All
+objects are equivalent to <code>true</code> except <code>nil</code>
+and <code>false</code></i>. No doubt this is a more object-oriented
+approach than, say, C's use of <code>0</code> as false, but it's far
+from the ideal of OOP all the way down, as any
+<a href="http://pozorvlak.livejournal.com/94558.html">Smalltalker</a>
+can attest.</p>
 
-<ul><li><a class="internal present" href="/2011-10-04-do-you-know-denumerable">2011 10 04 Do You Know Denumerable</a></li>
-<li><a class="internal present" href="/2011-10-02-indentured-stringitude">2011 10 02 Indentured Stringitude</a></li>
-<li><a class="internal present" href="/2011-09-10-is-it-an-attribute">2011 09 10 Is it an Attribute</a></li>
-<li><a class="internal present" href="/2011-07-09-We-Don%27t-Need-No-Stinking-Modules">2011 07 09 We Don't Need No Stinking Modules</a></li>
-</ul><h2>2010</h2>
+<p>Consider the following case. For a while now. I have wanted in my arsonal
+of Ruby classes a NullClass defined basically as:</p>
 
-<ul><li><a class="internal present" href="/2010-10-13-ruby-aop-made-simple">2010 10 13 Ruby AOP Made Simple</a></li>
-<li><a class="internal present" href="/2010-06-02-xdg-next-generation">2010 06 02 XDG Next Generation</a></li>
-<li><a class="internal present" href="/2010-05-19-a-second-look-at-bundler">2010 05 19 A Second Look at Bundler</a></li>
-<li><a class="internal present" href="/2010-05-15-gem-crazy">2010 05 15 Gem Crazy</a></li>
-<li><a class="internal present" href="/2010-05-13-directory-based-configuration">2010 05 13 Directory-based Configuration</a></li>
-<li><a class="internal present" href="/2010-04-13-a-case-for-module-inheritance">2010 04 13 A Case for Module Inheritance</a></li>
-<li><a class="internal present" href="/2010-03-20-gutopia-revisited">2010 03 20 GUtopIa Revisited</a></li>
-<li><a class="internal present" href="/2010-02-25-code-identity">2010 02 25 Code Identity</a></li>
-<li><a class="internal present" href="/2010-02-14-mocking-mocks">2010 02 14 Mocking Mocks</a></li>
-<li><a class="internal present" href="/2010-02-08-those-damn-version-numbers">2010 02 08 Those Damn Version Numbers</a></li>
-<li><a class="internal present" href="/2010-02-04-trygve-reenskaug%27s-dci-architecture">2010 02 04 Trygve Reenskaug's DCI Architecture</a></li>
-</ul><h2>2009</h2>
+<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">NullClass</span> <span class="o">&lt;</span> <span class="no">NilClass</span>
+      <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+        <span class="nb">self</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-<ul><li><a class="internal present" href="/2009-12-13-a-failure-of-precedence">2009 12 13 A Failure of Precedence</a></li>
-<li><a class="internal present" href="/2009-10-26-quiet-revolt-against-the-fhs">2009 10 26 Quiet Revolt Against the FHS</a></li>
-<li><a class="internal present" href="/2009-10-23-a-proper-require">2009 10 23 A Proper Require</a></li>
-<li><a class="internal present" href="/2009-06-07-wxruby-for-the-lazy">2009 06 07 WxRuby for the Lazy</a></li>
-<li><a class="internal present" href="/2009-02-10-xml-meet-css">2009 02 10 XML meet CSS</a></li>
-<li><a class="internal present" href="/2009-01-24-what%27s-uf-got-on-xml">2009 01 24 What's uf got on xml</a></li>
-</ul><h2>2008</h2>
+    <span class="no">NULL</span> <span class="o">=</span> <span class="no">NullClass</span><span class="o">.</span><span class="n">new</span>
 
-<ul><li><a class="internal present" href="/2008-11-04-the-yadsl-rule">2008 11 04 The YADSL Rule</a></li>
-<li><a class="internal present" href="/2008-10-06-this-old-hash">2008 10 06 This Old Hash</a></li>
-<li><a class="internal present" href="/2008-09-28-if-and-oopy-if">2008 09 28 If and OOPy If</a></li>
-<li><a class="internal present" href="/2008-09-12-taskable">2008 09 12 Taskable</a></li>
-</ul><h2>Drafts</h2>
+    <span class="k">def</span> <span class="nf">null</span>
+      <span class="no">NULL</span>
+    <span class="k">end</span>
+</pre>
+</div>
 
-<ul><li><a class="internal absent" href="/DRAFT-2011-09-08-Autoload-Smells-Like-Denmark">DRAFT 2011 09 08 Autoload Smells Like Denmark</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-I-Heart-High-Order-Functions">DRAFT 2011 09 07 I Heart High-Order Functions</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-Instance-Variables-as-Syntax-Sugar">DRAFT 2011 09 07 Instance Variables as Syntax Sugar</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-Kill-the-Proxy-and-Save-Toplevel">DRAFT 2011 09 07 Kill the Proxy and Save Toplevel</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-06-Give-Me-Your-Common-Core-Extensions">DRAFT 2011 09 06 Give Me Your Common Core Extensions</a></li>
-<li><a class="internal present" href="/Draft-2011-09-05-on-the-meaninglessness-of-class-vs-module">DRAFT 2011 09 05 On the Meaninglessness of Class vs Module</a></li>
-<li><a class="internal present" href="/Draft-2011-08-19">DRAFT 2011 08 19</a></li>
-<li><a class="internal present" href="/Draft-2011-05-05-a-new-programming-language">DRAFT 2011 05 05 A New Programming Language</a></li>
-</ul>
+
+<p>This object would greatly benefit fluent interfaces. Instead of returning
+<code>nil</code>, such intefaces could return <code>null</code>, and no 
+error would be thrown when invoking any method against it.</p>
+
+<div class="highlight"><pre>    <span class="n">obj</span> <span class="o">=</span> <span class="n">null</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">it</span><span class="o">.</span><span class="n">does</span><span class="o">.</span><span class="n">not</span><span class="o">.</span><span class="n">matter</span>  <span class="c1">#=&gt; null</span>
+</pre>
+</div>
+
+
+<p>Unfortunately <code>null</code> is not very viable in Ruby
+because <code>null</code> still evaluates as <code>true</code>
+when used as the expression of a condition. The fact remains,
+Ruby is hardcoded to see only the singleton instances of 
+<code>NilClass</code> and <code>FalseClass</code> as false.</p>
+
+<p>I've requested that <code>NullClass</code> be added to core Ruby in
+the past (as of yet to no avail) and though I still would like to
+see it included, it may be better still to take an altogether 
+object-oriented approach to conditions --in the spirit of Smalltalk.
+This would allow us to freely create "false" objects, like the
+<code>NullClass</code>, ourselves.</p>
+
+<p>The adoption of such a capability does not require the odd syntax 
+used by Smalltalk (<code>ifTrue</code> / <code>ifFalse</code>).
+Rather, it can take an approach more akin to Ruby's own <code>case</code>
+statements. As with <code>case</code>'s use of <code>#===</code>,
+a particular method would be used to evaluate the "truthiness" of
+a value. This would apply for all types of conditions: 
+<code>while</code>, <code>until</code>, etc. </p>
+
+<p>To clarify, let's say this special method is simply called #if, then...</p>
+
+<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">IfExample</span>
+      <span class="kp">attr</span> <span class="ss">:if</span>
+      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="vi">@if</span><span class="p">)</span>
+        <span class="vi">@if</span> <span class="o">=</span> <span class="k">if</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="no">IfExample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">x</span>
+      <span class="s2">"Yes"</span>
+    <span class="k">else</span>
+      <span class="s2">"No"</span>
+    <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>The result of this condition would be <code>"No"</code>.</p>
+
+<p>While it may not be an earth shattering adjustment, the additional
+flexibility opens up some interesting doors. Not only would classes
+like the previously mentioned <code>NullClass</code> become possible,
+but conditions themselves become <i>dynamically controllable</i>.</p>
+
+<p>For example, it would allow method probes to fully map method
+signatures (the Halting Problem not withstanding). This is not 
+currently possible in Ruby because a probe cannot pretend to evaluate
+to false in order to walk through the false side of a condition.</p>
+
+<p>The idea would require some getting used to --after all a simple 
+if-statement would no longer do what we Rubyists presently take 
+for granted. But then, that's the nature of progress, is it not?</p>
+
+<hr /><p>title      : If and OOPy If
+author     : trans
+date       : 2008-09-28
+categories : [ruby, nullclass]
+layout     : post</p>
 			</div>
 		</article>
 

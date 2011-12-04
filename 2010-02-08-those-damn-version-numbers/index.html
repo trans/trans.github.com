@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>7R4N5.C0D3 - Home</title>
+    <title>7R4N5.C0D3 - Those Damn Version Numnbers</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -130,53 +130,85 @@
     </div>
 
 		<article>
+			<h1>Those Damn Version Numnbers</h1>
     	<div id="content">
-<p>Welcome to the 7ranscode Wiki!</p>
+<h1>Those Damn Version Numnbers</h1>
 
-<h2>2011</h2>
+<p>Per the usual for a developer with too many projects on their hands,
+I am constantly on the lookout for new tools to make my work easier.
+Being the kind of person who likes to "do it themselves", I often
+end-up writing those tools. Recently I endeavored to make my life a bit
+easier by automating, at least in part, my project's version numbers.
+I thought, while only a partial help, that if I added a git post-commit
+hook that bumped the patch number one, at the very least I could push
+out patches without ever having to fuss with adjusting the version
+number manually.</p>
 
-<ul><li><a class="internal present" href="/2011-10-04-do-you-know-denumerable">2011 10 04 Do You Know Denumerable</a></li>
-<li><a class="internal present" href="/2011-10-02-indentured-stringitude">2011 10 02 Indentured Stringitude</a></li>
-<li><a class="internal present" href="/2011-09-10-is-it-an-attribute">2011 09 10 Is it an Attribute</a></li>
-<li><a class="internal present" href="/2011-07-09-We-Don%27t-Need-No-Stinking-Modules">2011 07 09 We Don't Need No Stinking Modules</a></li>
-</ul><h2>2010</h2>
+<p><a href="http://book.git-scm.com/5_git_hooks.html">Git hooks</a>,
+by the way, are a cinch to setup. Just edit the
+<tt>.git/hooks/xxx</tt> script and turn on its user-executable
+permission. As difficult as <tt>git</tt> itself can be to use at times,
+this was about as easy as it could get --Developer's Hog Heaven.</p>
 
-<ul><li><a class="internal present" href="/2010-10-13-ruby-aop-made-simple">2010 10 13 Ruby AOP Made Simple</a></li>
-<li><a class="internal present" href="/2010-06-02-xdg-next-generation">2010 06 02 XDG Next Generation</a></li>
-<li><a class="internal present" href="/2010-05-19-a-second-look-at-bundler">2010 05 19 A Second Look at Bundler</a></li>
-<li><a class="internal present" href="/2010-05-15-gem-crazy">2010 05 15 Gem Crazy</a></li>
-<li><a class="internal present" href="/2010-05-13-directory-based-configuration">2010 05 13 Directory-based Configuration</a></li>
-<li><a class="internal present" href="/2010-04-13-a-case-for-module-inheritance">2010 04 13 A Case for Module Inheritance</a></li>
-<li><a class="internal present" href="/2010-03-20-gutopia-revisited">2010 03 20 GUtopIa Revisited</a></li>
-<li><a class="internal present" href="/2010-02-25-code-identity">2010 02 25 Code Identity</a></li>
-<li><a class="internal present" href="/2010-02-14-mocking-mocks">2010 02 14 Mocking Mocks</a></li>
-<li><a class="internal present" href="/2010-02-08-those-damn-version-numbers">2010 02 08 Those Damn Version Numbers</a></li>
-<li><a class="internal present" href="/2010-02-04-trygve-reenskaug%27s-dci-architecture">2010 02 04 Trygve Reenskaug's DCI Architecture</a></li>
-</ul><h2>2009</h2>
+<p>Of course, I overlooked the simple fact that changing my project's
+version file would itself need to be committed b/c it is also tracked
+by the version control system, which would in turn invoke the hook,
+modifying the version and requiring yet another commit, ad infinitum.
+This wasn't going to work. Crap!</p>
 
-<ul><li><a class="internal present" href="/2009-12-13-a-failure-of-precedence">2009 12 13 A Failure of Precedence</a></li>
-<li><a class="internal present" href="/2009-10-26-quiet-revolt-against-the-fhs">2009 10 26 Quiet Revolt Against the FHS</a></li>
-<li><a class="internal present" href="/2009-10-23-a-proper-require">2009 10 23 A Proper Require</a></li>
-<li><a class="internal present" href="/2009-06-07-wxruby-for-the-lazy">2009 06 07 WxRuby for the Lazy</a></li>
-<li><a class="internal present" href="/2009-02-10-xml-meet-css">2009 02 10 XML meet CSS</a></li>
-<li><a class="internal present" href="/2009-01-24-what%27s-uf-got-on-xml">2009 01 24 What's uf got on xml</a></li>
-</ul><h2>2008</h2>
+<p>Yet, that little snafu really got the old brain juices flowing and
+my fingers blogging. I want to make versioning my projects as simple as
+Git's hooks are to create. Ultra-low maintenance and in need of barely
+any consideration. Is it possible? I then thought about Ubuntu's
+versioning policy. Now there's a low maintenance system! Just use the
+release date. I like it. But... it doesn't tell you anything about the
+release. Is it a major release? A minor release? Merely a bug fix?
+Or a security fix? There's no way to tell. And consequently there is no
+way to effect one's dependencies to use only a limited set versions per a
+"<a href="http://docs.rubygems.org/read/chapter/7">rational versioning policy</a>".</p>
 
-<ul><li><a class="internal present" href="/2008-11-04-the-yadsl-rule">2008 11 04 The YADSL Rule</a></li>
-<li><a class="internal present" href="/2008-10-06-this-old-hash">2008 10 06 This Old Hash</a></li>
-<li><a class="internal present" href="/2008-09-28-if-and-oopy-if">2008 09 28 If and OOPy If</a></li>
-<li><a class="internal present" href="/2008-09-12-taskable">2008 09 12 Taskable</a></li>
-</ul><h2>Drafts</h2>
+<p>But wait a minute. What about these newfangled ".a" for alpha,
+".b" for beta, indicators that <a href="http://docs.rubygems.org/">RubyGems</a>
+recently introduced? Aren't they a means communicating some fact about
+the release? And yet are they really version numbers? They attempt
+to emulate them by being single letters --sure we can enumerate by
+letters just as well as numbers, but isn't that a shoe-horn --squeezing
+information into a version "look alike" of sorts? And that being
+the case, then hell with it, why not just do the whole version
+scheme the same way.</p>
 
-<ul><li><a class="internal absent" href="/DRAFT-2011-09-08-Autoload-Smells-Like-Denmark">DRAFT 2011 09 08 Autoload Smells Like Denmark</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-I-Heart-High-Order-Functions">DRAFT 2011 09 07 I Heart High-Order Functions</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-Instance-Variables-as-Syntax-Sugar">DRAFT 2011 09 07 Instance Variables as Syntax Sugar</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-07-Kill-the-Proxy-and-Save-Toplevel">DRAFT 2011 09 07 Kill the Proxy and Save Toplevel</a></li>
-<li><a class="internal absent" href="/DRAFT-2011-09-06-Give-Me-Your-Common-Core-Extensions">DRAFT 2011 09 06 Give Me Your Common Core Extensions</a></li>
-<li><a class="internal present" href="/Draft-2011-09-05-on-the-meaninglessness-of-class-vs-module">DRAFT 2011 09 05 On the Meaninglessness of Class vs Module</a></li>
-<li><a class="internal present" href="/Draft-2011-08-19">DRAFT 2011 08 19</a></li>
-<li><a class="internal present" href="/Draft-2011-05-05-a-new-programming-language">DRAFT 2011 05 05 A New Programming Language</a></li>
-</ul>
+<p>To that end I propose we consider a new way to version, patterned
+after date versions, a la Ubuntu, and augmented with informational
+letter tags to tell us what kind of release with which we are dealing.
+Let's consider some possible examples.</p>
+
+<p>10.01.04      # major release
+   10.01.05-m    # minor interface changes from previous release
+   10.01.06-p    # patch release / bug fix to previous release
+   10.02.11-s    # security fix to previous version
+   10.04.06-a    # alpha release of next major version
+   10.09.21-b    # beta release of next major version</p>
+
+<p>That's a refreshingly simple scheme. All we would have to manually
+specify at release time is the type via a single letter, the dating
+is easily automated. (Note, I used a dash for no other reason than
+it looked good to my eye. A dot could be used, or even nothing at
+all. I really don't care what provides the delimitation myself.)</p>
+
+<p>Granted, this version scheme doesn't tell us how many major releases or
+minor releases or patch releases have been made since the project's inception.
+But we don't really need to know that (and if we do we can just program our
+package managers to run a summation). What we really need to know is simply
+if there is a newer version than our current version, that it is a security fix,
+or a minor update, or a major update, and so on, depending on our choice of
+significance. Indeed I would even suggest that perhaps we add a some additional
+types to help clarify further the type of release.</p>
+
+<hr /><p>title      : Damn Version Numbers
+author     : trans
+date       : 2010-02-08
+categories : [versions, scm, development]
+layout     : post</p>
 			</div>
 		</article>
 

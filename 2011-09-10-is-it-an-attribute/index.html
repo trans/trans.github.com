@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <title>7R4N5.C0D3 - Is it an Attribute?</title>
+
+    <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/> 
+
+    <style>
+      body{ color: #222; background: url(assets/images/bg.jpg); padding: 0; margin: 0; }
+
+      header{ color: #222; height: 60px; margin: 0; padding: 30px 0; font-family: courier, monospace; font-size: 48px; }
+      header h1 { margin-top: 20px; color: #222; text-shadow: 0px 0px 5px white; }
+      header h2 { color: #cccccc; text-shadow: 0px 0px 5px black; padding: 5px 0 20px 15px; }
+
+      nav{ padding: 1em; background: #000; opacity: 0.8; border: none; }
+      nav ul li a{ color: #eee; }
+      nav ul li a:hover{ color: #59c; }
+
+      #content{ color: #222; padding: 1em; width: 550px; margin: 0; background: #fff; }
+      #content h1 { color: #222; }
+      #content h2 { color: #222; }
+      #content p { color: #222; }
+
+      #sidebar{margin-bottom: 20px; padding: 20px; background: #fff; border: 1px solid #ccc; min-height: 100px; box-shadow: 5px 5px 10px #ccc; }
+      #sidebar h1,h2 { font-family: times; }
+      #sidebar h2 { font-size: 2em; margin: 10px 0 10px 0; }
+
+      footer{width: 550px; color:#222; margin-top:20px; padding:20px; border:none; background:#fff; }
+
+      #container{ margin: 0 auto; padding 0; width: 900px; }
+
+      .tab { display: none; }
+    </style>
+
+    <!--[if lt IE 9]>
+    <script src="/smeagol/html5.js"></script>
+    <![endif]-->
+
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        show('#am');
+      });
+    </script>
+
+    <script>
+      function show(id){
+        $('.tab').hide();
+        $(id).fadeIn();
+      };
+    </script>
+
+</head>
+
+<body>
+	
+	
+    <div id="container">
+		<header>
+			<h1>7R4N5.C0D3</h1>
+		</header>
+
+		<nav>
+      <button onMouseOver="show('#am');">I AM</button>
+      <button onMouseOver="show('#make');">I MAKE</button>
+      <button onMouseOver="show('#ad');">I AD</button>
+      <button onMouseOver="show('#use');">I USE</button>
+      <button onMouseOver="show('#read');">I READ</button>
+		</nav>
+
+    <div id="sidebar">
+      <div id="am" class="tab">
+        <h2 class="side-title">I Am</h2>
+        <p>Trans has been coding Ruby since 2002. Now he shares with you. Kazaam!</p>
+      </div>
+
+      <div id="make" class="tab">
+        <h2 class="side-title">I Make</h2>
+        <div style="text-align: center;">
+          <a href="http://rubyworks.github.com"><img src="/assets/images/rubyworks.png" style="width: 250px;" /></a><br/>
+          <a href="http://rubyworks.github.com/facets"><img src="/assets/images/RubyFacets.png" style="width: 270px;"/></a><br/>
+          <a href="http://death.rubyforge.org"><img src="/assets/images/skull4.png" style="margin-top: 0;"/></a><br/>
+        </div>
+      </div>
+
+      <div id="ad" class="tab">
+        <h2 class="side-title">I Advertise</h2>
+        <div style="text-align: center;">
+          <script type="text/javascript"><!--
+          google_ad_client = "pub-1126154564663472";
+          /* RUBYWORKS 09-10-02 728x90 */
+          google_ad_slot = "0788888658";
+          google_ad_width = 728;
+          google_ad_height = 90;
+          //-->
+          </script>
+          <script type="text/javascript"
+          src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+          </script>
+        </div>
+      </div>
+
+      <div id="use" class="tab">
+        <h2 class="side-title">I Use</h2>
+        <a href="http://ruby-lang.org"><img src="/assets/images/ruby-lang.png"/></a><br/>
+        <a href="http://github.org"><img src="/assets/images/github-logo.png" style="float: left; margin-left: 5px; width: 115px;"/></a>
+        <a href="http://github.org"><img src="/assets/images/jquery-logo.gif" style="margin-left: 10px;"/></a>
+        <a href="http://cukes.info/"><img src="/assets/images/cuke_logo.png"/></a>
+      </div>
+
+      <div id="read" class="tab">
+        <h2 class="side-title">I Read</h2>
+        <a href="http://rubyinside.com/"><img src="http://www.rubyinside.com/wp-content/themes/rubyinside2009/images/logo2.png" align="center"/></a>
+      </div>
+
+      <div id="work" class="tab">
+        <h2 class="side-title">I Work</h2>
+        <div id="github-badge"></div>
+        <script type="text/javascript" charset="utf-8">
+          GITHUB_USERNAME="trans";
+        </script>
+        <script src="http://drnic.github.com/github-badges/dist/github-badge-launcher.js" type="text/javascript"></script>
+      </div>
+    </div>
+
+		<article>
+			<h1>Is it an Attribute?</h1>
+    	<div id="content">
+<h1>Is it an Attribute?</h1>
+
+<p>What exactly is an attribute? From the standpoint of OOP, a Ruby attribute is 
+intended to be what is generally referred to as an <i>accessor method</i>.
+An accessor method is a means of direct access to an object's underlying state.
+In other words, it is a method for direct access to an instance variable. And
+that is exactly what Ruby's helper class methods, i.e. <code>attr</code>, <code>attr_reader</code>,
+<code>attr_writer</code> and <code>attr_accessor</code>, achieve.</p>
+
+<p>However, Ruby's "accessor methods" are not specially recognized methods, 
+(as are <em>properties</em> in Javascript, for example). Rather Ruby simply creates
+regular old methods which internally work with the an instance variable. This
+fact leads to a bit of puzzlement. If attributes are Ruby's means for creating 
+accessor methods, but attributes are only a short-cut for creating regular
+methods, when then is a method an attribute or not an attribute?  For instance:</p>
+
+<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Foo</span>
+      <span class="k">def</span> <span class="nf">x</span><span class="p">;</span> <span class="vi">@x</span><span class="p">;</span> <span class="k">end</span>
+    <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Is <code>#x</code> an attribute in this example since it results in the exact same 
+class definition as:</p>
+
+<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Foo</span>
+      <span class="kp">attr</span> <span class="ss">:x</span>
+    <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>It would seem to be, but neither RDoc or YARD will document it as such, even though
+both list attributes of a class.</p>
+
+<p>Going a step further, if the later definition <em>is</em> an attribute, which is an accessor
+method, what then is:</p>
+
+<pre>
+  <code>class Foo
+  def x; @x.to_s; end
+end
+</code>
+</pre>
+
+<p>Does the addition of #to_s invalidate #x as an accessor and thus as an attribute?
+Is that the case even if @x is <em>supposed</em> to be a string?</p>
+
+<p>More confusing still, since Ruby methods can be rewritten at any time, there is the 
+opposite possibility that what appears as an attribute is not actually an accessor
+method as all. Experienced Rubyists know that Ruby issues a warning when a method
+overwrites another method --even one created via an <code>attr</code> method. But it's just
+a warning and a fairly minor one at that. This can cause some very basic
+confusion if an attribute is overwritten by a method.</p>
+
+<p>Ruby's common documentation tools make this issue very easy to see. Take a class
+defined as follows:</p>
+
+<pre>
+  <code>class IsItAnAttribute
+  # Attribute accessor #foo.
+  attr_accessor :foo
+
+  # Attribute reader #foo.
+  attr_reader :bar
+
+  # Attribute writer #foo.
+  attr_writer :baz
+
+  # Method #foo.
+  def foo; @foo + 1; end
+
+  # Method #foo=.
+  def foo=(i); @foo = i.to_i - 1; end
+
+  # Method #bar.
+  def bar; end
+
+  # Method #bar=(i)
+  def bar=(i); @bar = i; end
+
+  # Method #baz.
+  def baz; @baz; end
+end
+</code>
+</pre>
+
+<p>In the case of <a href="examples/is-it-an-attribute/rdoc/index.html">RDoc</a>,
+it lists <code>bar=</code>, <code>baz</code> and <code>foo=</code> as methods, and <code>bar[R]</code>, <code>baz[W]</code>
+and <code>foo[RW]</code> as attributes. The attributes seem reasonable if we simply
+take it on faith that attribute declarations are accessors regardless of
+what the methods might be doing --it's the documentors issue. And maybe that
+is all we can reasonably expect. But it is odd that #bar is missing from the
+method definitions.</p>
+
+<p><a href="examples/is-it-an-attribute/yard/index.html">YARD</a> on the other hand,
+also lists <code>bar</code>, <code>baz</code> and <code>foo</code> as attributes, but does not make
+it clear if they are readers, writers or both. It also lists <code>bar</code>, <code>baz</code>
+and <code>foo</code> as methods, with no indication that writers even exist. YARD has
+some attribute related tags for this, but what seems like the proper approach
+to improve the documentation appears to do nothing new.</p>
+
+<pre>
+  <code># Method #bar.
+# @attribute r bar
+def bar
+end
+</code>
+</pre>
+
+<p>(And I would add, there is no <code>[view source]</code> link in this case as well.)</p>
+
+<p>So what gives? What really is an attribute? I'm inclined to think we might need
+to throw out the whole concept from Ruby, at least as Ruby now stands. Attributes
+are nothing more than a meta-programming device to create methods and it's
+impossible to ensure documentation only labels methods that behave as 
+accessor methods.</p>
+
+<p>On the other hand, perhaps we should redefine that concept of an attribute,
+not as an accessor method, but as any method we want it to be so long as it
+accesses an instance variable in some form or fashion (albeit enforcing that
+is not strictly possible either). In that case it might be worth adjusting
+the attr methods to act as <em>declarations</em> rather then merely meta-methods.
+In this way any method could be declared an attribute in the same way that
+methods can be declared public, private or protected.</p>
+
+<hr /><p>title      : Is it an Attribute?
+author     : trans
+categories : [attributes, oop]
+date       : 2011-09-10
+layout     : post</p>
+			</div>
+		</article>
+
+		<footer>
+			<small>Last edited by <b>7rans</b> on December 03, 2011.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
+			</small>
+		</footer>
+    </div>
+</body>
+</html>

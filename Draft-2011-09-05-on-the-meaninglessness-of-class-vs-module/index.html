@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <title>7R4N5.C0D3 - Fear Not the Wereclass</title>
+
+    <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/> 
+
+    <style>
+      body{ color: #222; background: url(assets/images/bg.jpg); padding: 0; margin: 0; }
+
+      header{ color: #222; height: 60px; margin: 0; padding: 30px 0; font-family: courier, monospace; font-size: 48px; }
+      header h1 { margin-top: 20px; color: #222; text-shadow: 0px 0px 5px white; }
+      header h2 { color: #cccccc; text-shadow: 0px 0px 5px black; padding: 5px 0 20px 15px; }
+
+      nav{ padding: 1em; background: #000; opacity: 0.8; border: none; }
+      nav ul li a{ color: #eee; }
+      nav ul li a:hover{ color: #59c; }
+
+      #content{ color: #222; padding: 1em; width: 550px; margin: 0; background: #fff; }
+      #content h1 { color: #222; }
+      #content h2 { color: #222; }
+      #content p { color: #222; }
+
+      #sidebar{margin-bottom: 20px; padding: 20px; background: #fff; border: 1px solid #ccc; min-height: 100px; box-shadow: 5px 5px 10px #ccc; }
+      #sidebar h1,h2 { font-family: times; }
+      #sidebar h2 { font-size: 2em; margin: 10px 0 10px 0; }
+
+      footer{width: 550px; color:#222; margin-top:20px; padding:20px; border:none; background:#fff; }
+
+      #container{ margin: 0 auto; padding 0; width: 900px; }
+
+      .tab { display: none; }
+    </style>
+
+    <!--[if lt IE 9]>
+    <script src="/smeagol/html5.js"></script>
+    <![endif]-->
+
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        show('#am');
+      });
+    </script>
+
+    <script>
+      function show(id){
+        $('.tab').hide();
+        $(id).fadeIn();
+      };
+    </script>
+
+</head>
+
+<body>
+	
+	
+    <div id="container">
+		<header>
+			<h1>7R4N5.C0D3</h1>
+		</header>
+
+		<nav>
+      <button onMouseOver="show('#am');">I AM</button>
+      <button onMouseOver="show('#make');">I MAKE</button>
+      <button onMouseOver="show('#ad');">I AD</button>
+      <button onMouseOver="show('#use');">I USE</button>
+      <button onMouseOver="show('#read');">I READ</button>
+		</nav>
+
+    <div id="sidebar">
+      <div id="am" class="tab">
+        <h2 class="side-title">I Am</h2>
+        <p>Trans has been coding Ruby since 2002. Now he shares with you. Kazaam!</p>
+      </div>
+
+      <div id="make" class="tab">
+        <h2 class="side-title">I Make</h2>
+        <div style="text-align: center;">
+          <a href="http://rubyworks.github.com"><img src="/assets/images/rubyworks.png" style="width: 250px;" /></a><br/>
+          <a href="http://rubyworks.github.com/facets"><img src="/assets/images/RubyFacets.png" style="width: 270px;"/></a><br/>
+          <a href="http://death.rubyforge.org"><img src="/assets/images/skull4.png" style="margin-top: 0;"/></a><br/>
+        </div>
+      </div>
+
+      <div id="ad" class="tab">
+        <h2 class="side-title">I Advertise</h2>
+        <div style="text-align: center;">
+          <script type="text/javascript"><!--
+          google_ad_client = "pub-1126154564663472";
+          /* RUBYWORKS 09-10-02 728x90 */
+          google_ad_slot = "0788888658";
+          google_ad_width = 728;
+          google_ad_height = 90;
+          //-->
+          </script>
+          <script type="text/javascript"
+          src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+          </script>
+        </div>
+      </div>
+
+      <div id="use" class="tab">
+        <h2 class="side-title">I Use</h2>
+        <a href="http://ruby-lang.org"><img src="/assets/images/ruby-lang.png"/></a><br/>
+        <a href="http://github.org"><img src="/assets/images/github-logo.png" style="float: left; margin-left: 5px; width: 115px;"/></a>
+        <a href="http://github.org"><img src="/assets/images/jquery-logo.gif" style="margin-left: 10px;"/></a>
+        <a href="http://cukes.info/"><img src="/assets/images/cuke_logo.png"/></a>
+      </div>
+
+      <div id="read" class="tab">
+        <h2 class="side-title">I Read</h2>
+        <a href="http://rubyinside.com/"><img src="http://www.rubyinside.com/wp-content/themes/rubyinside2009/images/logo2.png" align="center"/></a>
+      </div>
+
+      <div id="work" class="tab">
+        <h2 class="side-title">I Work</h2>
+        <div id="github-badge"></div>
+        <script type="text/javascript" charset="utf-8">
+          GITHUB_USERNAME="trans";
+        </script>
+        <script src="http://drnic.github.com/github-badges/dist/github-badge-launcher.js" type="text/javascript"></script>
+      </div>
+    </div>
+
+		<article>
+			<h1>Fear Not the Wereclass</h1>
+    	<div id="content">
+<h1>Fear Not the Wereclass</h1>
+
+<p>
+  <strong>DRAFT</strong>
+</p>
+
+<p>In the spirit of the Halloween season, lets take a fun example, the Warewolf. Let us say we already have classes for Man and Wolf at our dispossal --some smart programmer already did the hard work for use and developed definitive representations:</p>
+
+<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Man</span>
+      <span class="k">def</span> <span class="nf">shoot_gun</span>
+        <span class="nb">puts</span> <span class="s2">"Bang!"</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">"After it!"</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Wolf</span>
+      <span class="k">def</span> <span class="nf">howl</span>
+        <span class="nb">puts</span> <span class="s2">"Awoooooooo"</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">"Woosh!"</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Now what about a Werewolf? Half-man and half-wolf, what superclass do we use in its case? Most classes have clear superclass, but some, such as our werewolf, it is not so clear cut. Perhaps we decide that a werewolf in our universe is more like a wolf than a man, so:</p>
+
+<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Werewolf</span> <span class="o">&lt;</span> <span class="no">Wolf</span>
+    <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>But we are still left to add Man's qualites to our Werewolf. Ruby gives us no easy way to do this given our original classes. So we are forced to refactor the former Man class into a module, like:</p>
+
+<div class="highlight"><pre>    <span class="k">module</span> <span class="nn">ManLike</span>
+      <span class="k">def</span> <span class="nf">shoot_gun</span>
+        <span class="nb">puts</span> <span class="s2">"Bang!"</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">"After it!"</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Man</span>
+      <span class="kp">include</span> <span class="no">ManLike</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Werewolf</span> <span class="o">&lt;</span> <span class="no">Wolf</span>
+      <span class="kp">include</span> <span class="no">ManLike</span>
+    <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Well there you go, a bit long winded perhaps, but it does the deed. But, hang on. It appears things are a bit worse off than we might have suspected. We thought by using Wolf as the superclass we were saying a warewolf is essentially a wolf, but with some man like qualities. Surely that is what it must mean for a Warewolf to be a subclass of a Wolf. Unfortunately we would be wrong. When we ask a warewolf to <code>give_chase</code>, we discover it is doing it in quite the mainly way, not the wolfly way.</p>
+
+<div class="highlight"><pre>    <span class="n">werewolf</span> <span class="o">=</span> <span class="no">Werewolf</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">werewold</span><span class="o">.</span><span class="n">give_chase</span>  <span class="c1">#=&gt; "After it!"</span>
+</pre>
+</div>
+
+
+<p>Oh dear, that's not good. The difference lies in the order of lookup. If two methods conflict, guess which one takes precedence? Would you be suprised to know that is not the superclass, but the rather the mixin?</p>
+
+<p>Well, it doesn't make a great deal of sense, but clearly we have no choice, we must refactor again.</p>
+
+<div class="highlight"><pre>    <span class="k">module</span> <span class="nn">WolfLike</span>
+      <span class="k">def</span> <span class="nf">howl</span>
+        <span class="nb">puts</span> <span class="s2">"Awoooooooo"</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">"Woosh!"</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Wolf</span>
+      <span class="kp">include</span> <span class="no">WolfLike</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Werewolf</span> <span class="o">&lt;</span> <span class="no">Man</span>
+      <span class="kp">include</span> <span class="no">WolfLike</span>
+    <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Well, there we are. Not our ideal conception of things, clearly, but it <i>does what we need it to</i>. Of course, in the real world the original classes are not necessarily under our control, leading us to the only and unenviable option of re-implementing everything. What a waste.</p>
+
+<p>The fact the Ruby inheritance system in conjunction with it's mixin system produces a wonky order to method look-up; the fact that we can't <em>reuse</em> a class as a module when we might have need to do so; and the fact that we are left then only to do things in unseemly manners and duplicating lots of code too, well, to put it's all a bit frightful. But really, it not just our coding that become strained and more difficult --after all we are programmers, we "work around". No. What really is a shame is that it severely limits the utility of Ruby's inheritance model and contributes in no small part as to why we see so little <em>semantic</em> subclassing in Ruby programs, as opposed to the simplistic base-class designs that we frequently see.</p>
+
+<p>But it is arbitrary.</p>
+
+<p>Consider this little Halloween trick:</p>
+
+<div class="highlight"><pre>  <span class="k">class</span> <span class="nc">Module</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">new</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+      <span class="n">c</span> <span class="o">=</span> <span class="no">Class</span><span class="o">.</span><span class="n">new</span>
+      <span class="n">c</span><span class="o">.</span><span class="n">include</span> <span class="nb">self</span>
+      <span class="n">c</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>The distinction between a module and a class it Ruby is purely a superficial one that has been hard coded into the language for no utilitarian reason. It is there only as an artifact of the original conceptualization.</p>
+
+<p>Removing the distinction of class vs module has nothing to do with multiple inheritance. Classes still only have a single superclass. Rather it is the principle of ... that is being violated. There is no need for a module to know it's a module or class it know it's a class. Both are merely OOP-type encapsulations. What matters is how they are used.</p>
+
+<p>There is also a wonderful side benefit from this removal. Load order would no longer matter when two different scripts attempt to utilize the same namespace. </p>
+
+<p>Now I can all but guarantee that at some point someone, who very likely hasn't read this entire post, is going to say "use delegation". Yes, yes. I am a big fan of delegation myself. But that is not what this article is about. It is about the utilization of Ruby's inheritance and mixin system. If delegation were always the answer then we might as flush the whole inheritance and mixin things down the drain and use delegation for it all. But that's a different debate. The question here is, if we are going to have inheritance and mixins, then what's best for making good use of them.</p>
+			</div>
+		</article>
+
+		<footer>
+			<small>Last edited by <b>7rans</b> on December 03, 2011.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
+			</small>
+		</footer>
+    </div>
+</body>
+</html>
