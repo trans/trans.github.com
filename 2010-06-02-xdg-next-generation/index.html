@@ -10,50 +10,18 @@
 
     <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/> 
 
-    <style>
-      body{ color: #222; background: url(assets/images/bg.jpg); padding: 0; margin: 0; }
-
-      header{ color: #222; height: 60px; margin: 0; padding: 30px 0; font-family: courier, monospace; font-size: 48px; }
-      header h1 { margin-top: 20px; color: #222; text-shadow: 0px 0px 5px #555; }
-      header h2 { color: #cccccc; text-shadow: 0px 0px 5px black; padding: 5px 0 20px 15px; }
-
-      nav{ padding: 1em; background: #000; opacity: 0.8; border: none; }
-      nav ul li a{ color: #eee; }
-      nav ul li a:hover{ color: #59c; }
-
-      #content{ color: #222; padding: 1em; width: 550px; margin: 0; background: #fff; }
-      #content h1 { color: #222; }
-      #content h2 { color: #222; }
-      #content p { color: #222; }
-
-      #sidebar{margin-bottom: 20px; padding: 20px; background: #fff; border: 1px solid #ccc; min-height: 100px; box-shadow: 5px 5px 10px #ccc; }
-      #sidebar h1,h2 { font-family: times; }
-      #sidebar h2 { font-size: 2em; margin: 10px 0 10px 0; }
-
-      footer{width: 550px; color:#222; margin-top:20px; padding:20px; border:none; background:#fff; }
-
-      #container{ margin: 0 auto; padding 0; width: 900px; }
-
-      .tab { display: none; }
-    </style>
-
     <!--[if lt IE 9]>
     <script src="/smeagol/html5.js"></script>
     <![endif]-->
 
     <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
+    <script src="/assets/scripts/main.js"></script>
+
     <script>
       $(document).ready(function(){
         show('#ad');
       });
-    </script>
-
-    <script>
-      function show(id){
-        $('.tab').hide();
-        $(id).fadeIn();
-      };
     </script>
 
 </head>
@@ -66,13 +34,13 @@
 			<h1>7R4N5.C0D3</h1>
 		</header>
 
-		<nav>
-      <button onMouseOver="show('#am');">I AM</button>
-      <button onMouseOver="show('#make');">I MAKE</button>
-      <button onMouseOver="show('#ad');">I AD</button>
-      <button onMouseOver="show('#use');">I USE</button>
-      <button onMouseOver="show('#read');">I READ</button>
-		</nav>
+		<div id="nav">
+      <li onMouseOver="show(this, '#am');">I AM</li>
+      <li onMouseOver="show(this, '#make');">I MAKE</li>
+      <li onMouseOver="show(this, '#ad');">I AD</li>
+      <li onMouseOver="show(this, '#use');">I USE</li>
+      <li onMouseOver="show(this, '#read');">I READ</li>
+		</div>
 
     <div id="sidebar">
       <div id="am" class="tab">
@@ -107,7 +75,6 @@
       </div>
 
       <div id="use" class="tab">
-        <h2 class="side-title">I Use</h2>
         <a href="http://ruby-lang.org"><img src="/assets/images/ruby-lang.png"/></a>
         <a href="http://github.org"><img src="/assets/images/github-logo.png" style="float: left; margin-left: 5px; width: 115px;"/></a>
         <a href="http://github.org"><img src="/assets/images/jquery-logo.gif" style="margin-left: 10px;"/></a>
@@ -169,7 +136,7 @@ published  : false</p>
 		</article>
 
 		<footer>
-			<small>Last edited by <b>7rans</b> on December 03, 2011.</small>
+			<small>Last edited by <b>7rans</b> on December 04, 2011.</small>
 			<small style="float:right;">
 				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
 				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
