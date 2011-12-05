@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <title>7R4N5.C0D3 - Ruby Heart High-Order Functions</title>
+
+    <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/> 
+
+    <!--[if lt IE 9]>
+    <script src="/smeagol/html5.js"></script>
+    <![endif]-->
+
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+      });
+    </script>
+
+</head>
+
+<body>
+	
+  <div id="container">
+		<div id="header">
+			<h1>7R4N5.C0D3</h1>
+		</div>
+
+    
+
+		<div id="nav">
+      <ul>
+<li><a href="/">I BLOG</a></li>
+<li><a href="/I-MAKE">I MAKE</a></li>
+<li><a href="/I-USE">I USE</a></li>
+<li><a href="/I-READ">I READ</a></li>
+</ul>
+
+		</div>
+
+		<article>
+    	<div id="content">
+        <b class="path">&gt; Ruby Heart High-Order Functions</b>
+        <h1>Ruby Heart High-Order Functions</h1>
+
+<p>Ruby Facets has a class called <code>Functor</code>. In common computer science parlance, "functor" simply an objectified function. Ruby already has more than it's share of these with Method, Proc and block objects. So what's does the Functor bring to the table? It is a little more that just a first-class function, rather it is a <i>higher-order function</i>. What it allows us to do is define a function that responds dynamically to a message call. Here is very basic example to clarify the idea.</p>
+
+<div class="highlight"><pre>    <span class="nb">require</span> <span class="s1">'facets/functor'</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="o">|</span>
+      <span class="n">a</span><span class="o">.</span><span class="n">__send__</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">f</span> <span class="o">+</span> <span class="mi">3</span>   <span class="c1">#=&gt; 6</span>
+    <span class="n">f</span> <span class="o">*</span> <span class="mi">3</span>   <span class="c1">#=&gt; 9</span>
+    <span class="n">f</span> <span class="o">**</span> <span class="mi">3</span>  <span class="c1">#=&gt; 27</span>
+</pre>
+</div>
+
+
+<p>So how are higher-order functions useful? There are many possibilities. Consider this crazy little core extension that just occurred to me this evening.</p>
+
+<div class="highlight"><pre>    <span class="nb">require</span> <span class="s1">'facets/functor'</span>
+
+    <span class="k">class</span> <span class="nc">String</span>
+      <span class="k">def</span> <span class="nf">in_case</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
+        <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="o">|</span>
+          <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="ss">:===</span> 
+            <span class="n">a</span><span class="o">.</span><span class="n">__send__</span><span class="p">(</span><span class="n">meth</span><span class="p">,</span> <span class="nb">self</span><span class="p">)</span>
+          <span class="k">else</span>
+            <span class="kp">nil</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">case</span> <span class="s1">'foo'</span>
+    <span class="k">when</span> <span class="s1">'f'</span><span class="o">.</span><span class="n">in_case</span><span class="p">(</span><span class="ss">:start_with?</span><span class="p">)</span>
+      <span class="nb">puts</span> <span class="s2">"Hey it starts with an `f`!"</span>
+    <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>And that's just off the top of my head. There are many potential uses. In fact, Ruby has a quite popular functor alreadly apart of the language called <code>Enumerator</code>. But that is a very specialize implementation. What the Functor does is make it easy to create your own small higher-order functions.</p>
+
+<p>Now you can read plenty of interesting articles about the merits of high-order functions. I'll even provide you a few links (see below). But what I really want to talk about in this article is the merits of Ruby making higher-order functions an integral part of the core language. Even as the implementation stands, I think it's a good thing to add to the language. But, there is a downside to the this implementation of a Functor. It must create a new object instance every time it is used. Using a cache can help, but that raises issues of storage and serialization.</p>
+
+<p>If, on the other hand, Ruby could internalize the concept of a Functor as a fluent method dispatch mechanism, Ruby would be able to remove this overhead. That is to say, if a higher-order function could be defined as a method, albeit a special kind of method, instead of as an object, then the overhead would be removed. Indulge my use of pseudo-code similar to error rescue notation to provide an idea of what our previous example could look like in script:</p>
+
+<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">String</span>
+      <span class="k">def</span> <span class="nf">in_case</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">op</span><span class="p">,</span> <span class="n">a</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="ss">:===</span> 
+          <span class="n">a</span><span class="o">.</span><span class="n">__send__</span><span class="p">(</span><span class="n">meth</span><span class="p">,</span> <span class="nb">self</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="kp">nil</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Of course, the exact notation is not important. The point is that it's just a special kind of method that Ruby attaches to the class or module, and handles the dispatching mechanics internally without the need for instantiating a new "hollow" Functor object each time.</p>
+
+<p>I think this would be a very cool feature. One of those things that would set Ruby even further apart from other languages.</p>
+
+<p><strong>UPDATE</strong>: Turns out that Python handles higher-order functions in a pretty cool way:</p>
+
+<div class="highlight"><pre>    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span>
+        <span class="k">return</span> <span class="n">g</span>
+</pre>
+</div>
+
+
+<p>Ruby doesn't have first-class methods, so emulating Python's behavior would require a slightly different approach, probably something like:</p>
+
+<div class="highlight"><pre>    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+      <span class="n">g</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span>
+      <span class="k">end</span>
+      <span class="n">dispatch</span> <span class="n">g</span>
+    <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Where <code>dispatch</code> would be a new keyword akin to <code>return</code>. But this still suffers from the creation of an spurious object, albeit in this case it is a temporary local variable that probably can be GC'd. So this is a middle ground possibility. But I think the before mentioned tightly integrated idea is better. And we want Ruby to better than Python, right? ;)</p>
+
+<p>Links:</p>
+
+<ul><li><a href="http://c2.com/cgi/wiki?HigherOrderFunction">http://c2.com/cgi/wiki?HigherOrderFunction</a></li>
+<li><a href="http://kbullock.ringworld.org/2007/03/26/higher-order-messaging/">http://kbullock.ringworld.org/2007/03/26/higher-order-messaging/</a></li>
+</ul><hr /><p>categories: [functor, higher-order functions]</p>
+      </div>
+    </article>
+
+    <div id="comments">
+      <!-- Commment vis Disqus -->
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /**
+         * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+         */
+        (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = 'http://transcode.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b>7rans</b> on December 05, 2011.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+</body>
+</html>

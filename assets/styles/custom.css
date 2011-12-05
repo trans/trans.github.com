@@ -1,36 +1,44 @@
 html {
-  background: white;
+  margin: 0; padding: 0; background: #fff;
 }
 
-footer{
-  background: url(../images/white-tiger-drinking.jpg) no-repeat right;
+body{
+  padding: 0; margin: 0;  color: #111; background: #fff;
+}
+
+#container{
+  margin: 0 auto; padding 0; width: 780px; background: #000; opacity: 0.9; color: #111;
+}
+
+#header{
+  height: 50px; margin: 0; padding: 25px 0; font-family: monospace, courier; font-size: 36px; 
+  background: #fff;
+}
+#header h1 { margin-top: 20px; color: #111; text-shadow: 0px 0px 10px #aaa; }
+#header h2 { color: #ccc; text-shadow: 0px 0px 5px black; padding: 5px 0 20px 15px; }
+
+#nav{ padding: 0; color: #555; border-bottom: 0px solid #555; height: 50px; background: #fff; }
+#nav ul { list-style-type: none; margin: 0; padding: 0; }
+#nav ul li { float: left; width: 50px; height: 32px; padding: 18px 15px 0 15px; text-align: center; font-weight: bold; }
+#nav ul li:hover{ color: #222; }
+
+#ad { padding: 25px 0; clear: both; }
+
+#content{ color: #111; padding: 10px 20px; margin: 0; background: #fff; }
+#content h1 { color: #111; }
+#content h2 { color: #111; }
+#content p { color: #111; text-shadow: 0 0 1px #aaa; font-family: serif; font-size: 1.2em; }
+
+#footer{
+  color:#111; padding:20px; border:none; background:#fff; min-height: 300px; 
+  background: url(/assets/images/white-tiger-drinking.jpg) no-repeat right;
+}
+
+#footer .tiger {
   height: 300px;
 }
 
-body{ color: #222; background: url(assets/images/bg.jpg); padding: 0; margin: 0; }
-
-header{ color: #222; height: 60px; margin: 0; padding: 30px 0; font-family: courier, monospace; font-size: 48px; }
-header h1 { margin-top: 20px; color: #222; text-shadow: 0px 0px 5px #555; }
-header h2 { color: #cccccc; text-shadow: 0px 0px 5px black; padding: 5px 0 20px 15px; }
-
-nav{ padding: 0; background: #000; opacity: 0.8; border: none; }
-nav ul { list-style-type: none; }
-nav ul li { color: #eee; float: left; width: 50px; }
-nav ul li:hover{ color: #59c; background: orange; }
-
-#content{ color: #222; padding: 10px; width: 550px; margin: 0; background: #fff; }
-#content h1 { color: #222; }
-#content h2 { color: #222; }
-#content p { color: #222; }
-
-#sidebar{margin-bottom: 20px; padding: 10px; background: #fff; border: 1px solid #ccc; min-height: 100px; box-shadow: 5px 5px 10px #ccc; }
-#sidebar h1,h2 { font-family: times; }
-#sidebar h2 { font-size: 2em; margin: 10px 0 10px 0; }
-
-footer{width: 550px; color:#222; margin-top:20px; padding:20px; border:none; background:#fff; }
-
-#container{ margin: 0 auto; padding 0; width: 900px; }
-
-.tab { display: none; }
-.tabOn { background: orange; }
+.path {
+  color: #ccf;
+}
 
