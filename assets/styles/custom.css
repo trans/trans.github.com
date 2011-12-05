@@ -3,7 +3,7 @@ body{ padding: 0; margin: 0;  color: #111; background: #fff; }
 div { background: #fff }
 
 #container{
-  margin: 0 auto; padding 0; width: 780px; background: #000; opacity: 0.9; color: #111;
+  margin: 0 auto; padding 0; width: 780px; background: #fff; opacity: 0.9; color: #111;
 }
 
 #header{
@@ -33,10 +33,7 @@ div { background: #fff }
   color:#111; padding:20px; border:none; background:#fff; min-height: 300px; 
   background: url(/assets/images/white-tiger-drinking.jpg) no-repeat right;
 }
-
-#footer .tiger {
-  height: 300px;
-}
+#footer .tiger { background: transparent; height: 300px; }
 
 .path {
   color: #ccf;
