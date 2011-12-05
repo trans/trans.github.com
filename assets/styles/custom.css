@@ -1,10 +1,6 @@
-html {
-  margin: 0; padding: 0; background: #fff;
-}
-
-body{
-  padding: 0; margin: 0;  color: #111; background: #fff;
-}
+html { margin: 0; padding: 0; background: #fff; }
+body{ padding: 0; margin: 0;  color: #111; background: #fff; }
+div { background: #fff }
 
 #container{
   margin: 0 auto; padding 0; width: 780px; background: #000; opacity: 0.9; color: #111;
