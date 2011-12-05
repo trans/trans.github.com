@@ -29,6 +29,10 @@ body{
 #content h2 { color: #111; }
 #content p { color: #111; text-shadow: 0 0 1px #aaa; font-family: serif; font-size: 1.2em; }
 
+#comments {
+  background: #fff;
+}
+
 #footer{
   color:#111; padding:20px; border:none; background:#fff; min-height: 300px; 
   background: url(/assets/images/white-tiger-drinking.jpg) no-repeat right;
