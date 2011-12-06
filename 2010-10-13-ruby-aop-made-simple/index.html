@@ -8,18 +8,27 @@
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
 
-    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
 
     <!--[if lt IE 9]>
     <script src="/smeagol/html5.js"></script>
     <![endif]-->
 
-    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
 
     <script src="/assets/scripts/main.js"></script>
 
     <script>
       $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
       });
     </script>
 
@@ -197,5 +206,7 @@ layout     : post</p>
 		</div>
 
   </div>
+
+  <div id="social-share"></div>
 </body>
 </html>
