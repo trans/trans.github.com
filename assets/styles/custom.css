@@ -15,18 +15,27 @@ div { background: #fff }
 
 #nav{ padding: 0; color: #555; border-bottom: 0px solid #555; height: 50px; background: #fff; }
 #nav ul { list-style-type: none; margin: 0; padding: 0; }
-#nav ul li { float: left; width: 50px; height: 32px; padding: 18px 15px 0 15px; text-align: center; font-weight: bold; }
+#nav ul li { float: left; width: 50px; height: 32px; padding: 18px 15px 0 5px; text-align: center; font-weight: bold; }
 #nav ul li:hover{ color: #222; }
 
 #ad { padding: 25px 0; clear: both; }
 
-#content{ color: #111; padding: 10px 20px; margin: 0; background: #fff; }
-#content h1 { color: #111; }
+#content-wrapper { background: url(/assets/images/paperclip.png) no-repeat top left #fff; padding: 26px 54px; margin-left: -42px; }
+
+#content{ color: #111; padding: 10px 30px 20px 20px; margin: 0; background: transparent; border: 0px solid #ddd;  font-size: 0.9em; }
+#content h1 { color: #111; border-top: 0; padding-top: 0px; }
 #content h2 { color: #111; }
 #content p { color: #111; text-shadow: 0 0 1px #aaa; font-family: serif; font-size: 1.2em; }
 
+#content .path {
+  text-align: right;
+  color: #aaa;
+  padding: 5px 20px;
+  background: transparent;
+}
+
 #comments {
-  background: #fff;
+  background: #fff; margin-top: 20px;
 }
 
 #footer{
@@ -35,7 +44,4 @@ div { background: #fff }
 }
 #footer .tiger { background: transparent; height: 300px; }
 
-.path {
-  color: #aaa;
-}
 

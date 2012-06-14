@@ -8,13 +8,13 @@
     <title>7R4N5.C0D3</title>
     <link>http://trans.github.com</link>
     <description>Trans Programming Blog</description>
-    <pubDate>Thu, 14 Jun 2012 17:08:53 -0400</pubDate>
+    <pubDate>Thu, 14 Jun 2012 19:47:13 -0400</pubDate>
     <item>
       <title>2012 06 17 kill the proxy and save toplevel</title>
       <link>http://trans.github.com/2012-06-17-kill-the-proxy-and-save-toplevel/index.html</link>
       <description>&lt;h1&gt;Kill the Proxy and Save Toplevel&lt;/h1&gt;
 
-&lt;p&gt;One of the more curious aspects of Ruby is the &quot;Toplevel&quot; object, otherwise known a &lt;code&gt;main&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;One of the more curious aspects of Ruby is the &quot;top level&quot; object, otherwise known as &lt;code&gt;main&lt;/code&gt;.&lt;/p&gt;
 </description>
       <pubDate>Sun, 17 Jun 2012 00:00:00 -0400</pubDate>
       <dc:date>2012-06-17T00:00:00-04:00</dc:date>
@@ -22,7 +22,9 @@
     <item>
       <title>2012 06 14 autoload smells like denmark</title>
       <link>http://trans.github.com/2012-06-14-autoload-smells-like-denmark/index.html</link>
-      <description>&lt;p&gt;Ruby has a very cool feature called &lt;code&gt;auotload&lt;/code&gt;. With autoload, any undefined constant can automatically trigger loading a library script. Effectively this gives Ruby a convenient means of lazy loading. For example, lets say some of our app's executable scripts ultimately use the ANSI library, but others do not. We can use &lt;code&gt;autoload&lt;/code&gt; to only load the ANSI library when it is needed.&lt;/p&gt;
+      <description>&lt;h1&gt;Autoload Smells Like Denmark&lt;/h1&gt;
+
+&lt;p&gt;Ruby has a very cool feature called &lt;em&gt;autoload&lt;/em&gt;. With autoload, any undefined constant can automatically trigger the loading of a library file. Effectively this gives Ruby a convenient means of lazy loading. For example, lets say some of our app's executable scripts ultimately use the ANSI library, but others do not. We can use &lt;code&gt;autoload&lt;/code&gt; to only load the ANSI library when it is needed.&lt;/p&gt;
 </description>
       <pubDate>Thu, 14 Jun 2012 00:00:00 -0400</pubDate>
       <dc:date>2012-06-14T00:00:00-04:00</dc:date>
@@ -32,7 +34,7 @@
       <link>http://trans.github.com/2012-06-13-instance-variables-as-syntax-sugar/index.html</link>
       <description>&lt;h1&gt;Instance Variables as Syntax Sugar&lt;/h1&gt;
 
-&lt;p&gt;What are instance variables? If we think of them as a single unit we note that they represent an object &lt;em&gt;state&lt;/em&gt;, which as a data structure is really nothing more than a &lt;em&gt;hash&lt;/em&gt;. Indeed, it is quite feasible to forgo the use of instance variables altogether save one to serve as the object's state.&lt;/p&gt;
+&lt;p&gt;What are instance variables? If we think of them as a single unit we note that they represent an object &lt;em&gt;state&lt;/em&gt;, which as a data structure is really nothing more than a &lt;em&gt;hash&lt;/em&gt;. Indeed, it is quite feasible to forgo the use of instance variables altogether save one, to serve as the object's state.&lt;/p&gt;
 </description>
       <pubDate>Wed, 13 Jun 2012 00:00:00 -0400</pubDate>
       <dc:date>2012-06-13T00:00:00-04:00</dc:date>
@@ -42,7 +44,7 @@
       <link>http://trans.github.com/2012-05-23-real-metal/index.html</link>
       <description>&lt;h1&gt;Real Metal&lt;/h1&gt;
 
-&lt;p&gt;One of the most regarded capabilities of Ruby, in contrast to many other programming languages, is its powerful meta-programming chops. While not every bit of the language is meta-programmable, the vast majority of it is. But despite its prowess there is a serious weaknesses in its design: &lt;em&gt;The functions on which meta-coders depend have no guarantee&lt;/em&gt;. &lt;/p&gt;
+&lt;p&gt;One of the most regarded capabilities of Ruby, in contrast to many other programming languages, is its powerful meta-programming chops. While not every aspect of the language is meta-programmable, the vast majority of Ruby is. But despite its prowess, there is a serious weaknesses in its design: &lt;em&gt;The functions on which meta-coders depend have no guarantee&lt;/em&gt;. &lt;/p&gt;
 </description>
       <pubDate>Wed, 23 May 2012 00:00:00 -0400</pubDate>
       <dc:date>2012-05-23T00:00:00-04:00</dc:date>
@@ -52,9 +54,9 @@
       <link>http://trans.github.com/2012-05-11-the-problem-with-programming/index.html</link>
       <description>&lt;h1&gt;[DRAFT] THE PROBLEM WITH PROGRAMMING&lt;/h1&gt;
 
-&lt;p&gt;Programming is the art of tying thought to syllogism. The programmer must take an often nebulous idea and encode it into a symbolic logical language. By it's very nature then, there is gap that must be breached between the thoughts of the programmer --harder still the thoughts of his client, and the 
-construction of their autonomic model. This then is the problem of programming -- finding ways 
-to shrink the gap.&lt;/p&gt;
+&lt;p&gt;Programming is the art of tying thought to syllogism. The programmer must take an often nebulous idea and encode it into a symbolic logical language. By it's very nature then, there is gap that must be breached between the thoughts of the programmer (harder still the thoughts of his client) and the 
+construction of their autonomic model. This then is the problem of programming: finding ways 
+to shrink that gap.&lt;/p&gt;
 </description>
       <pubDate>Fri, 11 May 2012 00:00:00 -0400</pubDate>
       <dc:date>2012-05-11T00:00:00-04:00</dc:date>
@@ -646,6 +648,6 @@ order --a system we could use in much the same manner as we use the command shel
       <pubDate>Sat, 22 Jul 2006 00:00:00 -0400</pubDate>
       <dc:date>2006-07-22T00:00:00-04:00</dc:date>
     </item>
-    <dc:date>2012-06-14T17:08:53-04:00</dc:date>
+    <dc:date>2012-06-14T19:47:13-04:00</dc:date>
   </channel>
 </rss>

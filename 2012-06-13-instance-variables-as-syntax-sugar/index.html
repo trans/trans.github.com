@@ -47,42 +47,24 @@
 
 		<div id="nav">
       <ul>
-<li><a href="/index.html">Blog</a></li>
-<li><a href="/Projects/index.html">Projects</a></li>
-<li><a href="/Tools/index.html">Tools</a></li>
-<li><a href="/Reads/index.html">Reads</a></li>
+<li><a href="/">Blog</a></li>
+<li><a href="/Projects/">Projects</a></li>
+<li><a href="/Tools/">Tools</a></li>
+<li><a href="/Reads/">Reads</a></li>
 </ul>
 
 		</div>
 
 		<article>
+      <div id="content-wrapper">
     	<div id="content">
-          <b class="path">&gt; 2012 06 13 instance variables as syntax sugar</b>
-
-<!-- Start Shareaholic Sexybookmark HTML-->
-
-<div class="shr_class shareaholic-show-on-load">
-</div>
-
-<!-- End Shareaholic Sexybookmark HTML -->
-<!-- Start Shareaholic Sexybookmark script -->
-
-<script type="text/javascript">
-var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
-</script>
-
-<script type="text/javascript">
-(function() {
-var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
-sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
-var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
-})();
-</script>
-<!-- End Shareaholic Sexybookmark script -->
+        <div class="path" style="clear: both;" >
+          <b>source</b>: 2012 06 13 instance variables as syntax sugar
+        </div>
 
 <h1>Instance Variables as Syntax Sugar</h1>
 
-<p>What are instance variables? If we think of them as a single unit we note that they represent an object <em>state</em>, which as a data structure is really nothing more than a <em>hash</em>. Indeed, it is quite feasible to forgo the use of instance variables altogether save one to serve as the object's state.</p>
+<p>What are instance variables? If we think of them as a single unit we note that they represent an object <em>state</em>, which as a data structure is really nothing more than a <em>hash</em>. Indeed, it is quite feasible to forgo the use of instance variables altogether save one, to serve as the object's state.</p>
 
 <div class="highlight">
 <pre><span class="k">class</span> <span class="nc">Example</span>
@@ -107,9 +89,9 @@ var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb
 </div>
 
 
-<p>So if instance variables are essentially a hash, why is it that we cannot work with them as such? In other words why not have <code>@</code> just represent a syntax sugar for a special hash --even if it's not a stand Ruby Hash instance under the hood, why not let it behave as it it were? With such a change handling instance variables immediately become much easier and intuitive since we can apply all our knowledge if hashses.</p>
+<p>So if instance variables are essentially a hash, why is it that we cannot work with them as such? In other words, why not have <code>@</code> just represent a syntax sugar for a special hash (even if it's not a standard Ruby Hash instance under the hood, it can behave as if it were). With such a change, handling instance variables immediately become much easier and intuitive since we can apply all our knowledge if hashes.</p>
 
-<p>To look up an instance variable give a variable name can be done with:</p>
+<p>Some neat capabilities immediately become apparent. Looking up an instance variable give a variable name can be done with:</p>
 
 <div class="highlight">
 <pre><span class="err">@</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span>
@@ -117,7 +99,7 @@ var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb
 </div>
 
 
-<p>Assigning an instance variable likewise becomes:</p>
+<p>Assigning an instance variable likewise can be done with:</p>
 
 <div class="highlight">
 <pre><span class="err">@</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
@@ -127,18 +109,19 @@ var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb
 
 <p>No longer would the long-winded <code>instance_variable_get</code> and <code>instance_variable_set</code> be needed.</p>
 
-<p>Take a more complex example. Have you ever wanted to reproduce the name and values of an object instance variables. It's not uncommon really. Any type of object serialization is going to need such a routine -- YAML, Marshal, etc. To do this presently requires some rather verbose code:</p>
+<p>Let's take a more complex example. Have you ever wanted to reproduce the name and values of an object instance variable. It's not uncommon really. Any type of object serialization is going to need such a routine -- YAML, Marshal, etc. To do this presently requires some verbose code:</p>
 
 <div class="highlight">
 <pre><span class="nb">hash</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="nb">instance_variables</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">var</span><span class="o">|</span>
   <span class="nb">hash</span><span class="o">[</span><span class="n">var</span><span class="o">]</span> <span class="o">=</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
 <span class="k">end</span>
+<span class="nb">hash</span>
 </pre>
 </div>
 
 
-<p>But with <code>@</code> suger we can simply use:</p>
+<p>But with <code>@</code> sugar we can simply use:</p>
 
 <div class="highlight">
 <pre><span class="nb">hash</span> <span class="o">=</span> <span class="err">@</span><span class="o">.</span><span class="n">to_h</span>
@@ -146,7 +129,7 @@ var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb
 </div>
 
 
-<p>Or iterate over them with:</p>
+<p>Or if we just want to iterate over them:</p>
 
 <div class="highlight">
 <pre><span class="err">@</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
@@ -156,13 +139,35 @@ var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb
 </div>
 
 
-<p>All Enumerable methods would be at our disposal.</p>
+<p>Since we have #each, then all Enumerable methods would be at our disposal.</p>
 
-<p>For a public interface <code>instance_variables</code> would reference the internal <code>@</code> instead of just the list of instance variable names.</p>
+<p>For a public interface <code>instance_variables</code> could reference the internal <code>@</code> instead of just the list of instance variable names. We could deprecate <code>#instance_variable_get</code> and <code>#instance_variable_set</code> altogether.</p>
 
-<p>By recognizing the nature of instance variables and applying the preexisting functionality of Hash we gain much greater capability while using fewer brain cells to do it. That's always a big win.</p>
+<p>By recognizing the nature of instance variables and applying the preexisting functionality of Hash, we gain much greater capability while using fewer brain cells to do it. And that's always a win.</p>
+      </div>
       </div>
     </article>
+
+    <!-- Start Shareaholic Sexybookmark HTML-->
+
+    <div class="shr_class shareaholic-show-on-load">
+    </div>
+
+    <!-- End Shareaholic Sexybookmark HTML -->
+    <!-- Start Shareaholic Sexybookmark script -->
+
+    <script type="text/javascript">
+    var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+    </script>
+
+    <script type="text/javascript">
+    (function() {
+    var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+    sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+    var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+    })();
+    </script>
+    <!-- End Shareaholic Sexybookmark script -->
 
     <div id="comments">
       <!-- Commment vis Disqus -->
@@ -184,7 +189,7 @@ var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb
 		<div id="footer">
       <div class="tiger">
       </div>
-			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
+			<small>Last edited by <b>trans</b> on June 14, 2012.</small>
 			<small style="float:right;">
 				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
 				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
