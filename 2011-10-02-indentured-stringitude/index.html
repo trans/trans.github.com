@@ -5,7 +5,7 @@
 
     <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
 
-    <title>7R4N5.C0D3 - Indentured Stringitude</title>
+    <title>7R4N5.C0D3 - 2011 10 02 indentured stringitude</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -47,17 +47,17 @@
 
 		<div id="nav">
       <ul>
-<li><a href="/">I BLOG</a></li>
-<li><a href="/I-MAKE">I MAKE</a></li>
-<li><a href="/I-USE">I USE</a></li>
-<li><a href="/I-READ">I READ</a></li>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
 </ul>
 
 		</div>
 
 		<article>
     	<div id="content">
-          <b class="path">&gt; Indentured Stringitude</b>
+          <b class="path">&gt; 2011 10 02 indentured stringitude</b>
 
 <!-- Start Shareaholic Sexybookmark HTML-->
 
@@ -98,8 +98,7 @@ when used. These are methods dealing with <em>indentation</em>.</p>
 <p>It was many years ago when I first was introduced to these three methods by
 Gavin Sinclair: #tab, $tabto and #indent. Their interfaces are:</p>
 
-<pre>
-  <code>tab(n)
+<pre><code>tab(n)
 Aligns each line n spaces.
 
 tabto(n)
@@ -108,8 +107,7 @@ with n spaces before non-space.
 
 indent(n, c=' ')
 Indent left or right by n spaces.
-</code>
-</pre>
+</code></pre>
 
 <p>So clearly useful, these were some of the first to make their way in to Ruby
 Facets, and they have proven invaluable to me in numerous projects ever since.</p>
@@ -117,8 +115,7 @@ Facets, and they have proven invaluable to me in numerous projects ever since.</
 <p>Sometime shortly there after, another related method also proved useful at
 times, String#margin. It is documented:</p>
 
-<pre>
-  <code>margin(n=0)
+<pre><code>margin(n=0)
 Provides a margin controlled string.
 
   x = %Q{
@@ -126,23 +123,20 @@ Provides a margin controlled string.
         |  is
         |    margin controlled!
         }.margin
-</code>
-</pre>
+</code></pre>
 
 <p>This method is useful largely because it prevents a horrible code smell.
 How often have you seen some jutting HERE doc that threw all that nicely
 indented Ruby code to the wall.</p>
 
-<pre>
-  <code>    def help_text
+<pre><code>    def help_text
       &lt;&lt;-HERE
 Usage: foo bar
 -x some option
 -y another option
       HERE
     end
-</code>
-</pre>
+</code></pre>
 
 <p>This all too common eye blight was the inspiration for the creation of #margin.
 In fact, so confident were Peter and I in this approach to remove these ugly
@@ -150,12 +144,10 @@ code-squids that we conceived a %-literal to support such a construct would
 be an unimpeachable addition to the language itself, allowing the even more
 elegant notation:</p>
 
-<pre>
-  <code>x = %L|Usage: foo bar
+<pre><code>x = %L|Usage: foo bar
       |-x some option
       |-y another option
-</code>
-</pre>
+</code></pre>
 
 <p>Such a syntax, being built into Ruby proper, would not suffer the computational
 overhead of the pure Ruby implementation, or the extraneous brackets.</p>
@@ -167,7 +159,7 @@ the time saving methods it provides, in this case, as often as I've had copy and
 paste or add a dependency to 'facets' just to get these methods, I think the
 String class owes me one!</p>
 
-<hr /><p>title      : String Indenture
+<hr><p>title      : String Indenture
 author     : trans
 categories : [string, ruby]
 date       : 2011-10-02
@@ -195,7 +187,7 @@ layout     : post</p>
 		<div id="footer">
       <div class="tiger">
       </div>
-			<small>Last edited by <b>7rans</b> on December 06, 2011.</small>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
 			<small style="float:right;">
 				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
 				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.

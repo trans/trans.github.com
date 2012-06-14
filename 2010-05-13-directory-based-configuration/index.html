@@ -5,7 +5,7 @@
 
     <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
 
-    <title>7R4N5.C0D3 - Directory-based Configuration</title>
+    <title>7R4N5.C0D3 - 2010 05 13 directory based configuration</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -47,17 +47,17 @@
 
 		<div id="nav">
       <ul>
-<li><a href="/">I BLOG</a></li>
-<li><a href="/I-MAKE">I MAKE</a></li>
-<li><a href="/I-USE">I USE</a></li>
-<li><a href="/I-READ">I READ</a></li>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
 </ul>
 
 		</div>
 
 		<article>
     	<div id="content">
-          <b class="path">&gt; Directory-based Configuration</b>
+          <b class="path">&gt; 2010 05 13 directory based configuration</b>
 
 <!-- Start Shareaholic Sexybookmark HTML-->
 
@@ -92,14 +92,15 @@ use the file system itself.</p>
 
 <p>For example, lets say we have a config file <code>pom.yaml</code>:</p>
 
-<div class="highlight"><pre>    <span class="l-Scalar-Plain">---</span>
-    <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">POM</span>
-    <span class="l-Scalar-Plain">summary</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Project Object Model for Ruby</span>
-    <span class="l-Scalar-Plain">authors</span><span class="p-Indicator">:</span>
-      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">Trans</span>
-    <span class="l-Scalar-Plain">sites</span><span class="p-Indicator">:</span>
-      <span class="l-Scalar-Plain">homepage</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://proutils.github.com/pom</span>
-      <span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://github.com/proutils/pom</span>
+<div class="highlight">
+<pre>  <span class="l-Scalar-Plain">---</span>
+  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">POM</span>
+  <span class="l-Scalar-Plain">summary</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Project Object Model for Ruby</span>
+  <span class="l-Scalar-Plain">authors</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">Trans</span>
+  <span class="l-Scalar-Plain">sites</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">homepage</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://proutils.github.com/pom</span>
+    <span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://github.com/proutils/pom</span>
 </pre>
 </div>
 
@@ -107,16 +108,14 @@ use the file system itself.</p>
 <p>Using the a directory-based configuration system instead
 we would have this file hierachy:</p>
 
-<pre>
-  <code>pom/
+<pre><code>pom/
   name
   summary
   authors
   sites/
     homepage
     development
-</code>
-</pre>
+</code></pre>
 
 <p>And each file would contain the data in plain text given in the YAML example above.</p>
 
@@ -132,7 +131,7 @@ we would have this file hierachy:</p>
 
 <p>However, despite this, I have am seriously considering a move back to a file-based configuration. Why? Becuase directory-based configuration, while arguably better, is simply not common. In 5 to 10 years perhaps it will become more so, but until then it might simply be an design too far ahead of it's time to gain traction with any mainstrean developers. Clearly it is more important that a tool be found useful to a wide audiance, than it utilize a nifty feature, no matter how nifty it might be.</p>
 
-<hr /><p>title      : Directory-based Configuration
+<hr><p>title      : Directory-based Configuration
 author     : trans
 date       : 2010-05-13
 categories : [pom, metadata, configuration]
@@ -160,7 +159,7 @@ layout     : post</p>
 		<div id="footer">
       <div class="tiger">
       </div>
-			<small>Last edited by <b>7rans</b> on December 06, 2011.</small>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
 			<small style="float:right;">
 				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
 				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.

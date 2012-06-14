@@ -5,7 +5,7 @@
 
     <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
 
-    <title>7R4N5.C0D3 - GUtopIa Revisited</title>
+    <title>7R4N5.C0D3 - 2010 03 20 gutopia revisited</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -47,17 +47,17 @@
 
 		<div id="nav">
       <ul>
-<li><a href="/">I BLOG</a></li>
-<li><a href="/I-MAKE">I MAKE</a></li>
-<li><a href="/I-USE">I USE</a></li>
-<li><a href="/I-READ">I READ</a></li>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
 </ul>
 
 		</div>
 
 		<article>
     	<div id="content">
-          <b class="path">&gt; GUtopIa Revisited</b>
+          <b class="path">&gt; 2010 03 20 gutopia revisited</b>
 
 <!-- Start Shareaholic Sexybookmark HTML-->
 
@@ -94,19 +94,20 @@ var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb
 
 <p>Something really needed to be done about this state of affairs. And so I have decided to resurrect the GUtopIa project. I found my old code, looked at it, scrapped it, and started fresh. I'm going to proceed by specifying the front-end API as much as possible, before even considering back-end implementations. With any luck others will see what I'm doing and offer to build a an interface to their favorite framework. So far what I have looks very sweet. Just to wet your whistle, here's a potential example.</p>
 
-<div class="highlight"><pre>    <span class="n">layout</span> <span class="o">=</span> <span class="no">GUtopIa</span><span class="o">::</span><span class="no">Layout</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
-      <span class="o">[</span> <span class="o">[</span> <span class="s1">'Name'</span>  <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="n">entry</span> <span class="o">]</span> <span class="o">]</span>
-      <span class="o">[</span> <span class="o">[</span> <span class="s1">'Phone'</span> <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="n">entry</span> <span class="o">]</span> <span class="o">]</span>
-      <span class="o">[</span> <span class="o">[</span> <span class="s1">'EMail'</span> <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="n">entry</span> <span class="o">]</span> <span class="o">]</span>
-    <span class="k">end</span>
-    <span class="n">layout</span><span class="o">.</span><span class="n">show</span>
+<div class="highlight">
+<pre>  <span class="n">layout</span> <span class="o">=</span> <span class="no">GUtopIa</span><span class="o">::</span><span class="no">Layout</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+    <span class="o">[</span> <span class="o">[</span> <span class="s1">'Name'</span>  <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="n">entry</span> <span class="o">]</span> <span class="o">]</span>
+    <span class="o">[</span> <span class="o">[</span> <span class="s1">'Phone'</span> <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="n">entry</span> <span class="o">]</span> <span class="o">]</span>
+    <span class="o">[</span> <span class="o">[</span> <span class="s1">'EMail'</span> <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="n">entry</span> <span class="o">]</span> <span class="o">]</span>
+  <span class="k">end</span>
+  <span class="n">layout</span><span class="o">.</span><span class="n">show</span>
 </pre>
 </div>
 
 
 <p>Yes, believe it or not, that's a fairly complete GUI layout. In an upcoming post I'll explain how it all works in more detail. But before I get into that, I still need a working desktop GUI application ASAP! I don't have time to develop GUtopIa for this. So now I've tried again at coding wxRuby from hand, but this time using a very Ruby-esque lazy evaluation approach I had experimented with a long time ago in a <a href="http://www.rubyquiz.com/">Ruby Quiz</a> on <a href="http://www.rubyquiz.com/quiz10.html">crossword puzzle drawing</a>. Finally I got the results I wanted with out going cross-eyed looking at the code. Amazing how a well organized approach can make all the difference. I'll demonstrate my design in my next blog post.</p>
 
-<hr /><p>title      : GUtopIa Revisited
+<hr><p>title      : GUtopIa Revisited
 author     : trans
 categories : [ruby, gui]
 date       : 2010-03-20
@@ -134,7 +135,7 @@ layout     : post</p>
 		<div id="footer">
       <div class="tiger">
       </div>
-			<small>Last edited by <b>7rans</b> on December 06, 2011.</small>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
 			<small style="float:right;">
 				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
 				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.

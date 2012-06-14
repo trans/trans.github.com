@@ -5,7 +5,7 @@
 
     <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
 
-    <title>7R4N5.C0D3 - A Proper Require</title>
+    <title>7R4N5.C0D3 - 2009 10 23 a proper require</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -47,17 +47,17 @@
 
 		<div id="nav">
       <ul>
-<li><a href="/">I BLOG</a></li>
-<li><a href="/I-MAKE">I MAKE</a></li>
-<li><a href="/I-USE">I USE</a></li>
-<li><a href="/I-READ">I READ</a></li>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
 </ul>
 
 		</div>
 
 		<article>
     	<div id="content">
-          <b class="path">&gt; A Proper Require</b>
+          <b class="path">&gt; 2009 10 23 a proper require</b>
 
 <!-- Start Shareaholic Sexybookmark HTML-->
 
@@ -87,10 +87,8 @@ a light diatribe against improper use of relative requires in Ruby programs.
 I pointed-out a bit of code, I recently came across, that added a relative path to Ruby's
 <code>$LOAD_PATH</code> from within a <code>bin/</code> executable.</p>
 
-<pre>
-  <code>$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
-</code>
-</pre>
+<pre><code>$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
+</code></pre>
 
 <p>I suspect the author little realized that his program would not function if it were installed
 according to traditional <a href="http://www.pathname.com/fhs/">FHS</a>-based standards. And I fear many
@@ -99,7 +97,8 @@ of Rails apps, do not understand the nature of the issue. In my post I stated so
 
 <h2>The Rules of Relative Loading</h2>
 
-<ul><li>Don't mess with the <code>$LOAD_PATH</code>.</li>
+<ul>
+<li>Don't mess with the <code>$LOAD_PATH</code>.</li>
 <li>Use relative lookup only when you must, eg. using bundled HTML templates.</li>
 <li>Any relative paths you do use must remain within the confines of their main directory (eg. lib/)</li>
 <li>Don't use a relative lookup for any .rb or .so/.dll loading.</li>
@@ -110,7 +109,8 @@ following.</p>
 
 <h2>When the Rules Do <em>Not</em> Apply</h2>
 
-<ul><li>They do not apply to Rails Apps since they are deployed, rather than packaged and installed.</li>
+<ul>
+<li>They do not apply to Rails Apps since they are deployed, rather than packaged and installed.</li>
 <li>Testing and building scripts are free from the rules since they are localized operations.</li>
 </ul><p>Even when the rules do not apply, try to adhear to them as much as possible. For exmaple, minimize
 the points of entry. At the very least it can benefit refactoring.</p>
@@ -160,7 +160,8 @@ By placing our code in the correct system locations, we will only ever need stan
 By following it's conventions and installing our software with it, all was well. But today most Rubyists
 use RubyGems. That works just as well, but there are two configuration issues that attend it's use.</p>
 
-<ol><li>Our project's gemspec must have the proper <code>require_paths</code> setting. The default is the setup.rb standard <code>lib/</code>.</li>
+<ol>
+<li>Our project's gemspec must have the proper <code>require_paths</code> setting. The default is the setup.rb standard <code>lib/</code>.</li>
 <li>Our RUBYOPT environment setting must contain "-rubygems".</li>
 </ol><p>As I mentioned in the above bullet points, it is okay to add to the <code>$LOAD_PATH</code> when running tests --that's essential to avoid having to reinstall your project after every code change. But it's not acceptable to do so in your actual program.</p>
 
@@ -169,7 +170,7 @@ in some time. A while ago, I <a href="http://github.com/proutils/setup">forked S
 
 <p>With the advent of RubyGems, <code>setup.rb</code> is not as widely needed as it once was (though it still gets used in some cases). Yet the ground work it laid is still with us, and should be understood if one wishes to be an effective Ruby programmer.</p>
 
-<hr /><p>title      : A Proper Require
+<hr><p>title      : A Proper Require
 author     : trans
 categories : [ruby, require]
 date       : 2009-10-23
@@ -197,7 +198,7 @@ layout     : post</p>
 		<div id="footer">
       <div class="tiger">
       </div>
-			<small>Last edited by <b>7rans</b> on December 06, 2011.</small>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
 			<small style="float:right;">
 				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
 				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.

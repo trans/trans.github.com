@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <title>7R4N5.C0D3 - 2012 03 21 configuration rodeo</title>
+
+    <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <!--[if lt IE 9]>
+    <script src="/smeagol/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+</head>
+
+<body>
+	
+  <div id="container">
+		<div id="header">
+			<h1>7R4N5.C0D3</h1>
+		</div>
+
+    
+
+		<div id="nav">
+      <ul>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
+</ul>
+
+		</div>
+
+		<article>
+    	<div id="content">
+          <b class="path">&gt; 2012 03 21 configuration rodeo</b>
+
+<!-- Start Shareaholic Sexybookmark HTML-->
+
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<!-- End Shareaholic Sexybookmark HTML -->
+<!-- Start Shareaholic Sexybookmark script -->
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmark script -->
+
+<h1>Configuration Rodeo</h1>
+
+<p>The history of configuration file conventions for Ruby projects has not been a particularly conclusive one. No one pervasive convention has ever developed. No developer has ever laid down a clear set of rules of engagement that we all can agree are worthy of follow. Rather, the realm of the developer in working out how to handle configuration for their project tools still smacks a bit of the Wild West. </p>
+
+<p>Nonetheless, although no one approach has superseded all others, there are handful of patterns that tend to be used. We will review these conventions and then consider a possible comprehensive solution that could move us past the chaos du jour. </p>
+
+<h2>The Conventions</h2>
+
+<h3>1. Dot File</h3>
+
+<p>Probably the oldest convention around is the dot-file. A dot-file is, as the name implies, a file with a dot in front of its name. Using traditional Unix shells, files that begin with a dot are <em>hidden files</em>. For the most part all this means is they do not show up in the typical directory listing, although some file tools will also ignore dot-files by default.</p>
+
+<p>Back in the day, these files became the conventional means of adding per-user configuration to a system by adding dot-files to a user's home directory. There it was easily associated to a user and accessible, yet hidden from normal view. Consequently, project tools have adopted the same idea for project configuration, evidenced most clearly by SCM tools like Subversion (<code>.svn</code>), Git (<code>.git</code>) and Mercurial (<code>.hg</code>). Many Ruby-based tools have followed suite, such as RDoc's <code>.document</code> and YARD's <code>.yardopts</code> and <code>.yardoc</code>.</p>
+
+<p>The advantages of the dot-file lies mostly in the fact that it's a well worn standard, and that it helps somewhat with directory clutter by keeping these files hidden under a typical listing. However, for the same reasons they are also a disadvantage. Many types of file listings do not actually hide these files, for example a GitHub listing, nor is it always advantageous that they be hidden because an important configuration file could go accidentally overlooked. Also dot-files are often without a proper file extension. While file extensions feel archaic, the fact remains that file extensions are still the primary way that file types are identified.</p>
+
+<h3>2. Crapfile</h3>
+
+<p>The so called "Crapfile" convention is another pattern that has been around for a long time in the form of the rather ubiquitous <code>Makefile</code>. Almost all C/C++ projects use the Make tool to handle compiling. In Ruby, this same convention came into vogue by way of the Rake tool, a Ruby emulation of the Make tool. Over the years this convention has become increasing popular. The Bundler project brought us the <code>Gemfile</code>. Heroku introduced the <code>Procfile</code>. And now a proverbial explosion of such files seems to be on the doorsteps of Ruby and Rails projects. </p>
+
+<p>The advantage of the Crapfile is that it is visible and even prominent thanks to it's initial capitalization. In this sense it is the exact opposite of the dot-file. It's disadvantage is that too many of them tend to clutter up a project directory. This issue could be partially resolved at least if file listings grouped these files together instead of sorting them in with all-caps files, but as of yet no file listing provides for it. Another disadvantage is again the lack of a file extension. As with dot-files, this leaves many tools such as file editors, unable to handle the file optimally. However some tools do allow for an optional extension, e.g. <code>Rakefile.rb</code> is recognized by Rake, so there is some mitigation of the extension issue.</p>
+
+<h3>3. Task Directory w/ Special Extension</h3>
+
+<p>A third type of common configuration file you will find in Ruby projects is the <code>task/&lt;foo&gt;.&lt;tool&gt;</code> or <code>tasks/&lt;foo&gt;.&lt;tool&gt;</code> file. These files came about as a means of splitting Rakefiles up into topical and shareable units, and indeed this pattern is predominantly used by Rake files, e.g. <code>task/test.rake</code>. But sometimes you will see the pattern used for other tools such as a <code>task/test.watchr</code> file.</p>
+
+<p>The use of <code>task</code> or <code>tasks</code> directory as a conventional location for project configuration files can be advantageous for many project tools. It makes it clear where to find them, the <code>task</code> directory itself is not hidden and does not clutter up a project's root directory and the design dictates the flexibility of allows multiple, and thus topical, configuration files. However, the issue of the file extension yet again effects these files due to the use the tool name as the extension. Also, there might be a slight downside if a project tool uses the configuration file as a project root marker. This is what Rake does with the Rakefile. While not a show-stopper --after all it can look for <code>task/*.&lt;tool&gt;</code>, it is not quite as ideal for the purpose.</p>
+
+<h3>4. Config Directory</h3>
+
+<p>Rails came along an introduced a variety of conventions for Ruby-based web applications, but also with ramifications for Ruby project's in general. One of the conventions introduced is the use of a <code>config</code> directory to house configuration files relevant to the Rails project. Unlike files in the <code>task</code> directory, there is no special extension involved. Generally the whole name of the file is used to identify the purpose of the file. For example <code>config/database.yml</code> is used to configure access to the underlying database.</p>
+
+<p>At first glance, using <code>config</code> seems to have all the advantages of the <code>task</code> directory without the any of downsides associated with using special extensions. Nonetheless, the convention hasn't caught on for non-Rails projects. The reason is unknown to me, but perhaps it as trivial as the the simple fact that the term <code>config</code> is six-characters long, whereas all conventional project directory names, that have managed to persist, are five or less and most often only three or four characters. It might seem a silly thing to get caught up on, but when a developer is looking at project file listings dozens of times a day or more, the fact the one entry should stick out excessively from the rest is what is commonly called an "eye-sore". And an "eye-sore" is plenty of reason to deter usage. It is interesting to wonder if Rails had chosen a shorter term, say <code>conf/</code> or <code>cfg/</code> if it would have made the jump. In any case, that is mere speculation.</p>
+
+<p>There are a few project's that support a <code>config</code> directory, and do so to good effect. Cucumber for example will look for either 'cucumber.yml', 'config/cucumber.yml' or '.config/cucumber.yml'.</p>
+
+<h3>5. Ordinary File</h3>
+
+<p>The last convention really isn't a convention at all. Some project tools just designate an ordinary file name as the configuration file and expect to find it in the project's root directory. In many ways, one could argue this is the best choice. It doesn't suffer from the file extension issue and the files generally sort separate from documentation files which are capitalized. However, it does suffer a bit in that these files don't stand out in any way as configuration files. And this fact allows them to still make a project seem cluttered if there are more than just a couple of them.</p>
+
+<h2>When to Use Which</h2>
+
+<p>Hidden dot-files have their place, but they are best reserved for files that the developer will rarely if ever need to edit. Generated files are the best example. The reason for this rule of thumb is simple. If a developer doesn't see a file, the developer might not realize it already exists or know that he/she may need to edit it. If dot-files do fit your use case, also consider using a dot-directory instead of just a file. This ensures that no additional entries will clutter up the root project directory should more than one configuration file prove necessary or useful.</p>
+
+<p>Crapfiles are not a horrible choice, but as the colorful name suggests, they are not nearly the best choice either. Some developers argue against the use of Crapfiles because the <code>-file</code> suffix is rather redundant. While that's a fair point, one can also argue that the suffix helps distinguish configuration files from other files. Since Crapfiles tend to standout, they are best suited to configurations that need frequent editing. A word of caution about naming, when you have a tool with a name like "Foreman" and it's configuration file is called "Procfile", things are obviously not very intuitive. Consider carefully if perhaps an ordinary file name would suffice instead --it can always be capitalized if it needs to have prominence.</p>
+
+<p>Task files are a good approach for tools that can have multiple configurations or configuration profiles.  But even if a project does not support multiple configurations, there is nothing stopping the <code>task</code> directory form holding ordinary files. Which means it could effectively co-opt the advantages of the <code>config</code> directory too.</p>
+
+<p>As for the <code>config</code> directory. If you are developing a Rails project, obviously that is the place for configuration files. While some have argued that <code>config</code> is just for Rails and should not be co-opted for plain Ruby projects, presumably to save confusion, that seems too strict a view. If using the <code>task</code> directory to the same end doesn't strike your fancy, then <code>config</code> is clearly the best place to put configuration files. The only good exception is when special prominence is needed that only a root level and unhidden file can bring.</p>
+
+<p>Simple uncaptialized ordinary root level files, while seemingly the least problematic, also have nothing that makes them special, which probably accounts for why they are so rarely used. They might as well be placed in the <code>task</code> or <code>config</code> directory to avoid root directory clutter.</p>
+
+<h2>Is there a Better Way?</h2>
+
+<p>So, is there a better way? That depends on how you look at it. One thing is for certain, there is no <em>perfect</em> way, but that doesn't exclude the possibility of compelling approach that mitigates most issues.</p>
+
+<p>The overarching problem here is simply the fact that so many conventions exist. With such a variety of naming conventions, it exacerbates the issue of cluttered project directories multiple times over.
+Another disadvantage for all of these approaches, they make it difficult to share common configuration.</p>
+
+<p>In an effort to create a comprehensive solution, the <a href="http://github.com/rubyworks/rc">RC</a> project has been created. RC designate a single file, <code>Config.rb</code>, in which all tool configurations can be defined. A typical entry in this file is for test configuration. For example, to configure the <code>qed</code> test tool we might designate:</p>
+
+<div class="highlight">
+<pre><span class="n">profile</span> <span class="ss">:coverage</span> <span class="k">do</span>
+  <span class="n">config</span> <span class="ss">:qed</span> <span class="k">do</span>
+    <span class="nb">require</span> <span class="s1">'simplecov'</span>
+    <span class="no">SimpleCov</span><span class="o">.</span><span class="n">start</span> <span class="k">do</span>
+      <span class="n">coverage_dir</span> <span class="s1">'log/coverage'</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>RC allows configurations to be grouped into profiles. Tool developers can take advantage of profiles to suite the needs of the tool (or not at all). The major advantage of using a single configuration file is the ability for variant configurations to share settings. Another advantage is to import configurations from other projects. For example, the QED project provides the basic SimpleCov configuration which can be easily reused.</p>
+
+<div class="highlight">
+<pre><span class="n">profile</span> <span class="ss">:coverage</span> <span class="k">do</span>
+  <span class="n">config</span> <span class="ss">:qed</span><span class="p">,</span> <span class="ss">:from</span><span class="o">=&gt;[</span><span class="ss">:qed</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">simplecov</span><span class="o">]</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>RC is still a work in progress, but the overarching design is in place with numerous advantages over the scattered approaches of the past. Though some of the traditional approaches might still be more suited to very specific cases, most tools can benefit from a unified approach.</p>
+      </div>
+    </article>
+
+    <div id="comments">
+      <!-- Commment vis Disqus -->
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /**
+         * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+         */
+        (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = 'http://transcode.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+  <div id="social-share"></div>
+</body>
+</html>

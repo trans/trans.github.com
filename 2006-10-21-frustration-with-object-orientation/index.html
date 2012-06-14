@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <title>7R4N5.C0D3 - 2006 10 21 frustration with object orientation</title>
+
+    <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <!--[if lt IE 9]>
+    <script src="/smeagol/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+</head>
+
+<body>
+	
+  <div id="container">
+		<div id="header">
+			<h1>7R4N5.C0D3</h1>
+		</div>
+
+    
+
+		<div id="nav">
+      <ul>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
+</ul>
+
+		</div>
+
+		<article>
+    	<div id="content">
+          <b class="path">&gt; 2006 10 21 frustration with object orientation</b>
+
+<!-- Start Shareaholic Sexybookmark HTML-->
+
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<!-- End Shareaholic Sexybookmark HTML -->
+<!-- Start Shareaholic Sexybookmark script -->
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmark script -->
+
+<h1>Frustration with Object-Orientation</h1>
+
+<p>I've spent more weeks than I care to count going around in circles.</p>
+
+<p>You see the problem is I have "tools" that are in essence methods. But the are generally complicated enough to warrent using state and being broken into many smaller supporting methods. That's fine and dandy until I try to tie a bunch of these tools together under the same class. Name clashes become a huge problem, to the point that it is simply unworkable. The need for local instance variables and methods becomes a big deal. The only way to currently achieve that is to use lambdas and define_method. Not ideal, and RDocs become all but useless. To avoid this I tried going in the opposite direction, defining the tools as their own classes instead. This works great until the tool needs to take part in a more complex structure. For example I have hosting service classes that provide releasing and publishing tools. Well, if 'release' and 'publish' are classes rather then methods how are they going to call the hosting service's login method? I'm forced into using delegation, passing them the instance of the Host class to which they are supposed to belong. At that point the result is worse than the original problem. So in either case I'm finding it neccessary to to write and maintain hacky code. And I'm just fet up with it.</p>
+
+<p>Over the last five years I've spent a great deal of time working with Ruby and learning Object-Oriented programming practices it's associated design patterns. It all seemed very logical at first. But as time wore on I found myself again and again feeling hemmed in. I assumed it was just that I did not understand it all well enough yet to use it well so I kept at it. Certainly my skills improved, but in retorsect it wasn't some great understanding as much it was "don't do that". And even so, I still ran into these walls.</p>
+
+<p>And this is waht I think it is. OOP requires you to first design the encapsulating structure of your project. And your whole edifice depends on that supporting design. If for some reason any bit of that should change, you may well find yourself tearing down whole walls in order to build them up again. And this can happen over and over if you weren't sure of the original edifice from the start. For a large project that's a lot to ask --knowing how the whole outward structure should be before you even know the materials involved.</p>
+      </div>
+    </article>
+
+    <div id="comments">
+      <!-- Commment vis Disqus -->
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /**
+         * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+         */
+        (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = 'http://transcode.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+  <div id="social-share"></div>
+</body>
+</html>

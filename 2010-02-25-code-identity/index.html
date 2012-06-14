@@ -5,7 +5,7 @@
 
     <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
 
-    <title>7R4N5.C0D3 - A Little Fun with Code Generation</title>
+    <title>7R4N5.C0D3 - 2010 02 25 code identity</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -47,17 +47,17 @@
 
 		<div id="nav">
       <ul>
-<li><a href="/">I BLOG</a></li>
-<li><a href="/I-MAKE">I MAKE</a></li>
-<li><a href="/I-USE">I USE</a></li>
-<li><a href="/I-READ">I READ</a></li>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
 </ul>
 
 		</div>
 
 		<article>
     	<div id="content">
-          <b class="path">&gt; A Little Fun with Code Generation</b>
+          <b class="path">&gt; 2010 02 25 code identity</b>
 
 <!-- Start Shareaholic Sexybookmark HTML-->
 
@@ -91,71 +91,72 @@ akin to the mathematical kind, I should be able to have the computer simply
 generate an endless stream of equivalent solutions. Indeed, it turned out that it wasn't
 all that hard to code.</p>
 
-<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">CodeIdentity</span>
+<div class="highlight">
+<pre>  <span class="k">class</span> <span class="nc">CodeIdentity</span>
 
-      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">identities</span>
-        <span class="vi">@identities</span> <span class="o">||=</span> <span class="o">[]</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">identity</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-        <span class="n">identities</span> <span class="o">&lt;&lt;</span> <span class="n">block</span>
-      <span class="k">end</span>
-
-      <span class="kp">attr_reader</span>   <span class="ss">:original</span>
-      <span class="kp">attr_accessor</span> <span class="ss">:alternates</span>
-
-      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
-        <span class="vi">@original</span> <span class="o">=</span> <span class="n">original</span>
-        <span class="vi">@alternates</span> <span class="o">=</span> <span class="o">[</span><span class="n">original</span><span class="o">]</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-        <span class="n">work</span>  <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">dup</span>
-        <span class="k">while</span><span class="p">(</span><span class="n">alternates</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">)</span> <span class="k">do</span>
-          <span class="n">alts</span> <span class="o">=</span> <span class="n">alternates</span><span class="o">.</span><span class="n">dup</span>
-          <span class="n">size</span> <span class="o">=</span> <span class="n">alternates</span><span class="o">.</span><span class="n">size</span>
-          <span class="n">alts</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">alt</span><span class="o">|</span>
-            <span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">identities</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">identity</span><span class="o">|</span>
-              <span class="nb">self</span><span class="o">.</span><span class="n">alternates</span> <span class="o">|=</span> <span class="o">[</span><span class="n">identity</span><span class="o">[</span><span class="n">alt</span><span class="o">]]</span>
-              <span class="k">break</span> <span class="k">if</span> <span class="n">alternates</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;=</span> <span class="n">limit</span>
-            <span class="k">end</span>
-          <span class="k">end</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">show_code</span>
-        <span class="n">alternates</span><span class="o">.</span><span class="n">each</span><span class="p">{</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">code</span> <span class="p">}</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">show_output</span>
-        <span class="n">alternates</span><span class="o">.</span><span class="n">each</span><span class="p">{</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">run</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="p">}</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">generate_tests</span>
-        <span class="nb">require</span> <span class="s1">'test/unit'</span>
-        <span class="n">original_run</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
-        <span class="n">runner</span> <span class="o">=</span> <span class="nb">method</span><span class="p">(</span><span class="ss">:run</span><span class="p">)</span>
-        <span class="n">testcase</span> <span class="o">=</span> <span class="no">Class</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Test</span><span class="o">::</span><span class="no">Unit</span><span class="o">::</span><span class="no">TestCase</span><span class="p">)</span>
-        <span class="n">alternates</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>
-          <span class="n">testcase</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>  
-            <span class="n">define_method</span><span class="p">(</span><span class="s2">"test_</span><span class="si">#{</span><span class="n">index</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="k">do</span>
-              <span class="n">assert_equal</span><span class="p">(</span><span class="n">original_run</span><span class="p">,</span> <span class="n">runner</span><span class="o">[</span><span class="n">code</span><span class="o">]</span><span class="p">)</span>
-            <span class="k">end</span>
-          <span class="k">end</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
-        <span class="n">so</span> <span class="o">=</span> <span class="vg">$stdout</span>
-        <span class="n">sio</span> <span class="o">=</span> <span class="no">StringIO</span><span class="o">.</span><span class="n">new</span>
-        <span class="vg">$stdout</span><span class="p">,</span> <span class="vg">$stderr</span> <span class="o">=</span> <span class="n">sio</span><span class="p">,</span> <span class="n">sio</span>
-        <span class="nb">eval</span> <span class="n">code</span><span class="p">,</span> <span class="vg">$TOPLEVEL_BINDING</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="vg">$stdout</span><span class="o">.</span><span class="n">string</span>
-        <span class="vg">$stdout</span> <span class="o">=</span> <span class="n">so</span>
-        <span class="n">result</span>
-      <span class="k">end</span>
-
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">identities</span>
+      <span class="vi">@identities</span> <span class="o">||=</span> <span class="o">[]</span>
     <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">identity</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+      <span class="n">identities</span> <span class="o">&lt;&lt;</span> <span class="n">block</span>
+    <span class="k">end</span>
+
+    <span class="kp">attr_reader</span>   <span class="ss">:original</span>
+    <span class="kp">attr_accessor</span> <span class="ss">:alternates</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
+      <span class="vi">@original</span> <span class="o">=</span> <span class="n">original</span>
+      <span class="vi">@alternates</span> <span class="o">=</span> <span class="o">[</span><span class="n">original</span><span class="o">]</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+      <span class="n">work</span>  <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">dup</span>
+      <span class="k">while</span><span class="p">(</span><span class="n">alternates</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">)</span> <span class="k">do</span>
+        <span class="n">alts</span> <span class="o">=</span> <span class="n">alternates</span><span class="o">.</span><span class="n">dup</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">alternates</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">alts</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">alt</span><span class="o">|</span>
+          <span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">identities</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">identity</span><span class="o">|</span>
+            <span class="nb">self</span><span class="o">.</span><span class="n">alternates</span> <span class="o">|=</span> <span class="o">[</span><span class="n">identity</span><span class="o">[</span><span class="n">alt</span><span class="o">]]</span>
+            <span class="k">break</span> <span class="k">if</span> <span class="n">alternates</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;=</span> <span class="n">limit</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">show_code</span>
+      <span class="n">alternates</span><span class="o">.</span><span class="n">each</span><span class="p">{</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">code</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">show_output</span>
+      <span class="n">alternates</span><span class="o">.</span><span class="n">each</span><span class="p">{</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">run</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">generate_tests</span>
+      <span class="nb">require</span> <span class="s1">'test/unit'</span>
+      <span class="n">original_run</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
+      <span class="n">runner</span> <span class="o">=</span> <span class="nb">method</span><span class="p">(</span><span class="ss">:run</span><span class="p">)</span>
+      <span class="n">testcase</span> <span class="o">=</span> <span class="no">Class</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Test</span><span class="o">::</span><span class="no">Unit</span><span class="o">::</span><span class="no">TestCase</span><span class="p">)</span>
+      <span class="n">alternates</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>
+        <span class="n">testcase</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>  
+          <span class="n">define_method</span><span class="p">(</span><span class="s2">"test_</span><span class="si">#{</span><span class="n">index</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="k">do</span>
+            <span class="n">assert_equal</span><span class="p">(</span><span class="n">original_run</span><span class="p">,</span> <span class="n">runner</span><span class="o">[</span><span class="n">code</span><span class="o">]</span><span class="p">)</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+      <span class="n">so</span> <span class="o">=</span> <span class="vg">$stdout</span>
+      <span class="n">sio</span> <span class="o">=</span> <span class="no">StringIO</span><span class="o">.</span><span class="n">new</span>
+      <span class="vg">$stdout</span><span class="p">,</span> <span class="vg">$stderr</span> <span class="o">=</span> <span class="n">sio</span><span class="p">,</span> <span class="n">sio</span>
+      <span class="nb">eval</span> <span class="n">code</span><span class="p">,</span> <span class="vg">$TOPLEVEL_BINDING</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="vg">$stdout</span><span class="o">.</span><span class="n">string</span>
+      <span class="vg">$stdout</span> <span class="o">=</span> <span class="n">so</span>
+      <span class="n">result</span>
+    <span class="k">end</span>
+
+  <span class="k">end</span>
 </pre>
 </div>
 
@@ -169,29 +170,30 @@ worth further exploration for production code).</p>
 just as proof of concept. By following the original email thread, no doubt we can see
 their a assuredly an infinite number of possibilities that could be defined.</p>
 
-<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">CodeIdentity</span>
+<div class="highlight">
+<pre>  <span class="k">class</span> <span class="nc">CodeIdentity</span>
 
-      <span class="n">identity</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span>
-        <span class="n">code</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/puts ["](.*)["]/</span><span class="p">,</span> <span class="s1">'print "\1\n"'</span><span class="p">)</span>
-      <span class="k">end</span>
-
-      <span class="n">identity</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span>
-        <span class="n">code</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/puts ["](.*)["]/</span><span class="p">,</span> <span class="s1">'printf "%s\n" % ["\1"]'</span><span class="p">)</span>
-      <span class="k">end</span>
-
-      <span class="n">identity</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span>
-        <span class="n">code</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/["](.*)["]/</span><span class="p">,</span> <span class="s1">'"\1".reverse.reverse'</span><span class="p">)</span>
-      <span class="k">end</span>
-
-      <span class="n">identity</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span>
-        <span class="n">code</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/['](.*)[']/</span><span class="p">){</span> <span class="vg">$1</span><span class="o">.</span><span class="n">inspect</span> <span class="p">}</span>
-      <span class="k">end</span>
-
-      <span class="n">identity</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span>
-        <span class="n">code</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/['](.*)[']/</span><span class="p">){</span> <span class="s2">"</span><span class="si">#{</span><span class="vg">$1</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sr">//</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">.join('')"</span> <span class="p">}</span>
-      <span class="k">end</span>
-
+    <span class="n">identity</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span>
+      <span class="n">code</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/puts ["](.*)["]/</span><span class="p">,</span> <span class="s1">'print "\n"'</span><span class="p">)</span>
     <span class="k">end</span>
+
+    <span class="n">identity</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span>
+      <span class="n">code</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/puts ["](.*)["]/</span><span class="p">,</span> <span class="s1">'printf "%s\n" % [""]'</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">identity</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span>
+      <span class="n">code</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/["](.*)["]/</span><span class="p">,</span> <span class="s1">'"".reverse.reverse'</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">identity</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span>
+      <span class="n">code</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/['](.*)[']/</span><span class="p">){</span> <span class="vg">$1</span><span class="o">.</span><span class="n">inspect</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="n">identity</span> <span class="k">do</span> <span class="o">|</span><span class="n">code</span><span class="o">|</span>
+      <span class="n">code</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/['](.*)[']/</span><span class="p">){</span> <span class="s2">"</span><span class="si">#{</span><span class="vg">$1</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sr">//</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">.join('')"</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+  <span class="k">end</span>
 </pre>
 </div>
 
@@ -199,32 +201,33 @@ their a assuredly an infinite number of possibilities that could be defined.</p>
 <p>To finish if off I wrote a small command-line interface that allow us to try any
 piece of code and generate as many solutions as desired.</p>
 
-<div class="highlight"><pre>    <span class="k">if</span> <span class="bp">__FILE__</span> <span class="o">==</span> <span class="vg">$0</span>
-      <span class="nb">require</span> <span class="s1">'optparse'</span>
-      <span class="n">cnt</span> <span class="o">=</span> <span class="mi">20</span>
-      <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opt</span><span class="o">|</span>
-        <span class="n">opt</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">"-n"</span><span class="p">,</span> <span class="s2">"number of solutions"</span><span class="p">){</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">n</span> <span class="p">}</span>
-      <span class="k">end</span><span class="o">.</span><span class="n">parse!</span>
-      <span class="k">if</span> <span class="no">ARGV</span><span class="o">.</span><span class="n">last</span> <span class="o">==</span> <span class="s1">'-'</span>
-        <span class="n">code</span> <span class="o">=</span> <span class="no">ARGF</span><span class="o">.</span><span class="n">read</span>
-        <span class="no">ARGV</span><span class="o">.</span><span class="n">pop</span>
-      <span class="k">else</span>
-        <span class="n">code</span> <span class="o">=</span> <span class="s2">"puts 'Hello World!'"</span>
-      <span class="k">end</span>
-      <span class="n">cmd</span> <span class="o">=</span> <span class="no">ARGV</span><span class="o">.</span><span class="n">first</span>
-
-      <span class="n">scg</span> <span class="o">=</span> <span class="no">CodeIdentity</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
-      <span class="n">scg</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
-
-      <span class="k">case</span> <span class="n">cmd</span>
-      <span class="k">when</span> <span class="s1">'test'</span>
-        <span class="n">scg</span><span class="o">.</span><span class="n">generate_tests</span>
-      <span class="k">when</span> <span class="s1">'output'</span>
-        <span class="n">scg</span><span class="o">.</span><span class="n">show_output</span>
-      <span class="k">else</span>
-        <span class="n">scg</span><span class="o">.</span><span class="n">show_code</span>
-      <span class="k">end</span>
+<div class="highlight">
+<pre>  <span class="k">if</span> <span class="bp">__FILE__</span> <span class="o">==</span> <span class="vg">$0</span>
+    <span class="nb">require</span> <span class="s1">'optparse'</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opt</span><span class="o">|</span>
+      <span class="n">opt</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">"-n"</span><span class="p">,</span> <span class="s2">"number of solutions"</span><span class="p">){</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">n</span> <span class="p">}</span>
+    <span class="k">end</span><span class="o">.</span><span class="n">parse!</span>
+    <span class="k">if</span> <span class="no">ARGV</span><span class="o">.</span><span class="n">last</span> <span class="o">==</span> <span class="s1">'-'</span>
+      <span class="n">code</span> <span class="o">=</span> <span class="no">ARGF</span><span class="o">.</span><span class="n">read</span>
+      <span class="no">ARGV</span><span class="o">.</span><span class="n">pop</span>
+    <span class="k">else</span>
+      <span class="n">code</span> <span class="o">=</span> <span class="s2">"puts 'Hello World!'"</span>
     <span class="k">end</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="no">ARGV</span><span class="o">.</span><span class="n">first</span>
+
+    <span class="n">scg</span> <span class="o">=</span> <span class="no">CodeIdentity</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+    <span class="n">scg</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+
+    <span class="k">case</span> <span class="n">cmd</span>
+    <span class="k">when</span> <span class="s1">'test'</span>
+      <span class="n">scg</span><span class="o">.</span><span class="n">generate_tests</span>
+    <span class="k">when</span> <span class="s1">'output'</span>
+      <span class="n">scg</span><span class="o">.</span><span class="n">show_output</span>
+    <span class="k">else</span>
+      <span class="n">scg</span><span class="o">.</span><span class="n">show_code</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
 </pre>
 </div>
 
@@ -232,26 +235,27 @@ piece of code and generate as many solutions as desired.</p>
 <p>Without any options it works on the old favorite <code>puts 'Hello, World'</code>
 and produces 20 solutions. Here's the output:</p>
 
-<div class="highlight"><pre>    <span class="nb">puts</span> <span class="s1">'Hello, World!'</span>
-    <span class="nb">puts</span> <span class="s2">"Hello, World!"</span>
-    <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
-    <span class="nb">print</span> <span class="s2">"Hello, World!</span><span class="se">\n</span><span class="s2">"</span>
-    <span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="o">[</span><span class="s2">"Hello, World!"</span><span class="o">]</span>
-    <span class="nb">puts</span> <span class="s2">"Hello, World!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span>
-    <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
-    <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
-    <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="o">[].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">))</span>
-    <span class="nb">print</span> <span class="s2">"Hello, World!</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span>
-    <span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="o">[</span><span class="s2">"Hello, World!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">]</span>
-    <span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="o">[</span><span class="s2">"Hello, World!"</span><span class="o">].</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span>
-    <span class="nb">puts</span> <span class="s2">"Hello, World!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span>
-    <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
-    <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
-    <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="o">[].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">))</span>
-    <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s2">""</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="p">)</span>
-    <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="o">[].</span><span class="n">join</span><span class="p">(</span><span class="s2">""</span><span class="p">))</span>
-    <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="o">[].</span><span class="n">join</span><span class="p">(</span><span class="o">[].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">)))</span>
-    <span class="nb">print</span> <span class="s2">"Hello, World!</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span>
+<div class="highlight">
+<pre>  <span class="nb">puts</span> <span class="s1">'Hello, World!'</span>
+  <span class="nb">puts</span> <span class="s2">"Hello, World!"</span>
+  <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+  <span class="nb">print</span> <span class="s2">"Hello, World!</span><span class="se">\n</span><span class="s2">"</span>
+  <span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="o">[</span><span class="s2">"Hello, World!"</span><span class="o">]</span>
+  <span class="nb">puts</span> <span class="s2">"Hello, World!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span>
+  <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="o">[].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">))</span>
+  <span class="nb">print</span> <span class="s2">"Hello, World!</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span>
+  <span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="o">[</span><span class="s2">"Hello, World!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">]</span>
+  <span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="o">[</span><span class="s2">"Hello, World!"</span><span class="o">].</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span>
+  <span class="nb">puts</span> <span class="s2">"Hello, World!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span>
+  <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="o">[].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">))</span>
+  <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="s2">""</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="o">[].</span><span class="n">join</span><span class="p">(</span><span class="s2">""</span><span class="p">))</span>
+  <span class="nb">puts</span> <span class="o">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"!"</span><span class="o">].</span><span class="n">join</span><span class="p">(</span><span class="o">[].</span><span class="n">join</span><span class="p">(</span><span class="o">[].</span><span class="n">join</span><span class="p">(</span><span class="s1">''</span><span class="p">)))</span>
+  <span class="nb">print</span> <span class="s2">"Hello, World!</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">reverse</span>
 </pre>
 </div>
 
@@ -261,7 +265,7 @@ individual solutions. But I manged to come up with an infinite set of them! ;) <
 
 <p>(The full code is available in <a href="http://gist.github.com/313518">Gist #313518</a>.)</p>
 
-<hr /><p>title      : Code Identity
+<hr><p>title      : Code Identity
 author     : trans
 categories : [ruby, identity]
 date       : 2010-02-25
@@ -289,7 +293,7 @@ layout     : post</p>
 		<div id="footer">
       <div class="tiger">
       </div>
-			<small>Last edited by <b>7rans</b> on December 06, 2011.</small>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
 			<small style="float:right;">
 				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
 				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.

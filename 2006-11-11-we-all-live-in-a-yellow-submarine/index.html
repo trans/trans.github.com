@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <title>7R4N5.C0D3 - 2006 11 11 we all live in a yellow submarine</title>
+
+    <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <!--[if lt IE 9]>
+    <script src="/smeagol/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+</head>
+
+<body>
+	
+  <div id="container">
+		<div id="header">
+			<h1>7R4N5.C0D3</h1>
+		</div>
+
+    
+
+		<div id="nav">
+      <ul>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
+</ul>
+
+		</div>
+
+		<article>
+    	<div id="content">
+          <b class="path">&gt; 2006 11 11 we all live in a yellow submarine</b>
+
+<!-- Start Shareaholic Sexybookmark HTML-->
+
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<!-- End Shareaholic Sexybookmark HTML -->
+<!-- Start Shareaholic Sexybookmark script -->
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmark script -->
+
+<h1>We All Live in a Yellow Submarine</h1>
+
+<p>Anyone having read my previous posts, here and on ruby-talk, knows I love to explore ideas. It doesn't matter if they are considered "good" or "bad". Most cannot be judged without first exponding on them anyway. In fact, half the time I have no idea where an idea might lead until I sit down and blog it.</p>
+
+<p>Tonight's idea comes by way of frustration with project organization, specifically module namespaces. A minor issue for small projects; large projects on the other hand... Well, consider my current problem. I have a class called Project. Now related to Project are a number of modularized tool sets. Each tool set can be used independently of the Project class, but typically will be used via it. So where do I locate the tool sets? My first instinct is to go ahead and put them in the class itself.</p>
+
+<div class="highlight">
+<pre><span class="k">module</span> <span class="nn">MyApp</span>
+  <span class="k">class</span> <span class="nc">Project</span>
+    <span class="k">module</span> <span class="nn">ToolSetA</span>
+    <span class="k">module</span> <span class="nn">ToolSetB</span>
+</pre>
+</div>
+
+
+<p>But I find this less the optimal. While it may be a small and unlikely matter, class is not a bonofide namespace --it is a class. And while it depends on these tool sets, the tool sets do not necessarily depend on it. As such we would never be able to include these tool sets in another namespace --such as the toplevel if it struck my or some users fancy. So we are left then to use some alternate organization.</p>
+
+<div class="highlight">
+<pre> <span class="k">class</span> <span class="nc">Project</span>
+ <span class="k">module</span> <span class="nn">ProjectToolsets</span>
+   <span class="k">module</span> <span class="nn">ToolSetA</span>
+   <span class="k">module</span> <span class="nn">ToolSetB</span>
+</pre>
+</div>
+
+
+<p>or as a compromise</p>
+
+<div class="highlight">
+<pre> <span class="k">class</span> <span class="nc">Project</span>
+   <span class="k">module</span> <span class="nn">Toolsets</span>
+     <span class="k">module</span> <span class="nn">ToolSetA</span>
+     <span class="k">module</span> <span class="nn">ToolSetB</span>
+</pre>
+</div>
+
+
+<p>The downside here, of course, are the long-winded names. But a better solution eludes me, other than one possibility: the use of all capitals for pure namespace modules.</p>
+
+<div class="highlight">
+<pre> <span class="k">class</span> <span class="nc">Project</span>
+ <span class="k">module</span> <span class="nn">PROJECT</span>
+   <span class="k">module</span> <span class="nn">ToolSetA</span>
+   <span class="k">module</span> <span class="nn">ToolSetB</span>
+</pre>
+</div>
+
+
+<p>It's a bit strange in appearance but it works well. One quark however is that this new rule begs for my project's toplevel namepsace to be all caps too. Do I want to go there?</p>
+
+<div class="highlight">
+<pre><span class="k">module</span> <span class="nn">MYAPP</span>
+ <span class="k">class</span> <span class="nc">Project</span>
+ <span class="k">module</span> <span class="nn">PROJECT</span>
+   <span class="k">module</span> <span class="nn">ToolSetA</span>
+   <span class="k">module</span> <span class="nn">ToolSetB</span>
+</pre>
+</div>
+
+
+<p>I'm not sure it's the solution I'm after, but to its merit, it does draw a nice distinction between namespace modules and other modules and classes.</p>
+
+<p>In the course of this consideration I began to wonder about the distinction between Class and Module. The difference is almost not-existent in reality. If you peer into the Ruby source code you will find that interoperability between them is purposefully prevented. After all Class is a subclass of Module. Yet they are made distinct for a good reason. They provide conceptually different ideas. A class represents an data archetype; a module represents a reusable component. In fact, one could easily argue that Module itself could use an additional distiction between Namespace and Mixin. Even so, I could not help but wonder if it might yet be possible to have a single Encapsulation, relegating the differences to the elements within them instead of the encapsulation types themselves. I imagined this:</p>
+
+<div class="highlight">
+<pre><span class="k">class</span> <span class="nc">Something</span>
+  <span class="k">def</span> <span class="nf">x</span>
+  <span class="k">def</span> <span class="nf">y</span>
+  <span class="n">mod_def</span> <span class="n">a</span>
+  <span class="n">mod_def</span> <span class="n">x</span>
+  <span class="k">class</span> <span class="nc">SomethingElse</span>
+</pre>
+</div>
+
+
+<p>Instantiating via Something.new or subclassing would provide the instance methods x and y. Including however would provide the mod_def methods a and x instead along with adding SomethingElse to the including namespace. More refined means of controlling namespace become possible. For instance include_constants could limit inclusion to constants only; vice-verse with include_methods. Methods could be defined as both instance and module methods. And while we're at it, throw in a class_def as an alternative to def self.x.</p>
+
+<p>It's interesting. I've often thought about the idea of eliminating the distinction between Class and Module. This is the first time it's occurred to me that it could be done while retaining the utility of that distinction by passing responsibility down to the methods themselves.</p>
+
+<p>I suppose now the question is, what are the downsides to this? That'll require further consideration, but one clear point is that methods are less cleanly divided. You could have module methods scattered about your class definitions, weaving in and out of your instance methods. I suspect we would make an effort to nicely organize them however. Besides it means having fewer modules to name --and I'm all for anything that reduces the number of names I have to make-up.</p>
+
+<p>It would be interesting to see how far one could go in implementing this in pure Ruby. Some details of Ruby will hold back a perfect implementation, but the essence of it is certainly possible. For starters, here's a neat trick for doing without the distinction between class and module.</p>
+
+<div class="highlight">
+<pre><span class="k">class</span> <span class="nc">Module</span>
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="n">mod</span> <span class="o">=</span> <span class="nb">self</span>
+    <span class="no">Class</span><span class="o">.</span><span class="n">new</span><span class="p">{</span> <span class="kp">include</span> <span class="n">mod</span> <span class="p">}</span><span class="o">.</span><span class="n">new</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Have fun! Unfortunately I'm not. I'm still stuck on the forementioned namespace issue! Oh well. Back to the coding board...</p>
+      </div>
+    </article>
+
+    <div id="comments">
+      <!-- Commment vis Disqus -->
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /**
+         * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+         */
+        (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = 'http://transcode.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+  <div id="social-share"></div>
+</body>
+</html>

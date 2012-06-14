@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <title>7R4N5.C0D3 - 2007 03 12 package management is a red herring</title>
+
+    <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <!--[if lt IE 9]>
+    <script src="/smeagol/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+</head>
+
+<body>
+	
+  <div id="container">
+		<div id="header">
+			<h1>7R4N5.C0D3</h1>
+		</div>
+
+    
+
+		<div id="nav">
+      <ul>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
+</ul>
+
+		</div>
+
+		<article>
+    	<div id="content">
+          <b class="path">&gt; 2007 03 12 package management is a red herring</b>
+
+<!-- Start Shareaholic Sexybookmark HTML-->
+
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<!-- End Shareaholic Sexybookmark HTML -->
+<!-- Start Shareaholic Sexybookmark script -->
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmark script -->
+
+<h1>Package Management is a Red Herring</h1>
+
+<p>Traditionally package management has been fairly complicated. Developers must navigate the matrix of platform support, package format and configuration choices that are often as time consuming as they are restrictive. </p>
+
+<p>For instance, the goto format of the day on most Linux platforms is the Debian package format. Debian packages follow closely to the <code>FHS</code> (File Hierarchy standard), and tend to enforce fairly strict Debian packaging policies, such as placing development files in separate packages. Debian packages require the creation of a control file with information about the build as well as a "fuax installation" that is packaged up into a <code>.deb</code> file. All of this takes a fair bit of effort on the developer's part. And that's just the work involved for supporting one package format for a limited selection of platforms.</p>
+
+<p>For Ruby developers, RubyGems has come along to make life a fair bit easier. They have dispensed with FHS compliance, to the dismay if Debian maintainers, and provided a relatively easy means of packaging up a library or application for redistribution by following the <em>convention over configuration</em> philosophy. Of course, it helps that the target source is Ruby, which has very simple file-based import system, as opposed to C or Java.</p>
+
+<p>Even so, package management can be even easier if we simply recognize the gorilla in the room: version control systems. All developers now use source code managers (<code>SCM</code>) to track changes to code and <em>distribute</em> source between developers. See the keyword there? The ability to <em>distribute</em> a program is half the battle of package management.</p>
+
+<p>The other half is installation. For a pure-Ruby program installation if fairly trivial, it's just a matter to putting the files in a proper location on the file system. For C or Java packages there is the further matter of the <em>compile</em>. For open-source projects that's not particularly difficult, a build script can be provided and as long as the end installer has the necessary build tools, the program can be compiled on demand. For proprietary code it gets more complicated, but lets put that aside for the moment.</p>
+
+<p>Taking all of this into consideration, packaging systems should be fairly trivial --a wrapper around SCM tools that pull down the current or tagged version of source, run the build script and copy the resulting files to an appropriate place on disk. Such a system would be very light weight. In fact, with the exception of dependency management code, there's no reason that such a system to take up more than a few hundred lines of code.</p>
+
+<p>The question of proprietary code is a little more challenging since the developer does not want the source code to make it's way to the end-users system at all. In this case I suggest one of two possibilities: 1) it may be possible to use encryption to prevent end-users from gaining access to the source, or 2) use an intermediary service that builds a package on a replica of the end users machine, turning over only the final results. Yes, this means complications for proprietary vendors, but it's one that could easily be turned into a service.</p>
+
+<p>The chore of the developer could then be greatly reduced to following a set of standards for organizing a project, providing metadata and optionally a build script for handling advanced build requirements. The target platform can take these pieces and build and install the package as is suitable to the platform. In other words, the platform takes care of the platform distinctions, not the developer.</p>
+      </div>
+    </article>
+
+    <div id="comments">
+      <!-- Commment vis Disqus -->
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /**
+         * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+         */
+        (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = 'http://transcode.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+  <div id="social-share"></div>
+</body>
+</html>

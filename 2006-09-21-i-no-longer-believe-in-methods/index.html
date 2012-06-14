@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <title>7R4N5.C0D3 - 2006 09 21 i no longer believe in methods</title>
+
+    <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <!--[if lt IE 9]>
+    <script src="/smeagol/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+</head>
+
+<body>
+	
+  <div id="container">
+		<div id="header">
+			<h1>7R4N5.C0D3</h1>
+		</div>
+
+    
+
+		<div id="nav">
+      <ul>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
+</ul>
+
+		</div>
+
+		<article>
+    	<div id="content">
+          <b class="path">&gt; 2006 09 21 i no longer believe in methods</b>
+
+<!-- Start Shareaholic Sexybookmark HTML-->
+
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<!-- End Shareaholic Sexybookmark HTML -->
+<!-- Start Shareaholic Sexybookmark script -->
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmark script -->
+
+<h1>I No Longer Believe in Methods</h1>
+
+<p>Yes, that's right. I no longer believe in methods. Why? Becuase this is OOP and if the methods aren't honest to goodness objects from the start, without exception, then they are not really methods. They're just glorified functions.</p>
+
+<p>Let me show you what I mean. I have a Project class in which is defined a set of tools that can manipulate it. Clearly the proper implementation abstraction for these tools is the method.</p>
+
+<div class="highlight">
+<pre><span class="no">Class</span> <span class="no">Project</span>
+  <span class="k">def</span> <span class="nf">announce</span>
+    <span class="nb">puts</span> <span class="s2">"This is my new project!"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>But these tools must be distinguishable from other supporting methods. Moreover additional information may be associated with these tools, like help information or valid states of the Project for the tool to be useful. How do we encode this information with Ruby? Since methods aren't first class objects, we are forced to return to functional programming. In which case, it is best to define some sort of DSL.</p>
+
+<div class="highlight">
+<pre><span class="k">module</span> <span class="nn">ProjectDSL</span>
+  <span class="k">def</span> <span class="nf">help</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="n">text</span> <span class="p">)</span>
+    <span class="vi">@help</span> <span class="o">||=</span> <span class="p">{}</span>
+    <span class="vi">@help</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="n">text</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="nb">test</span> <span class="p">)</span>
+    <span class="vi">@valid</span> <span class="o">||=</span> <span class="p">{}</span>
+    <span class="vi">@valid</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="nb">test</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">Class</span> <span class="no">Project</span>
+  <span class="kp">extend</span> <span class="no">ProjectDSL</span>
+
+  <span class="k">def</span> <span class="nf">announce</span>
+    <span class="nb">puts</span> <span class="s2">"This is my new project!"</span>
+  <span class="k">end</span>
+
+  <span class="n">help</span> <span class="ss">:announce</span><span class="p">,</span> <span class="s2">"Announces your project to the world!"</span>
+  <span class="n">valid</span> <span class="ss">:announce</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">"0.0.0"</span> <span class="p">}</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Now this kind of thing has come up enough in large projects, such as Nitro, that a general means of annotation proved to be most effective.</p>
+
+<div class="highlight">
+<pre><span class="nb">require</span> <span class="s1">'facet/annotation'</span>
+
+<span class="no">Class</span> <span class="no">Project</span>
+  <span class="k">def</span> <span class="nf">announce</span>
+    <span class="nb">puts</span> <span class="s2">"This is my new project!"</span>
+  <span class="k">end</span>
+
+  <span class="n">ann</span> <span class="ss">:announce</span><span class="p">,</span> <span class="ss">:help</span> <span class="o">=&gt;</span> <span class="s2">"Announces your project to the world!"</span><span class="p">,</span>
+                 <span class="ss">:valid</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">"0.0.0"</span> <span class="p">}</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Annotations works very well, and if you find yourself in need of this kind of "method metadata" it is an excellent approach.</p>
+
+<p>But I've worked with all this long enough now to be able to have a wide perspective on it and it's become very clear to me that the whole "special needs" arises out of the fact that Ruby is still just a functional language in this respect, and not a full OOPL. (And please no objections that method() and instance_method() make it otherwise, these do not provide a persitant object, but return a new object every time they are invoked.) So what might the above look like if it were not so? There would of course be more than one way to go about it, but imagine this:</p>
+
+<div class="highlight">
+<pre><span class="k">class</span> <span class="nc">Tool</span> <span class="o">&lt;</span> <span class="no">Method</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:help</span>
+
+  <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span> <span class="o">&amp;</span><span class="nb">test</span> <span class="p">)</span>
+    <span class="vi">@valid</span> <span class="o">=</span> <span class="nb">test</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">Class</span> <span class="no">Project</span>
+  <span class="k">def</span> <span class="nf">announce</span> <span class="o">=&gt;</span> <span class="no">Tool</span>
+    <span class="nb">puts</span> <span class="s2">"This is my new project!"</span>
+  <span class="k">end</span>
+
+  <span class="n">announce</span><span class="o">.</span><span class="n">help</span> <span class="o">=</span> <span class="s2">"Announces your project to the world!"</span>
+
+  <span class="n">announce</span><span class="o">.</span><span class="n">valid</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">"0.0.0"</span> <span class="p">}</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>I'm taking some liberties with the syntax here for clarity. But in anycase it certainly paints a provocative idea. And I would argue that it paints the approprite OOP idea too.</p>
+      </div>
+    </article>
+
+    <div id="comments">
+      <!-- Commment vis Disqus -->
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /**
+         * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+         */
+        (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = 'http://transcode.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+  <div id="social-share"></div>
+</body>
+</html>

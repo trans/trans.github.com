@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <title>7R4N5.C0D3 - 2006 07 22 from singleton to legion</title>
+
+    <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <!--[if lt IE 9]>
+    <script src="/smeagol/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+</head>
+
+<body>
+	
+  <div id="container">
+		<div id="header">
+			<h1>7R4N5.C0D3</h1>
+		</div>
+
+    
+
+		<div id="nav">
+      <ul>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
+</ul>
+
+		</div>
+
+		<article>
+    	<div id="content">
+          <b class="path">&gt; 2006 07 22 from singleton to legion</b>
+
+<!-- Start Shareaholic Sexybookmark HTML-->
+
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<!-- End Shareaholic Sexybookmark HTML -->
+<!-- Start Shareaholic Sexybookmark script -->
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmark script -->
+
+<h1>From Singleton to Legion</h1>
+
+<p>For as long as I've coded Ruby there has been some question as to the appropriateness of the term singleton class. This is the term generally used in Ruby parlance to refer to the language construct: class &lt;&lt; obj; self; end, and is the context of class methods and module methods.</p>
+
+<p>While the term is fitting in the sense that each object only has one of these classes (hence "single"), issue arises from a terminology clash with an already well accepted object-oriented programming term, <a href="http://en.wikipedia.org/wiki/Singleton_pattern">Singleton Pattern</a>. In OOP-speak a singleton class is a class that can only be instantiated once. Many have argued that the Singleton pattern itself is a flawed concept, since one can just instantiate an object and assign it to a constant to achieve the same end. So why restrict anyone from a second instance of a class if they so choose? That's a reasonable argument, although not always as practical as it might seem. Nonetheless, the terminology clash still remains.</p>
+
+<p>In light of nomenclature issue, many have offered alternative terms for Ruby's singleton class. Indeed, Ruby itself has used two alternatives in the past: virtual class and metaclass, and many people still prefer that later of these choices. Other suggestions include the well known _whyism <code>eigenclass</code>, the abbreviated <code>sclass</code>, the pronoun contingents 'myclass' and 'ownclass', as well as my own concoctions <code>adhoc</code>, <code>quaclass</code> and <code>nonce</code>. Yet despite all these names, none of which ever stick, what is this singly thing really?</p>
+
+<p>Recently, our beloved Pit Capitan put it concisely when he said "there are only two types of methods in Ruby, instance methods and singleton methods". Well said. Unfortunately it's not really true. Instance methods aren't really methods at all, they are just definitions for methods to be. That's why when you use #instance_method you get something called an UnboundMethod, not a Method. It only becomes a method when it's bound to an object. To clarify further how that distinction is a bit misleading, consider that when a singleton method is defined it falls into an inheritance hierarchy along side so-called instance methods. In other words, the singleton methods and instance methods exist on the same playing field, and the former can call on the other via #super. In fact, we can access these singleton methods in instance fashion via (class&lt;&lt;obj;self;end).instance_method(sym). So these methods are not really distinct in this manner after all. In fact there is no distinction between methods other than bound and unbound. And this distinction arises from the capability of class Module and class Class to harbor a set of method definitions that are not their own. Which is of course exactly why these constructs exist in the first place. So when we say singleton method, we are not referring to something different from instance method. We only mean that these methods are kept in a special "singleton class", made just for a specific object, and consequently, are automatically bound to that object.</p>
+
+<p>Now, I'm going to claim that the term 'singleton' is a poor choice for a completely different reason than any given before. It may come as a bit of surprise, but singletons are not inherently single. They are only made so by an explicit restriction in the Ruby's source code. It is quite simple, actually, to remark the if-clause out of the source, recompile Ruby and then do:</p>
+
+<div class="highlight">
+<pre><span class="n">o</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+<span class="k">def</span> <span class="nc">o</span><span class="o">.</span><span class="nf">x</span>
+  <span class="s2">"x"</span>
+<span class="k">end</span>
+<span class="k">def</span> <span class="nc">o</span><span class="o">.</span><span class="nf">x</span>
+  <span class="k">super</span> <span class="o">+</span> <span class="s2">"x"</span>
+<span class="k">end</span>
+<span class="n">o</span><span class="o">.</span><span class="n">x</span>   <span class="o">=&gt;</span> <span class="s2">"xx"</span>
+</pre>
+</div>
+
+
+<p>The reason Ruby makes the per-object classes single is because it would be terribly inefficient to define a whole new class for every new singleton method defined. That's understandable, but it also comes at a cost. We can not reliably receive an object from the outside world and define our own singleton on it because we may be clobbering someone else's singleton method without even knowing it. (NOTE: It doesn't matter so much if you're just redefining a method altogether, but if you're calling super it very much matters.) Generally we don't even think about such things, but truth be told, object singleton methods often fail to survive code refactoring. Object singleton's really only exist as a side effect of Ruby's class model (and Smalltalk's) which utilize the singleton class as a means of separating a module/class method definitions from it's own actual methods. This could have been done another way of course, but then a class/module would be something wholly different from any other object. The use of the singleton allowed classes and modules to be just like any other object. So singletons are really a bit of cleverness that lie at the very heart of how Ruby works.</p>
+
+<p>But does it mean that they have to be singly? Could we remove the restriction and open up a additional robustness to these per-object classes? We could. In fact, this was the very first hack I ever made to the Ruby source code. My change simply checked to see if the method was already defined in the first "singleton" layer and continue upward until it either found a usable layer or ran out of layers, in which case it created a new one. Combined with the capability to selectively undefine particular methods of particular layers and we gain a flexible pre-object class hierarchy system that can be used without the caveats that currently make singletons so limited outside of class and module definitions.</p>
+
+<p>And then we no long can call them "singleton" but rather "legion" ;)</p>
+      </div>
+    </article>
+
+    <div id="comments">
+      <!-- Commment vis Disqus -->
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /**
+         * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+         */
+        (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = 'http://transcode.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+  <div id="social-share"></div>
+</body>
+</html>

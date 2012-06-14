@@ -5,7 +5,7 @@
 
     <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
 
-    <title>7R4N5.C0D3 - An Ally OOP for If-Conditions</title>
+    <title>7R4N5.C0D3 - 2008 09 28 if and oopy if</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -47,17 +47,17 @@
 
 		<div id="nav">
       <ul>
-<li><a href="/">I BLOG</a></li>
-<li><a href="/I-MAKE">I MAKE</a></li>
-<li><a href="/I-USE">I USE</a></li>
-<li><a href="/I-READ">I READ</a></li>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
 </ul>
 
 		</div>
 
 		<article>
     	<div id="content">
-          <b class="path">&gt; An Ally OOP for If-Conditions</b>
+          <b class="path">&gt; 2008 09 28 if and oopy if</b>
 
 <!-- Start Shareaholic Sexybookmark HTML-->
 
@@ -93,17 +93,18 @@ can attest.</p>
 <p>Consider the following case. For a while now. I have wanted in my arsonal
 of Ruby classes a NullClass defined basically as:</p>
 
-<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">NullClass</span> <span class="o">&lt;</span> <span class="no">NilClass</span>
-      <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
-        <span class="nb">self</span>
-      <span class="k">end</span>
+<div class="highlight">
+<pre>  <span class="k">class</span> <span class="nc">NullClass</span> <span class="o">&lt;</span> <span class="no">NilClass</span>
+    <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+      <span class="nb">self</span>
     <span class="k">end</span>
+  <span class="k">end</span>
 
-    <span class="no">NULL</span> <span class="o">=</span> <span class="no">NullClass</span><span class="o">.</span><span class="n">new</span>
+  <span class="no">NULL</span> <span class="o">=</span> <span class="no">NullClass</span><span class="o">.</span><span class="n">new</span>
 
-    <span class="k">def</span> <span class="nf">null</span>
-      <span class="no">NULL</span>
-    <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">null</span>
+    <span class="no">NULL</span>
+  <span class="k">end</span>
 </pre>
 </div>
 
@@ -112,8 +113,9 @@ of Ruby classes a NullClass defined basically as:</p>
 <code>nil</code>, such intefaces could return <code>null</code>, and no 
 error would be thrown when invoking any method against it.</p>
 
-<div class="highlight"><pre>    <span class="n">obj</span> <span class="o">=</span> <span class="n">null</span>
-    <span class="n">obj</span><span class="o">.</span><span class="n">it</span><span class="o">.</span><span class="n">does</span><span class="o">.</span><span class="n">not</span><span class="o">.</span><span class="n">matter</span>  <span class="c1">#=&gt; null</span>
+<div class="highlight">
+<pre>  <span class="n">obj</span> <span class="o">=</span> <span class="n">null</span>
+  <span class="n">obj</span><span class="o">.</span><span class="n">it</span><span class="o">.</span><span class="n">does</span><span class="o">.</span><span class="n">not</span><span class="o">.</span><span class="n">matter</span>  <span class="c1">#=&gt; null</span>
 </pre>
 </div>
 
@@ -141,20 +143,21 @@ a value. This would apply for all types of conditions:
 
 <p>To clarify, let's say this special method is simply called #if, then...</p>
 
-<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">IfExample</span>
-      <span class="kp">attr</span> <span class="ss">:if</span>
-      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="vi">@if</span><span class="p">)</span>
-        <span class="vi">@if</span> <span class="o">=</span> <span class="k">if</span>
-      <span class="k">end</span>
+<div class="highlight">
+<pre>  <span class="k">class</span> <span class="nc">IfExample</span>
+    <span class="kp">attr</span> <span class="ss">:if</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="vi">@if</span><span class="p">)</span>
+      <span class="vi">@if</span> <span class="o">=</span> <span class="k">if</span>
     <span class="k">end</span>
+  <span class="k">end</span>
 
-    <span class="n">x</span> <span class="o">=</span> <span class="no">IfExample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+  <span class="n">x</span> <span class="o">=</span> <span class="no">IfExample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">x</span>
-      <span class="s2">"Yes"</span>
-    <span class="k">else</span>
-      <span class="s2">"No"</span>
-    <span class="k">end</span>
+  <span class="k">if</span> <span class="n">x</span>
+    <span class="s2">"Yes"</span>
+  <span class="k">else</span>
+    <span class="s2">"No"</span>
+  <span class="k">end</span>
 </pre>
 </div>
 
@@ -175,7 +178,7 @@ to false in order to walk through the false side of a condition.</p>
 if-statement would no longer do what we Rubyists presently take 
 for granted. But then, that's the nature of progress, is it not?</p>
 
-<hr /><p>title      : If and OOPy If
+<hr><p>title      : If and OOPy If
 author     : trans
 date       : 2008-09-28
 categories : [ruby, nullclass]
@@ -203,7 +206,7 @@ layout     : post</p>
 		<div id="footer">
       <div class="tiger">
       </div>
-			<small>Last edited by <b>7rans</b> on December 06, 2011.</small>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
 			<small style="float:right;">
 				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
 				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.

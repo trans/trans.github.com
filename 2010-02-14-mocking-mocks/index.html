@@ -5,7 +5,7 @@
 
     <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
 
-    <title>7R4N5.C0D3 - Mocking Mocks</title>
+    <title>7R4N5.C0D3 - 2010 02 14 mocking mocks</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -47,17 +47,17 @@
 
 		<div id="nav">
       <ul>
-<li><a href="/">I BLOG</a></li>
-<li><a href="/I-MAKE">I MAKE</a></li>
-<li><a href="/I-USE">I USE</a></li>
-<li><a href="/I-READ">I READ</a></li>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
 </ul>
 
 		</div>
 
 		<article>
     	<div id="content">
-          <b class="path">&gt; Mocking Mocks</b>
+          <b class="path">&gt; 2010 02 14 mocking mocks</b>
 
 <!-- Start Shareaholic Sexybookmark HTML-->
 
@@ -96,8 +96,9 @@ interesting: Ruby doesn't necessairly need a test-double library.</p>
 <p>Consider the case of a pure <em>stub</em>. Ruby's Struct class makes pure stubs 
 ridiculously easy.</p>
 
-<div class="highlight"><pre>    <span class="n">stub</span> <span class="o">=</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:to_s</span><span class="p">)</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"Hello, World!"</span><span class="p">)</span>
-    <span class="n">stub</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; "Hello, World!"</span>
+<div class="highlight">
+<pre>  <span class="n">stub</span> <span class="o">=</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:to_s</span><span class="p">)</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"Hello, World!"</span><span class="p">)</span>
+  <span class="n">stub</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; "Hello, World!"</span>
 </pre>
 </div>
 
@@ -108,11 +109,12 @@ inherited, like any other Ruby class --pretty sweet.</p>
 <p>How about the case of a <em>partial stubs</em>. Since Ruby supports singleton methods,
 it is a simple matter of latching a new or overriding method onto an object.</p>
 
-<div class="highlight"><pre>    <span class="n">obj</span> <span class="o">=</span> <span class="s2">"my object"</span>
+<div class="highlight">
+<pre>  <span class="n">obj</span> <span class="o">=</span> <span class="s2">"my object"</span>
 
-    <span class="k">def</span> <span class="nc">obj</span><span class="o">.</span><span class="nf">to_s</span>
-      <span class="s2">"mocking "</span> <span class="o">+</span> <span class="k">super</span>
-    <span class="k">end</span>
+  <span class="k">def</span> <span class="nc">obj</span><span class="o">.</span><span class="nf">to_s</span>
+    <span class="s2">"mocking "</span> <span class="o">+</span> <span class="k">super</span>
+  <span class="k">end</span>
 </pre>
 </div>
 
@@ -126,15 +128,16 @@ invocation rather than awaiting a special trigger method (eg. <code>#verify</cod
 these are easy in Ruby. (Note: I am using the <a href="http://proutils.github.com/ae">AE</a>
 library for my assertions syntax.)</p>
 
-<div class="highlight"><pre>    <span class="n">obj</span> <span class="o">=</span> <span class="s2">"my object"</span>
+<div class="highlight">
+<pre>  <span class="n">obj</span> <span class="o">=</span> <span class="s2">"my object"</span>
 
-    <span class="k">def</span> <span class="nc">obj</span><span class="o">.</span><span class="nf">to_s</span>
-      <span class="n">result</span> <span class="o">=</span> <span class="k">super</span>
-      <span class="n">result</span><span class="o">.</span><span class="n">assert</span> <span class="o">=~</span> <span class="sr">/^my/</span>
-      <span class="n">result</span>
-    <span class="k">end</span>
+  <span class="k">def</span> <span class="nc">obj</span><span class="o">.</span><span class="nf">to_s</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">super</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">assert</span> <span class="o">=~</span> <span class="sr">/^my/</span>
+    <span class="n">result</span>
+  <span class="k">end</span>
 
-    <span class="n">obj</span><span class="o">.</span><span class="n">to_s</span>
+  <span class="n">obj</span><span class="o">.</span><span class="n">to_s</span>
 </pre>
 </div>
 
@@ -147,7 +150,8 @@ we see how to do regular mocks in pure Ruby as well.</p>
 <p>Before we get to regular mocks we first need to consider the test <em>spy</em>. Check it out.
 We will use one simple helper from Ruby Facets, called Functor.</p>
 
-<div class="highlight"><pre>    <span class="nb">require</span> <span class="s1">'facets/functor'</span>
+<div class="highlight">
+<pre>  <span class="nb">require</span> <span class="s1">'facets/functor'</span>
 </pre>
 </div>
 
@@ -155,17 +159,18 @@ We will use one simple helper from Ruby Facets, called Functor.</p>
 <p>If you are wondering, the functor is nothing more than a BasicObject that redirects
 <code>#missing_method</code> calls to the block you supply it.</p>
 
-<div class="highlight"><pre>    <span class="n">obj</span> <span class="o">=</span> <span class="s2">"my object"</span>
+<div class="highlight">
+<pre>  <span class="n">obj</span> <span class="o">=</span> <span class="s2">"my object"</span>
 
-    <span class="n">rec</span> <span class="o">=</span> <span class="o">[]</span>
+  <span class="n">rec</span> <span class="o">=</span> <span class="o">[]</span>
 
-    <span class="n">spy</span> <span class="o">=</span> <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="o">|</span>
-      <span class="n">r</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-      <span class="n">rec</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span><span class="o">]</span>
-      <span class="n">r</span>
-    <span class="k">end</span>
+  <span class="n">spy</span> <span class="o">=</span> <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="o">|</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">rec</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span><span class="o">]</span>
+    <span class="n">r</span>
+  <span class="k">end</span>
 
-    <span class="n">spy</span><span class="o">.</span><span class="n">to_s</span>
+  <span class="n">spy</span><span class="o">.</span><span class="n">to_s</span>
 </pre>
 </div>
 
@@ -174,15 +179,17 @@ We will use one simple helper from Ruby Facets, called Functor.</p>
 A record of activity is then being stored in the <code>rec</code> array. With it we can
 verify, for instance, that <code>#to_s</code> was called.</p>
 
-<div class="highlight"><pre>    <span class="n">msg</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">find</span><span class="p">{</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span><span class="o">|</span> <span class="n">op</span> <span class="o">==</span> <span class="ss">:to_s</span> <span class="p">}</span>
-    <span class="n">assert</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<div class="highlight">
+<pre>  <span class="n">msg</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">find</span><span class="p">{</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span><span class="o">|</span> <span class="n">op</span> <span class="o">==</span> <span class="ss">:to_s</span> <span class="p">}</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </pre>
 </div>
 
 
 <p>And that it returned what was expected.</p>
 
-<div class="highlight"><pre>    <span class="n">assert</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">last</span> <span class="o">==</span> <span class="s2">"my object"</span><span class="p">)</span>
+<div class="highlight">
+<pre>  <span class="n">assert</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">last</span> <span class="o">==</span> <span class="s2">"my object"</span><span class="p">)</span>
 </pre>
 </div>
 
@@ -190,10 +197,11 @@ verify, for instance, that <code>#to_s</code> was called.</p>
 <p>Or we can even verify how many times it was called. Lets call it two more times
 to be sure.</p>
 
-<div class="highlight"><pre>    <span class="n">spy</span><span class="o">.</span><span class="n">to_s</span>
-    <span class="n">spy</span><span class="o">.</span><span class="n">to_s</span>
+<div class="highlight">
+<pre>  <span class="n">spy</span><span class="o">.</span><span class="n">to_s</span>
+  <span class="n">spy</span><span class="o">.</span><span class="n">to_s</span>
 
-    <span class="n">assert</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="o">|</span> <span class="n">op</span> <span class="p">}</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="ss">:to_s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="o">|</span> <span class="n">op</span> <span class="p">}</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="ss">:to_s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
 </pre>
 </div>
 
@@ -207,49 +215,54 @@ through them subsequent to invocations in question.</p>
 
 <p>First lets reset our target object and spy.</p>
 
-<div class="highlight"><pre>    <span class="n">obj</span> <span class="o">=</span> <span class="s2">"my object"</span>
+<div class="highlight">
+<pre>  <span class="n">obj</span> <span class="o">=</span> <span class="s2">"my object"</span>
 
-    <span class="n">rec</span> <span class="o">=</span> <span class="o">[]</span>
+  <span class="n">rec</span> <span class="o">=</span> <span class="o">[]</span>
 
-    <span class="n">spy</span> <span class="o">=</span> <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="o">|</span>
-      <span class="n">r</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-      <span class="n">rec</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span><span class="o">]</span>
-      <span class="n">r</span>
-    <span class="k">end</span>
+  <span class="n">spy</span> <span class="o">=</span> <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="o">|</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">rec</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span><span class="o">]</span>
+    <span class="n">r</span>
+  <span class="k">end</span>
 </pre>
 </div>
 
 
 <p>We will store out verifications in a Hash.</p>
 
-<div class="highlight"><pre>    <span class="n">verify</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]=[]</span> <span class="p">}</span>
+<div class="highlight">
+<pre>  <span class="n">verify</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]=[]</span> <span class="p">}</span>
 </pre>
 </div>
 
 
 <p>We define our verification procedures.</p>
 
-<div class="highlight"><pre>    <span class="n">verify</span><span class="o">[</span><span class="ss">:to_s</span><span class="o">]</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span><span class="n">recs</span><span class="o">|</span> 
-      <span class="n">recs</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">assert</span> <span class="o">==</span> <span class="s2">"my object"</span>
-      <span class="n">recs</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">assert</span> <span class="o">==</span> <span class="mi">1</span>
-    <span class="k">end</span>
+<div class="highlight">
+<pre>  <span class="n">verify</span><span class="o">[</span><span class="ss">:to_s</span><span class="o">]</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span><span class="n">recs</span><span class="o">|</span> 
+    <span class="n">recs</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">assert</span> <span class="o">==</span> <span class="s2">"my object"</span>
+    <span class="n">recs</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">assert</span> <span class="o">==</span> <span class="mi">1</span>
+  <span class="k">end</span>
 </pre>
 </div>
 
 
 <p>Now we can execute the code in question.</p>
 
-<div class="highlight"><pre>    <span class="n">spy</span><span class="o">.</span><span class="n">to_s</span>
+<div class="highlight">
+<pre>  <span class="n">spy</span><span class="o">.</span><span class="n">to_s</span>
 </pre>
 </div>
 
 
 <p>And verify by iterating over and calling each verification procedure.</p>
 
-<div class="highlight"><pre>    <span class="n">verify</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">vop</span><span class="p">,</span> <span class="n">tst</span><span class="o">|</span>
-      <span class="n">recs</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span><span class="o">|</span> <span class="n">vop</span> <span class="o">==</span> <span class="n">op</span> <span class="p">}</span>
-      <span class="n">tst</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">recs</span><span class="p">)</span>
-    <span class="k">end</span>
+<div class="highlight">
+<pre>  <span class="n">verify</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">vop</span><span class="p">,</span> <span class="n">tst</span><span class="o">|</span>
+    <span class="n">recs</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span><span class="o">|</span> <span class="n">vop</span> <span class="o">==</span> <span class="n">op</span> <span class="p">}</span>
+    <span class="n">tst</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">recs</span><span class="p">)</span>
+  <span class="k">end</span>
 </pre>
 </div>
 
@@ -267,7 +280,7 @@ contingencies just as well as their full-fledged brethren without
 the worry of taking your tests too far into the realm of implementation
 detail.</p>
 
-<hr /><p>title      : Mocking Mocks
+<hr><p>title      : Mocking Mocks
 author     : trans
 date       : 2010-02-14
 categories : [tdd, bdd, test, mock]
@@ -295,7 +308,7 @@ layout     : post</p>
 		<div id="footer">
       <div class="tiger">
       </div>
-			<small>Last edited by <b>7rans</b> on December 06, 2011.</small>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
 			<small style="float:right;">
 				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
 				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.

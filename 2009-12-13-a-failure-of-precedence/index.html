@@ -5,7 +5,7 @@
 
     <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
 
-    <title>7R4N5.C0D3 - A Failure of Precedence</title>
+    <title>7R4N5.C0D3 - 2009 12 13 a failure of precedence</title>
 
     <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
     <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
@@ -47,17 +47,17 @@
 
 		<div id="nav">
       <ul>
-<li><a href="/">I BLOG</a></li>
-<li><a href="/I-MAKE">I MAKE</a></li>
-<li><a href="/I-USE">I USE</a></li>
-<li><a href="/I-READ">I READ</a></li>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
 </ul>
 
 		</div>
 
 		<article>
     	<div id="content">
-          <b class="path">&gt; A Failure of Precedence</b>
+          <b class="path">&gt; 2009 12 13 a failure of precedence</b>
 
 <!-- Start Shareaholic Sexybookmark HTML-->
 
@@ -91,8 +91,7 @@ woefully <i>bottom heavy</i> --there is only one binary operator available for u
 
 <p>Here is the table as given by the <a href="https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html">PickAxe</a>:</p>
 
-<pre>
-  <code>Method    Operator                Description
+<pre><code>Method    Operator                Description
 Y         [ ] [ ]=                Element reference, element set
 Y         **                      Exponentiation
 Y         ! ~ + -                 Not, complement, unary plus and minus (method names for the last two are +@ and -@)
@@ -114,29 +113,31 @@ Y         &lt;=&gt; == === != =~ !~     Equality and pattern match operators (!=
           or and                  Logical composition
           if unless while until   Expression modifiers
           begin/end               Block expression
-</code>
-</pre>
+</code></pre>
 
 <p>The lack of any operators other then <tt>**</tt>, above the most commonly used, <tt>* / % + -</tt>, puts
 a frustrating limitation on the flexibility of this system. On this account, the most puzzling misplacement of an operator has to be Bitwise Exlusive Or, <tt>^</tt>. In many, if not most, programming languages <tt>^</tt> is the power operator. But in Ruby that function is delegated to <tt>**</tt>. While I personally do not favor <tt>**</tt> for the use, it's not something I mind either. However, that <tt>^</tt> doesn't share the same precedence is very awkward.</p>
 
 <p>Consider for instance, the implementation of a unit system.</p>
 
-<div class="highlight"><pre>    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">**</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">"4 square meters"</span>
+<div class="highlight">
+<pre>  <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">**</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">"4 square meters"</span>
 </pre>
 </div>
 
 
 <p>Notice the power operator effects the unit and the value. So how would we go about notating <code>2 square meters</code>? We need some other means. The obvious answer is to redefine <tt>^</tt>:</p>
 
-<div class="highlight"><pre>    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">"2 square meters"</span>
+<div class="highlight">
+<pre>  <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">"2 square meters"</span>
 </pre>
 </div>
 
 
 <p>Great. But wait, there is an ugliness now upon us.</p>
 
-<div class="highlight"><pre>    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">"2 meters"</span>
+<div class="highlight">
+<pre>  <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">"2 meters"</span>
 </pre>
 </div>
 
@@ -149,7 +150,7 @@ a frustrating limitation on the flexibility of this system. On this account, the
 
 <p>While we wait the day of true precedence freedom, I would like to see Ruby move <tt>^</tt> up with <tt>**</tt> and find a new Exclusive Or operator. Backward compatibility can be largely, although not completely, preserved by aliasing <tt>^</tt> to the new symbol. It's an obvious and simple improvement --a naggling issue that has been around for quite some time.</p>
 
-<hr /><p>title      : A Failure of Precedence
+<hr><p>title      : A Failure of Precedence
 author     : trans
 categories : [website]
 date       : 2009-12-13
@@ -177,7 +178,7 @@ layout     : post</p>
 		<div id="footer">
       <div class="tiger">
       </div>
-			<small>Last edited by <b>7rans</b> on December 06, 2011.</small>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
 			<small style="float:right;">
 				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
 				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
