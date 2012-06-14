@@ -8,7 +8,25 @@
     <title>7R4N5.C0D3</title>
     <link>http://trans.github.com</link>
     <description>Trans Programming Blog</description>
-    <pubDate>Thu, 14 Jun 2012 12:26:36 -0400</pubDate>
+    <pubDate>Thu, 14 Jun 2012 17:08:53 -0400</pubDate>
+    <item>
+      <title>2012 06 17 kill the proxy and save toplevel</title>
+      <link>http://trans.github.com/2012-06-17-kill-the-proxy-and-save-toplevel/index.html</link>
+      <description>&lt;h1&gt;Kill the Proxy and Save Toplevel&lt;/h1&gt;
+
+&lt;p&gt;One of the more curious aspects of Ruby is the &quot;Toplevel&quot; object, otherwise known a &lt;code&gt;main&lt;/code&gt;.&lt;/p&gt;
+</description>
+      <pubDate>Sun, 17 Jun 2012 00:00:00 -0400</pubDate>
+      <dc:date>2012-06-17T00:00:00-04:00</dc:date>
+    </item>
+    <item>
+      <title>2012 06 14 autoload smells like denmark</title>
+      <link>http://trans.github.com/2012-06-14-autoload-smells-like-denmark/index.html</link>
+      <description>&lt;p&gt;Ruby has a very cool feature called &lt;code&gt;auotload&lt;/code&gt;. With autoload, any undefined constant can automatically trigger loading a library script. Effectively this gives Ruby a convenient means of lazy loading. For example, lets say some of our app's executable scripts ultimately use the ANSI library, but others do not. We can use &lt;code&gt;autoload&lt;/code&gt; to only load the ANSI library when it is needed.&lt;/p&gt;
+</description>
+      <pubDate>Thu, 14 Jun 2012 00:00:00 -0400</pubDate>
+      <dc:date>2012-06-14T00:00:00-04:00</dc:date>
+    </item>
     <item>
       <title>2012 06 13 instance variables as syntax sugar</title>
       <link>http://trans.github.com/2012-06-13-instance-variables-as-syntax-sugar/index.html</link>
@@ -148,7 +166,7 @@ that is exactly what Ruby's helper class methods, i.e. &lt;code&gt;attr&lt;/code
       <link>http://trans.github.com/2011-09-07-ruby-heart-higher-order-functions/index.html</link>
       <description>&lt;h1&gt;Ruby Heart High-Order Functions&lt;/h1&gt;
 
-&lt;p&gt;Ruby Facets has a class called &lt;a href=&quot;http://rubyworks.github.com/rubyfaux/?doc=http://rubyworks.github.com/facets/docs/facets-2.9.3/core.json#api-class-Functor&quot;&gt;Functor&lt;/a&gt;. In common computer science parlance, &quot;functor&quot; simply an objectified function. Ruby already has more than it's share of these with Method, Proc and block objects. So what's does the Functor bring to the table? It is a little more that just a first-class function, rather it is a &lt;i&gt;higher-order function&lt;/i&gt;. What it allows us to do is define a function that responds dynamically to a message call. Here is very basic example to clarify the idea.&lt;/p&gt;
+&lt;p&gt;Ruby Facets has a class called &lt;a href=&quot;http://rubyworks.github.com/rubyfaux/?doc=http://rubyworks.github.com/facets/docs/facets-2.9.3/core.json#api-class-Functor&quot;&gt;Functor&lt;/a&gt;. In common computer science parlance &quot;functor&quot; simply means, an objectified function. Ruby already has more than it's share of these with Method, Proc and blocks. So what's does Functor bring to the table? Its a bit more that just a first-class function, rather it is a &lt;i&gt;higher-order function&lt;/i&gt;. What it allows us to do is define a function that responds dynamically to a message call. Here is very basic example to clarify the idea.&lt;/p&gt;
 </description>
       <pubDate>Wed, 07 Sep 2011 00:00:00 -0400</pubDate>
       <dc:date>2011-09-07T00:00:00-04:00</dc:date>
@@ -628,6 +646,6 @@ order --a system we could use in much the same manner as we use the command shel
       <pubDate>Sat, 22 Jul 2006 00:00:00 -0400</pubDate>
       <dc:date>2006-07-22T00:00:00-04:00</dc:date>
     </item>
-    <dc:date>2012-06-14T12:26:36-04:00</dc:date>
+    <dc:date>2012-06-14T17:08:53-04:00</dc:date>
   </channel>
 </rss>

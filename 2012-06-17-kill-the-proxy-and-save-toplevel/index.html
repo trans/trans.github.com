@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <title>7R4N5.C0D3 - 2012 06 17 kill the proxy and save toplevel</title>
+
+    <link rel="stylesheet" href="/smeagol/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/smeagol/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <!--[if lt IE 9]>
+    <script src="/smeagol/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+</head>
+
+<body>
+	
+  <div id="container">
+		<div id="header">
+			<h1>7R4N5.C0D3</h1>
+		</div>
+
+    
+
+		<div id="nav">
+      <ul>
+<li><a href="/index.html">Blog</a></li>
+<li><a href="/Projects/index.html">Projects</a></li>
+<li><a href="/Tools/index.html">Tools</a></li>
+<li><a href="/Reads/index.html">Reads</a></li>
+</ul>
+
+		</div>
+
+		<article>
+    	<div id="content">
+          <b class="path">&gt; 2012 06 17 kill the proxy and save toplevel</b>
+
+<!-- Start Shareaholic Sexybookmark HTML-->
+
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<!-- End Shareaholic Sexybookmark HTML -->
+<!-- Start Shareaholic Sexybookmark script -->
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmark script -->
+
+<h1>Kill the Proxy and Save Toplevel</h1>
+
+<p>One of the more curious aspects of Ruby is the "Toplevel" object, otherwise known a <code>main</code>.</p>
+
+<div class="highlight">
+<pre><span class="nv">$ </span>pry
+<span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nv">self</span>
+<span class="o">=</span>&gt; main
+</pre>
+</div>
+
+
+<p>This <code>main</code> is rather odd entity in that it is special object with special functionality that delegate to the Object class. For example, using <code>def</code> at the toplevel actually defines new private method on the Object class.</p>
+
+<div class="highlight">
+<pre><span class="o">&gt;</span> <span class="k">def</span> <span class="nf">hello_world</span>
+<span class="o">&gt;</span>   <span class="s2">"Hello Wolrd"</span>
+<span class="o">&gt;</span> <span class="k">end</span>
+<span class="o">&gt;</span> <span class="no">Object</span><span class="o">.</span><span class="n">private_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+<span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:DelegateClass</span><span class="p">,</span> <span class="ss">:hello_world</span><span class="o">]</span>
+</pre>
+</div>
+
+
+<p>Did you have any idea that the Toplevel was so powerful as to pervade every object in the system? Well, usually it doesn't present an issue since NO ONE IN THEIR RIGHT MIND EVER DEFINES A METHOD AT THE TOP LEVEL, at least not in production applications.</p>
+
+<p>Unfortunately it has some other negative side effects as well. For instance one can't as easily create a DSL-based scripting language out of Ruby b/c the DSL methods will end up in very object, which can cause unexpected consequences. One can work around this by using Toplevel singleton methods instead, but then you have to make sure you user know this too, and alway prefix their methods with <code>self.</code>. Another issue is that the Toplevel isn't even a full proxy for Object. For instance, try defining a dynamically named method at the Toplevel using <code>define_method</code>.</p>
+
+<div class="highlight">
+<pre><span class="o">&gt;</span> <span class="n">define_method</span><span class="p">(</span><span class="ss">:hello_world</span><span class="p">)</span> <span class="k">do</span>
+<span class="o">&gt;</span>  <span class="s2">"Hello World"</span>
+<span class="o">&gt;</span> <span class="k">end</span>
+<span class="no">NoMethodError</span><span class="p">:</span> <span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`define_method' for main:Object</span>
+</pre>
+</div>
+
+
+<p>For a very long time I have advocated that both of the these issue be banished by changing Toplevel into it's a self extended module instead of the current half-baked Object class delegator.</p>
+
+<div class="highlight">
+<pre><span class="o">&gt;</span> <span class="k">module</span> <span class="nn">Toplevel</span>
+<span class="o">&gt;</span>   <span class="kp">extend</span> <span class="nb">self</span>
+<span class="o">&gt;</span> <span class="k">end</span>
+</pre>
+</div>
+
+
+<p>When a Ruby script is executed it would be executed from within this Toplevel namespace. With it, all expected functionality is available to us, such as <code>def</code>, as well as the module methods that we would likewise except, such as <code>define_method</code>. Methods defined in the Toplevel would no longer invade every object, leaving us free to use Toplevel as serves our application best.</p>
+
+<p>Some neat side effects of this approach include the ability to include Toplevel in class definitions if it suits our usecase, as well as calling on methods defined on Toplevel.</p>
+
+<div class="highlight">
+<pre><span class="k">class</span> <span class="nc">Cool</span>
+  <span class="k">def</span> <span class="nf">hello_world</span>
+    <span class="k">if</span> <span class="no">Toplevel</span><span class="o">.</span><span class="n">method_defined?</span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span>
+      <span class="no">Toplevel</span><span class="o">.</span><span class="n">hello_world</span>
+    <span class="k">else</span>
+      <span class="s2">"Not so worldy, hello."</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>But by far my favourite use of such a design is the ability to use Toplevel for Ruby-based DSL scripting. For a familiar example consider Rake. Rake has a Rake::DSL module which is included in a special execution context where rake files are evaluated via special loading code. But with Toplevel, it would be possible to mix Rake::DSL directly into it and then rake files could be loaded with a simple <code>require</code>.</p>
+      </div>
+    </article>
+
+    <div id="comments">
+      <!-- Commment vis Disqus -->
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /**
+         * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+         */
+        (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = 'http://transcode.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b>7rans</b> on June 14, 2012.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://smeagolrb.info">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+  <div id="social-share"></div>
+</body>
+</html>
