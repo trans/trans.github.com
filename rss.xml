@@ -8,7 +8,7 @@
     <title>7R4N5.C0D3</title>
     <link>http://trans.github.com</link>
     <description>Trans Programming Blog</description>
-    <pubDate>Thu, 14 Jun 2012 19:47:13 -0400</pubDate>
+    <pubDate>Thu, 14 Jun 2012 20:11:11 -0400</pubDate>
     <item>
       <title>2012 06 17 kill the proxy and save toplevel</title>
       <link>http://trans.github.com/2012-06-17-kill-the-proxy-and-save-toplevel/index.html</link>
@@ -168,7 +168,7 @@ that is exactly what Ruby's helper class methods, i.e. &lt;code&gt;attr&lt;/code
       <link>http://trans.github.com/2011-09-07-ruby-heart-higher-order-functions/index.html</link>
       <description>&lt;h1&gt;Ruby Heart High-Order Functions&lt;/h1&gt;
 
-&lt;p&gt;Ruby Facets has a class called &lt;a href=&quot;http://rubyworks.github.com/rubyfaux/?doc=http://rubyworks.github.com/facets/docs/facets-2.9.3/core.json#api-class-Functor&quot;&gt;Functor&lt;/a&gt;. In common computer science parlance &quot;functor&quot; simply means, an objectified function. Ruby already has more than it's share of these with Method, Proc and blocks. So what's does Functor bring to the table? Its a bit more that just a first-class function, rather it is a &lt;i&gt;higher-order function&lt;/i&gt;. What it allows us to do is define a function that responds dynamically to a message call. Here is very basic example to clarify the idea.&lt;/p&gt;
+&lt;p&gt;Ruby Facets has a class called &lt;a href=&quot;http://rubyworks.github.com/rubyfaux/?doc=http://rubyworks.github.com/facets/docs/facets-2.9.3/core.json#api-class-Functor&quot;&gt;Functor&lt;/a&gt;. In common computer science parlance &quot;functor&quot; simply means an objectified function. Ruby already has more than it's share of these with Method, Proc and blocks. So what does Functor bring to the table? Its a bit more that just a first-class function. Rather, it is a &lt;i&gt;higher-order function&lt;/i&gt;. What it allows us to do is define a function that responds dynamically to a message call. Here is very basic example to clarify the idea.&lt;/p&gt;
 </description>
       <pubDate>Wed, 07 Sep 2011 00:00:00 -0400</pubDate>
       <dc:date>2011-09-07T00:00:00-04:00</dc:date>
@@ -648,6 +648,6 @@ order --a system we could use in much the same manner as we use the command shel
       <pubDate>Sat, 22 Jul 2006 00:00:00 -0400</pubDate>
       <dc:date>2006-07-22T00:00:00-04:00</dc:date>
     </item>
-    <dc:date>2012-06-14T19:47:13-04:00</dc:date>
+    <dc:date>2012-06-14T20:11:11-04:00</dc:date>
   </channel>
 </rss>

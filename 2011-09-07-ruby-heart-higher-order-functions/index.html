@@ -64,7 +64,7 @@
 
 <h1>Ruby Heart High-Order Functions</h1>
 
-<p>Ruby Facets has a class called <a href="http://rubyworks.github.com/rubyfaux/?doc=http://rubyworks.github.com/facets/docs/facets-2.9.3/core.json#api-class-Functor">Functor</a>. In common computer science parlance "functor" simply means, an objectified function. Ruby already has more than it's share of these with Method, Proc and blocks. So what's does Functor bring to the table? Its a bit more that just a first-class function, rather it is a <i>higher-order function</i>. What it allows us to do is define a function that responds dynamically to a message call. Here is very basic example to clarify the idea.</p>
+<p>Ruby Facets has a class called <a href="http://rubyworks.github.com/rubyfaux/?doc=http://rubyworks.github.com/facets/docs/facets-2.9.3/core.json#api-class-Functor">Functor</a>. In common computer science parlance "functor" simply means an objectified function. Ruby already has more than it's share of these with Method, Proc and blocks. So what does Functor bring to the table? Its a bit more that just a first-class function. Rather, it is a <i>higher-order function</i>. What it allows us to do is define a function that responds dynamically to a message call. Here is very basic example to clarify the idea.</p>
 
 <div class="highlight">
 <pre>  <span class="nb">require</span> <span class="s1">'facets/functor'</span>
@@ -105,11 +105,11 @@
 </div>
 
 
-<p>And that's just off the top of my head. There are many potential uses. In fact, Ruby has a quite popular functor already known as <em>Enumerator</em>. But that is a very specialize implementation. What the Functor does is make it easy for us to quickly roll our own higher-order functions.</p>
+<p>And that's just off the top of my head. There are many potential uses. In fact, Ruby has a quite popular functor already known as <em>Enumerator</em>. But that is a very specialized implementation. What Functor does is make it easy for us to quickly roll our own generic higher-order functions.</p>
 
-<p>Now you can read plenty of interesting articles about the merits of high-order functions. I'll even provide you a few links (see below). But what I really want to talk about in this article is the merits of Ruby making higher-order functions an integral part of the core language. Even as the current implementation of Function stands, I think it would make a good addition to the language. But there is a downside to the the implementation in that it must create a new object every time it is used. Using a cache can help, but that raises issues of memory footprint and serialization.</p>
+<p>Now you can read plenty of interesting articles about the merits of high-order functions. I'll even provide you a few links (see below). But what I really want to talk about in this article is the merits of Ruby making higher-order functions an integral part of the core language. Even as the current implementation of Function stands, I think it would make a good addition to the language. But there is a downside to the implementation in that it must create a new object every time it is used. Using a cache can help, but that raises issues of memory footprint and serialization.</p>
 
-<p>If, on the other hand, Ruby could internalize the concept of a Functor as a fluent method dispatch mechanism, Ruby would be able to remove this overhead. That is to say, if a higher-order function could be defined as a method, albeit a special kind of method, instead of as an object, then the overhead would be removed. Indulge my use of some pseudo-code similar to rescue notation to provide you an idea of what our previous example could look like:</p>
+<p>If, on the other hand, Ruby could internalize the concept of a Functor as a fluent method dispatch mechanism, Ruby would be able to remove this overhead. That is to say, if a higher-order function could be defined as a method, albeit a special kind of method, instead of as an object, then the overhead would be removed. Indulge my use of some pseudo-code similar to rescue notation in order to provide you an idea of what our previous example could look like:</p>
 
 <div class="highlight">
 <pre>  <span class="k">class</span> <span class="nc">String</span>
@@ -125,9 +125,9 @@
 </div>
 
 
-<p>The exact notation is, of course, not the important thing. The point is that it's just a special kind of method that Ruby attaches to the class or module, and handles the dispatching mechanics internally without the need for instantiating a new "hollow" Functor object each time.</p>
+<p>The exact notation is, of course, not the important thing. The point is that it's just a special kind of method that Ruby attaches to the class or module, and handles the dispatching mechanics internally without the need for instantiating a new hollow Functor object each time.</p>
 
-<p>I think this would be a very cool feature. One of those things that would set Ruby even further apart from other languages. </p>
+<p>I think this would be a very cool feature. One of those things that would set Ruby even further apart from other languages.</p>
 
 <p><strong>UPDATE</strong>: I recently learned that Python handles higher-order functions in an interesting way:</p>
 
