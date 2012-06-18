@@ -178,9 +178,10 @@ article h1 {
 	margin-top: 0.5em;
 }
 
+/*
 pre {
 	line-height: 1.5em;
-	margin: 1em 0px;
+	margin: 1em 0;
 	overflow: auto;
 	padding: 0.5em;
 }
@@ -194,6 +195,7 @@ code {
 
 pre code {
 	background-color: #fff;
+	padding: 0;
 	border: 1px solid #222;
 	color: #444;
 	font-size: 12px;
@@ -203,6 +205,7 @@ pre code {
 pre > code {
 	border:none !important;
 }
+*/
 
 small {
 	font-size: 80%;
