@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Setting Priorities Trumps Warnings @ 7R4N5C0D3</title>
+    <meta name="author" content="Trans" />
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="/scripts/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+    <!-- tracking code here ? -->
+</head>
+
+<body>
+
+  <div id="container">
+
+		<div id="header">
+			<h1>7R4N5C0D3</h1>
+		</div>
+
+		<div id="nav">
+      <ul>
+      <li><a href="/index.html">Index</a></li>
+      <li><a href="/Home.html">Home</a></li>
+      <li><a href="/Projects.html">Projects</a></li>
+      <li><a href="/Reads.html">Reads</a></li>
+      <li><a href="/Tools.html">Tools</a></li>
+      </ul>
+		</div>
+
+<div id="content-wrapper">
+<div id="content">
+
+<div class="path" style="clear: both; float: right;" >
+  25 Feb 2012
+</div>
+
+<div id="post">
+<h1>Setting Priorities Trumps Warnings</h1>
+
+<p>Today I had to consider how best to handle omission exceptions in the context of test frameworks, and their use case to mark <em>pending tests</em>. In the course of doing so, I realized there are at least two reasonable levels of omission, those there are &quot;ASAP&quot; and those that are &quot;NSM&quot; (Not So Much). Where as other frameworks used their own specially defined classes for these, e.g <code>Pending</code> and <code>Omission</code>, my approach is to re-utilize Ruby&#39;s own <code>NotImplementedError</code>. But then I had to consider how to differentiate between these priorities.</p>
+
+<p>And that&#39;s when the more general notion occurred to me of <strong>Exception Priorities</strong>.</p>
+
+<p>Consider that instead of raising a warning:</p>
+<div class="highlight"><pre><code class="ruby">    <span class="nb">warn</span> <span class="s2">&quot;Don&#39;t do it, mate!&quot;</span>
+</code></pre>
+</div>
+
+<p>We could use the the Exception system, setting a low &quot;warning&quot; level priority.</p>
+<div class="highlight"><pre><code class="ruby">    <span class="k">raise</span> <span class="s2">&quot;Don&#39;t do it, mate!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre>
+</div>
+
+<p>All things being nominal, Ruby would see the priority of this exception is below 0, output the message to <code>$stderr</code> if <code>$VERBOSE=true</code> and then continue on. Hence it is a warning!</p>
+
+<p>With this, <code>#warn</code> could become a simple alias for <code>#raise</code> with a default negative priority.</p>
+
+<p>Now, if that was all there was to it, then there would be little reason to adopt the idea. But there are some really nice advantages to this approach.</p>
+
+<p>With regards to warning messages, we could use the <code>$VERBOSE</code> setting to refine the level of warning we want to be notified about. </p>
+<div class="highlight"><pre><code class="ruby">    <span class="vg">$VERBOSE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">raise</span> <span class="s2">&quot;More Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">raise</span> <span class="s2">&quot;Less Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span>
+</code></pre>
+</div>
+
+<p>In this case we would never see the <code>-2</code> level warning b/c we&#39;ve indicated we don&#39;t want to see those by setting $VERBOSE to higher specific level.</p>
+
+<p>Interestingly enough, we can do the same for actually raising errors! Let&#39;s call the setting <code>$PRIORITY</code> for the sake of discussion.</p>
+<div class="highlight"><pre><code class="ruby">    <span class="vg">$PRIORITY</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">raise</span> <span class="s2">&quot;More Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">raise</span> <span class="s2">&quot;Less Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span>
+</code></pre>
+</div>
+
+<p>Where as before, the &quot;More Serious Warning&quot; would just have printed a warning message to <code>$stderr</code>, in this case the Exception will actually be raised, b/c we have lowered the threshold at which exceptions are to be raised.</p>
+
+<p>This refinement to Ruby&#39;s Exception system, effectively subsuming the warning system within it, makes for a much more powerful, flexible and thus useful system. Take my original use case, I can set the priority of NotImplementedError to <code>1</code> for ASAPs and <code>0</code> for NSMs, and I can go further allowing testers to set high priorities to be selectable from the command line.</p>
+
+<p>Want another use case? How about a <code>DeprecatedError</code> that has a default priority of <code>-1</code>.</p>
+
+<p>I am certain other will think of other use cases as well. This is one of those pliable features that tend to have far wider applicability then the originating use case.</p>
+
+<p>P.S. I&#39;ve always thought is would make more sense if <code>$VERBOSE</code> were called <code>$WARN</code>.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span class="post-date">17 Jun 2012</span> &raquo; <a href="/2012/06/17/kill-the-proxy-and-save-toplevel.html">Kill The Proxy And Save Toplevel</a></li>
+    
+      <li><span class="post-date">14 Jun 2012</span> &raquo; <a href="/2012/06/14/autoload-smells-like-denmark.html">Autoload Smells Like Denmark</a></li>
+    
+      <li><span class="post-date">13 Jun 2012</span> &raquo; <a href="/2012/06/13/instance-variables-as-syntax-sugar.html">Instance Variables As Syntax Sugar</a></li>
+    
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b></b> on 25 Feb 2012.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+</body>
+</html>

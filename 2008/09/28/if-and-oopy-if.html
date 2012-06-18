@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>If And Oopy If @ 7R4N5C0D3</title>
+    <meta name="author" content="Trans" />
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="/scripts/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+    <!-- tracking code here ? -->
+</head>
+
+<body>
+
+  <div id="container">
+
+		<div id="header">
+			<h1>7R4N5C0D3</h1>
+		</div>
+
+		<div id="nav">
+      <ul>
+      <li><a href="/index.html">Index</a></li>
+      <li><a href="/Home.html">Home</a></li>
+      <li><a href="/Projects.html">Projects</a></li>
+      <li><a href="/Reads.html">Reads</a></li>
+      <li><a href="/Tools.html">Tools</a></li>
+      </ul>
+		</div>
+
+<div id="content-wrapper">
+<div id="content">
+
+<div class="path" style="clear: both; float: right;" >
+  28 Sep 2008
+</div>
+
+<div id="post">
+<h1>An Ally OOP for If-Conditions</h1>
+
+<p>Ruby takes a unique approach to conditional evaluation: <i>All
+objects are equivalent to <code>true</code> except <code>nil</code>
+and <code>false</code></i>. No doubt this is a more object-oriented
+approach than, say, C&#39;s use of <code>0</code> as false, but it&#39;s far
+from the ideal of OOP all the way down, as any
+<a href="http://pozorvlak.livejournal.com/94558.html">Smalltalker</a>
+can attest.</p>
+
+<p>Consider the following case. For a while now. I have wanted in my arsonal
+of Ruby classes a NullClass defined basically as:</p>
+<div class="highlight"><pre><code class="ruby">    <span class="k">class</span> <span class="nc">NullClass</span> <span class="o">&lt;</span> <span class="no">NilClass</span>
+      <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+        <span class="nb">self</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="no">NULL</span> <span class="o">=</span> <span class="no">NullClass</span><span class="o">.</span><span class="n">new</span>
+
+    <span class="k">def</span> <span class="nf">null</span>
+      <span class="no">NULL</span>
+    <span class="k">end</span>
+</code></pre>
+</div>
+
+<p>This object would greatly benefit fluent interfaces. Instead of returning
+<code>nil</code>, such intefaces could return <code>null</code>, and no 
+error would be thrown when invoking any method against it.</p>
+<div class="highlight"><pre><code class="ruby">    <span class="n">obj</span> <span class="o">=</span> <span class="n">null</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">it</span><span class="o">.</span><span class="n">does</span><span class="o">.</span><span class="n">not</span><span class="o">.</span><span class="n">matter</span>  <span class="c1">#=&gt; null</span>
+</code></pre>
+</div>
+
+<p>Unfortunately <code>null</code> is not very viable in Ruby
+because <code>null</code> still evaluates as <code>true</code>
+when used as the expression of a condition. The fact remains,
+Ruby is hardcoded to see only the singleton instances of 
+<code>NilClass</code> and <code>FalseClass</code> as false.</p>
+
+<p>I&#39;ve requested that <code>NullClass</code> be added to core Ruby in
+the past (as of yet to no avail) and though I still would like to
+see it included, it may be better still to take an altogether 
+object-oriented approach to conditions --in the spirit of Smalltalk.
+This would allow us to freely create &quot;false&quot; objects, like the
+<code>NullClass</code>, ourselves.</p>
+
+<p>The adoption of such a capability does not require the odd syntax 
+used by Smalltalk (<code>ifTrue</code> / <code>ifFalse</code>).
+Rather, it can take an approach more akin to Ruby&#39;s own <code>case</code>
+statements. As with <code>case</code>&#39;s use of <code>#===</code>,
+a particular method would be used to evaluate the &quot;truthiness&quot; of
+a value. This would apply for all types of conditions: 
+<code>while</code>, <code>until</code>, etc. </p>
+
+<p>To clarify, let&#39;s say this special method is simply called #if, then...</p>
+<div class="highlight"><pre><code class="ruby">    <span class="k">class</span> <span class="nc">IfExample</span>
+      <span class="kp">attr</span> <span class="ss">:if</span>
+      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="vi">@if</span><span class="p">)</span>
+        <span class="vi">@if</span> <span class="o">=</span> <span class="k">if</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="no">IfExample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">x</span>
+      <span class="s2">&quot;Yes&quot;</span>
+    <span class="k">else</span>
+      <span class="s2">&quot;No&quot;</span>
+    <span class="k">end</span>
+</code></pre>
+</div>
+
+<p>The result of this condition would be <code>&quot;No&quot;</code>.</p>
+
+<p>While it may not be an earth shattering adjustment, the additional
+flexibility opens up some interesting doors. Not only would classes
+like the previously mentioned <code>NullClass</code> become possible,
+but conditions themselves become <i>dynamically controllable</i>.</p>
+
+<p>For example, it would allow method probes to fully map method
+signatures (the Halting Problem not withstanding). This is not 
+currently possible in Ruby because a probe cannot pretend to evaluate
+to false in order to walk through the false side of a condition.</p>
+
+<p>The idea would require some getting used to --after all a simple 
+if-statement would no longer do what we Rubyists presently take 
+for granted. But then, that&#39;s the nature of progress, is it not?</p>
+
+<hr>
+
+<p>title      : If and OOPy If
+author     : trans
+date       : 2008-09-28
+categories : [ruby, nullclass]
+layout     : post</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span class="post-date">17 Jun 2012</span> &raquo; <a href="/2012/06/17/kill-the-proxy-and-save-toplevel.html">Kill The Proxy And Save Toplevel</a></li>
+    
+      <li><span class="post-date">14 Jun 2012</span> &raquo; <a href="/2012/06/14/autoload-smells-like-denmark.html">Autoload Smells Like Denmark</a></li>
+    
+      <li><span class="post-date">13 Jun 2012</span> &raquo; <a href="/2012/06/13/instance-variables-as-syntax-sugar.html">Instance Variables As Syntax Sugar</a></li>
+    
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b></b> on 28 Sep 2008.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+</body>
+</html>

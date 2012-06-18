@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Ruby Heart Higher Order Functions @ 7R4N5C0D3</title>
+    <meta name="author" content="Trans" />
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="/scripts/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+    <!-- tracking code here ? -->
+</head>
+
+<body>
+
+  <div id="container">
+
+		<div id="header">
+			<h1>7R4N5C0D3</h1>
+		</div>
+
+		<div id="nav">
+      <ul>
+      <li><a href="/index.html">Index</a></li>
+      <li><a href="/Home.html">Home</a></li>
+      <li><a href="/Projects.html">Projects</a></li>
+      <li><a href="/Reads.html">Reads</a></li>
+      <li><a href="/Tools.html">Tools</a></li>
+      </ul>
+		</div>
+
+<div id="content-wrapper">
+<div id="content">
+
+<div class="path" style="clear: both; float: right;" >
+  07 Sep 2011
+</div>
+
+<div id="post">
+<h1>Ruby Heart High-Order Functions</h1>
+
+<p>Ruby Facets has a class called <a href="http://rubyworks.github.com/rubyfaux/?doc=http://rubyworks.github.com/facets/docs/facets-2.9.3/core.json#api-class-Functor">Functor</a>. In common computer science parlance &quot;functor&quot; simply means an objectified function. Ruby already has more than it&#39;s share of these with Method, Proc and blocks. So what does Functor bring to the table? Its a bit more that just a first-class function. Rather, it is a <i>higher-order function</i>. What it allows us to do is define a function that responds dynamically to a message call. Here is a very basic example to clarify the idea.</p>
+<div class="highlight"><pre><code class="ruby">    <span class="nb">require</span> <span class="s1">&#39;facets/functor&#39;</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="o">|</span>
+      <span class="n">a</span><span class="o">.</span><span class="n">__send__</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">f</span> <span class="o">+</span> <span class="mi">3</span>   <span class="c1">#=&gt; 6</span>
+    <span class="n">f</span> <span class="o">*</span> <span class="mi">3</span>   <span class="c1">#=&gt; 9</span>
+    <span class="n">f</span> <span class="o">**</span> <span class="mi">3</span>  <span class="c1">#=&gt; 27</span>
+</code></pre>
+</div>
+
+<p>So how are higher-order functions useful? There are many possibilities. Consider this crazy little core extension that just occurred to me this evening.</p>
+<div class="highlight"><pre><code class="ruby">    <span class="nb">require</span> <span class="s1">&#39;facets/functor&#39;</span>
+
+    <span class="k">class</span> <span class="nc">String</span>
+      <span class="k">def</span> <span class="nf">in_case</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
+        <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="o">|</span>
+          <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="ss">:===</span> 
+            <span class="n">a</span><span class="o">.</span><span class="n">__send__</span><span class="p">(</span><span class="n">meth</span><span class="p">,</span> <span class="nb">self</span><span class="p">)</span>
+          <span class="k">else</span>
+            <span class="kp">nil</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">case</span> <span class="s1">&#39;foo&#39;</span>
+    <span class="k">when</span> <span class="s1">&#39;f&#39;</span><span class="o">.</span><span class="n">in_case</span><span class="p">(</span><span class="ss">:start_with?</span><span class="p">)</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Hey it starts with an `f`!&quot;</span>
+    <span class="k">end</span>
+</code></pre>
+</div>
+
+<p>And that&#39;s just off the top of my head. There are many potential uses. In fact, Ruby has a quite popular functor already known as <em>Enumerator</em>. But that is a very specialized implementation. What Functor does is make it easy for us to quickly roll our own generic higher-order functions.</p>
+
+<p>Now you can read plenty of interesting articles about the merits of high-order functions. I&#39;ll even provide you a few links (see below). But what I really want to talk about in this article is the merits of Ruby making higher-order functions an integral part of the core language. Even as the current implementation of Functor stands, I think it would make a good addition to the language. But there is a downside to the implementation in that it must create a new object every time it is used. Using a cache can help, but that raises issues of memory footprint and serialization.</p>
+
+<p>If, on the other hand, Ruby could internalize the concept of a Functor as a fluent method dispatch mechanism, Ruby would be able to remove this overhead. That is to say, if a higher-order function could be defined as a method, albeit a special kind of method, instead of as an object, then the overhead would be removed. Indulge my use of some pseudo-code similar to rescue notation in order to provide you an idea of what our previous example could look like:</p>
+<div class="highlight"><pre><code class="ruby">    <span class="k">class</span> <span class="nc">String</span>
+      <span class="k">def</span> <span class="nf">in_case</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">op</span><span class="p">,</span> <span class="n">a</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="ss">:===</span> 
+          <span class="n">a</span><span class="o">.</span><span class="n">__send__</span><span class="p">(</span><span class="n">meth</span><span class="p">,</span> <span class="nb">self</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="kp">nil</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre>
+</div>
+
+<p>The exact notation is, of course, not the important thing. The point is that it&#39;s just a special kind of method that Ruby attaches to the class or module, and handles the dispatching mechanics internally without the need for instantiating a new hollow Functor object each time.</p>
+
+<p>I think this would be a very cool feature. One of those things that would set Ruby even further apart from other languages.</p>
+
+<p><strong>UPDATE</strong>: I recently learned that Python handles higher-order functions in an interesting way:</p>
+<div class="highlight"><pre><code class="python">    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span>
+        <span class="k">return</span> <span class="n">g</span>
+</code></pre>
+</div>
+
+<p>Ruby doesn&#39;t have first-class methods, so emulating Python&#39;s behaviour here would require a slightly different approach, probably something like:</p>
+<div class="highlight"><pre><code class="ruby">    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+      <span class="n">g</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span>
+      <span class="k">end</span>
+      <span class="n">dispatch</span> <span class="n">g</span>
+    <span class="k">end</span>
+</code></pre>
+</div>
+
+<p>Where <code>dispatch</code> would be a new keyword akin to <code>return</code>. Yet such an approach still suffers from the creation of an spurious object, albeit in this case it is a temporary local lambda that probably can be GC&#39;d pretty quickly. So this is a middle ground possibility. Personally, I still think the previously mentioned special method idea is better. And we want Ruby to better than Python, right? ;)</p>
+
+<p>Links:</p>
+
+<ul>
+<li>http://c2.com/cgi/wiki?HigherOrderFunction</li>
+<li>http://kbullock.ringworld.org/2007/03/26/higher-order-messaging/</li>
+</ul>
+
+<hr>
+
+<p>categories: [functor, higher-order functions]</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span class="post-date">17 Jun 2012</span> &raquo; <a href="/2012/06/17/kill-the-proxy-and-save-toplevel.html">Kill The Proxy And Save Toplevel</a></li>
+    
+      <li><span class="post-date">14 Jun 2012</span> &raquo; <a href="/2012/06/14/autoload-smells-like-denmark.html">Autoload Smells Like Denmark</a></li>
+    
+      <li><span class="post-date">13 Jun 2012</span> &raquo; <a href="/2012/06/13/instance-variables-as-syntax-sugar.html">Instance Variables As Syntax Sugar</a></li>
+    
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b></b> on 07 Sep 2011.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+</body>
+</html>

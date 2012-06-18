@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Negative Arrays @ 7R4N5C0D3</title>
+    <meta name="author" content="Trans" />
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="/scripts/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+    <!-- tracking code here ? -->
+</head>
+
+<body>
+
+  <div id="container">
+
+		<div id="header">
+			<h1>7R4N5C0D3</h1>
+		</div>
+
+		<div id="nav">
+      <ul>
+      <li><a href="/index.html">Index</a></li>
+      <li><a href="/Home.html">Home</a></li>
+      <li><a href="/Projects.html">Projects</a></li>
+      <li><a href="/Reads.html">Reads</a></li>
+      <li><a href="/Tools.html">Tools</a></li>
+      </ul>
+		</div>
+
+<div id="content-wrapper">
+<div id="content">
+
+<div class="path" style="clear: both; float: right;" >
+  03 Dec 2006
+</div>
+
+<div id="post">
+<h1>Negative Arrays</h1>
+
+<p>My current work involves the creation of an extensive configuration file format representing project information. In a number of cases I have had need of an inclusion list, representing files and file patterns to include for some operation --say, what files to include in a package. In such a case I generally end up with a least two parameters which I basically label include and exclude. While include is the list of files to use, exclude is list of files to exclude from the included list. Using exclude makes it easier to specify a large selection and then subsequently omit a file or two. The include list typically has a suitable default value, so a third parameter is sometimes also of use, append, which concats to the defaults as opposed to replacing the include parameter outright.</p>
+
+<p>Since these three parameters help define what is essentially one list of data, it would be nice if they could be specified as a single parameter too. So I gave the problem some thought.</p>
+
+<p>Taking inspiration from the notion of a negated symbol (see facets/symbol/not). It occurred to me that any object that can be added or subtracted is taking part in the same &quot;algebraic group&quot; as whole numbers. And just as a whole number can be negative, why not also an array?</p>
+<div class="highlight"><pre><code class="ruby">    <span class="n">a</span> <span class="o">=</span>  <span class="o">[</span><span class="ss">:a</span><span class="p">,</span><span class="ss">:b</span><span class="p">,</span><span class="ss">:c</span><span class="p">,</span><span class="ss">:d</span><span class="p">,</span><span class="ss">:e</span><span class="o">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="o">-[</span><span class="ss">:d</span><span class="p">,</span><span class="ss">:e</span><span class="o">]</span>
+    <span class="n">a</span> <span class="o">+</span> <span class="n">n</span> <span class="c1">#=&gt; [:a,:b,:c]</span>
+</code></pre>
+</div>
+
+<p>So this could be very helpful. And it shouldn&#39;t be too much hard to implement.</p>
+<div class="highlight"><pre><code class="ruby">    <span class="k">class</span> <span class="nc">Array</span>
+      <span class="k">def</span> <span class="err">@</span><span class="o">-</span>
+        <span class="vi">@negative</span> <span class="o">=</span> <span class="o">!</span><span class="vi">@negative</span>
+        <span class="nb">self</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">negative?</span>
+        <span class="vi">@negative</span>
+      <span class="k">end</span>
+
+      <span class="k">alias</span> <span class="ss">:add</span> <span class="ss">:+</span>
+      <span class="k">alias</span> <span class="ss">:sub</span> <span class="ss">:-</span>
+
+      <span class="k">def</span> <span class="nf">+</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">negative?</span>
+          <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">negative?</span>
+            <span class="o">-</span><span class="n">add</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+          <span class="k">else</span>
+            <span class="o">-</span><span class="nb">sub</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+          <span class="k">end</span>
+        <span class="k">else</span>
+          <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">negative?</span>
+            <span class="nb">sub</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+          <span class="k">else</span>
+            <span class="n">add</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+    <span class="k">end</span>
+</code></pre>
+</div>
+
+<p>I&#39;m sure tighter implementation is possible, but you get the idea. So then include and exclude parameters could be specified in a single parameter.</p>
+<div class="highlight"><pre><code class="ruby">  <span class="n">files</span> <span class="o">=</span> <span class="o">[</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="o">-[</span> <span class="s1">&#39;Installedfiles&#39;</span> <span class="o">]</span> <span class="o">]</span>
+</code></pre>
+</div>
+
+<p>Neat! But unfortunately it doesn&#39;t really solve the whole problem since YAML doesn&#39;t understand this negative listing concept either. It could still be of use in general Ruby scripts though. Notations such as this often prove very powerful. And in fact the idea does move us in a possible workable direction. There&#39;s no reason a string can&#39;t be marked as negative as well. After all it&#39;s just a flag. In fact, if we move the core method @- to Object itself, then any object can be so indicated. The above line could then be written:</p>
+<div class="highlight"><pre><code class="ruby">  <span class="n">files</span> <span class="o">=</span> <span class="o">[</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="o">-</span><span class="s1">&#39;Installedfiles&#39;</span> <span class="o">]</span>
+</code></pre>
+</div>
+
+<p>Methods such as Dir.multiglob(*files) (another Facet) could use this extra bit of information to provide the desired results, equivalent to:</p>
+<div class="highlight"><pre><code class="ruby">  <span class="n">files</span> <span class="o">=</span> <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/*&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;InstalledFiles&#39;</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>Of course, this still doesn&#39;t quite help us with the YAML configuration file, but with a little fudging we can get a useful format.</p>
+<div class="highlight"><pre><code class="ruby">  <span class="n">files</span><span class="p">:</span> <span class="o">[</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="s1">&#39;-InstalledFiles&#39;</span> <span class="o">]</span>
+</code></pre>
+</div>
+
+<p>As for the append parameter that was mentioned as the beginning, we could just add a special notation for this as well, say, &#39;$&#39; to mean defaults.</p>
+
+<p>Okay. So will I use this bit of trickery to reduce three parameters to one? Perhaps. While the result is wonderfully practical in usage, it&#39;s not necessarily so simple to implement. Either a filter would have to split the one entry into three parts when loading, or an untold number of methods would have to augmented to take the trick into consideration. The later I imagine would simply prove too extensive w/o pre-established support for the negation concept. The former might be reasonable however. I&#39;ll give it a try.</p>
+
+<p>In any case it was in interesting thought experiment. Although perhaps you have a better way to represent this kind of information?</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span class="post-date">17 Jun 2012</span> &raquo; <a href="/2012/06/17/kill-the-proxy-and-save-toplevel.html">Kill The Proxy And Save Toplevel</a></li>
+    
+      <li><span class="post-date">14 Jun 2012</span> &raquo; <a href="/2012/06/14/autoload-smells-like-denmark.html">Autoload Smells Like Denmark</a></li>
+    
+      <li><span class="post-date">13 Jun 2012</span> &raquo; <a href="/2012/06/13/instance-variables-as-syntax-sugar.html">Instance Variables As Syntax Sugar</a></li>
+    
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b></b> on 03 Dec 2006.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+</body>
+</html>

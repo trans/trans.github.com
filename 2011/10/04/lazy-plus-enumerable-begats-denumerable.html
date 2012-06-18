@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Lazy Plus Enumerable Begats Denumerable @ 7R4N5C0D3</title>
+    <meta name="author" content="Trans" />
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="/scripts/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+    <!-- tracking code here ? -->
+</head>
+
+<body>
+
+  <div id="container">
+
+		<div id="header">
+			<h1>7R4N5C0D3</h1>
+		</div>
+
+		<div id="nav">
+      <ul>
+      <li><a href="/index.html">Index</a></li>
+      <li><a href="/Home.html">Home</a></li>
+      <li><a href="/Projects.html">Projects</a></li>
+      <li><a href="/Reads.html">Reads</a></li>
+      <li><a href="/Tools.html">Tools</a></li>
+      </ul>
+		</div>
+
+<div id="content-wrapper">
+<div id="content">
+
+<div class="path" style="clear: both; float: right;" >
+  04 Oct 2011
+</div>
+
+<div id="post">
+<h1>Lazy + Enumerable = Denumerable</h1>
+
+<p>All Rubyists know and love Enumerable. It&#39;s the really the showcase of Ruby&#39;s mixin system. Some Rubyists also know and appreciate <a href="http://moonbase.rydia.net/software/lazy.rb/">lazy.rb</a> MenTaLguY&#39;s excellent lazy evaluation library. But did you know there is library that essentially cross-breeds the ideas of both? It&#39;s called <a href="http://github.com/rubyworks/facets/blob/master/lib/core/facets/denumerable.rb">Denumerable</a> and is included in Ruby Facets (<code>require &#39;facets/denumerable&#39;</code>).</p>
+
+<p>According to Webster&#39;s The term <code>denumerable</code> is just a synonym for <code>enumerable</code>. In Ruby parlance, it takes a more useful distinction of &quot;deferred enumerable&quot;. In other words Denumerable defers actual calculations of a chain of enumerable method calls until the results are actually needed. That&#39;s where the &quot;laziness&quot; comes in. By deferring calculation Ruby is able to optimize the algorithm, in many cases greatly improving performance. It&#39;s even possible to enumerate infinite ranges if the end result itself is finite.</p>
+
+<p>To make it even more convenient there is <a href="http://github.com/rubyworks/facets/blob/master/lib/core/facets/enumerable/defer.rb">Enumerable#defer</a> (<code>require &#39;facets/enumerable/defer&#39;</code>) which delegates an Enumerable object through a Denumerator, just like Ruby&#39;s core Enumerator class.</p>
+
+<p>So, enough talk, right? How about an example.</p>
+<div class="highlight"><pre><code class="ruby">    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">1_000_000_000</span><span class="p">)</span><span class="o">.</span><span class="n">defer</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span><span class="o">.</span>
+                                 <span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">100</span> <span class="p">}</span><span class="o">.</span>
+                                 <span class="n">take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span>
+    <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">102</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">108</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">120</span><span class="o">]</span>
+</code></pre>
+</div>
+
+<p>The performance gains of Denumerable cannot be understated. The above example takes 1/10000th of a second to run on my system. I wanted to provide the time it takes to run without <code>defer</code>, but after an hour of waiting and listening to it eat my hard drive for breakfast, I gave up.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span class="post-date">17 Jun 2012</span> &raquo; <a href="/2012/06/17/kill-the-proxy-and-save-toplevel.html">Kill The Proxy And Save Toplevel</a></li>
+    
+      <li><span class="post-date">14 Jun 2012</span> &raquo; <a href="/2012/06/14/autoload-smells-like-denmark.html">Autoload Smells Like Denmark</a></li>
+    
+      <li><span class="post-date">13 Jun 2012</span> &raquo; <a href="/2012/06/13/instance-variables-as-syntax-sugar.html">Instance Variables As Syntax Sugar</a></li>
+    
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b></b> on 04 Oct 2011.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+</body>
+</html>

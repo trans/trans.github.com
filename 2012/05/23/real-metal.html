@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Real Metal @ 7R4N5C0D3</title>
+    <meta name="author" content="Trans" />
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="/scripts/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+    <!-- tracking code here ? -->
+</head>
+
+<body>
+
+  <div id="container">
+
+		<div id="header">
+			<h1>7R4N5C0D3</h1>
+		</div>
+
+		<div id="nav">
+      <ul>
+      <li><a href="/index.html">Index</a></li>
+      <li><a href="/Home.html">Home</a></li>
+      <li><a href="/Projects.html">Projects</a></li>
+      <li><a href="/Reads.html">Reads</a></li>
+      <li><a href="/Tools.html">Tools</a></li>
+      </ul>
+		</div>
+
+<div id="content-wrapper">
+<div id="content">
+
+<div class="path" style="clear: both; float: right;" >
+  23 May 2012
+</div>
+
+<div id="post">
+<h1>Real Metal</h1>
+
+<p>One of the most regarded capabilities of Ruby, in contrast to many other programming languages, is its powerful meta-programming chops. While not every aspect of the language is meta-programmable, the vast majority of Ruby is. But despite its prowess, there is a serious weaknesses in its design: <em>The functions on which meta-coders depend have no guarantee</em>. </p>
+
+<p>Consider the most basic reflection method of determining the class of an object, fundamental to almost any meta-programming (and some not-so-meta0programming). We can write a class that completely subverts the ability to determine an object&#39;s class.</p>
+<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Foo</span>
+  <span class="k">def</span> <span class="nf">class</span>
+    <span class="s2">&quot;I Confuse You!&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p>Because <code>Foo</code> has overridden the <code>#class</code> method, there is no way to determine the class of an instance of Foo. Any code dependent on the <code>#class</code> method &quot;contract&quot; is going to choke.</p>
+
+<p>We can be thankful that most programs will, by simple happenstance, never tread on any of these important methods. In the few cases where they might, most Ruby coders are aware enough to steer clear. Yet there are other cases not so easily handled. Consider Ruby&#39;s relatively new BasicObject class. It has the minimal number of methods necessary to function as an object in Ruby. This is excellent for the construction of open classes akin to OpenStruct, but consequently there is no way to find out what methods are defined on such an object because there is no such methods as <code>#methods</code> or <code>#instance_methods</code>. Moreover, BasicObject is still not completely empty. It still defines <code>__id__</code>, <code>__send__</code>, <code>instance_eval</code>, <code>instance_exec</code> and a few others, without which an object simply wouldn&#39;t be usable.</p>
+
+<p>So basically Ruby has settled on a &quot;close enough&quot; approach to handling reflection and meta-programming. But why should we be willing to settle for any risk at all? The reasoning I have most often heard is an OOPL ideological principle arguing that no method should stand outside the realm of the inheritance chain, and thus all methods are necessarily subject to overrides. But I am not convinced for the simple reason that meta-programming is by it&#39;s nature &quot;<em>meta</em>&quot;.</p>
+
+<p>As an experiment. I developed a small library to take the risk out of meta-coding. The library basically works as follows:</p>
+<div class="highlight"><pre><code class="ruby">  <span class="vg">$meta</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">obj</span><span class="o">|</span>
+    <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="o">|</span>
+      <span class="no">Kernel</span><span class="o">.</span><span class="n">instance_method</span><span class="p">(</span><span class="n">op</span><span class="p">)</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="vg">$meta</span><span class="o">[</span><span class="s2">&quot;some string&quot;</span><span class="o">].</span><span class="n">class</span> <span class="c1">#=&gt; String</span>
+</code></pre>
+</div>
+
+<p>This meta-function works fairly well in most cases. However it has three shortcomings that make it essentially impractical for production use: 1) It lacks module methods; 2) It is terribly inefficient; and 3) It doesn&#39;t work for BasicObject instances.</p>
+
+<p>While my little library might be improved upon, ideally Ruby would provide a set of &quot;meta-functions&quot; that cannot be overridden in-class. These methods could all be defined in a special module, but used via alternate notation so as not to conflict with ordinary methods. To that end I suggest using <code>$</code> on regular objects:</p>
+<div class="highlight"><pre><code class="ruby"> <span class="n">obj</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+ <span class="n">obj</span><span class="vg">$class</span> <span class="c1">#=&gt; String</span>
+</code></pre>
+</div>
+
+<p>Numerous other methods would be made available through this, in general all public Kernel methods are candidates for inclusion, and some Module methods usable just for classes and modules, such as <code>#instance_methods</code>.</p>
+
+<p>The robustness this would bring to Ruby&#39;s meta-programming would be a great boon and should not be understated. When a single line of code can so easily cause every object in a program to fail, it&#39;s not unreasonable to prefer some guarantees. Moreover, it makes the meta-programmer&#39;s task much easier --he knows exactly what methods on which to depend.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span class="post-date">17 Jun 2012</span> &raquo; <a href="/2012/06/17/kill-the-proxy-and-save-toplevel.html">Kill The Proxy And Save Toplevel</a></li>
+    
+      <li><span class="post-date">14 Jun 2012</span> &raquo; <a href="/2012/06/14/autoload-smells-like-denmark.html">Autoload Smells Like Denmark</a></li>
+    
+      <li><span class="post-date">13 Jun 2012</span> &raquo; <a href="/2012/06/13/instance-variables-as-syntax-sugar.html">Instance Variables As Syntax Sugar</a></li>
+    
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b></b> on 23 May 2012.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+</body>
+</html>

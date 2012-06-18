@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>A Second Look At Bundler @ 7R4N5C0D3</title>
+    <meta name="author" content="Trans" />
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="/scripts/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+    <!-- tracking code here ? -->
+</head>
+
+<body>
+
+  <div id="container">
+
+		<div id="header">
+			<h1>7R4N5C0D3</h1>
+		</div>
+
+		<div id="nav">
+      <ul>
+      <li><a href="/index.html">Index</a></li>
+      <li><a href="/Home.html">Home</a></li>
+      <li><a href="/Projects.html">Projects</a></li>
+      <li><a href="/Reads.html">Reads</a></li>
+      <li><a href="/Tools.html">Tools</a></li>
+      </ul>
+		</div>
+
+<div id="content-wrapper">
+<div id="content">
+
+<div class="path" style="clear: both; float: right;" >
+  19 May 2010
+</div>
+
+<div id="post">
+<h1>A Second Look at Bundler</h1>
+
+<p>A few days ago I wrote an article on my concerns with Bundler. Since then I&#39;ve received enough feedback to refine my thoughts. My opinion that the Ruby/Rails community is on a &quot;crazy train&quot; with regards to Bundler has everything to do with state of complexity of Rails code these days and it&#39;s infiltration into plain vanilla Ruby projects. Of course, Bundler&#39;s intent is to do just the opposite, but such is the danger of new technologies that we must be cautious of inevitable unexpected consequences. So, taking the feedback into account, here&#39;s a better breakdown of the ups and downs of Bundler as I now see them.</p>
+
+<h2>On the Upside</h2>
+
+<p><b>Bundling</b>: I have been informed that the ability to bundle gems is a useful feature for administrators of systems with limited Internet access. I did not expect this to be common enough to even warrant a tool (just use a tarball). But apparently is common enough. For this use Bundler is understandably useful. It&#39;s ability to resolve dependencies pre-runtime makes it especially good at doing so.</p>
+
+<p><b>Installs</b>: The <code>bundle install</code> feature has similar applications to bundle. It can be used to ease deployment. More specifically, a deployment script can contain a simple invoke &#39;bundle install&#39;, rather then handle the installation of each gem itself. In addition it makes it easier for developers to get up and running quickly, a simple &#39;bundle install&#39; will install everything you need to develop a project. So this feature has it&#39;s clear benefits.</p>
+
+<p><b>Groups:</b> Groups are convenient when selecting certain gems from the list of all requirement, as a means to specialize usage to the end-users needs. Although perhaps a minor benefit, one can see how it can be useful to the developer. As currently implemented Bundler only supports opt-out groups. It might be nice if it also provided for opt-in selections.</p>
+
+<p><b>Locking</b>: The locking feature is probably Bundler&#39;s most significant feature. It allows the developer to nail down their application to the latest gems that best meet all the requirements as given in the Gemfile. </p>
+
+<p><b>Gemfile</b>: Of course, Rubyists are accustomed to nice DSL to &quot;describe&quot; code. The Gemfile makes excellent use of this ability and it is especially nice to have a single clear file to describe all the dependencies of a project.</p>
+
+<h2>On the Downside</h2>
+
+<p><b>Bundling</b>: The downside of bundling comes when developers misuse the feature. Because Bundler does more than just bundle gems for special deployments, there may be a tendency towards using it in this way regardless of the need to do so. For example, yesterday I cloned the <a href="http::/github.com/qrush/gemcutter">Gemcutter</a> repository. The download consumed 22.61 MiB of space. On close inspection I discovered why. The <code>vendor/cache</code> directory contains a copy of every gem on which Gemcutter depends. Consider what this means. In effect, Bundler has undermined the entire purpose of having a package manger!</p>
+
+<p>If Bundler were an application that handled this feature and only this feature, then I think it would be a much better tool. In doing so it would help deter misuse. And the other features could be left to the domain of another library, or even better, RubyGems proper.</p>
+
+<p><b>Installs</b>: The downside of <code>bundle install</code>, is the lack of refinement it grants the end user. An example is the Rails Gemfile which will installs the sqlite3, postgresql and mysql bindings, regardless of what databases the system actually supports. There may also be other subtle conditions that need to be taken into account on installation. To account for these, the temptation will be to add conditions to the Gemfile itself, blurring the lines between it and a Capfile (as an example). But this will in turn effect the developer&#39;s use of the other features. In the end, the inter-complexities this will cause will simply prove too much.</p>
+
+<p><b>Groups</b>: You&#39;ll be happy to know there is nothing intrinsically problematic with groups. Other than the additional complexities they add to the process of designing a Gemfile and the installation thereof, they server their purpose. Sometimes additional complexity is the necessity of capability.</p>
+
+<p><b>Locking</b>: Ironically, Bundler&#39;s most useful feature is probably it&#39;s most problematic. First, in order to achieve this level of functionality, Bundler must download a slew of gems to your system in order to calculate the best fitting requirements. But worse than this, locking brings <code>Bundler.require</code> into play. <code>Bundler.require</code> admits of the same issues as <code>require &#39;rubygems&#39;</code>. It can not be used without limiting an program to the RubyGems package manager. If it is to be used congenially, special conditions will need to be put in place by the developer to ensure a program still runs whether RubyGems is being used or not. Bundler might mitigate this issue by gracefully downgrading if RubyGems is not loaded, but then it must also consider where Bundler&#39;s lock file will be located, say if setup.rb is used for installation.</p>
+
+<p><b>Gemfile</b>: As mentioned, the Gemfile is great to have as a single configuration file to describe dependencies. However, if a project has a gemspec, it still requires dependencies be stated there as well. RubyGems is not able to utilize the Gemfile. Having to state requirements twice violates the DRY principle.</p>
+
+<p>In addition, because the Gemfile is Ruby code it can be full of conditional statements, dynamic code, and all sorts of other spaghetti. All of which make the file unusable to anything but a Ruby script. Worse still, the ability to use conditions has the potential for creating a very unwieldy level of complexity. There is no way, for instance, to query the Gemfile for all requirements that may be need because some of them may be hidden by the current state of an environment variable. The clear remedy to this is to switch to a static file format. Such a format could be utilized by many tools, not just Bundler, including RubyGems itself. This would also help resolve some the issues with bundle install as mentioned above.</p>
+
+<h2>In Conclusion</h2>
+
+<p>Taking the &quot;good, the bad and ugly&quot; into account as we have, the end result would indicate the following potenial points of action:</p>
+
+<ul>
+<li>Use a static file format for the Gemfile.</li>
+<li>Allow groups to be opt-in as well as opt-out.</li>
+<li>Split Bundler into two projects. One strictly for bundling.</li>
+<li>Non-bundling features might be integrated into RubyGems proper.</li>
+<li>At the very least allow RubyGems to utilize the Gemfile for gem building.</li>
+<li>Gracefully downgrade when RubyGems/Bundler is not used.</li>
+</ul>
+
+<p>By applying these points, we can tame some of the &quot;crazy train&quot; of complexity. The principles of POLS and KISS are halmarks of a good Rubyist. Let&#39;s not loose that.</p>
+
+<hr>
+
+<p>title      : A Second Look at Bundler
+author     : trans
+categories : [bundler, rubygems]
+date       : 2010-05-19
+layout     : post</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span class="post-date">17 Jun 2012</span> &raquo; <a href="/2012/06/17/kill-the-proxy-and-save-toplevel.html">Kill The Proxy And Save Toplevel</a></li>
+    
+      <li><span class="post-date">14 Jun 2012</span> &raquo; <a href="/2012/06/14/autoload-smells-like-denmark.html">Autoload Smells Like Denmark</a></li>
+    
+      <li><span class="post-date">13 Jun 2012</span> &raquo; <a href="/2012/06/13/instance-variables-as-syntax-sugar.html">Instance Variables As Syntax Sugar</a></li>
+    
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b></b> on 19 May 2010.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+</body>
+</html>

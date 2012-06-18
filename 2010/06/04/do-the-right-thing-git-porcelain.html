@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Do The Right Thing Git Porcelain @ 7R4N5C0D3</title>
+    <meta name="author" content="Trans" />
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="/scripts/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+    <!-- tracking code here ? -->
+</head>
+
+<body>
+
+  <div id="container">
+
+		<div id="header">
+			<h1>7R4N5C0D3</h1>
+		</div>
+
+		<div id="nav">
+      <ul>
+      <li><a href="/index.html">Index</a></li>
+      <li><a href="/Home.html">Home</a></li>
+      <li><a href="/Projects.html">Projects</a></li>
+      <li><a href="/Reads.html">Reads</a></li>
+      <li><a href="/Tools.html">Tools</a></li>
+      </ul>
+		</div>
+
+<div id="content-wrapper">
+<div id="content">
+
+<div class="path" style="clear: both; float: right;" >
+  04 Jun 2010
+</div>
+
+<div id="post">
+<h1>The &quot;Do The Right Thing&quot; Git Porcelain</h1>
+
+<p>Before making any changes to a program, a good developer will make an entry in an issue tracker and then create a separate branch in which to handle the issue. Only then making the necessary changes and finally merge the changes into to the master branch when they are ready. All before finally marking off the issue as complete.</p>
+
+<p>That&#39;s the ideal anyway. It is, unfortunately, too easy to not do these things by skipping a step or never bothering with them at all. Who really wants to waste time with all this? Developer&#39;s just want to get the job done. To remedy this, we might create a &quot;Do The Right Thing&quot; Git porcelain.</p>
+
+<p>Lets say we had a bug to fix. We could simply invoke our DTRT command:</p>
+<div class="highlight"><pre><code class="bash">  <span class="nv">$ </span>dtrt new
+</code></pre>
+</div>
+
+<p>An editor (provided by <code>$EDITOR</code>) opens to allow the developer to describe the issue in detail. When saved and exited, it will automatically create a new branch with a name based on the description and check the branch out, ready to go.</p>
+
+<p>Now changes can be made. When complete (which means passing tests, right?) we simply tell DTRT again.</p>
+<div class="highlight"><pre><code class="bash">  <span class="nv">$ </span>dtrt <span class="k">done</span>
+</code></pre>
+</div>
+
+<p>And it will merge the current topic branch into master using the issue description we originally gave it. All done. And, hey, we did the right thing!</p>
+
+<p>Such a porcelain alone would be useful, but it gets even better when we start adding hooks into this process.</p>
+
+<p>For instance, a hook can be added such that new issue creation can post an entry directly to an issue tracker such as GitHub Issues. Not only can it post the issue, but when an issue is complete, it can label the ticket with the version it belongs and closes it. Notice the added benefit of this: it creates automatic changelogs! No more writing those tired HISTORY files. In fact, by using DTRT religeously, we can use a tool like <a href="http://rubyworks.github.com/vclog">VCLog</a> to pop out prefect HISTORY files in almost any format.</p>
+
+<p>To encourage proper TDD, a hook on new issue creation could automatically create a test in a preferred format and drop the developer directly into an editor with it. Thus putting TDD in our proverbial laps.</p>
+
+<p>Another hook placed on merging could prevent the completion of the issue branch until all tests pass, thus helping to improve the quality of check-ins.</p>
+
+<p>I have no doubt other&#39;s might come up with a few other helpful hooks as well.</p>
+
+<p>I have not endeavored to implement this, having too many other projects to work on already. But it would make a good project for another inspired soul.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span class="post-date">17 Jun 2012</span> &raquo; <a href="/2012/06/17/kill-the-proxy-and-save-toplevel.html">Kill The Proxy And Save Toplevel</a></li>
+    
+      <li><span class="post-date">14 Jun 2012</span> &raquo; <a href="/2012/06/14/autoload-smells-like-denmark.html">Autoload Smells Like Denmark</a></li>
+    
+      <li><span class="post-date">13 Jun 2012</span> &raquo; <a href="/2012/06/13/instance-variables-as-syntax-sugar.html">Instance Variables As Syntax Sugar</a></li>
+    
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b></b> on 04 Jun 2010.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+</body>
+</html>

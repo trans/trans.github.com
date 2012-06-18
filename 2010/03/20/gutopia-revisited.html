@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Gutopia Revisited @ 7R4N5C0D3</title>
+    <meta name="author" content="Trans" />
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="/scripts/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+    <!-- tracking code here ? -->
+</head>
+
+<body>
+
+  <div id="container">
+
+		<div id="header">
+			<h1>7R4N5C0D3</h1>
+		</div>
+
+		<div id="nav">
+      <ul>
+      <li><a href="/index.html">Index</a></li>
+      <li><a href="/Home.html">Home</a></li>
+      <li><a href="/Projects.html">Projects</a></li>
+      <li><a href="/Reads.html">Reads</a></li>
+      <li><a href="/Tools.html">Tools</a></li>
+      </ul>
+		</div>
+
+<div id="content-wrapper">
+<div id="content">
+
+<div class="path" style="clear: both; float: right;" >
+  20 Mar 2010
+</div>
+
+<div id="post">
+<h1>GUtopIa Revisited</h1>
+
+<p>Recently I had to buckle down and create and honest to goodness desktop GUI application in Ruby. So once again, after some six years, I set down to weigh my options. It saddens me to say, after all these years, the state of desktop GUI programming with Ruby is still a rather sorry affair. Yes, there have been many improvements --thanks to the hard work of many a good programmer, but the task of creating a Ruby-based GUI application still remains a very non-Ruby-esque ordeal.</p>
+
+<p>My first attempt at it this time was with <a href="http://shoooes.net/">Shoes</a>. Shoes is a new and very nice GUI engine written largely from scratch by the well known WhyTheLuckyStiff. It&#39;s a noble effort and some really <a href="http://the-shoebox.org/">neat programs</a> can come from using Shoes. Unfortunately for my needs Shoes proved to be too buggy and immature --at times I saw visual artifacts and there are a very limited number of controls. And worst of all, the fact that it includes it&#39;s own Ruby interpretor and manges it&#39;s own gems caused it not to work well with some other libraries. For instance, I could not get it to use the latest version of Mechanize.</p>
+
+<p>After examining other choices, such as creating one GUI script per major platform (too much work), or using the old standby FxRuby (never been happy with the lack of native look-and-feel), I decided to try a different course. I was well versed in web application design, so I tried my hand at rigging a web app to act like a desktop app via a locally running server using Ajax calls. The end result certainly looked good and basically worked. But there was a troubling lack of robustness in the interaction between the front-end and back-end. I had to poll the back-end to see what was going on, and the back-end had to spawn threads in order to provide a response to the browser while continuing to work on long-running processes. So it worked, but barely. I&#39;m sure it could be improved, but for a devote POLSer like myself, that meant getting into mucky waters I really didn&#39;t feel like I should need to be diving into anyway. Too bad. Web GUI design is quite advanced compared to Desktop GUI. Why no one has tried to map it directly to the desktop before is beyond me (but you can believe me when I tell you, I can&#39;t wait to delve into Plam&#39;s pre and it&#39;s <a href="http://developer.palm.com/webos_book/book1.html">webOS</a> development platform, which apparently does exactly this).</p>
+
+<p>So where did this leave me? Well, I figured I had one last good shot with <a href="http://wxruby.rubyforge.org/wiki/wiki.pl">wxRuby</a>. Ironically I had something to do with the birth of that project. It was those six years ago that I first looked into GUI frameworks for Ruby. Rich Kilmer was talking about his Utopia/Alpha ideas and I was just starting to feel comfortable with writing scripts in Ruby. I decided there needed to be something better, and working off of Rich&#39;s idea&#39;s for an API I came up the idea of GUtopIa, which would supply a font-end API that anyone could interface to a back-end GUI framework. Sort of a best of all worlds kind of design. A number of people were psyched about the idea, and joined with me to discuss and pursue the project. Unfortunately, I was still wet behind the ears, and the fellow programmers who first entertained working with me didn&#39;t care much for my new-boy-brash style. They told me so, and decided on their own course, to create bindings for wxWidgets instead. I wasn&#39;t happy about it personally. Having studied wxWidgets some, I knew it would be a long time before anything really useful was to come of that project --if at all. In hindsight, while I still believe GUtopIa is a good idea, I am glad it&#39;s didn&#39;t proceed back then --I still had a lot to learn about Ruby before I could do something like that as well as I would really like.</p>
+
+<p>So it was time to check out what the wxRuby team had accomplished. My first handful, or so, attempts were miserable failures. WxRuby has some issues. It is tempermental, and so much like the C API I felt like I was actually programming in C. This is not how Ruby programming is supposed to be! I was having real trouble getting anything more then a basic frame and menu to work. Frustrated with the straight coding approach, I decided to see what WYSIWYG form builders were to be had. I knew wxWidgets touted these, so I looked around and found the precisely named wxFormBuilder. This made it fairly easy to design my complex form and best of all it made it clearer to me how wxWidget GUIs are built. Unfortunately the generated markup, called an XRC file, had issues of it&#39;s own and wouldn&#39;t load properly into Ruby. Once again, I was at a dead end.</p>
+
+<p>Something really needed to be done about this state of affairs. And so I have decided to resurrect the GUtopIa project. I found my old code, looked at it, scrapped it, and started fresh. I&#39;m going to proceed by specifying the front-end API as much as possible, before even considering back-end implementations. With any luck others will see what I&#39;m doing and offer to build a an interface to their favorite framework. So far what I have looks very sweet. Just to wet your whistle, here&#39;s a potential example.</p>
+<div class="highlight"><pre><code class="ruby">    <span class="n">layout</span> <span class="o">=</span> <span class="no">GUtopIa</span><span class="o">::</span><span class="no">Layout</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+      <span class="o">[</span> <span class="o">[</span> <span class="s1">&#39;Name&#39;</span>  <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="n">entry</span> <span class="o">]</span> <span class="o">]</span>
+      <span class="o">[</span> <span class="o">[</span> <span class="s1">&#39;Phone&#39;</span> <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="n">entry</span> <span class="o">]</span> <span class="o">]</span>
+      <span class="o">[</span> <span class="o">[</span> <span class="s1">&#39;EMail&#39;</span> <span class="o">]</span><span class="p">,</span> <span class="o">[</span> <span class="n">entry</span> <span class="o">]</span> <span class="o">]</span>
+    <span class="k">end</span>
+    <span class="n">layout</span><span class="o">.</span><span class="n">show</span>
+</code></pre>
+</div>
+
+<p>Yes, believe it or not, that&#39;s a fairly complete GUI layout. In an upcoming post I&#39;ll explain how it all works in more detail. But before I get into that, I still need a working desktop GUI application ASAP! I don&#39;t have time to develop GUtopIa for this. So now I&#39;ve tried again at coding wxRuby from hand, but this time using a very Ruby-esque lazy evaluation approach I had experimented with a long time ago in a <a href="http://www.rubyquiz.com/">Ruby Quiz</a> on <a href="http://www.rubyquiz.com/quiz10.html">crossword puzzle drawing</a>. Finally I got the results I wanted with out going cross-eyed looking at the code. Amazing how a well organized approach can make all the difference. I&#39;ll demonstrate my design in my next blog post.</p>
+
+<hr>
+
+<p>title      : GUtopIa Revisited
+author     : trans
+categories : [ruby, gui]
+date       : 2010-03-20
+layout     : post</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span class="post-date">17 Jun 2012</span> &raquo; <a href="/2012/06/17/kill-the-proxy-and-save-toplevel.html">Kill The Proxy And Save Toplevel</a></li>
+    
+      <li><span class="post-date">14 Jun 2012</span> &raquo; <a href="/2012/06/14/autoload-smells-like-denmark.html">Autoload Smells Like Denmark</a></li>
+    
+      <li><span class="post-date">13 Jun 2012</span> &raquo; <a href="/2012/06/13/instance-variables-as-syntax-sugar.html">Instance Variables As Syntax Sugar</a></li>
+    
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b></b> on 20 Mar 2010.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+</body>
+</html>

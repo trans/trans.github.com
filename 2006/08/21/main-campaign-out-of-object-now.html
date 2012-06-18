@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Main Campaign Out Of Object Now @ 7R4N5C0D3</title>
+    <meta name="author" content="Trans" />
+
+    <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+    <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+    <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/assets/styles/custom.css?reload=true" type="text/css"/>
+    <link rel="stylesheet" href="/assets/styles/social.css?reload=true" type="text/css"/>  
+
+    <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="/scripts/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+    <script src="/assets/scripts/main.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#social-share').dcSocialShare({
+          twitterId: 'transgigamic',
+          tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+          buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+        });
+      });
+    </script>
+
+    <!-- tracking code here ? -->
+</head>
+
+<body>
+
+  <div id="container">
+
+		<div id="header">
+			<h1>7R4N5C0D3</h1>
+		</div>
+
+		<div id="nav">
+      <ul>
+      <li><a href="/index.html">Index</a></li>
+      <li><a href="/Home.html">Home</a></li>
+      <li><a href="/Projects.html">Projects</a></li>
+      <li><a href="/Reads.html">Reads</a></li>
+      <li><a href="/Tools.html">Tools</a></li>
+      </ul>
+		</div>
+
+<div id="content-wrapper">
+<div id="content">
+
+<div class="path" style="clear: both; float: right;" >
+  21 Aug 2006
+</div>
+
+<div id="post">
+<h1>Main Campaign: Out of Object Now!</h1>
+
+<p>The word from Matz on Kernel as toplevel object:</p>
+
+<p>I don&#39;t feel that making Kernel as toplevel self is not a good idea,
+because:</p>
+
+<ul>
+<li>toplevel def does not define methods on Kernel, but Object.</li>
+<li>toplevel include does not include modules into Kernel, but Object.</li>
+<li>toplevel private etc. do not work on Kernel, but Object.</li>
+</ul>
+
+<p>I wouldn&#39;t call that an explanation exactly, more an explicative of the current behavior. I&#39;m sure Matz has his reasons, and we can just assume that he wants to keep the namespace distinct. Fair enough, and of course he can do that. (It&#39;s not REALLY a democracy after all!) So Kernel drops out of the race. But the Kernel&#39;s running mate, Main, is still here campaigning.</p>
+
+<p>You might be surprised to learn (as I was when I first discovered it):</p>
+<div class="highlight"><pre><code class="ruby">  <span class="no">Object</span><span class="o">.</span><span class="n">public_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span> <span class="o">+</span>
+  <span class="no">Object</span><span class="o">.</span><span class="n">private_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span> <span class="o">+</span>
+  <span class="no">Object</span><span class="o">.</span><span class="n">protected_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+  <span class="o">=&gt;</span> <span class="o">[]</span>
+</code></pre>
+</div>
+
+<p>That&#39;s right. There&#39;s not a single method defined in Object. All the methods ri tells you belong to Object actually are inherited from Kernel. But from there, any toplevel method we define does end-up in Object. Hence the clear separation of namespace I mentioned above.</p>
+
+<p>Now a separate module, eg. Main, would do just as well. Kernel need not be used. And as I&#39;ve expressed before, Main could be induced into Object for all the same effects. The base hierarchy then being Object &lt; Main &lt; Kernel.</p>
+
+<p>But wait a second! Why are all these toplevel methods sneaking into all my Object&#39;s anyway? I can just as easily add them to Object myself if that&#39;s what I want. I don&#39;t need some cheap toplevel proxy to do it for me. In fact, that can be a problem too.</p>
+<div class="highlight"><pre><code class="ruby">  <span class="k">module</span> <span class="nn">Foo</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_missing</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="p">)</span>
+      <span class="k">super</span> <span class="k">unless</span> <span class="nb">require</span> <span class="s2">&quot;foo/</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">rescue</span> <span class="kp">nil</span>
+      <span class="nb">send</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span><span class="o">*</span><span class="n">args</span> <span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre>
+</div>
+
+<p>Then some unsuspecting nuby comes along (okay I admit, it was I and it happened to me today!) and innocently adds to the top level:</p>
+<div class="highlight"><pre><code class="ruby">  <span class="k">def</span> <span class="nf">check</span><span class="p">(</span> <span class="nb">name</span> <span class="p">)</span>
+    <span class="nb">name</span> <span class="o">==</span> <span class="s2">&quot;foo&quot;</span>
+  <span class="k">end</span>
+</code></pre>
+</div>
+
+<p>Well, so much for my lazily required Foo.check routine. It&#39;s been whacked from the top down!</p>
+
+<p>You see where I&#39;m going now? Primaries are over Main has taken Kernel out of the running with a new divisive platform. &quot;Out of Object Now!&quot;</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span class="post-date">17 Jun 2012</span> &raquo; <a href="/2012/06/17/kill-the-proxy-and-save-toplevel.html">Kill The Proxy And Save Toplevel</a></li>
+    
+      <li><span class="post-date">14 Jun 2012</span> &raquo; <a href="/2012/06/14/autoload-smells-like-denmark.html">Autoload Smells Like Denmark</a></li>
+    
+      <li><span class="post-date">13 Jun 2012</span> &raquo; <a href="/2012/06/13/instance-variables-as-syntax-sugar.html">Instance Variables As Syntax Sugar</a></li>
+    
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+
+		<div id="footer">
+      <div class="tiger">
+      </div>
+			<small>Last edited by <b></b> on 21 Aug 2006.</small>
+			<small style="float:right;">
+				This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+				mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+			</small>
+		</div>
+
+  </div>
+
+</body>
+</html>
