@@ -4,7 +4,7 @@
  <title>7R4N5C0D3</title>
  <link href="http://trans.github.com/atom.xml" rel="self"/>
  <link href="http://trans.github.com/"/>
- <updated>2012-06-18T11:25:28-04:00</updated>
+ <updated>2012-06-19T08:29:56-04:00</updated>
  <id>http://trans.github.com/</id>
  <author>
    <name>Trans</name>
@@ -94,7 +94,7 @@ or components. But the principle is equally applicable to a class itself. &lt;a 
    <id>http://trans.github.com/2012/04/13/peanut-butter-and-chocolate-handlebars</id>
    <content type="html">&lt;h1&gt;Peanut Butter and Chocolate Handlebars&lt;/h1&gt;
 
-&lt;p&gt;This week I&amp;#39;ve been working on the &lt;a href=&quot;http://github.com/rubyworks/shomen&quot;&gt;Shomen&lt;/a&gt; documentation project. In particular I&amp;#39;ve been converting the templates of the three web-based documentation viewers I&amp;#39;ve created to compiled templates to boost rendering speed. Originally these viewers were using &lt;a href=&quot;http://aefxx.com/jquery-plugins/jqote2/&quot;&gt;jqote2&lt;/a&gt; in one case (&lt;a href=&quot;http://github.com/rubyworks/hypervisor&quot;&gt;hypervisor&lt;/a&gt;) and &lt;a href=&quot;https://github.com/jquery/jquery-tmpl&quot;&gt;jquery-tmpl&lt;/a&gt; in the other two cases (&lt;a href=&quot;http://github.com/rubyworks/rebecca&quot;&gt;rebecca&lt;/a&gt; and &lt;a href=&quot;http://github.com/rubyworks/rubyfaux&quot;&gt;rubyfaux&lt;/a&gt;). While ascertaining what compilation solution to use, I tried the &lt;a href=&quot;https://github.com/wookiehangover/jquery-tmpl-jst&quot;&gt;jquery-tmpl-jst&lt;/a&gt; for compiling the later two, but immediately ran into fundamental errors. (Sorry, I don&amp;#39;t recollect exactly what the errors were now). They were problematic enough to send me looking else where, and ultimately I decided on &lt;a href=&quot;http://handlebarsjs.com/&quot;&gt;Handlebars.js&lt;/a&gt;. &lt;a class=&quot;readmore&quot; href=&quot;/2012/04/13/peanut-butter-and-chocolate-handlebars.html&quot;&gt;Read more&lt;/a&gt;&lt;/p&gt;</content>
+&lt;p&gt;This week I&amp;#39;ve been working on the &lt;a href=&quot;http://github.com/rubyworks/shomen&quot;&gt;Shomen&lt;/a&gt; documentation project. In particular I&amp;#39;ve been converting the templates of my three web-based documentation viewers to compiled templates in order to boost rendering speed. Originally these viewers were using &lt;a href=&quot;http://aefxx.com/jquery-plugins/jqote2/&quot;&gt;jqote2&lt;/a&gt; in one case (&lt;a href=&quot;http://github.com/rubyworks/hypervisor&quot;&gt;hypervisor&lt;/a&gt;) and &lt;a href=&quot;https://github.com/jquery/jquery-tmpl&quot;&gt;jquery-tmpl&lt;/a&gt; in the other two cases (&lt;a href=&quot;http://github.com/rubyworks/rebecca&quot;&gt;rebecca&lt;/a&gt; and &lt;a href=&quot;http://github.com/rubyworks/rubyfaux&quot;&gt;rubyfaux&lt;/a&gt;). While ascertaining what compilation solution to use, I tried the &lt;a href=&quot;https://github.com/wookiehangover/jquery-tmpl-jst&quot;&gt;jquery-tmpl-jst&lt;/a&gt; for the later two, but immediately ran into fundamental errors. (Sorry, I don&amp;#39;t recollect exactly what the errors were now). They were problematic enough to send me looking else where, and ultimately I decided on &lt;a href=&quot;http://handlebarsjs.com/&quot;&gt;Handlebars.js&lt;/a&gt;. &lt;a class=&quot;readmore&quot; href=&quot;/2012/04/13/peanut-butter-and-chocolate-handlebars.html&quot;&gt;Read more&lt;/a&gt;&lt;/p&gt;</content>
  </entry>
  
  <entry>

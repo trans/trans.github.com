@@ -97,20 +97,20 @@
 </code></pre>
 </div>
 
-<p>For a very long time I have advocated that both of the these issues be banished by changing the top level into a self extended module instead of the current half-baked proxy.</p>
-<div class="highlight"><pre><code class="ruby">  <span class="k">module</span> <span class="nn">TOPLEVEL</span>
+<p>For a very long time I have advocated that both of the these issues be banished by changing the top level into a self extended module instead of the current half-baked proxy. In effect:</p>
+<div class="highlight"><pre><code class="ruby">  <span class="k">module</span> <span class="nn">MAIN</span>
     <span class="kp">extend</span> <span class="nb">self</span>
   <span class="k">end</span>
 </code></pre>
 </div>
 
-<p>When a Ruby script is executed it would be executed from within this TOPLEVEL namespace. With it, all expected functionality is available to us, such as <code>def</code>, as well as the module methods that we would likewise except, such as <code>define_method</code>. Methods defined in TOPLEVEL would no longer invade every object, leaving us free to use the top level as serves our application best.</p>
+<p>When a Ruby script is executed it would be executed within this MAIN namespace. With it, all expected functionality is available to us, such as <code>def</code>, as well as the module methods like <code>define_method</code>. Methods defined in MAIN would no longer invade every object, leaving us free to use the top level as serves our application best.</p>
 
-<p>Some neat side effects of this approach include the ability to include TOPLEVEL in class definitions if it suits our usecase, as well as calling on methods defined on MAIN.</p>
+<p>Some neat side effects of this approach include the ability to include MAIN in class definitions if it suits our usecase, as well as calling on methods defined on MAIN.</p>
 <div class="highlight"><pre><code class="ruby">  <span class="k">class</span> <span class="nc">Cool</span>
     <span class="k">def</span> <span class="nf">hello_world</span>
-      <span class="k">if</span> <span class="no">TOPLEVEL</span><span class="o">.</span><span class="n">method_defined?</span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span>
-        <span class="no">TOPLEVEL</span><span class="o">.</span><span class="n">hello_world</span>
+      <span class="k">if</span> <span class="no">MAIN</span><span class="o">.</span><span class="n">method_defined?</span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span>
+        <span class="no">MAIN</span><span class="o">.</span><span class="n">hello_world</span>
       <span class="k">else</span>
         <span class="s2">&quot;Not so worldy, hello.&quot;</span>
       <span class="k">end</span>
@@ -119,7 +119,7 @@
 </code></pre>
 </div>
 
-<p>But by far my favourite use of such a design is the ability to use the top level for Ruby-based DSL scripting. For a familiar example consider Rake. Rake has a Rake::DSL module which is included in a special execution context where rake files are evaluated via special loading code. But with TOPLEVEL, it would be possible to mix Rake::DSL directly into it and then rake files could be loaded with a simple <code>require</code>.</p>
+<p>But by far my favourite use of such a design is the ability to use the top level for Ruby-based DSL scripting. For a familiar example consider Rake. Rake has a Rake::DSL module which is included in a special execution context where rakefiles are evaluated via special loading code. But with MAIN, it would be possible to mix Rake::DSL directly into it and then rakefiles could be loaded with a simple local <code>require</code>.</p>
 
 </div>
 
