@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>2009 10 26 quiet revolt against the fhs\7R4N5C0D3</title>
+  <meta name="author" content="Trans" />
+
+  <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+  <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+  <link rel="stylesheet" href="/assets/styles/code.css" type="text/css"/>  
+  <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+  <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/>
+  <link rel="stylesheet" href="/assets/styles/social.css" type="text/css"/>  
+
+  <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+
+  <!--[if lt IE 9]>
+  <script src="/scripts/html5.js"></script>
+  <![endif]-->
+
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+  <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+  <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+  <script src="/assets/scripts/main.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#social-share').dcSocialShare({
+        twitterId: 'transgigamic',
+        tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+        buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+      });
+    });
+  </script>
+
+  <!-- tracking code here ? -->
+</head>
+
+<body>
+<div id="container">
+
+	<div id="header">
+		<h1>7R4N5C0D3</h1>
+	</div>
+
+	<div id="nav">
+    <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/Projects">Projects</a></li>
+    <li><a href="/Reads">Reads</a></li>
+    <li><a href="/Tools">Tools</a></li>
+    <li><a href="/tags.html">Tags</a></li>
+    <li><a href="/atom.xml">Feed</a></li>
+    <li><a href="https://github.com/trans/trans.github.com/wiki">Wiki</a> &gt;&gt;</li>
+    </ul>
+	</div>
+
+<!-- CONTENT -->
+<div id="content-wrapper">
+<div id="content">
+
+<h1>Quiet Revolt Against the FHS?</h1>
+
+<p>Prompted by the disocvery of improper use of relative require in a number or Ruby project's executables, my last <a href="http://protuils.github.com/2009/10/proper-require.html">post</a> dicussed <i>why</i> and <i>when</i> to avoid using relative require. To summarize, there are two broad reasons to avoid relative loading. The first is simply YAGNI. In most cases you simply don't need to do it. Your script is on the $LOAD_PATH and all that is needed is the normal <code>require 'mylib/mydir/myfile'</code> to load it. The second, and up until today I felt the more important concern, is conformance to the <a href="http://www.pathname.com/fhs/">File Hierarchy Standard</a>. While there is plenty of room to use relative requires and not tread on the FHS, it is easy enough to run afoul if one is not careful and aware of the issues. Such was the case with the executables.</p>
+
+<p>Now I have discovered that another popular Ruby program is "broken" with regards to the FHS -- RDoc. In more recent versions, RDoc designed it's auto-loading of 3rd party templates to use <code>lib/rdoc/discover.rb</code>. In other words, if you want to create a template "plug-in" for RDoc you need to have a <code>lib/rdoc/discover.rb</code> file in your project in which you require the file(s) that contain your actual plug-in code. There is one serious problem with this. If more than one such 3rd-party template project is installed via an old-fashioned site_ruby install (eg. using setup.rb), then the last installed project's <code>discover.rb</code> file will clobber the prior's.</p>
+
+<p>As a gem user you might not think it a big deal, but I can tell you that Linux distro maintainers do care. Any Ruby library they decide is worthy of a distro package, in particular a <code>.deb</code> package, they must ensure it conforms to the FHS. <a href="http://facets.rubyforge.org">Ruby Facets</a>, for instance, is slightly difficult in site install because it has two separate load paths. I received more that one nasty email about that when I no longer shipped a <code>setup.rb</code> script with the package. I have since updated the stand-alone version of <a href="http://proutils.github.com/setup">Ruby Setup</a> to handle such an install properly so long a <code>meta/loadpath</code> file is provided.</p>
+
+<p>But now I have to wonder. If RDoc has a site install flaw in it's latest design, and the aforementioned use of relative loading in bin scripts in other projects is likewise flawed, not to mention the numerous other violations that are surely out there... Is there a quiet revolution against the FHS going-on? Perhaps a revolution by default, because people don't know any better or forget to take it into account?</p>
+
+<p>Honestly, I have to say I hope so. In years past I had attempted to rail against the FHS. I even used <a href="http://gobolinux.org/">GoboLinux</a> as my main platform for a while. But as much as I would spout about the need to move beyond the FHS, along with <a href="http://gobolinux.org/index.php?lang=en_US&amp;page=doc/articles/clueless">other voices</a>, there never seemed to be any progress. We were stuck. And so I had given up and settled myself with the FHS way of doing things. (No doubt, this accounts in part for why I am so acutely aware Ruby code  that breaks under the standard.) But I have never been happy with it. I could only hope that one day, somehow, it would change. And maybe it has...</p>
+
+<p>Are those of you using RubyGems, and using relative requires, ready to stand with your code, in defiance of the FHS, indifferent to site_ruby installation? Can we finally all say "f@#k setup.rb"? Can I discontinue my maintenance of the setup.rb code base? Can I now feel free to use relative require and RDoc-like <code>discover.rb</code>'s to my joyous hearts abandon?</p>
+
+<p>I wonder, is this kind of thing occurring in other language domains too, such as Perl, Python and Rebol? It would appear so. I recently learned, as one might expect, that the guys over at GoboLinux are on the forefront of this. Check out the article, <a href="http://mwh.geek.nz/2009/07/23/an-overview-of-systemaliens/">An overview of /System/Aliens</a>.</p>
+
+<p>Is the revolt under way?</p>
+
+<hr><p>title      : Quiet Revolt Against the FHS?
+author     : trans
+categories : [ruby, require]
+date       : 2009-10-26
+layout     : post</p>
+
+<!--
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    {% for post in site.related_posts limit:3 %}
+      <li><span class="post-date">July 07, 2012</span> &raquo; <a href="">2009 10 26 quiet revolt against the fhs</a></li>
+    {% endfor %}
+  </ul>
+</div>
+-->
+
+</div>
+</div>
+<!-- END CONTENT -->
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+<!-- FOOTER -->
+
+<div id="footer">
+  <div class="tiger">
+  </div>
+	<small>Last edited by <b>trans</b> on July 07, 2012.</small>
+	<small style="float:right;">
+		This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+		mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+	</small>
+</div>
+
+</div>
+</body>
+</html>
+

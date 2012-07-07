@@ -51,15 +51,14 @@ table {
 
 /* Main styles */
 body {
-  font-family: monospace, sans-serif;
+	font: normal normal normal 13.34px/normal helvetica, arial, sans-serif;
 	font-size: 14px;
 	line-height: 1.4em;
 }
 
 a {
-	color: #226;
+	color: #4183C4;
 	text-decoration: none;
-  font-weight: bold;
 }
 
 a:hover {
@@ -135,15 +134,16 @@ article h1 {
 }
 
 #content h1 {
-	/* border-top: 4px solid #aaa; */
-	margin-top: 1em;
-	margin-bottom: 1em;
+	color: black;
+	border-top: 4px solid #aaa;
+	margin-top: 1.5em;
 	padding-top: 0.5em;
 }
 
 #content h2 {
 	font-size: 135%;
-	/* border-top: 4px solid #e0e0e0; */
+	color: black;
+	border-top: 4px solid #e0e0e0;
 	margin-top: 1.5em;
 	padding-top: 0.5em;
 }
@@ -179,34 +179,28 @@ article h1 {
 	margin-top: 0.5em;
 }
 
-/*
 pre {
 	line-height: 1.5em;
-	margin: 1em 0;
+	margin: 1em 0px;
 	overflow: auto;
 	padding: 0.5em;
 }
 
 code {
-  color: #070;
 	padding: 0px 0.2em;
-	border: 1px dotted #333;
-	font: normal normal normal 12px/normal Monaco, 'Courier New', monospace;
 }
 
-pre code {
-	background-color: #fff;
-	padding: 0;
-	border: 1px solid #222;
+pre, code {
+	background-color: ghostWhite;
+	border: 1px solid #ddd;
 	color: #444;
 	font-size: 12px;
-	font-family: monospace;
+	font: normal normal normal 12px/normal Monaco, 'Courier New', monospace;
 }
 
 pre > code {
 	border:none !important;
 }
-*/
 
 small {
 	font-size: 80%;

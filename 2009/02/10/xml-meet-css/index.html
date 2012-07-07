@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>2009 02 10 xml meet css\7R4N5C0D3</title>
+  <meta name="author" content="Trans" />
+
+  <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+  <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+  <link rel="stylesheet" href="/assets/styles/code.css" type="text/css"/>  
+  <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+  <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/>
+  <link rel="stylesheet" href="/assets/styles/social.css" type="text/css"/>  
+
+  <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+
+  <!--[if lt IE 9]>
+  <script src="/scripts/html5.js"></script>
+  <![endif]-->
+
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+  <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+  <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+  <script src="/assets/scripts/main.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#social-share').dcSocialShare({
+        twitterId: 'transgigamic',
+        tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+        buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+      });
+    });
+  </script>
+
+  <!-- tracking code here ? -->
+</head>
+
+<body>
+<div id="container">
+
+	<div id="header">
+		<h1>7R4N5C0D3</h1>
+	</div>
+
+	<div id="nav">
+    <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/Projects">Projects</a></li>
+    <li><a href="/Reads">Reads</a></li>
+    <li><a href="/Tools">Tools</a></li>
+    <li><a href="/tags.html">Tags</a></li>
+    <li><a href="/atom.xml">Feed</a></li>
+    <li><a href="https://github.com/trans/trans.github.com/wiki">Wiki</a> &gt;&gt;</li>
+    </ul>
+	</div>
+
+<!-- CONTENT -->
+<div id="content-wrapper">
+<div id="content">
+
+<h1>XML+CSS, the Future of Web Design?</h1>
+
+<p>In a <a href="http://tigerops.org/2009/01/mf-vs-xml.html">previous post</a>, I point out that microformats bring an additional layer of useful information to a document, which I dubbed <em>semantic structure</em>. In short, HTML tags provide useful <em>type</em> information about the data they contain. A good example of this has been the insistent push to use <code>div</code>s rather than <code>table</code>s for page layout. The reason is that tables describe a semantic structure, a table of data, and not layout. I for one have found this a frustrating haggle in the design of my pages. Time and time again I have been stymied by unwieldy <code>div</code>s. Tables are much easier to use, despite additional verbosity. But I have stuck to <code>div</code>s because it is "the right thing to do". Thankfully my saving grace will soon be here. The 3rd revision the CSS standard supports a new <code>display</code> style. With it, one can specify that a div is to behave like a table, table row or table cell. Woohoo! Three cheers for tabley divs!!</p>
+
+<p>This display style led me to think about semantic structure again. If we can designate that a <code>div</code> is a <code>table</code> structure via CSS, then why not any structure? And if <code>div</code>s, why not any tag? If we were able to do that, then semantic structure could be specified solely through CSS. And our HTML pages could go from rather simple, repetitive occurrences of <code>div</code> to ... can you guess?... pure XML.</p>
+
+<p>Let's got through it step by step. Here some HTML [gist id=61726]:</p>
+
+<div class="highlight">
+<pre>  <span class="nt">&lt;table</span> <span class="na">class=</span><span class="s">"ages"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;tr</span> <span class="na">class=</span><span class="s">"person"</span><span class="nt">&gt;&lt;td</span> <span class="na">class=</span><span class="s">"name"</span><span class="nt">&gt;</span>John<span class="nt">&lt;/td&gt;&lt;td</span> <span class="na">class=</span><span class="s">"age"</span><span class="nt">&gt;</span>24<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
+    <span class="nt">&lt;tr</span> <span class="na">class=</span><span class="s">"person"</span><span class="nt">&gt;&lt;td</span> <span class="na">class=</span><span class="s">"name"</span><span class="nt">&gt;</span>Dean<span class="nt">&lt;/td&gt;&lt;td</span> <span class="na">class=</span><span class="s">"age"</span><span class="nt">&gt;</span>30<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
+  <span class="nt">&lt;/table&gt;</span>
+</pre>
+</div>
+
+
+<p>Now with CSS 3 [gist id=61729]:</p>
+
+<div class="highlight">
+<pre>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"ages"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"person"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"name"</span><span class="nt">&gt;</span>John<span class="nt">&lt;/div&gt;&lt;div</span> <span class="na">class=</span><span class="s">"age"</span><span class="nt">&gt;</span>24<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"person"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"name"</span><span class="nt">&gt;</span>Dean<span class="nt">&lt;/div&gt;&lt;div</span> <span class="na">class=</span><span class="s">"age"</span><span class="nt">&gt;</span>30<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+
+    .ages { display: table; }
+  .person { display: table-row; }
+    .name { display: table-cell; }
+     .age { display: table-cell; }
+</pre>
+</div>
+
+
+<p>Of course no one would recommend doing this to something that really is a table of data. But bare with me, because now we are coming full circle [gist id=61730]:</p>
+
+<div class="highlight">
+<pre>  <span class="nt">&lt;ages&gt;</span>
+    <span class="nt">&lt;person&gt;&lt;name&gt;</span>John<span class="nt">&lt;/name&gt;&lt;age&gt;</span>24<span class="nt">&lt;/age&gt;&lt;/person&gt;</span>
+    <span class="nt">&lt;person&gt;&lt;name&gt;</span>Dean<span class="nt">&lt;/name&gt;&lt;age&gt;</span>30<span class="nt">&lt;/age&gt;&lt;/person&gt;</span>
+  <span class="nt">&lt;/ages&gt;</span>
+
+    ages { display: table; }
+  person { display: table-row; }
+    name { display: table-cell; }
+     age { display: table-cell; }
+</pre>
+</div>
+
+
+<p>I think this is a rather remarkable outcome. And you might be surprised to learn that Firefox handles it just fine. What we have achieved is an ultra-clean separation between the data and it's semantic meaning, via XML, and it's semantic structure, via CSS. If this approach were embraced by the XHTML and CSS standards bodies, I would not be surprised to see it revolutionize web design.</p>
+
+<hr><p>title      : XML. meet CSS
+author     : trans
+categories : [ruby]
+date       : 2009-02-10
+layout     : post</p>
+
+<!--
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    {% for post in site.related_posts limit:3 %}
+      <li><span class="post-date">July 07, 2012</span> &raquo; <a href="">2009 02 10 xml meet css</a></li>
+    {% endfor %}
+  </ul>
+</div>
+-->
+
+</div>
+</div>
+<!-- END CONTENT -->
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+<!-- FOOTER -->
+
+<div id="footer">
+  <div class="tiger">
+  </div>
+	<small>Last edited by <b>trans</b> on July 07, 2012.</small>
+	<small style="float:right;">
+		This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+		mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+	</small>
+</div>
+
+</div>
+</body>
+</html>
+

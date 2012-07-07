@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>2012 06 14 autoload smells like denmark\7R4N5C0D3</title>
+  <meta name="author" content="Trans" />
+
+  <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+  <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+  <link rel="stylesheet" href="/assets/styles/code.css" type="text/css"/>  
+  <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+  <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/>
+  <link rel="stylesheet" href="/assets/styles/social.css" type="text/css"/>  
+
+  <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+
+  <!--[if lt IE 9]>
+  <script src="/scripts/html5.js"></script>
+  <![endif]-->
+
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+  <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+  <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+  <script src="/assets/scripts/main.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#social-share').dcSocialShare({
+        twitterId: 'transgigamic',
+        tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+        buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+      });
+    });
+  </script>
+
+  <!-- tracking code here ? -->
+</head>
+
+<body>
+<div id="container">
+
+	<div id="header">
+		<h1>7R4N5C0D3</h1>
+	</div>
+
+	<div id="nav">
+    <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/Projects">Projects</a></li>
+    <li><a href="/Reads">Reads</a></li>
+    <li><a href="/Tools">Tools</a></li>
+    <li><a href="/tags.html">Tags</a></li>
+    <li><a href="/atom.xml">Feed</a></li>
+    <li><a href="https://github.com/trans/trans.github.com/wiki">Wiki</a> &gt;&gt;</li>
+    </ul>
+	</div>
+
+<!-- CONTENT -->
+<div id="content-wrapper">
+<div id="content">
+
+<h1>Autoload Smells Like Denmark</h1>
+
+<p>Ruby has a very cool feature called <em>autoload</em>. With autoload, any undefined constant can automatically trigger the loading of a library file. Effectively this gives Ruby a convenient means of lazy loading. For example, lets say some of our app's executable scripts ultimately use the ANSI library, but others do not. We can use <code>autoload</code> to only load the ANSI library when it is needed.</p>
+
+<div class="highlight">
+<pre><span class="nb">autoload</span> <span class="no">ANSI</span><span class="p">,</span> <span class="s1">'ansi'</span>
+</pre>
+</div>
+
+
+<p>This says to <code>require "ansi"</code> the first time an undefined ANSI constant is encountered.</p>
+
+<p>As wonderful as autoload seems, it has too glaring issues: 1) It doesn't use standard Kernel#require and 2) It is not thread safe. </p>
+
+<p>For the first, this means that any overriding of #require will not be supported by autoload. Of course such a thing is very rare, but it does occur. For instance the <a href="https://rubygems.org/gems/roll">Roll</a> library is all about overriding <code>#require</code>. Also RubyGems overrides #require, and in fact one can cause a bug to occur when using autoload because of it. Here's a very simple <a href="http://stackoverflow.com/questions/849622/autoload-raises-an-error-but-require-does-not-ruby">example</a>.</p>
+
+<p>On the second case the issue seems much more complicated, and a solution seems so unlikely that Matz has called for #autoload to be <a href="http://bugs.ruby-lang.org/issues/5653">removed</a> from Ruby by v3.0.0. That's a long way off but just the same it doesn't bode well for autoload. </p>
+
+<p>Now that Matz has effectively declared <code>#autoload</code> a code smell, I wonder if developers will take heed and stop using it? I have my doubts --it's just too damn convenient. I just wish it would use <code>Kernel#require</code> so I could use it along with Rolls.</p>
+
+<!--
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    {% for post in site.related_posts limit:3 %}
+      <li><span class="post-date">July 07, 2012</span> &raquo; <a href="">2012 06 14 autoload smells like denmark</a></li>
+    {% endfor %}
+  </ul>
+</div>
+-->
+
+</div>
+</div>
+<!-- END CONTENT -->
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+<!-- FOOTER -->
+
+<div id="footer">
+  <div class="tiger">
+  </div>
+	<small>Last edited by <b>trans</b> on July 07, 2012.</small>
+	<small style="float:right;">
+		This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+		mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+	</small>
+</div>
+
+</div>
+</body>
+</html>
+

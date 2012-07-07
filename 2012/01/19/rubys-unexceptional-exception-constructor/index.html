@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>2012 01 19 rubys unexceptional exception constructor\7R4N5C0D3</title>
+  <meta name="author" content="Trans" />
+
+  <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
+
+  <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
+  <link rel="stylesheet" href="/assets/styles/code.css" type="text/css"/>  
+  <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
+
+  <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/>
+  <link rel="stylesheet" href="/assets/styles/social.css" type="text/css"/>  
+
+  <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+
+  <!--[if lt IE 9]>
+  <script src="/scripts/html5.js"></script>
+  <![endif]-->
+
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+  <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
+  <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
+
+  <script src="/assets/scripts/main.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#social-share').dcSocialShare({
+        twitterId: 'transgigamic',
+        tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
+        buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
+      });
+    });
+  </script>
+
+  <!-- tracking code here ? -->
+</head>
+
+<body>
+<div id="container">
+
+	<div id="header">
+		<h1>7R4N5C0D3</h1>
+	</div>
+
+	<div id="nav">
+    <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/Projects">Projects</a></li>
+    <li><a href="/Reads">Reads</a></li>
+    <li><a href="/Tools">Tools</a></li>
+    <li><a href="/tags.html">Tags</a></li>
+    <li><a href="/atom.xml">Feed</a></li>
+    <li><a href="https://github.com/trans/trans.github.com/wiki">Wiki</a> &gt;&gt;</li>
+    </ul>
+	</div>
+
+<!-- CONTENT -->
+<div id="content-wrapper">
+<div id="content">
+
+<p>You would think after all this time Ruby's Exception class would be a rather robust and clearly comprehensible class.</p>
+
+<div class="highlight">
+<pre><span class="k">raise</span><span class="p">(</span><span class="n">exception</span> <span class="o">[</span><span class="p">,</span> <span class="n">string</span> <span class="o">[</span><span class="p">,</span> <span class="n">array</span><span class="o">]]</span><span class="p">)</span>
+</pre>
+</div>
+
+
+<p>Now lets try something </p>
+
+<div class="highlight">
+<pre><span class="k">class</span> <span class="nc">MyError</span> <span class="o">&lt;</span> <span class="no">Exception</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
+    <span class="k">super</span><span class="p">()</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<div class="highlight">
+<pre><span class="o">&gt;&gt;</span> <span class="k">raise</span> <span class="no">MyError</span>
+<span class="no">MyError</span><span class="p">:</span> <span class="no">MyError</span>
+	<span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">12</span>
+	<span class="n">from</span> <span class="sr">/home/</span><span class="n">trans</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">1</span><span class="o">.</span><span class="mi">9</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="n">rc1</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">irb</span><span class="p">:</span><span class="mi">12</span><span class="ss">:in</span> <span class="sb">`&lt;main&gt;'</span>
+</pre>
+</div>
+
+
+<p>No problem. But now lets try to set the message and the backtrace.</p>
+
+<div class="highlight">
+<pre><span class="o">&gt;&gt;</span> <span class="k">raise</span> <span class="no">MyError</span><span class="p">,</span> <span class="s2">"This is an error!"</span>
+<span class="no">ArgumentError</span><span class="p">:</span> <span class="n">wrong</span> <span class="n">number</span> <span class="n">of</span> <span class="n">arguments</span> <span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="mi">0</span><span class="p">)</span>
+	<span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">8</span><span class="ss">:in</span> <span class="sb">`initialize'</span>
+<span class="sb">	from (irb):13:in `</span><span class="n">exception</span><span class="s1">'</span>
+<span class="s1">	from (irb):13:in `raise'</span>
+</pre>
+</div>
+
+
+<p>Clearly Ruby expects any Exception's initialize method to handle the message argument. That's a rather strict contract for something Ruby is letting us override. But okay, let's take that as a given. Obviously Ruby is routing the #raise call to the exception's initializer. So then we should that the third <code>array</code> argument would passed along too. Turns out that's not the case.</p>
+
+<div class="highlight">
+<pre><span class="k">class</span> <span class="nc">MyError</span> <span class="o">&lt;</span> <span class="no">Exception</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="nb">p</span> <span class="n">args</span>
+    <span class="k">super</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<div class="highlight">
+<pre><span class="o">&gt;&gt;</span> <span class="k">raise</span> <span class="no">MyError</span><span class="p">,</span> <span class="s2">"This is an error!"</span><span class="p">,</span> <span class="nb">caller</span>
+<span class="o">[</span><span class="s2">"This is an error!"</span><span class="o">]</span>
+<span class="no">RuntimeError</span><span class="p">:</span> <span class="no">This</span> <span class="n">is</span> <span class="n">an</span> <span class="no">Error</span><span class="o">!</span>
+	<span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">1</span>
+	<span class="n">from</span> <span class="sr">/home/</span><span class="n">trans</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">1</span><span class="o">.</span><span class="mi">9</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="n">rc1</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">irb</span><span class="p">:</span><span class="mi">12</span><span class="ss">:in</span> <span class="sb">`&lt;main&gt;'</span>
+</pre>
+</div>
+
+
+<p>Nope. No caller in sight. So where did it go? Turns out Ruby is setting the caller via the error's <code>#set_backtrace</code> method and doesn't depend on the initializer to handle it at all. This seems rather odd, since it was keen on letting the initializer handle the message argument, and would blow-up if the class won't take it.</p>
+
+<p>So the upshot seems to be that we can't customize an exceptions initializer adn expect <code>#raise</code> to play along.</p>
+
+<p>I actually had another point to make about how things gets even worse. Unfortunately had to take care of other chores and by the time I got back to this blog post (months later) I forgot what these "worse things" were. I think it had something to do with how <code>#message</code> calls <code>#to_s</code> rather then returning the message passed to the initializer. But as said I am not certain now. </p>
+
+<p>My conclusion however is this. I was attempting to make use of an Exception class as something more than a mere container for a string message for the <a href="http://github.com/rubyworks/assay">Assay</a> project. That is when I ran into these oddities which made doing so quite unpleasant. To my dismay I ended up abandoning the approach. I brought some aspects of this up in a <a href="http://bugs.ruby-lang.org/issues/5898">issue report</a>.</p>
+
+<p>For reference, here is the relevant Ruby <a href="https://github.com/ruby/ruby/blob/trunk/eval.c">source code</a>.</p>
+
+<!--
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    {% for post in site.related_posts limit:3 %}
+      <li><span class="post-date">July 07, 2012</span> &raquo; <a href="">2012 01 19 rubys unexceptional exception constructor</a></li>
+    {% endfor %}
+  </ul>
+</div>
+-->
+
+</div>
+</div>
+<!-- END CONTENT -->
+
+<!-- Start Shareaholic Sexybookmarks -->
+<div class="shr_class shareaholic-show-on-load">
+</div>
+
+<script type="text/javascript">
+var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
+</script>
+
+<script type="text/javascript">
+(function() {
+var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
+sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
+var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
+})();
+</script>
+<!-- End Shareaholic Sexybookmarks -->
+
+<!-- Start Disqus Commments -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /**
+     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
+     */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = 'http://transcode.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Disqus Commands -->
+
+<div id="social-share"></div>
+
+<!-- FOOTER -->
+
+<div id="footer">
+  <div class="tiger">
+  </div>
+	<small>Last edited by <b>trans</b> on July 07, 2012.</small>
+	<small style="float:right;">
+		This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
+		mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
+	</small>
+</div>
+
+</div>
+</body>
+</html>
+
