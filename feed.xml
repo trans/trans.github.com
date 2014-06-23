@@ -6,8 +6,8 @@
     <atom:link href="http://trans.github.com/feed.xml" rel="self" type="application/rss+xml" />
     <description></description>
     <language>en-us</language>
-    <pubDate>Mon, 23 Jun 2014 18:12:28 +0000</pubDate>
-    <lastBuildDate>Mon, 23 Jun 2014 18:12:28 +0000</lastBuildDate>
+    <pubDate>Mon, 23 Jun 2014 19:00:04 +0000</pubDate>
+    <lastBuildDate>Mon, 23 Jun 2014 19:00:04 +0000</lastBuildDate>
 
     
     
@@ -172,36 +172,30 @@ output:
       <pubDate>Tue, 17 Sep 2013 00:00:00 +0000</pubDate>
       <author></author>
       <guid>http://trans.github.com/2013/09/17/Transpilers-to-Watch</guid>
-      <description>&lt;h1&gt;Transpilers to Watch&lt;/h1&gt;
+      <description>&lt;h1&gt;Transpilers are the new Black (Coffee)&lt;/h1&gt;
 
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;CoffeeScript&lt;/a&gt; is fairly ubiquitous technology these days --a &lt;em&gt;transpiler&lt;/em&gt; that converts it&amp;#39;s own much nicer language into Javascript which can then be run via Node.js or on the Web. But it&amp;#39;s not the only fish in this sea. Here are three similar projects that look very promising.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://coffeescript.org&quot;&gt;CoffeeScript&lt;/a&gt; is fairly ubiquitous technology these days --a &lt;em&gt;transpiler&lt;/em&gt; that converts it&amp;#39;s own, much nicer language into Javascript, which can then be run via Node.js or on the Web. But it&amp;#39;s not the only fish in this sea. Here are three similar projects that look very promising.&lt;/p&gt;
 
 &lt;h2&gt;&lt;a href=&quot;http://texodus.github.io/forml/&quot;&gt;Forml&lt;/a&gt;&lt;/h2&gt;
 
-&lt;blockquote&gt;
 &lt;p&gt;A contemporary programming language for the discriminating programmer,
 intended to approximate the safety of Haskell and the expressiveness
 of Ruby. Should such an approximation turn out to exist.&lt;/p&gt;
-&lt;/blockquote&gt;
 
 &lt;h2&gt;&lt;a href=&quot;http://noflojs.org/&quot;&gt;NoFlo&lt;/a&gt;&lt;/h2&gt;
 
-&lt;blockquote&gt;
 &lt;p&gt;NoFlo is a JavaScript implementation of Flow-Based Programming (FBP).
 Separating the control flow of software from the actual software logic.
 Helping you organize large applications easier than traditional OOP
 paradigms, especially when importing and modifying large data sets.&lt;/p&gt;
-&lt;/blockquote&gt;
 
 &lt;h2&gt;&lt;a href=&quot;http://opalang.org/&quot;&gt;Opal&lt;/a&gt;&lt;/h2&gt;
 
-&lt;blockquote&gt;
 &lt;p&gt;Opa is a full-stack open source web development framework for JavaScript
 that lets you write secure and scalable web applications.
 Opa handles all aspects of web programming: frontend (client code),
 backend (server code) and database queries are all written in one
 consistent language and compiled to standards of the web.&lt;/p&gt;
-&lt;/blockquote&gt;
 </description>
     </item>
     
@@ -740,22 +734,20 @@ Perhaps it would seem ironic then that once again I did accept every critique (t
     
     
     <item>
-      <title>Evolution Of A Programmer</title>
-      <link>http://trans.github.com/2012/12/01/evolution-of-a-programmer/</link>
+      <title>Bye Bye Webri</title>
+      <link>http://trans.github.com/2012/12/01/bye-bye-webri/</link>
       <pubDate>Sat, 01 Dec 2012 00:00:00 +0000</pubDate>
       <author></author>
-      <guid>http://trans.github.com/2012/12/01/evolution-of-a-programmer</guid>
-      <description>&lt;h1&gt;Evolution of a Programmer [DRAFT]&lt;/h1&gt;
+      <guid>http://trans.github.com/2012/12/01/bye-bye-webri</guid>
+      <description>&lt;h1&gt;Bye Bye WebRI&lt;/h1&gt;
 
-&lt;p&gt;As of next year I will have been programming in Ruby for over a decade. Ten years!&lt;/p&gt;
-
-&lt;h3&gt;Bye Bye WebRI&lt;/h3&gt;
-
-&lt;p&gt;RDoc 4.0 is coming out and can now render documentation directly from ri stores. That&amp;#39;s great news. I had written just such a program back in 2008 called WebRI. It was a terrible hack, and slow as molasses running up a tree. So it never got much use. But it was still pretty neat because it made it possible to browse all installed gems in one go. It was wild to see every single class and module of every gem listed in the side pane. I hope RDoc 4.0 will be able to do something like that. I am certain it will be better in just about every other way at least. My implementation may have sucked, but the idea was obviously a good one. It&amp;#39;s always nice to feel a bit of vindication in that way.&lt;/p&gt;
+&lt;p&gt;RDoc 4.0 is coming out and it can now render documentation directly from ri stores. That&amp;#39;s super great news. I had written just such a program back in 2008 called WebRI. It was a terrible hack, and slow as molasses running up a tree. So it never got much use. But it was still pretty neat because it made it possible to browse all installed gems in one go. It was wild to see every single class and module of every gem listed in the side pane. I hope RDoc 4.0 will be able to do something like that. Even so I am certain it will be better in just about every other way. My implementation may have sucked, but the idea was obviously a good one. It&amp;#39;s always nice to feel a bit of vindication in that way.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://trans.github.com/media/webri.png&quot; alt=&quot;WebRI&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;Of course, this also means that WebRI is completely obsolete now. Come the new year I will delete the repository and yank the gem. No reason to keep useless cruft about.&lt;/p&gt;
+
+&lt;p&gt;BTW As of next year I will have been programming in Ruby for over a decade. Ten fucking years!&lt;/p&gt;
 </description>
     </item>
     
