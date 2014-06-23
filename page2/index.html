@@ -60,285 +60,49 @@
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2011/10/02/indentured-stringitude/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Indentured Stringitude</h1>
+            <h2 class="title"><a href="/2013/01/04/the-plethora-of-version-versions/" rel="prefetch">The Plethora Of Version Versions</a></h2>
+            <p><h1>The Plethora of Version Versions</h1>
 
-<p>One of the great things about Ruby is the extensive collection of methods
-available to the core classes. Of these the String class reigns supreme with
-over 100 methods from which to make good use. Among these methods are those we
-all use almost every time a string is laid to editor, such as #strip, #+ and #&lt;&lt;.
-Others are present that have more specific but important uses, such as #lines, #scan
-and #getbyte. There are even a few that can leave one scratching ones head
-a bit trying to fathom the usecase, such as #sum.</p>
+<p>A couple of my programs have need of a Version API --a library for handling version numbers, and handling them well. Not only do they need a class modeling a <em>version number</em>, but also a <em>version constraint</em> and in one case even a <em>version conflict resolver</em> for requirements. Presently each project had its own code for handling versions. But as these projects have evolved it has became increasingly clear that effort was being wasted and that I should pull the separate bits of code together into a single gem on which they all could depend.</p>
 
-<p>Yet, despite its wide address, there is a set of methods that have gone
-completely overlooked, which is really remarkable when you consider their
-purpose, the frequency of their utility and the code savings they provide
-when used. These are methods dealing with <em>indentation</em>.</p>
-
-<p>It was many years ago when I first was introduced to these three methods by
-Gavin Sinclair: #tab, $tabto and #indent. Their interfaces are:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">tab(n)
-Aligns each line n spaces.
-
-tabto(n)
-Preserves relative tabbing in which the first non-empty line ends up
-with n spaces before non-space.
-
-indent(n, c=&#39; &#39;)
-Indent left or right by n spaces.
-</code></pre></div>
-<p>So clearly useful, these were some of the first to make their way in to Ruby
-Facets, and they have proven invaluable to me in numerous projects ever since.</p>
-
-<p>Sometime shortly there after, another related method also proved useful at
-times, String#margin. It is documented:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">margin(n=0)
-Provides a margin controlled string.
-
-  x = %Q{
-        |This
-        |  is
-        |    margin controlled!
-        }.margin
-</code></pre></div>
-<p>This method is useful largely because it prevents a horrible code smell.
-How often have you seen some jutting HERE doc that threw all that nicely
-indented Ruby code to the wall.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">    def help_text
-      &lt;&lt;-HERE
-Usage: foo bar
--x some option
--y another option
-      HERE
-    end
-</code></pre></div>
-<p>This all too common eye blight was the inspiration for the creation of #margin.
-In fact, so confident were Peter and I in this approach to remove these ugly
-code-squids that we conceived a %-literal to support such a construct would
-be an unimpeachable addition to the language itself, allowing the even more
-elegant notation:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">x = %L|Usage: foo bar
-      |-x some option
-      |-y another option
-</code></pre></div>
-<p>Such a syntax, being built into Ruby proper, would not suffer the computational
-overhead of the pure Ruby implementation, or the extraneous brackets.</p>
-
-<p>In all my years of coding Ruby, it seems to me, these are the the clearest
-omissions that I have repeatedly found need. And so concluded that they really
-should be a part of Ruby proper. And as much as I owe Ruby&#39;s String class for all
-the time saving methods it provides, in this case, as often as I&#39;ve had copy and
-paste or add a dependency to &#39;facets&#39; just to get these methods, I think the
-String class owes me one!</p>
-
-<hr>
-
-<p>title      : String Indenture
-author     : trans
-categories : [string, ruby]
-date       : 2011-10-02
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2011-02-October" title="October 02, 2011">October 02, 2011</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2011/09/10/is-it-an-attribute/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Is it an Attribute?</h1>
-
-<p>What exactly is an attribute? From the standpoint of OOP, a Ruby attribute is 
-intended to be what is generally referred to as an <i>accessor method</i>.
-An accessor method is a means of direct access to an object&#39;s underlying state.
-In other words, it is a method for direct access to an instance variable. And
-that is exactly what Ruby&#39;s helper class methods, i.e. <code>attr</code>, <code>attr_reader</code>,
-<code>attr_writer</code> and <code>attr_accessor</code>, achieve.</p>
-
-<p>However, Ruby&#39;s &quot;accessor methods&quot; are not specially recognized methods, 
-(as are <em>properties</em> in Javascript, for example). Rather Ruby simply creates
-regular old methods which internally work with the an instance variable. This
-fact leads to a bit of puzzlement. If attributes are Ruby&#39;s means for creating 
-accessor methods, but attributes are only a short-cut for creating regular
-methods, when then is a method an attribute or not an attribute?  For instance:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Foo</span>
-      <span class="k">def</span> <span class="nf">x</span><span class="p">;</span> <span class="vi">@x</span><span class="p">;</span> <span class="k">end</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>Is <code>#x</code> an attribute in this example since it results in the exact same 
-class definition as:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Foo</span>
-      <span class="kp">attr</span> <span class="ss">:x</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>It would seem to be, but neither RDoc or YARD will document it as such, even though
-both list attributes of a class.</p>
-
-<p>Going a step further, if the later definition <em>is</em> an attribute, which is an accessor
-method, what then is:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">class Foo
-  def x; @x.to_s; end
-end
-</code></pre></div>
-<p>Does the addition of #to_s invalidate #x as an accessor and thus as an attribute?
-Is that the case even if @x is <em>supposed</em> to be a string?</p>
-
-<p>More confusing still, since Ruby methods can be rewritten at any time, there is the 
-opposite possibility that what appears as an attribute is not actually an accessor
-method as all. Experienced Rubyists know that Ruby issues a warning when a method
-overwrites another method --even one created via an <code>attr</code> method. But it&#39;s just
-a warning and a fairly minor one at that. This can cause some very basic
-confusion if an attribute is overwritten by a method.</p>
-
-<p>Ruby&#39;s common documentation tools make this issue very easy to see. Take a class
-defined as follows:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">class IsItAnAttribute
-  # Attribute accessor #foo.
-  attr_accessor :foo
-
-  # Attribute reader #foo.
-  attr_reader :bar
-
-  # Attribute writer #foo.
-  attr_writer :baz
-
-  # Method #foo.
-  def foo; @foo + 1; end
-
-  # Method #foo=.
-  def foo=(i); @foo = i.to_i - 1; end
-
-  # Method #bar.
-  def bar; end
-
-  # Method #bar=(i)
-  def bar=(i); @bar = i; end
-
-  # Method #baz.
-  def baz; @baz; end
-end
-</code></pre></div>
-<p>In the case of <a href="examples/is-it-an-attribute/rdoc/index.html">RDoc</a>,
-it lists <code>bar=</code>, <code>baz</code> and <code>foo=</code> as methods, and <code>bar[R]</code>, <code>baz[W]</code>
-and <code>foo[RW]</code> as attributes. The attributes seem reasonable if we simply
-take it on faith that attribute declarations are accessors regardless of
-what the methods might be doing --it&#39;s the documentors issue. And maybe that
-is all we can reasonably expect. But it is odd that #bar is missing from the
-method definitions.</p>
-
-<p><a href="examples/is-it-an-attribute/yard/index.html">YARD</a> on the other hand,
-also lists <code>bar</code>, <code>baz</code> and <code>foo</code> as attributes, but does not make
-it clear if they are readers, writers or both. It also lists <code>bar</code>, <code>baz</code>
-and <code>foo</code> as methods, with no indication that writers even exist. YARD has
-some attribute related tags for this, but what seems like the proper approach
-to improve the documentation appears to do nothing new.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text"># Method #bar.
-# @attribute r bar
-def bar
-end
-</code></pre></div>
-<p>(And I would add, there is no <code>[view source]</code> link in this case as well.)</p>
-
-<p>So what gives? What really is an attribute? I&#39;m inclined to think we might need
-to throw out the whole concept from Ruby, at least as Ruby now stands. Attributes
-are nothing more than a meta-programming device to create methods and it&#39;s
-impossible to ensure documentation only labels methods that behave as 
-accessor methods.</p>
-
-<p>On the other hand, perhaps we should redefine that concept of an attribute,
-not as an accessor method, but as any method we want it to be so long as it
-accesses an instance variable in some form or fashion (albeit enforcing that
-is not strictly possible either). In that case it might be worth adjusting
-the attr methods to act as <em>declarations</em> rather then merely meta-methods.
-In this way any method could be declared an attribute in the same way that
-methods can be declared public, private or protected.</p>
-
-<hr>
-
-<p>title      : Is it an Attribute?
-author     : trans
-categories : [attributes, oop]
-date       : 2011-09-10
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2011-10-September" title="September 10, 2011">September 10, 2011</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2011/07/09/we-dont-need-no-stinking-modules/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>We Don&#39;t Need No Stinking Modules</h1>
-
-<p>Among experienced developers you will hear no end of praise for delegation. All things considered, it is the most powerful, flexible and controllable means of incorporating reusable behaviors. Even so, I recollect that I once read, no object-oriented programming language utilized delegation as it&#39;s only means of handling modules.</p>
-
-<p>With the talk of Ruby 2.0 support the concept of Module#mix (essentially a traits system), I can&#39;t help but wonder why bother. In fact, I have a bit of code for you to consider.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Object</span>
-  <span class="k">def</span> <span class="nf">use</span><span class="p">(</span><span class="n">delegate</span><span class="p">)</span>
-    <span class="vi">@_delegates</span> <span class="o">&lt;&lt;</span> <span class="n">delegate</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">delegate</span> <span class="o">=</span> <span class="vi">@_delegates</span><span class="o">.</span><span class="n">find</span><span class="p">{</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span> <span class="n">d</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="p">}</span>
-    <span class="k">if</span> <span class="n">delegate</span>
-      <span class="n">delegate</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-    <span class="k">else</span>
-      <span class="k">super</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>And here we have the basis of a delegate-based reusable component system. Of course, we need to work this at the class level too, if we want move past Prototype-based OOP. That&#39;s not difficult, we just use a class level delegate store, and override #new to insert the delegates on initialization.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Object</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">use</span><span class="p">(</span><span class="n">delegate</span><span class="p">)</span>
-    <span class="n">delegates</span> <span class="o">&lt;&lt;</span> <span class="n">delegate</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">class_delegates</span>
-    <span class="vi">@_delegates</span> <span class="o">||=</span> <span class="o">[]</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">use</span><span class="p">(</span><span class="n">delegate</span><span class="p">)</span>
-    <span class="vi">@_delegates</span> <span class="o">&lt;&lt;</span> <span class="n">delegate</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">delegate</span> <span class="o">=</span> <span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">class_delegates</span> <span class="o">+</span> <span class="vi">@_delegates</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">{</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span> <span class="n">d</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="p">}</span>
-    <span class="k">if</span> <span class="n">delegate</span>
-      <span class="n">delegate</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-    <span class="k">else</span>
-      <span class="k">super</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Is there really anything else that we need? Okay sure, it needs to be beefed-up, to do things like &quot;inherit&quot; delegates from superclasses, but as the basis of such a system, it&#39;s square.</p>
-
-<p>Now the caveats.</p>
+<p>So I created the new project --actually it was some time ago, but I ran into that not-so-unusual snag, what to name it. Unfortunately there was already a <code>version</code> gem, and could think of no better name. So I put the whole thing on the back burner for some months. Today I finally returned to the question. I still don&#39;t have an answer, but to be thorough I searched of RubyGems.org using &quot;vers&quot;. I thought there were a lot of ANSI code gems!</p>
 
 <ul>
-<li><p>It&#39;s not going to be very fast having to &quot;find&quot; the methods like this every time. Granted. But I suspect that an optimized version of this could be implemented in Ruby itself, mitigating most if not all of that.</p></li>
-<li><p>The delegate has no access to the delegator&#39;s state. This is a serious issue for mixins like Enumerable. The could be fixed by giving the delegate access to the delegator. Since a delegate can be reused by other objects, this would require duplicating each delegate, or wrapping it in a special container instance, and passing it a reference to the delegator. That would be pretty inefficient though. Better would be a dynamic means of access handled by the Ruby interpreter itself. </p></li>
+<li><a href="https://github.com/Ataxo/app-version-git">app-version-git</a></li>
+<li><a href="https://github.com/westarete/aversion">Aversion</a></li>
+<li><a href="https://github.com/jeffp/gem_version">GemVersion</a></li>
+<li><a href="https://github.com/Bodacious/per-version">PerVersion</a></li>
+<li><a href="https://github.com/AlphaHydrae/rake-version">rake-version</a></li>
+<li><a href="https://github.com/martinkozak/ruby-version">Ruby Version</a></li>
+<li><a href="https://github.com/canton7/sem_version">SemVersion</a></li>
+<li><a href="https://github.com/stouset/version">version</a></li>
+<li><a href="https://github.com/jondot/version_bumper">version_bumper</a></li>
+<li><a href="https://github.com/djsun/version_string">version_string</a></li>
+<li><a href="https://github.com/RiverGlide/Versionary">Versionary</a></li>
+<li><a href="https://github.com/charlotte-ruby/versionator">Versionator</a></li>
+<li><a href="http://rubyforge.org/projects/versioncheck">VersionCheck</a></li>
+<li><a href="https://github.com/chaione/versioner">versioner</a></li>
+<li><a href="https://github.com/xaviervia/versionifier">Versionifier</a></li>
+<li><a href="https://github.com/jcangas/version_info">VersionInfo</a></li>
+<li><a href="http://rubygems.org/gems/versionize">Versionize</a></li>
+<li><a href="https://github.com/thomasbiddle/versionr">Versionr</a></li>
+<li><a href="https://github.com/defunkt/version_sorter">VersionSorter</a></li>
+<li><a href="https://github.com/meh/versionub">Versionub</a></li>
 </ul>
+
+<p>The majority of these gems address the same functionality, that of bumping a version number. Some of those provide rake tasks to do so, others just the API, and a couple go a step further handling git commits and gem pushes as well. One a few actually focus on modeling a <em>version number</em>, though all have some sort of internal model no matter how simplistic. Only one appears to provide a model any more sophisticated than simple comparison and accessing named components (major, minor, patch, etc.). SemVersion also has simple constraint testing.</p>
+
+<p>It&#39;s too bad there is not more cooperation among gem developers. I think this is an area in which the Perl community has shined. Surely in no small part to <a href="http://cpan.org">CPAN</a> and the culture of naming libraries functionally, rather then creatively. </p>
+
+<p>Still doesn&#39;t help me name mine.</p>
+
+<hr>
+
+<p>Note <a href="https://github.com/phs/versionable">Versionable</a> is something different, and pretty neat.</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2011-09-July" title="July 09, 2011">July 09, 2011</time>
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2013-04-January" title="January 04, 2013">January 04, 2013</time>
             </div>
         </div>
         <hr>
@@ -349,43 +113,7 @@ layout     : post</p>
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2010/10/13/wxruby-for-the-lazy/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>WxRuby for the Lazy</h1>
-
-<p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It&#39;s far from the &quot;Ruby Way&quot;.</p>
-
-<p>So how did I mange to get fairly nice Ruby code despite a binding that is essentially a straight port of the underlying C API? I built it from the bottom-up using a lazy coding technique. And I mean &quot;bottom-up&quot; literally --the following code might actually be easier to read if you start from the bottom and work your way up to the top. The trick is to break down one&#39;s interface into individual widgets and create an instance method for each using the <code>||=</code> memoization trick. </p>
-
-<p>You can see from the following code I was able to apply this &quot;trick&quot; to everything but toolbar buttons (aka &#39;tools&#39;). This is because the toolbar itself is needed to create them. So I simply defined attributes for each tool, but actually created the tool buttons in the toolbar&#39;s method. <a href="https://gist.github.com/trans/182301">Have a look</a>.</p>
-
-<script src="https://gist.github.com/trans/182301.js"></script>
-
-<p>The thing to notice, if you haven&#39;t caught it yet, is how calling <code>#search<em>toolbar</code> leads to calling <code>#search</em>sizer</code> which in turn leads to calling <code>#search<em>panel</code>, and so forth all the way to the top <code>#frame</em>panel</code>. This code is a striped down version of actual code I am using. I hope it helps others create wxRuby application more easily. As I said in my previous post, I found in mind-numbingly difficult to create WxRuby interfaces until I worked out this approach. WxRuby is still a difficult API to master, but this technique makes the effort more manageable, and therefore more likely to succeed. </p>
-
-<p>For another example of building structures lazily, have a look at <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/122593">my solution</a> for <a href="http://rubyquiz.com/quiz10.html">Ruby Quiz 10 - Crosswords</a>.</p>
-
-<!--
-  title  : WxRuby for the Lazy
-  author : trans
-  tags   : [ruby, gui]
-  date   : 2009-06-07
-  layout : post
--->
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2010/10/13/what-concerns/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <h2 class="title"><a href="/2013/01/01/what-concerns/" rel="prefetch">What Concerns</a></h2>
             <p><h1>What Concerns?</h1>
 
 <p>David Heinemeier Hansson, the well known creator of Rails, recently gave a little <a href="http://37signals.com/svn/posts/3372-put-chubby-models-on-a-diet-with-concerns">pep-talk</a> for the use of <code>ActiveSupport::Concerns</code>, making an argument that they were sufficient to satisfy the practical needs of <a href="http://en.wikipedia.org/wiki/Data,_context_and_interaction">DCI</a>&#39;s theory.</p>
@@ -395,8 +123,8 @@ layout     : post</p>
 <p>To say that Concerns are like DCI Roles, is akin to saying C structs are like OOP Objects. Yea, there&#39;s a similarity there, but it&#39;s vastly missing the point.</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2013-01-January" title="January 01, 2013">January 01, 2013</time>
             </div>
         </div>
         <hr>
@@ -407,258 +135,288 @@ layout     : post</p>
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2010/10/13/vote-kernel-for-toplevel-object/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Vote Kernel for Toplevel Object</h1>
+            <h2 class="title"><a href="/2012/12/04/about-those-refinements/" rel="prefetch">About Those Refinements</a></h2>
+            <p><h1>About those Refinements</h1>
 
-<p>As a follow up to my last post on the &quot;pain that is main&quot;, I want to offer a potential improvement for Ruby 2.0. I approached the topic on ruby-talk this week and while Matz initially took some interest, he hasn&#39;t followed up since his last comment:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">matz: Why?  If it is really required it&#39;s fairly
-easy to add toplevel methods like we did for #include.
+<p>Well, after a ridiculously long discussion about refinements, it&#39;s finally become clear what Matz is up to. It would have helped if he had mentioned from the start that he&#39;s patterning them directly off of Smalltalk wrappers and CLOS method combinations. Instead we get <a href="http://bugs.ruby-lang.org/projects/ruby-trunk/wiki/RefinementsSpec">this</a> &quot;offical&quot; spec. Hardly. It was only thanks to Charles Nutters careful <a href="https://bugs.ruby-lang.org/issues/4085#note-217">analysis</a> that I was able to to get a clear picture. Oh, the time and data that could have been saved!</p>
+
+<p>So allow me to save you all the trouble and explain refinements in very simple phrase: <em>macros des méthodes</em>. In plain English, they are macros that act on method invocations. For example,</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">M</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">string</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
+    <span class="n">string</span><span class="o">.</span><span class="n">to_s</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nn">Q</span>
+  <span class="n">refine</span> <span class="nb">String</span>
+    <span class="k">def</span> <span class="nf">to_s</span>
+      <span class="s2">&quot;Every string is </span><span class="si">#{</span><span class="k">super</span><span class="si">}</span><span class="s2">!&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">using</span> <span class="n">Q</span>
+
+<span class="n">M</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="s2">&quot;okay&quot;</span><span class="p">)</span> <span class="c1">#=&gt; &quot;okay&quot;</span>
 </code></pre></div>
-<p>But it isn&#39;t always easy. In order get my Taskable module to work, for instance, I had to make exceptions for the toplevel case, which is far from ideal and is fragile [Ed- in fact I&#39;m still getting bugs that I haven&#39;t yet pinned down]. These subtile difficulties arise becuase main acts as a partial proxy for the Object class. Anyone who has created a proxy object before knows the subtile issues that can come into play. In this case, only the bare minimal interface is supported --essentially the method #include. Yet, even if we take matz&#39; advice and add in all the missing proxy methods, we still won&#39;t be 100% out of the woods. The Object class and main are fundamentally two distinct objects --self is not the same, nor are their singleton classes, &amp;c. In the vast majority of cases this will never present an issue, but the distinction can creep in. Here&#39;s an highlight of one way it can:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">module</span> <span class="nn">Q</span>
-      <span class="n">define_method</span> <span class="ss">:q</span> <span class="k">do</span>
-        <span class="n">base</span> <span class="o">=</span> <span class="nb">self</span>
-        <span class="n">define_method</span> <span class="ss">:r</span> <span class="k">do</span>
-          <span class="n">base</span> <span class="o">==</span> <span class="nb">self</span><span class="o">.</span><span class="n">class</span>
-        <span class="k">end</span>
+<p>Notice, the <code>M.string</code> method is not effected by the refinement of <code>String#to_s</code> even though it uses <code>#to_s</code> in its definition. However, if we use <code>#to_s</code> explicitly in the scope of the refinement&#39;s use we get:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="s2">&quot;okay&quot;</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; &quot;Every string is okay!&quot;</span>
+</code></pre></div>
+<p>Even though that is exactly what the definition of <code>M.string</code> is, it produces the refined result instead. Since the call was explicit the refinement interceded.</p>
+
+<p>That&#39;s really the crux of refinements. Most of the remaining questions pertain to the order in which multiple refinements interact, but it is all pretty much as one would intuit it to be, so we won&#39;t go into detail in that regard.</p>
+
+<p>Now I thought it might be helpful to take an extreme example of what one could do with refinements and see if it leads us to anything interesting.</p>
+
+<p>Let&#39;s take just a bare class.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Now lets create two refinements defining two different roles a person might take.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">Buyer</span>
+  <span class="n">refine</span> <span class="no">Person</span> <span class="k">do</span>
+    <span class="kp">attr</span> <span class="ss">:stuff</span><span class="p">,</span> <span class="ss">:money</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">money</span><span class="p">,</span> <span class="o">*</span><span class="n">stuff</span><span class="p">)</span>
+      <span class="vi">@money</span> <span class="o">=</span> <span class="n">money</span><span class="o">.</span><span class="n">to_f</span>
+      <span class="vi">@stuff</span> <span class="o">=</span> <span class="n">stuff</span>
+    <span class="k">end</span>
+    <span class="k">def</span> <span class="nf">buy</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+      <span class="vi">@stuff</span><span class="o">.</span><span class="n">push</span> <span class="n">product</span>
+      <span class="vi">@money</span> <span class="o">-=</span> <span class="vi">@money</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nn">Seller</span>
+  <span class="n">refine</span> <span class="no">Person</span> <span class="k">do</span>
+    <span class="kp">attr</span> <span class="ss">:stuff</span><span class="p">,</span> <span class="ss">:money</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">money</span><span class="p">,</span> <span class="o">*</span><span class="n">stuff</span><span class="p">)</span>
+      <span class="vi">@money</span> <span class="o">=</span> <span class="n">money</span><span class="o">.</span><span class="n">to_f</span>
+      <span class="vi">@stuff</span> <span class="o">=</span> <span class="n">stuff</span>
+    <span class="k">end</span>
+    <span class="k">def</span> <span class="nf">sell</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+      <span class="vi">@stuff</span><span class="o">.</span><span class="n">delete</span> <span class="n">product</span>
+      <span class="vi">@money</span> <span class="o">+=</span> <span class="vi">@money</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Now let&#39;s define an activity in which persons interact as each of these roles.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="n">using</span> <span class="no">Seller</span>
+<span class="n">using</span> <span class="no">Buyer</span>
+
+<span class="k">class</span> <span class="nc">SalesTransaction</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">make</span><span class="p">(</span><span class="n">buyer</span><span class="p">,</span> <span class="n">seller</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+    <span class="n">buyer</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+    <span class="n">seller</span><span class="o">.</span><span class="n">sell</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Interesting? Person has no built-in behavior, and yet we&#39;ve managed to use the class to model a sales transaction and give each person state of what they own and how much money they have. And an outside interface can&#39;t find this state out unless it knows what role to apply!</p>
+
+<p>You might recognize the pattern of this example. It is <a href="http://en.wikipedia.org/wiki/Data,_context_and_interaction">DCI</a>. Does this mean refinements are a prefect fit for DCI-based designs? Might we see a whole new paradigm in Ruby architecture built around the DCI? That&#39;s a good question. At first glance it certainly seems to be possible. But we should note a obvious downsides.</p>
+
+<ol>
+<li>Both refinements required an <code>#initialize</code> method to ensure the instance variables are initialized. So  refinements of this kind would have to be compatible in this respect in order to be used together.</li>
+<li>The context, in this case <code>SalesTransaction</code>, has to exist in it&#39;s own file so only the appropriate refinements apply. There is no way to define contexts that use different refinements in the same file because refinements are applied on a per-file basis. Although, some level of cleverness could be played if certain contexts simply add additional refinements on top of those used earlier in the file.</li>
+<li>While it remains to be seen, it is unlikely that an entire system written in this fashion will be very fast. Nor is entirely certain the it would very comprehensible, but perhaps that has more to do with DCI then refinements.</li>
+</ol>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-04-December" title="December 04, 2012">December 04, 2012</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2012/12/01/evolution-of-a-programmer/" rel="prefetch">Evolution Of A Programmer</a></h2>
+            <p><h1>Evolution of a Programmer [DRAFT]</h1>
+
+<p>As of next year I will have been programming in Ruby for over a decade. Ten years!</p>
+
+<h3>Bye Bye WebRI</h3>
+
+<p>RDoc 4.0 is coming out and can now render documentation directly from ri stores. That&#39;s great news. I had written just such a program back in 2008 called WebRI. It was a terrible hack, and slow as molasses running up a tree. So it never got much use. But it was still pretty neat because it made it possible to browse all installed gems in one go. It was wild to see every single class and module of every gem listed in the side pane. I hope RDoc 4.0 will be able to do something like that. I am certain it will be better in just about every other way at least. My implementation may have sucked, but the idea was obviously a good one. It&#39;s always nice to feel a bit of vindication in that way.</p>
+
+<p><img src="http://trans.github.com/media/webri.png" alt="WebRI"></p>
+
+<p>Of course, this also means that WebRI is completely obsolete now. Come the new year I will delete the repository and yank the gem. No reason to keep useless cruft about.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-01-December" title="December 01, 2012">December 01, 2012</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2012/08/07/Going-Generic/" rel="prefetch">Going Generic</a></h2>
+            <p><h1>Going Generic</h1>
+
+<p>My Grandmother will often buy generic brands at the grocery to save a few dollars. A child of the depression, she knows the true value of a thing[^1]. Go could take a lesson from her.</p>
+
+<p>Let me provide an example. Here is code to concat two array of string.[^2]</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">func concat(a, b []string) []string {
+  ret := make([]string, len(a) + len(b))
+  copy(ret, a)
+  copy(ret[len(a):], b)
+  return ret
+}
+</code></pre></div>
+<p>It can only be used for []string values. Nothing else. If I need to concat two int arrays, well then I need another function.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">func concat(a, b []int) []int {
+  ret := make([]int, len(a) + len(b))
+  copy(ret, a)
+  copy(ret[len(a):], b)
+  return ret
+}
+</code></pre></div>
+<p>There is no difference between these two functions except the array&#39;s element type. Ideally a general solution would allow use to name the type, e.g.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">func concat(a, b []&lt;t&gt;) []&lt;t&gt; {
+  ret := make([]&lt;t&gt;, len(a) + len(b))
+  copy(ret, a)
+  copy(ret[len(a):], b)
+  return ret
+}
+</code></pre></div>
+<p>From what I have heard there are some strict criteria to be met for any general solution to this issue. I plan to do some further reading.</p>
+
+<p>[^1]: Sometimes too much so actually. Of an emptied product container she&#39;ll often say, &quot;this is fine container, surely you must have something you can put in it&quot;. :)</p>
+
+<p>[^2]:  Yes, there is simpler way to concat two arrays, i.e. <code>append(a1, a2...)</code>, but the concat function makes for a clear example of the generics issue. The specific functionality is not important.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-07-August" title="August 07, 2012">August 07, 2012</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2012/07/04/crossing-the-assets-divide/" rel="prefetch">Crossing The Assets Divide</a></h2>
+            <p><h1>Crossing the Assets Divide</h1>
+
+<p>Working on <a href="http://github.com/rubyworks/smeagol">Smeagol</a>, a read-only Gollum server and static site generator, I&#39;ve come across an unusual issue. One of the features Smeagol provides is the ability to view page history. By providing a git commit-id or a tag name in the URL, an older version of any page can be viewed. Now, if a page includes a local asset, an image being the typical example, that file clearly must come from the same commit as well. And here is were a problem arises. While <em>content assets</em> must be versioned, <em>design assets</em> must not. We may want to look at the content of an old page for historical reference; we don&#39;t want look at it as if on the website as it was designed way back when. Indeed, the functionality of the site back then might have had bugs in it, it might have a had a very stark layout, it might have any number of issues which have since been corrected. Certainly the site should not serve up old stylesheets, javascripts, background images and the like. Only old <em>content</em> must be served.</p>
+
+<p>As it has become the fashion in web-design, stylesheets, javascripts, images, and so on are placed in a single <code>assets/</code> directory. (Even without an <code>assets/</code> directory, asset files are generally placed in central bins such as <code>images/</code>.)  Because of this there is no straight forward way to determine which files are for content and which are for site design. So, as it happens, there turns out to be a need to divide the assets in two. One directory for design and another for content.</p>
+
+<p>I now find myself with the unenviable decision of what to name these two directories. Do I keep <code>assets/</code> for design or content? And what do I name the other directory? Or should I use two new names altogether?</p>
+
+<p>[UPDATE] At present I have opted to keep <code>assets/</code> for design-related files and move content assets to <code>media/</code>. Technically, it turns out that it doesn&#39;t matter where the content files go as long as it is not in <code>assets/</code>. </p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-04-July" title="July 04, 2012">July 04, 2012</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2012/06/26/Example/" rel="prefetch">Example</a></h2>
+            <p><h1>Example</h1>
+
+<p>This is an example. I am wondering how this gets saved.</p>
+
+<!-- Comment
+Can we hide things this way?
+-->
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-26-June" title="June 26, 2012">June 26, 2012</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2012/06/25/is-it-time-to-leave-home/" rel="prefetch">Is It Time To Leave Home</a></h2>
+            <p><h1>Is It Time to Leave Home?</h1>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-25-June" title="June 25, 2012">June 25, 2012</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2012/06/17/kill-the-proxy-and-save-toplevel/" rel="prefetch">Kill The Proxy And Save Toplevel</a></h2>
+            <p><h1>Kill the Proxy and Save Toplevel</h1>
+
+<p>One of the more curious aspects of Ruby is the &quot;top level&quot; object, otherwise known as <code>main</code>.</p>
+<div class="highlight"><pre><code class="bash language-bash" data-lang="bash">  <span class="nv">$ </span>pry
+  <span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nv">self</span>
+  <span class="o">=</span>&gt; main
+</code></pre></div>
+<p>This <code>main</code> is rather odd entity in that it is a special object with special functionality that delegates to the Object class. For example, using <code>def</code> at the top level actually defines a new private method on the Object class.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="k">def</span> <span class="nf">hello_world</span>
+  <span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span>   <span class="s2">&quot;Hello Wolrd&quot;</span>
+  <span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="k">end</span>
+  <span class="o">[</span><span class="mi">4</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="no">Object</span><span class="o">.</span><span class="n">private_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+  <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:DelegateClass</span><span class="p">,</span> <span class="ss">:hello_world</span><span class="o">]</span>
+</code></pre></div>
+<p>Did you have any idea that the top level was so powerful as to pervade every object in the system? Well, usually it doesn&#39;t present an issue since NO ONE IN THEIR RIGHT MIND EVER DEFINES A METHOD AT THE TOP LEVEL, at least not in production applications.</p>
+
+<p>Unfortunately it has some other negative side effects as well. For instance, one can&#39;t as easily create a DSL-based scripting language out of Ruby because the DSL methods will end up in every object, which can cause unexpected consequences. One can work around this by using top level singleton methods instead, but then you have to make sure your users know this too and always prefix their methods with <code>self.</code>. Another issue is that <code>main</code> isn&#39;t even a full proxy for <code>Object</code>. For instance, try defining a dynamically named method at the top level using <code>define_method</code>.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">define_method</span><span class="p">(</span><span class="ss">:hello_world</span><span class="p">)</span> <span class="k">do</span>
+  <span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span>  <span class="s2">&quot;Hello World&quot;</span>
+  <span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="k">end</span>
+  <span class="ss">NoMethodError</span><span class="p">:</span> <span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`define_method&#39; for main:Object</span>
+</code></pre></div>
+<p>For a very long time I have advocated that both of the these issues be banished by changing the top level into a self extended module instead of the current half-baked proxy. In effect:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">MAIN</span>
+    <span class="kp">extend</span> <span class="nb">self</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>When a Ruby script is executed it would be executed within this MAIN namespace. With it, all expected functionality is available to us, such as <code>def</code>, as well as the module methods like <code>define_method</code>. Methods defined in MAIN would no longer invade every object, leaving us free to use the top level as serves our application best.</p>
+
+<p>Some neat side effects of this approach include the ability to include MAIN in class definitions if it suits our usecase, as well as calling on methods defined on MAIN.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Cool</span>
+    <span class="k">def</span> <span class="nf">hello_world</span>
+      <span class="k">if</span> <span class="no">MAIN</span><span class="o">.</span><span class="n">method_defined?</span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span>
+        <span class="no">MAIN</span><span class="o">.</span><span class="n">hello_world</span>
+      <span class="k">else</span>
+        <span class="s2">&quot;Not so worldy, hello.&quot;</span>
       <span class="k">end</span>
-    <span class="k">end</span>
-
-    <span class="k">class</span> <span class="nc">C</span>
-      <span class="kp">extend</span> <span class="n">Q</span>
-      <span class="n">q</span>
-    <span class="k">end</span>
-
-    <span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">new</span>
-    <span class="nb">p</span> <span class="n">c</span><span class="o">.</span><span class="n">r</span>
-
-    <span class="c1"># per matz&#39; direction</span>
-
-    <span class="k">def</span> <span class="nf">define_method</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">act</span> <span class="p">)</span>
-      <span class="no">Object</span><span class="o">.</span><span class="n">class_eval</span> <span class="p">{</span>
-        <span class="n">define_method</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">act</span> <span class="p">)</span>
-        <span class="kp">private</span> <span class="nb">name</span>
-      <span class="p">}</span>
-    <span class="k">end</span>
-
-    <span class="kp">extend</span> <span class="n">Q</span>
-    <span class="n">q</span>
-    <span class="nb">p</span> <span class="n">r</span>
-</code></pre></div>
-<p>produces</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">    true
-    false
-</code></pre></div>
-<p>So in effect Ruby is mildly schizophrenic. The false reading is because main != Object. So, you can&#39;t necessarily create a DSL for Object to be used in main, and you can&#39;t neccessairly create a DSL for main to be used in any Object. Hence the devolution to DRYless code.</p>
-
-<p>There is a potentially elegant solution however, and I&#39;d really like to understand others insights into this (especially Matz&#39; of course): Instead of main being a special proxy object, just let it be a self extended module.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">module</span> <span class="nn">Main</span>
-      <span class="kp">extend</span> <span class="nb">self</span>
-      <span class="c1"># programs are written as if in here</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>This would provide all the facilities required of the toplevel without all the proxy troubles. Also, while I&#39;m not so convinced of the merits of every toplevel method becoming a private method of all objects (and with Main that can be easily prevented), it has proven workable in practice so it&#39;s not a significant factor of consideration here. Main can simply be include in Object to achieve that effect.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Object</span>
-      <span class="kp">include</span> <span class="no">Main</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>But when we do that it becomes very clear what Main appears to be: Kernel. That strikes me as esspecially interesting. Then again, there may be good reasons to keep the Kernel as a separate module, in which case we&#39;d just have a class hierachy:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="no">Object</span><span class="o">.</span><span class="n">ancestors</span>
-    <span class="o">=&gt;</span> <span class="o">[</span><span class="no">Object</span><span class="p">,</span> <span class="no">Main</span><span class="p">,</span> <span class="no">Kernel</span><span class="o">]</span>
-</code></pre></div>
-<p>Nevertheless, it is clear the Kernel could just as well serve as the toplevel object, which, IMHO, makes this an elegant proposition to consider. Perhaps I&#39;ll start a campaign as November elections roll around: &quot;Vote Kernel for Toplevel Object!&quot; ;-)</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2010/10/13/the-problem-with-programming/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>[DRAFT] THE PROBLEM WITH PROGRAMMING</h1>
-
-<p>Programming is the art of tying thought to syllogism. The programmer must take an often nebulous idea and encode it into a symbolic logical language. By it&#39;s very nature then, there is gap that must be breached between the thoughts of the programmer (harder still the thoughts of his client) and the 
-construction of their autonomic model. This then is the problem of programming: finding ways 
-to shrink that gap.</p>
-
-<p>At it&#39;s root a program is a series of logical ones and zeros, arranged just-so to create what can best be
-analogized to the non-programmer as the falling of dominoes.</p>
-
-<p>...</p>
-
-<p>It should be clear that to span the divide we must build systems that allow us to most readily convey our ideas about a &quot;thing&quot; and interconnect them in dynamic relationships. For instance, if I were to speak of a &quot;ball&quot;, a whole range of things would occur to the average person. Most everyone has had many experiences
-with a thing called &quot;ball&quot;. They would certainly know that they often bounce, though some can be quite hard;
-they come in all sizes, but they are almost always spherical. These facts might seem trivial to you
-and I, but to a computer, they are as far from us as quasars. </p>
-
-<p>If we ever hope to be able to instruct computers in a fashion akin to our speech, and expect that the system will naturally arrange the ideas of which we speak, then we are going to have to start with
-encoding the nature of things we know. We do this presently with knowledge on the human level, via dictionaries, encyclopedia and the like. But we are speaking of computers and to convey things
-to a computer they must be extensively deconstructed.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">ball:
-  definition:
-    source: Websters
-    number: 1
-    description: a round or roundish body or mass
-  shape:
-    terms: [round, sphere]
-    volume: 4/3*PI*r^3
-    surface: 4*PI*r^2
-  types: [&#39;bowling&#39;, &#39;football&#39;, &#39;soccer&#39;, &#39;baseball&#39;]
-</code></pre></div>
-<p>Our ball is very simplistic and far from complete at this point, but the nascent idea is conveyed. Yet to actually do anything with these constructs, it will be important to provide functional information in addition to the descriptive. We get a hint of this already with the surface and volume definitions given.
-More complex functions could be provided, such as physical formulae for bouncing.</p>
-
-<p>I do not believe we must be overly concerned about the exact hierarchical structure nor use of terms these constructs take. A general pattern will arise that developers will adopt as conventions. Such system of conventions tends to be reliable enough for such matters.</p>
-
-<p>Now, taking this notion a step further, let us propose a universally available resource for creating and editing these semantic constructions. From which, they could be utilized as a general resource by all developers.</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2010/10/13/setting-priorities-trumps-warnings/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Setting Priorities Trumps Warnings</h1>
-
-<p>Today I had to consider how best to handle omission exceptions in the context of test frameworks, and their use case to mark <em>pending tests</em>. In the course of doing so, I realized there are at least two reasonable levels of omission, those there are &quot;ASAP&quot; and those that are &quot;NSM&quot; (Not So Much). Where as other frameworks used their own specially defined classes for these, e.g <code>Pending</code> and <code>Omission</code>, my approach is to re-utilize Ruby&#39;s own <code>NotImplementedError</code>. But then I had to consider how to differentiate between these priorities.</p>
-
-<p>And that&#39;s when the more general notion occurred to me of <strong>Exception Priorities</strong>.</p>
-
-<p>Consider that instead of raising a warning:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="nb">warn</span> <span class="s2">&quot;Don&#39;t do it, mate!&quot;</span>
-</code></pre></div>
-<p>We could use the the Exception system, setting a low &quot;warning&quot; level priority.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">raise</span> <span class="s2">&quot;Don&#39;t do it, mate!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
-</code></pre></div>
-<p>All things being nominal, Ruby would see the priority of this exception is below 0, output the message to <code>$stderr</code> if <code>$VERBOSE=true</code> and then continue on. Hence it is a warning!</p>
-
-<p>With this, <code>#warn</code> could become a simple alias for <code>#raise</code> with a default negative priority.</p>
-
-<p>Now, if that was all there was to it, then there would be little reason to adopt the idea. But there are some really nice advantages to this approach.</p>
-
-<p>With regards to warning messages, we could use the <code>$VERBOSE</code> setting to refine the level of warning we want to be notified about. </p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="vg">$VERBOSE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="k">raise</span> <span class="s2">&quot;More Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="k">raise</span> <span class="s2">&quot;Less Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span>
-</code></pre></div>
-<p>In this case we would never see the <code>-2</code> level warning b/c we&#39;ve indicated we don&#39;t want to see those by setting $VERBOSE to higher specific level.</p>
-
-<p>Interestingly enough, we can do the same for actually raising errors! Let&#39;s call the setting <code>$PRIORITY</code> for the sake of discussion.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="vg">$PRIORITY</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="k">raise</span> <span class="s2">&quot;More Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="k">raise</span> <span class="s2">&quot;Less Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span>
-</code></pre></div>
-<p>Where as before, the &quot;More Serious Warning&quot; would just have printed a warning message to <code>$stderr</code>, in this case the Exception will actually be raised, b/c we have lowered the threshold at which exceptions are to be raised.</p>
-
-<p>This refinement to Ruby&#39;s Exception system, effectively subsuming the warning system within it, makes for a much more powerful, flexible and thus useful system. Take my original use case, I can set the priority of NotImplementedError to <code>1</code> for ASAPs and <code>0</code> for NSMs, and I can go further allowing testers to set high priorities to be selectable from the command line.</p>
-
-<p>Want another use case? How about a <code>DeprecatedError</code> that has a default priority of <code>-1</code>.</p>
-
-<p>I am certain other will think of other use cases as well. This is one of those pliable features that tend to have far wider applicability then the originating use case.</p>
-
-<p>P.S. I&#39;ve always thought is would make more sense if <code>$VERBOSE</code> were called <code>$WARN</code>.</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2010/10/13/separation-of-church-and-state/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Separation of Church and State</h1>
-
-<p>Have you ever had a class so choke full of interrelated data and function members that had trouble avoiding name clashes between the two. Of course it&#39;s a rare problem when you&#39;re in full control of the members, but when you&#39;re designing extensible classes, it become a major issue and you have to resort to some less-than-lovely work around.</p>
-
-<p>Let me give you a simple scenario.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Package</span>
-    <span class="c1"># Release date</span>
-    <span class="c1">#</span>
-    <span class="kp">attr</span> <span class="ss">:release</span>
-
-    <span class="c1"># Release the package.</span>
-    <span class="c1">#</span>
-    <span class="k">def</span> <span class="nf">release</span>
-       <span class="nb">puts</span> <span class="s2">&quot;Telling the world on </span><span class="si">#{</span><span class="vi">@release</span><span class="si">}</span><span class="s2">...&quot;</span>
-       <span class="c1"># ...</span>
     <span class="k">end</span>
   <span class="k">end</span>
 </code></pre></div>
-<p>The issue here is clear. On one hand, we want to use release as a noun to represent the date of release. On the other, we want to use it as a verb for releasing the package to the world. Of course, under completely isolated circumstances we could just change one of the names and deal. But when we are working on the basis of extensibility, where these and additional data or functional members may be added readily, say via a plug-in system, then a solution is not as simple.</p>
-
-<p>So what can we do? The bottom line is that in some way or another the two member types must be distinguished from one another.</p>
-
-<p>One could transform one set of the members with a slightly different name via some uniform convention. For instance, all data members could start with &quot;my<em>&quot;, so release as a date would be my</em>release. Ruby actually makes this it a bit nicer in that we can use &#39;?&#39; or &#39;!&#39; prepended to method names. A fair solution might then be:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">def</span> <span class="nf">release?</span>
-      <span class="vi">@release</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>or</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">def</span> <span class="nf">release!</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Telling the world on </span><span class="si">#{</span><span class="n">release?</span><span class="si">}</span><span class="s2">...&quot;</span>
-      <span class="c1">#...</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>It&#39;s not a perfect solution however, especially as a matter of convention. It goes against the grian. &#39;?&#39; typically indicates a true/false query. And &#39;!&#39; indicates in place or caution. Consider how others will &quot;smell&quot; your code when they see a question mark for every reference to a data member.</p>
-
-<p>The other more traditional solution is to use delegation. In this case we make a subclass for either or both of the member types. For instance:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Package</span>
-
-    <span class="k">class</span> <span class="nc">Data</span>
-      <span class="kp">attr</span> <span class="ss">:release</span>
-    <span class="k">end</span>
-
-    <span class="kp">attr</span> <span class="ss">:data</span>
-
-    <span class="k">def</span> <span class="nf">initialize</span>
-      <span class="vi">@data</span> <span class="o">=</span> <span class="no">Data</span><span class="o">.</span><span class="n">new</span>
-    <span class="k">end</span>
-
-    <span class="k">def</span> <span class="nf">release</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Telling to the world on </span><span class="si">#{</span><span class="n">data</span><span class="o">.</span><span class="n">release</span><span class="si">}</span><span class="s2">...&quot;</span>
-      <span class="c1">#...</span>
-    <span class="k">end</span>
-
-  <span class="k">end</span>
-</code></pre></div>
-<p>Albeit a bit longer. It works very well. Delegation is a powerful tool. One could even emulate the former solution via method_missing, trapping method calls that end in &#39;?&#39; and rerouting them to @data. Another advantage is that we can readily pass around the data independent of the function members. On the flip side however, we are regulated to this special data.member interface. and likewise any reverse access by the data members to the functional members, if ever needed, would require us to also pass a reference to the Package instance into the Data instance.</p>
-
-<p>In considering all this of course, it becomes apparent that Ruby already has a means of distinguishing data members from functional members via instance variables. Clearly @release references the date. But Ruby does not give us the power to treat &quot;instance members&quot; publicly or programmaticly. We can&#39;t, for instance, use project.@release to access the release date. Nor can we wrap data members in order to massage their data, say:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">def</span> <span class="vi">@release</span>
-    <span class="k">super</span> <span class="o">||</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
-  <span class="k">end</span>
-  <span class="kp">public</span> <span class="ss">:@release</span>
-</code></pre></div>
-<p>I&#39;m sure many readers will take such notion for simply god awful. But I think careful consideration at least warrants the fair question. &quot;Is a distinct separation between data and functional members useful?&quot; The mere existence of instance variables indicates that the distinction is in fact useful. In contrast, data members could have been made indistinguishable from functional members, or local variable persistence could be used in their stay. So if the distinction is useful, why hide public access to data members behind functional members acting as mini-delegates?</p>
-
-<p>To be a bit more pragmatic, how would a solution to our example pane out if data members were in fact accessible? Interestingly it could look exactly like the original example. Public access to the release date however would simply come via project.@release or preferably even project@release. And there would be no need for any name (mis)conventions or special-interface delegation.</p>
-
-<p>Of course let&#39;s be honest here. &#39;@&#39; itself is the Special Delegate of State to the Ruby &quot;Church&quot;. Too bad he&#39;s only allowed to preach to the choir.</p>
+<p>But by far my favourite use of such a design is the ability to use the top level for Ruby-based DSL scripting. For a familiar example consider Rake. Rake has a Rake::DSL module which is included in a special execution context where rakefiles are evaluated via special loading code. But with MAIN, it would be possible to mix Rake::DSL directly into it and then rakefiles could be loaded with a simple local <code>require</code>.</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-17-June" title="June 17, 2012">June 17, 2012</time>
             </div>
         </div>
         <hr>
@@ -669,89 +427,25 @@ More complex functions could be provided, such as physical formulae for bouncing
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2010/10/13/ruby-heart-higher-order-functions/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Ruby Heart High-Order Functions</h1>
+            <h2 class="title"><a href="/2012/06/14/autoload-smells-like-denmark/" rel="prefetch">Autoload Smells Like Denmark</a></h2>
+            <p><h1>Autoload Smells Like Denmark</h1>
 
-<p>Ruby Facets has a class called <a href="http://rubyworks.github.com/rubyfaux/?doc=http://rubyworks.github.com/facets/docs/facets-2.9.3/core.json#api-class-Functor">Functor</a>. In common computer science parlance &quot;functor&quot; simply means an objectified function. Ruby already has more than it&#39;s share of these with Method, Proc and blocks. So what does Functor bring to the table? Its a bit more that just a first-class function. Rather, it is a <i>higher-order function</i>. What it allows us to do is define a function that responds dynamically to a message call. Here is a very basic example to clarify the idea.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="nb">require</span> <span class="s1">&#39;facets/functor&#39;</span>
-
-    <span class="n">f</span> <span class="o">=</span> <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="o">|</span>
-      <span class="n">a</span><span class="o">.</span><span class="n">__send__</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="k">end</span>
-
-    <span class="n">f</span> <span class="o">+</span> <span class="mi">3</span>   <span class="c1">#=&gt; 6</span>
-    <span class="n">f</span> <span class="o">*</span> <span class="mi">3</span>   <span class="c1">#=&gt; 9</span>
-    <span class="n">f</span> <span class="o">**</span> <span class="mi">3</span>  <span class="c1">#=&gt; 27</span>
+<p>Ruby has a very cool feature called <em>autoload</em>. With autoload, any undefined constant can automatically trigger the loading of a library file. Effectively this gives Ruby a convenient means of lazy loading. For example, lets say some of our app&#39;s executable scripts ultimately use the ANSI library, but others do not. We can use <code>autoload</code> to only load the ANSI library when it is needed.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="nb">autoload</span> <span class="no">ANSI</span><span class="p">,</span> <span class="s1">&#39;ansi&#39;</span>
 </code></pre></div>
-<p>So how are higher-order functions useful? There are many possibilities. Consider this crazy little core extension that just occurred to me this evening.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="nb">require</span> <span class="s1">&#39;facets/functor&#39;</span>
+<p>This says to <code>require &quot;ansi&quot;</code> the first time an undefined ANSI constant is encountered.</p>
 
-    <span class="k">class</span> <span class="nc">String</span>
-      <span class="k">def</span> <span class="nf">in_case</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
-        <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="n">a</span><span class="o">|</span>
-          <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="ss">:===</span> 
-            <span class="n">a</span><span class="o">.</span><span class="n">__send__</span><span class="p">(</span><span class="n">meth</span><span class="p">,</span> <span class="nb">self</span><span class="p">)</span>
-          <span class="k">else</span>
-            <span class="kp">nil</span>
-          <span class="k">end</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
+<p>As wonderful as autoload seems, it has too glaring issues: 1) It doesn&#39;t use standard Kernel#require and 2) It is not thread safe. </p>
 
-    <span class="k">case</span> <span class="s1">&#39;foo&#39;</span>
-    <span class="k">when</span> <span class="s1">&#39;f&#39;</span><span class="o">.</span><span class="n">in_case</span><span class="p">(</span><span class="ss">:start_with?</span><span class="p">)</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Hey it starts with an `f`!&quot;</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>And that&#39;s just off the top of my head. There are many potential uses. In fact, Ruby has a quite popular functor already known as <em>Enumerator</em>. But that is a very specialized implementation. What Functor does is make it easy for us to quickly roll our own generic higher-order functions.</p>
+<p>For the first, this means that any overriding of #require will not be supported by autoload. Of course such a thing is very rare, but it does occur. For instance the <a href="https://rubygems.org/gems/roll">Roll</a> library is all about overriding <code>#require</code>. Also RubyGems overrides #require, and in fact one can cause a bug to occur when using autoload because of it. Here&#39;s a very simple <a href="http://stackoverflow.com/questions/849622/autoload-raises-an-error-but-require-does-not-ruby">example</a>.</p>
 
-<p>Now you can read plenty of interesting articles about the merits of high-order functions. I&#39;ll even provide you a few links (see below). But what I really want to talk about in this article is the merits of Ruby making higher-order functions an integral part of the core language. Even as the current implementation of Functor stands, I think it would make a good addition to the language. But there is a downside to the implementation in that it must create a new object every time it is used. Using a cache can help, but that raises issues of memory footprint and serialization.</p>
+<p>On the second case the issue seems much more complicated, and a solution seems so unlikely that Matz has called for #autoload to be <a href="http://bugs.ruby-lang.org/issues/5653">removed</a> from Ruby by v3.0.0. That&#39;s a long way off but just the same it doesn&#39;t bode well for autoload. </p>
 
-<p>If, on the other hand, Ruby could internalize the concept of a Functor as a fluent method dispatch mechanism, Ruby would be able to remove this overhead. That is to say, if a higher-order function could be defined as a method, albeit a special kind of method, instead of as an object, then the overhead would be removed. Indulge my use of some pseudo-code similar to rescue notation in order to provide you an idea of what our previous example could look like:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">String</span>
-      <span class="k">def</span> <span class="nf">in_case</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">op</span><span class="p">,</span> <span class="n">a</span>
-        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="ss">:===</span> 
-          <span class="n">a</span><span class="o">.</span><span class="n">__send__</span><span class="p">(</span><span class="n">meth</span><span class="p">,</span> <span class="nb">self</span><span class="p">)</span>
-        <span class="k">else</span>
-          <span class="kp">nil</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>The exact notation is, of course, not the important thing. The point is that it&#39;s just a special kind of method that Ruby attaches to the class or module, and handles the dispatching mechanics internally without the need for instantiating a new hollow Functor object each time.</p>
-
-<p>I think this would be a very cool feature. One of those things that would set Ruby even further apart from other languages.</p>
-
-<p><strong>UPDATE</strong>: I recently learned that Python handles higher-order functions in an interesting way:</p>
-<div class="highlight"><pre><code class="python language-python" data-lang="python">    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span>
-        <span class="k">return</span> <span class="n">g</span>
-</code></pre></div>
-<p>Ruby doesn&#39;t have first-class methods, so emulating Python&#39;s behaviour here would require a slightly different approach, probably something like:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-      <span class="n">g</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
-        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span>
-      <span class="k">end</span>
-      <span class="n">dispatch</span> <span class="n">g</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>Where <code>dispatch</code> would be a new keyword akin to <code>return</code>. Yet such an approach still suffers from the creation of an spurious object, albeit in this case it is a temporary local lambda that probably can be GC&#39;d pretty quickly. So this is a middle ground possibility. Personally, I still think the previously mentioned special method idea is better. And we want Ruby to better than Python, right? ;)</p>
-
-<p>Links:</p>
-
-<ul>
-<li>http://c2.com/cgi/wiki?HigherOrderFunction</li>
-<li>http://kbullock.ringworld.org/2007/03/26/higher-order-messaging/</li>
-</ul>
-
-<hr>
-
-<p>categories: [functor, higher-order functions]</p>
+<p>Now that Matz has effectively declared <code>#autoload</code> a code smell, I wonder if developers will take heed and stop using it? I have my doubts --it&#39;s just too damn convenient. I just wish it would use <code>Kernel#require</code> so I could use it along with Rolls.</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-14-June" title="June 14, 2012">June 14, 2012</time>
             </div>
         </div>
         <hr>

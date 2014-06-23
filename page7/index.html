@@ -60,565 +60,72 @@
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2009/02/10/xml-meet-css/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>XML+CSS, the Future of Web Design?</h1>
+            <h2 class="title"><a href="/2006/12/03/negative-arrays/" rel="prefetch">Negative Arrays</a></h2>
+            <p><h1>Negative Arrays</h1>
 
-<p>In a <a href="http://tigerops.org/2009/01/mf-vs-xml.html">previous post</a>, I point out that microformats bring an additional layer of useful information to a document, which I dubbed <em>semantic structure</em>. In short, HTML tags provide useful <em>type</em> information about the data they contain. A good example of this has been the insistent push to use <code>div</code>s rather than <code>table</code>s for page layout. The reason is that tables describe a semantic structure, a table of data, and not layout. I for one have found this a frustrating haggle in the design of my pages. Time and time again I have been stymied by unwieldy <code>div</code>s. Tables are much easier to use, despite additional verbosity. But I have stuck to <code>div</code>s because it is &quot;the right thing to do&quot;. Thankfully my saving grace will soon be here. The 3rd revision the CSS standard supports a new <code>display</code> style. With it, one can specify that a div is to behave like a table, table row or table cell. Woohoo! Three cheers for tabley divs!!</p>
+<p>My current work involves the creation of an extensive configuration file format representing project information. In a number of cases I have had need of an inclusion list, representing files and file patterns to include for some operation --say, what files to include in a package. In such a case I generally end up with a least two parameters which I basically label include and exclude. While include is the list of files to use, exclude is list of files to exclude from the included list. Using exclude makes it easier to specify a large selection and then subsequently omit a file or two. The include list typically has a suitable default value, so a third parameter is sometimes also of use, append, which concats to the defaults as opposed to replacing the include parameter outright.</p>
 
-<p>This display style led me to think about semantic structure again. If we can designate that a <code>div</code> is a <code>table</code> structure via CSS, then why not any structure? And if <code>div</code>s, why not any tag? If we were able to do that, then semantic structure could be specified solely through CSS. And our HTML pages could go from rather simple, repetitive occurrences of <code>div</code> to ... can you guess?... pure XML.</p>
+<p>Since these three parameters help define what is essentially one list of data, it would be nice if they could be specified as a single parameter too. So I gave the problem some thought.</p>
 
-<p>Let&#39;s got through it step by step. Here some HTML [gist id=61726]:</p>
-<div class="highlight"><pre><code class="xml language-xml" data-lang="xml">    <span class="nt">&lt;table</span> <span class="na">class=</span><span class="s">&quot;ages&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;tr</span> <span class="na">class=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;&lt;td</span> <span class="na">class=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>John<span class="nt">&lt;/td&gt;&lt;td</span> <span class="na">class=</span><span class="s">&quot;age&quot;</span><span class="nt">&gt;</span>24<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-      <span class="nt">&lt;tr</span> <span class="na">class=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;&lt;td</span> <span class="na">class=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>Dean<span class="nt">&lt;/td&gt;&lt;td</span> <span class="na">class=</span><span class="s">&quot;age&quot;</span><span class="nt">&gt;</span>30<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-    <span class="nt">&lt;/table&gt;</span>
+<p>Taking inspiration from the notion of a negated symbol (see facets/symbol/not). It occurred to me that any object that can be added or subtracted is taking part in the same &quot;algebraic group&quot; as whole numbers. And just as a whole number can be negative, why not also an array?</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="n">a</span> <span class="o">=</span>  <span class="o">[</span><span class="ss">:a</span><span class="p">,</span><span class="ss">:b</span><span class="p">,</span><span class="ss">:c</span><span class="p">,</span><span class="ss">:d</span><span class="p">,</span><span class="ss">:e</span><span class="o">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="o">-[</span><span class="ss">:d</span><span class="p">,</span><span class="ss">:e</span><span class="o">]</span>
+    <span class="n">a</span> <span class="o">+</span> <span class="n">n</span> <span class="c1">#=&gt; [:a,:b,:c]</span>
 </code></pre></div>
-<p>Now with CSS 3 [gist id=61729]:</p>
-<div class="highlight"><pre><code class="xml language-xml" data-lang="xml">    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;ages&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>John<span class="nt">&lt;/div&gt;&lt;div</span> <span class="na">class=</span><span class="s">&quot;age&quot;</span><span class="nt">&gt;</span>24<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
-      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>Dean<span class="nt">&lt;/div&gt;&lt;div</span> <span class="na">class=</span><span class="s">&quot;age&quot;</span><span class="nt">&gt;</span>30<span class="nt">&lt;/div&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-
-      .ages { display: table; }
-    .person { display: table-row; }
-      .name { display: table-cell; }
-       .age { display: table-cell; }
-</code></pre></div>
-<p>Of course no one would recommend doing this to something that really is a table of data. But bare with me, because now we are coming full circle [gist id=61730]:</p>
-<div class="highlight"><pre><code class="xml language-xml" data-lang="xml">    <span class="nt">&lt;ages&gt;</span>
-      <span class="nt">&lt;person&gt;&lt;name&gt;</span>John<span class="nt">&lt;/name&gt;&lt;age&gt;</span>24<span class="nt">&lt;/age&gt;&lt;/person&gt;</span>
-      <span class="nt">&lt;person&gt;&lt;name&gt;</span>Dean<span class="nt">&lt;/name&gt;&lt;age&gt;</span>30<span class="nt">&lt;/age&gt;&lt;/person&gt;</span>
-    <span class="nt">&lt;/ages&gt;</span>
-
-      ages { display: table; }
-    person { display: table-row; }
-      name { display: table-cell; }
-       age { display: table-cell; }
-</code></pre></div>
-<p>I think this is a rather remarkable outcome. And you might be surprised to learn that Firefox handles it just fine. What we have achieved is an ultra-clean separation between the data and it&#39;s semantic meaning, via XML, and it&#39;s semantic structure, via CSS. If this approach were embraced by the XHTML and CSS standards bodies, I would not be surprised to see it revolutionize web design.</p>
-
-<hr>
-
-<p>title      : XML. meet CSS
-author     : trans
-categories : [ruby]
-date       : 2009-02-10
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2009-10-February" title="February 10, 2009">February 10, 2009</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2009/01/24/what%27s-uf-got-on-xml/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>What&#39;s &micro;F got on XML?</h1>
-
-<p>Decisions, decisions. Therein lies the reason why convention over configuration is so bloody great, precisely because it requires fewer decisions. <a href="http://detroit.github.com/detroit">Detroit</a>, my awesome build tool, outputs log files. Yea, logs are good. But the decision I have to make is, &quot;in what format?&quot;</p>
-
-<p>Now old-school would just put out some asterisk-studded text files with plenty of precise timestamps, maybe some nice long lines of dashes to divide things up. No doubt these files are easy to access and fairly readable. We like out text files. But hey wait. This is the age of magical markups. At the very least we can coax that log into a Wiki-tongue. For us Rubyists, we have rdoc, markdown and textile&#39;s just a few gemy fingertips away. These formats can be even easier to read thanks to structural consistency from log to log. Plus, fire-up a web server and we can get some really nice looking HTML too. That&#39;s the beauty of Wiki Wiki markup after all.</p>
-
-<p>Now if beauty were all that matter, then there would be no point in looking further. But like America&#39;s continental shelves there is untapped wealth going to waste here. There is data in them there logs! The modern buzzword is <em>semantic</em>. Taking logs to the next level requires us to ensure their semantic value. On that account, XML was created, and long predicted the format of the future. Certainly XML has made great strides, but it is still far from meeting its promise. There is simply too much complexity involved in both marking up the content and in generating nice output.</p>
-
-<p>Then comes along the <em>microformat</em>. The microformat combines the semantic capabilities of XML with the layout capabilities of HTML. Microformats are relatively new and still finding their footing. Indeed, I think a <em>Universal Uniform Microformat Specification</em> is ultimately the necessary outcome. In that vain I make a first rough estimate of what such unifying system might look like, and why, contrary to many arguments otherwise, microformats do in fact bring more to the table than XML.</p>
-
-<p>Where XML provides semantic information within a doubly linked hierarchy (via attributes and body), microformats provide the same plus a set of well defined data structures. Microformats provide semantics through a small set of tag attributes, <em>role</em>, <em>rel</em>, <em>rev</em> and primarily the <em>class</em> attribute. The <em>class</em> attribute alone is enough to make microformats fully equatable to XML. We can easily map the same data set in either format:</p>
-<div class="highlight"><pre><code class="xml language-xml" data-lang="xml">    <span class="nt">&lt;people&gt;</span>
-      <span class="nt">&lt;person&gt;</span>
-        <span class="nt">&lt;name&gt;</span>John Jay<span class="nt">&lt;/name&gt;</span>
-      <span class="nt">&lt;/person&gt;</span>
-    <span class="nt">&lt;/people&gt;</span>
-</code></pre></div>
-<p>As opposed to...</p>
-<div class="highlight"><pre><code class="xml language-xml" data-lang="xml">    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;people&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>John Jay<span class="nt">&lt;/span&gt;</span>
-      <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-</code></pre></div>
-<p>Although the microformat is more verbose, the two contian the same original semantic value. But the extra verbosity isn&#39;t just a waste of UTF bytecodes, it says something. Specifically it gives us a <em>semantic structure</em>. It just so happens that HTML evolved to offer these structures precisely because that is what data presenters require to do their jobs well. And for the same reason, why you are always being beat with the <code>div</code>-stick when you try to take the load road of laying out your pages with tables.</p>
-
-<p>So what semantic structures do micorformats via HTML make available to us? The quick rundown: we have layouts using <em>div</em> and <em>span</em>, lists using <em>ol</em>, <em>ul</em> and <em>li</em>; definition lists using <em>dl</em>, <em>dd</em> and <em>dt</em>; and tables using <em>table</em>, <em>tr</em>, <em>th</em> and <em>td</em>. Those are the obvious structures. There are still other smaller structure&#39;s like <em>a</em> for links, and the hefty set of <em>form</em> elements. All these elements provide us a way to say what type of thing our data is or partakes in, not just what the data is.</p>
-
-<p>Clearly, the creators of XML saw the need for something like this and tried to achieve it through XML Namespaces. But namespaces are less effective because they are completely arbitrary, whereas HTML gives us a limited but universal structural language. Seems to me there is a principle to be found here that can be a guide for both the future of HTML and Microformats.</p>
-
-<hr>
-
-<p>title      : What&#39;s &micro;F got on XML?
-author     : trans
-categories : [website]
-date       : 2009-01-24
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2009-24-January" title="January 24, 2009">January 24, 2009</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2008/11/04/the-yadsl-rule/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>The YADSL Rule</h1>
-
-<p>Looks like the Ruby world is a fire with new DSLs for BDD/TDD. There&#39;s 
-<a href="http://rspec.info/">RSpec</a>,
-<a href="http://blog.zenspider.com/minitest/">minitest</a>,
-<a href="http://test-unit.rubyforge.org/test-unit/">Test::Unit 2.x</a>,
-<a href="http://test-spec.rubyforge.org/test-spec/">test-spec</a>,
-<a href="http://www.oreillynet.com/ruby/blog/2008/02/assert2.html">Assert 2.0</a>,
-<a href="http://expectations.rubyforge.org/">Expectations</a>,
-<a href="http://github.com/aslakhellesoy/cucumber/tree/master">Cucumber</a>,
-<a href="http://github.com/carlosbrando/remarkable/tree/master">Remarkable</a>,
-<a href="http://www.thoughtbot.com/projects/shoulda/">Shoulda</a>
-... woulda, coulda ... My word! So many choices. It&#39;s fitting that
-it&#39;s Thanksgiving, what we have here is a <i>cornucopia of framework</i>!!!</p>
-
-<p>Uh... Okay, you&#39;ll have to forgive me. I get carried away.</p>
-
-<p>I suppose it all started with that RSpec. Those guys built an incredibly 
-elaborate nomenclature to help us spell out our code&#39;s behaviors in gruesome
-detail. But as wonderfully grandiose as it may be, there&#39;s just one tiny little
-itty-bitty problem... <i>I can&#39;t remember it</i>. Oh, sure, I could sit down and
-jam it into my already overloaded brain somewhere, but you know what. I ain&#39;t
-gonna. I already have enough new stuff to learn and I&#39;m not going to bother to
-learn another DSL when those I already know work just as well.</p>
-
-<p>So therein lies the serious downside to any new DSL. They require more brain
-cells. We&#39;re talking the old &quot;learning yet another language&quot; dilemma here. I was
-thinking about this today, and it strikes me as one of those cool rules we oft
-hear about. So I decided to &#39;writ&#39; one for the occasion.</p>
-
-<blockquote>
-  "Don't create a DSL if a native solution would be just as elegant."
-</blockquote>
-
-<p>In fact, a good DSL will likely need to be substantially more elegant in order
-to fully justify its existence.</p>
-
-<p>I&#39;m calling this the <i>YADSL Rule</i>, for &quot;Yet Another Domain Specific Language&quot;.</p>
-
-<p>Now, a quick look around the world of modern programming 
-(see <a href="http://dzone.com">DZone</a>),
-just as quickly makes clear that the YADSL rule is in no short supply of
-violations. Indeed, I dare say, that most of programming today is not innovative,
-but masquerading around as such via YADSL.</p>
-
-<p>Now I don&#39;t want to seem too harsh. There is of course a certain level of
-refinement taking place in some areas. And that naturally has to play itself
-out. But it&#39;s getting a little crazy. Besides test frameworks, web frameworks 
-and Javscript development frameworks seem to have hit a New Cambrian Explosion.
-I don&#39;t see how we&#39;re supposed to keep up with it.
-I can only hope that my little rule might help to cool all
-this exuberance down a bit; so we can catch our breaths and take some time
-to consider the torrential downpour of verbiage that has befallen us.</p>
-
-<p>Of course, the real problem may be that too many people want to make YANFT
-(Yet Another Name For Themselves).</p>
-
-<p>I swear to you. I&#39;m not one of them. But I will be introducing my own Ruby
-test framework soon.</p>
-
-<p>No. I&#39;m not kidding.</p>
-
-<p>Don&#39;t worry, there&#39;s no new DSL to learn. And that&#39;s what makes my framework
-so very special. I&#39;ll keep you posted.</p>
-
-<!--
-title      : The YADSL Rule
-author     : trans
-date       : 2008-11-04
-categories : [yadsl, dsl, ruby]
-layout     : post
--->
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2008-04-November" title="November 04, 2008">November 04, 2008</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2008/10/06/this-old-hash/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>This Old Hash</h1>
-
-<p>The Hash may well be the most used class in Ruby. Sure, our programs
-have arrays and strings galore, but they generally come and go without
-much ado. Hashes on the other hand get <em>used</em>; and by that I mean to
-say, we spend a lot of time fussing with them. I think there are two
-significant reasons for this and I will focus on the first, and
-the more important of the two, here.</p>
-
-<p>Now, I suspect you would agree, if I were to present you with a class
-which was clearly overkill for vast majority of its intended uses, and
-its use required repeated mitigation of its unused features, I have no
-doubt, you&#39;d unequivocally advise me to select a &quot;<i>better tool for the job</i>&quot;.
-And yet, that&#39;s the situation all Ruby programmers face, day in and
-day out, with Ruby&#39;s Hash.</p>
-
-<p>Ruby&#39;s Hash is exceptionally powerful because it supports any type of
-object as a hash key. That&#39;s really really cool... for all of about
-five minutes. The truth is, the vast majority of cases only require
-one type of key --for Ruby that will either be a Symbol or a String,
-and because of this, a great deal of time and code is wasted ensuring
-all keys are that single type. Because of this, methods like 
-<code>#to_sym</code> often riddle our scripts.</p>
-
-<p>The issue is undeniably attested to by real world &quot;solutions&quot;
-others have created to address it, such as Ruby Facets&#39;
-<a href="http://facets.rubyforge.org/doc/api/core/classes/Hash.html#M000124">Hash#rekey</a>.
-and Ruby on Rails&#39;
-<a href="http://api.rubyonrails.org/classes/HashWithIndifferentAccess.html">HashWithIndifferentAccess</a>.
-But let&#39;s face it, these are both underwhelming attempts at mitigating
-the fundamental problem.</p>
-
-<p>A real solution would have the current Hash class renamed, and a new
-limited-key structure put in its place. The old class would still be
-available, of course, for those special cases when a key of any object
-type is required, but the new, more utilitarian Hash class would be
-the literally-constructed default. The end effect of this change would
-be simple:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="n">h</span><span class="o">[</span><span class="s1">&#39;a&#39;</span><span class="o">]</span> <span class="o">==</span> <span class="n">h</span><span class="o">[</span><span class="ss">:a</span><span class="o">]</span>
-    <span class="n">h</span><span class="o">[</span><span class="s1">&#39;1&#39;</span><span class="o">]</span> <span class="o">==</span> <span class="n">h</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span>
-</code></pre></div>
-<p>This means reducing all hash keys to a single <em>symbolic</em> index type.
-It does not matter what the actual reference is, a String, Symbol,
-Integer, etc. just so long as it has a predictable symbolic
-representation.</p>
-
-<p>It may feel a bit strange to consider a suggestion that actually calls
-for the reduction of features. More often change requests call for just
-the opposite and YAGNI has to be peddled out on them. But, I think, we 
-often underestimate the power of simplicity. Consider ideas such as 
-convention-over-configuration and duck-typing --simplifications that
-are not necessarily intuitive at first. But in the end, they make our
-life as programmers a good bit more productive.</p>
-
-<blockquote>
-"Make everything as simple as possible, but not simpler."
-<cite>--Albert Einstein</cite>
-</blockquote>
-
-<hr>
-
-<p>title      : This Old Hash
-author     : trans
-date       : 2008-10-06
-categories : [ruby, hash]
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2008-06-October" title="October 06, 2008">October 06, 2008</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2008/09/28/if-and-oopy-if/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>An Ally OOP for If-Conditions</h1>
-
-<p>Ruby takes a unique approach to conditional evaluation: <i>All
-objects are equivalent to <code>true</code> except <code>nil</code>
-and <code>false</code></i>. No doubt this is a more object-oriented
-approach than, say, C&#39;s use of <code>0</code> as false, but it&#39;s far
-from the ideal of OOP all the way down, as any
-<a href="http://pozorvlak.livejournal.com/94558.html">Smalltalker</a>
-can attest.</p>
-
-<p>Consider the following case. For a while now. I have wanted in my arsonal
-of Ruby classes a NullClass defined basically as:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">NullClass</span> <span class="o">&lt;</span> <span class="no">NilClass</span>
-      <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+<p>So this could be very helpful. And it shouldn&#39;t be too much hard to implement.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Array</span>
+      <span class="k">def</span> <span class="err">@</span><span class="o">-</span>
+        <span class="vi">@negative</span> <span class="o">=</span> <span class="o">!</span><span class="vi">@negative</span>
         <span class="nb">self</span>
       <span class="k">end</span>
-    <span class="k">end</span>
 
-    <span class="no">NULL</span> <span class="o">=</span> <span class="no">NullClass</span><span class="o">.</span><span class="n">new</span>
-
-    <span class="k">def</span> <span class="nf">null</span>
-      <span class="no">NULL</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>This object would greatly benefit fluent interfaces. Instead of returning
-<code>nil</code>, such intefaces could return <code>null</code>, and no 
-error would be thrown when invoking any method against it.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="n">obj</span> <span class="o">=</span> <span class="n">null</span>
-    <span class="n">obj</span><span class="o">.</span><span class="n">it</span><span class="o">.</span><span class="n">does</span><span class="o">.</span><span class="n">not</span><span class="o">.</span><span class="n">matter</span>  <span class="c1">#=&gt; null</span>
-</code></pre></div>
-<p>Unfortunately <code>null</code> is not very viable in Ruby
-because <code>null</code> still evaluates as <code>true</code>
-when used as the expression of a condition. The fact remains,
-Ruby is hardcoded to see only the singleton instances of 
-<code>NilClass</code> and <code>FalseClass</code> as false.</p>
-
-<p>I&#39;ve requested that <code>NullClass</code> be added to core Ruby in
-the past (as of yet to no avail) and though I still would like to
-see it included, it may be better still to take an altogether 
-object-oriented approach to conditions --in the spirit of Smalltalk.
-This would allow us to freely create &quot;false&quot; objects, like the
-<code>NullClass</code>, ourselves.</p>
-
-<p>The adoption of such a capability does not require the odd syntax 
-used by Smalltalk (<code>ifTrue</code> / <code>ifFalse</code>).
-Rather, it can take an approach more akin to Ruby&#39;s own <code>case</code>
-statements. As with <code>case</code>&#39;s use of <code>#===</code>,
-a particular method would be used to evaluate the &quot;truthiness&quot; of
-a value. This would apply for all types of conditions: 
-<code>while</code>, <code>until</code>, etc. </p>
-
-<p>To clarify, let&#39;s say this special method is simply called #if, then...</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">IfExample</span>
-      <span class="kp">attr</span> <span class="ss">:if</span>
-      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="vi">@if</span><span class="p">)</span>
-        <span class="vi">@if</span> <span class="o">=</span> <span class="k">if</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-
-    <span class="n">x</span> <span class="o">=</span> <span class="no">IfExample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">x</span>
-      <span class="s2">&quot;Yes&quot;</span>
-    <span class="k">else</span>
-      <span class="s2">&quot;No&quot;</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>The result of this condition would be <code>&quot;No&quot;</code>.</p>
-
-<p>While it may not be an earth shattering adjustment, the additional
-flexibility opens up some interesting doors. Not only would classes
-like the previously mentioned <code>NullClass</code> become possible,
-but conditions themselves become <i>dynamically controllable</i>.</p>
-
-<p>For example, it would allow method probes to fully map method
-signatures (the Halting Problem not withstanding). This is not 
-currently possible in Ruby because a probe cannot pretend to evaluate
-to false in order to walk through the false side of a condition.</p>
-
-<p>The idea would require some getting used to --after all a simple 
-if-statement would no longer do what we Rubyists presently take 
-for granted. But then, that&#39;s the nature of progress, is it not?</p>
-
-<hr>
-
-<p>title      : If and OOPy If
-author     : trans
-date       : 2008-09-28
-categories : [ruby, nullclass]
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2008-28-September" title="September 28, 2008">September 28, 2008</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2008/09/12/taskable/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Taskable</h1>
-
-<p>On more than a few occasions I have taken a stab at writing a general
-purpose task system, akin to Rake&#39;s, but one that works within the
-framework of Ruby class inheritance. I recall my first attempt was
-quite an unwieldy beast, and my subsequent attempts were fairly
-unwieldy too, but over time they became more concise. Below is the
-most concise variation yet, and I was wondering what other thought
-of it -- do you see any flaws in the design; does it satisfy all the
-criteria of such a system; would you find it useful; etc.</p>
-
-<p>One issue to note about the code, is the use of the <code>*_trigger</code> methods.
-I&#39;m not sure that&#39;s the best approach. My original approach was
-to provide a #run method (you can see it commented out), but this
-requires dividing Taskable into two parts, a module for extending and
-a module for including, and I try to avoid that design when I can.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">module</span> <span class="nn">Taskable</span>
-
-      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">append_features</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-        <span class="n">base</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
+      <span class="k">def</span> <span class="nf">negative?</span>
+        <span class="vi">@negative</span>
       <span class="k">end</span>
 
-      <span class="c1"># Without an argument, returns list of tasks defined for this class.</span>
-      <span class="c1">#</span>
-      <span class="c1"># If a task&#39;s target name is given, will return the first</span>
-      <span class="c1"># task matching the name found in the class&#39; inheritance chain.</span>
-      <span class="c1"># This is important to ensure tasks are inherited in the same manner</span>
-      <span class="c1"># that methods are.</span>
-      <span class="k">def</span> <span class="nf">tasks</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">target</span>
-          <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">to_sym</span>
-          <span class="n">anc</span> <span class="o">=</span> <span class="nb">ancestors</span><span class="o">.</span><span class="n">select</span><span class="p">{</span><span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="no">Taskable</span><span class="p">}</span> <span class="c1">#DSL</span>
-          <span class="n">t</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">;</span> <span class="n">anc</span><span class="o">.</span><span class="n">find</span><span class="p">{</span><span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">t</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">tasks</span><span class="o">[</span><span class="n">target</span><span class="o">]</span><span class="p">}</span>
-          <span class="k">return</span> <span class="n">t</span>
-        <span class="k">else</span>
-          <span class="vi">@tasks</span> <span class="o">||=</span> <span class="p">{}</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
+      <span class="k">alias</span> <span class="ss">:add</span> <span class="ss">:+</span>
+      <span class="k">alias</span> <span class="ss">:sub</span> <span class="ss">:-</span>
 
-      <span class="c1"># Set a description to be used by then next defined task in this class.</span>
-      <span class="k">def</span> <span class="nf">desc</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
-        <span class="vi">@desc</span> <span class="o">=</span> <span class="n">description</span>
-      <span class="k">end</span>
-
-      <span class="c1"># Define a task.</span>
-      <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">target_and_requisite</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span>
-        <span class="n">target</span><span class="p">,</span> <span class="n">requisite</span><span class="p">,</span> <span class="n">function</span> <span class="o">=</span> <span class="o">*</span><span class="no">Task</span><span class="o">.</span><span class="n">parse_arguments</span><span class="p">(</span><span class="n">target_and_requisite</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span>
-        <span class="n">task</span> <span class="o">=</span> <span class="n">tasks</span><span class="o">[</span><span class="n">target</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">||=</span> <span class="p">(</span>
-          <span class="n">tdesc</span> <span class="o">=</span> <span class="vi">@desc</span>
-          <span class="vi">@desc</span> <span class="o">=</span> <span class="kp">nil</span>
-          <span class="no">Task</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">tdesc</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">task</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">requisite</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span>
-        <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">target</span><span class="si">}</span><span class="s2">_trigger&quot;</span><span class="p">){</span> <span class="n">task</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># or use #run?</span>
-        <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">target</span><span class="si">}</span><span class="s2">:task&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span> <span class="c1"># TODO: in 1.9 use instance_exec instead.</span>
-      <span class="k">end</span>
-
-      <span class="c1"># Run a task.</span>
-      <span class="c1"># Hmmm... to add this would require another module (to include).</span>
-      <span class="c1"># But I&#39;m not sure. Maybe trigger method is the better way?</span>
-      <span class="c1">#</span>
-      <span class="c1">#def run(target)</span>
-      <span class="c1">#  #t = self.class.tasks(target)</span>
-      <span class="c1">#  #t.run(self)</span>
-      <span class="c1">#  send(&quot;#{target}_trigger&quot;)</span>
-      <span class="c1">#end</span>
-
-      <span class="c1"># = Task Class</span>
-      <span class="c1">#</span>
-      <span class="k">class</span> <span class="nc">Task</span>
-        <span class="kp">attr</span> <span class="ss">:base</span>
-        <span class="kp">attr</span> <span class="ss">:target</span>
-        <span class="kp">attr</span> <span class="ss">:requisite</span>
-        <span class="kp">attr</span> <span class="ss">:function</span>
-        <span class="kp">attr</span> <span class="ss">:description</span>
-
-        <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kp">nil</span><span class="p">,</span> <span class="n">requisite</span><span class="o">=</span><span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span>
-          <span class="vi">@base</span>        <span class="o">=</span> <span class="n">base</span>
-          <span class="vi">@target</span>      <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">to_sym</span>
-          <span class="vi">@description</span> <span class="o">=</span> <span class="n">description</span>
-          <span class="vi">@requisite</span>   <span class="o">=</span> <span class="n">requisite</span> <span class="o">||</span> <span class="o">[]</span>
-          <span class="vi">@function</span>    <span class="o">=</span> <span class="n">function</span>
-        <span class="k">end</span>
-
-        <span class="c1">#</span>
-        <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">requisite</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span>
-          <span class="vi">@requisite</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">requisite</span><span class="p">)</span><span class="o">.</span><span class="n">uniq!</span>
-          <span class="vi">@function</span> <span class="o">=</span> <span class="n">function</span> <span class="k">if</span> <span class="n">function</span>
-        <span class="k">end</span>
-
-        <span class="c1">#</span>
-        <span class="k">def</span> <span class="nf">prerequisite</span>
-          <span class="n">base</span><span class="o">.</span><span class="n">ancestors</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="no">Taskable</span><span class="p">)</span> <span class="p">}</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
-            <span class="n">a</span><span class="o">.</span><span class="n">tasks</span><span class="o">[</span><span class="n">target</span><span class="o">].</span><span class="n">requisite</span>
-          <span class="p">}</span><span class="o">.</span><span class="n">flatten</span><span class="o">.</span><span class="n">uniq</span>
-        <span class="k">end</span>
-
-        <span class="c1"># invoke target</span>
-        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
-          <span class="n">rd</span> <span class="o">=</span> <span class="n">rule_dag</span>
-          <span class="n">rd</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
-            <span class="n">object</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">t</span><span class="si">}</span><span class="s2">:task&quot;</span><span class="p">)</span>
-          <span class="k">end</span>
-        <span class="k">end</span>
-
-        <span class="c1">#</span>
-        <span class="c1">#def call(object)</span>
-        <span class="c1">#  object.instance_eval(&amp;function)</span>
-        <span class="c1">#end</span>
-
-        <span class="c1"># Collect task dependencies for running.</span>
-        <span class="k">def</span> <span class="nf">rule_dag</span><span class="p">(</span><span class="n">cache</span><span class="o">=[]</span><span class="p">)</span>
-          <span class="n">prerequisite</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
-            <span class="k">next</span> <span class="k">if</span> <span class="n">cache</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-            <span class="n">t</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">tasks</span><span class="o">[</span><span class="n">r</span><span class="o">]</span>
-            <span class="n">t</span><span class="o">.</span><span class="n">rule_dag</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span>
-            <span class="c1">#cache &lt;&lt; dep</span>
-          <span class="k">end</span>
-          <span class="n">cache</span> <span class="o">&lt;&lt;</span> <span class="n">target</span><span class="o">.</span><span class="n">to_s</span>
-          <span class="n">cache</span>
-        <span class="k">end</span>
-
-        <span class="c1">#</span>
-        <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">parse_arguments</span><span class="p">(</span><span class="n">name_and_reqs</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">action</span><span class="p">)</span>
-          <span class="k">if</span> <span class="no">Hash</span><span class="o">===</span><span class="n">name_and_reqs</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="n">name_and_reqs</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">to_s</span>
-            <span class="n">reqs</span> <span class="o">=</span> <span class="o">[</span><span class="n">name_and_reqs</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">first</span><span class="o">].</span><span class="n">flatten</span>
+      <span class="k">def</span> <span class="nf">+</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">negative?</span>
+          <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">negative?</span>
+            <span class="o">-</span><span class="n">add</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
           <span class="k">else</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="n">name_and_reqs</span><span class="o">.</span><span class="n">to_s</span>
-            <span class="n">reqs</span> <span class="o">=</span> <span class="o">[]</span>
+            <span class="o">-</span><span class="nb">sub</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
           <span class="k">end</span>
-          <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">reqs</span><span class="p">,</span> <span class="n">action</span>
+        <span class="k">else</span>
+          <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">negative?</span>
+            <span class="nb">sub</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+          <span class="k">else</span>
+            <span class="n">add</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+          <span class="k">end</span>
         <span class="k">end</span>
       <span class="k">end</span>
+
+      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
     <span class="k">end</span>
 </code></pre></div>
-<p>Here&#39;s a very simple <a href="http://quarry.rubyforge.org">QEDoc</a> demo/spec:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Example</span>
-      <span class="kp">include</span> <span class="no">Taskable</span>
-
-      <span class="n">task</span> <span class="ss">:task_with_no_requisites</span> <span class="k">do</span>
-        <span class="n">cache</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;task_with_no_requisites&quot;</span>
-      <span class="k">end</span>
-
-      <span class="n">task</span> <span class="ss">:task_with_one_requisite</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:task_with_no_requisites</span><span class="o">]</span> <span class="k">do</span>
-        <span class="n">cache</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;task_with_one_requisite&quot;</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">cache</span>
-        <span class="vi">@cache</span> <span class="o">||=</span> <span class="o">[]</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-
-    <span class="n">example</span> <span class="o">=</span> <span class="no">Example</span><span class="o">.</span><span class="n">new</span>
-    <span class="c1">#example.run :task_with_no_requisites</span>
-    <span class="n">example</span><span class="o">.</span><span class="n">task_with_no_requisites_trigger</span>
-    <span class="n">example</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">assert</span> <span class="o">==</span> <span class="o">[</span><span class="s2">&quot;task_with_no_requisites&quot;</span><span class="o">]</span>
-
-    <span class="n">example</span> <span class="o">=</span> <span class="no">Example</span><span class="o">.</span><span class="n">new</span>
-    <span class="c1">#example.run :task_with_one_requisite</span>
-    <span class="n">example</span><span class="o">.</span><span class="n">task_with_one_requisite_trigger</span>
-    <span class="n">example</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">assert</span> <span class="o">==</span> <span class="o">[</span><span class="s2">&quot;task_with_no_requisites&quot;</span><span class="p">,</span> <span class="s2">&quot;task_with_one_requisite&quot;</span><span class="o">]</span>
+<p>I&#39;m sure tighter implementation is possible, but you get the idea. So then include and exclude parameters could be specified in a single parameter.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">files</span> <span class="o">=</span> <span class="o">[</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="o">-[</span> <span class="s1">&#39;Installedfiles&#39;</span> <span class="o">]</span> <span class="o">]</span>
 </code></pre></div>
-<p>So, what do you think?</p>
+<p>Neat! But unfortunately it doesn&#39;t really solve the whole problem since YAML doesn&#39;t understand this negative listing concept either. It could still be of use in general Ruby scripts though. Notations such as this often prove very powerful. And in fact the idea does move us in a possible workable direction. There&#39;s no reason a string can&#39;t be marked as negative as well. After all it&#39;s just a flag. In fact, if we move the core method @- to Object itself, then any object can be so indicated. The above line could then be written:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">files</span> <span class="o">=</span> <span class="o">[</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="o">-</span><span class="s1">&#39;Installedfiles&#39;</span> <span class="o">]</span>
+</code></pre></div>
+<p>Methods such as Dir.multiglob(*files) (another Facet) could use this extra bit of information to provide the desired results, equivalent to:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">files</span> <span class="o">=</span> <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/*&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;InstalledFiles&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Of course, this still doesn&#39;t quite help us with the YAML configuration file, but with a little fudging we can get a useful format.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="ss">files</span><span class="p">:</span> <span class="o">[</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="s1">&#39;-InstalledFiles&#39;</span> <span class="o">]</span>
+</code></pre></div>
+<p>As for the append parameter that was mentioned as the beginning, we could just add a special notation for this as well, say, &#39;$&#39; to mean defaults.</p>
 
-<hr>
+<p>Okay. So will I use this bit of trickery to reduce three parameters to one? Perhaps. While the result is wonderfully practical in usage, it&#39;s not necessarily so simple to implement. Either a filter would have to split the one entry into three parts when loading, or an untold number of methods would have to augmented to take the trick into consideration. The later I imagine would simply prove too extensive w/o pre-established support for the negation concept. The former might be reasonable however. I&#39;ll give it a try.</p>
 
-<p>title      : Taskable
-date       : 2008-09-12
-categories : [ruby]
-layout     : post</p>
+<p>In any case it was in interesting thought experiment. Although perhaps you have a better way to represent this kind of information?</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2008-12-September" title="September 12, 2008">September 12, 2008</time>
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2006-03-December" title="December 03, 2006">December 03, 2006</time>
             </div>
         </div>
         <hr>
@@ -629,90 +136,7 @@ layout     : post</p>
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2007/05/02/the-library-poll/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>The Library Poll</h1>
-
-<p>I&#39;ve been thinking far too long about how best to organize and distribute programming libraries. Having a hard time coming to any firm conclusions, I&#39;ve decided to try an inductive approach --via a poll. If you have a moment, I&#39;d really appreciate your thoughtful answers to the following questions. Thanks!</p>
-
-<p><strong>Sorry, the polls are closed</strong>. But here are the results:</p>
-
-<p>1) Which library name would you prefer: (<code>126</code> votes)</p>
-
-<ul>
-<li><code>37%</code> livelibs-file</li>
-<li><code>63%</code> filestorm</li>
-</ul>
-
-<p>2) Which library would you be more likely to try: (<code>204</code> votes)</p>
-
-<ul>
-<li><code>62%</code> cliutils</li>
-<li><code>10%</code> cli/best</li>
-<li><code>03%</code> cliBest</li>
-<li><code>24%</code> climax</li>
-</ul>
-
-<p>3) Should programming libraries be named: (<code>211</code> votes)</p>
-
-<ul>
-<li><code>45%</code> Creatively</li>
-<li><code>55%</code> Categorically</li>
-</ul>
-
-<p>4) Programming libraries should be packaged: (<code>200</code> votes)</p>
-
-<ul>
-<li><code>35%</code> Per specific tool</li>
-<li><code>47%</code> Per related set of tools</li>
-<li><code>18%</code> Comprehensively (all-in-one)</li>
-</ul>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2007-02-May" title="May 02, 2007">May 02, 2007</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2007/03/12/package-management-is-a-red-herring/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Package Management is a Red Herring</h1>
-
-<p>Traditionally package management has been fairly complicated. Developers must navigate the matrix of platform support, package format and configuration choices that are often as time consuming as they are restrictive. </p>
-
-<p>For instance, the goto format of the day on most Linux platforms is the Debian package format. Debian packages follow closely to the <code>FHS</code> (File Hierarchy standard), and tend to enforce fairly strict Debian packaging policies, such as placing development files in separate packages. Debian packages require the creation of a control file with information about the build as well as a &quot;fuax installation&quot; that is packaged up into a <code>.deb</code> file. All of this takes a fair bit of effort on the developer&#39;s part. And that&#39;s just the work involved for supporting one package format for a limited selection of platforms.</p>
-
-<p>For Ruby developers, RubyGems has come along to make life a fair bit easier. They have dispensed with FHS compliance, to the dismay if Debian maintainers, and provided a relatively easy means of packaging up a library or application for redistribution by following the <em>convention over configuration</em> philosophy. Of course, it helps that the target source is Ruby, which has very simple file-based import system, as opposed to C or Java.</p>
-
-<p>Even so, package management can be even easier if we simply recognize the gorilla in the room: version control systems. All developers now use source code managers (<code>SCM</code>) to track changes to code and <em>distribute</em> source between developers. See the keyword there? The ability to <em>distribute</em> a program is half the battle of package management.</p>
-
-<p>The other half is installation. For a pure-Ruby program installation if fairly trivial, it&#39;s just a matter to putting the files in a proper location on the file system. For C or Java packages there is the further matter of the <em>compile</em>. For open-source projects that&#39;s not particularly difficult, a build script can be provided and as long as the end installer has the necessary build tools, the program can be compiled on demand. For proprietary code it gets more complicated, but lets put that aside for the moment.</p>
-
-<p>Taking all of this into consideration, packaging systems should be fairly trivial --a wrapper around SCM tools that pull down the current or tagged version of source, run the build script and copy the resulting files to an appropriate place on disk. Such a system would be very light weight. In fact, with the exception of dependency management code, there&#39;s no reason that such a system to take up more than a few hundred lines of code.</p>
-
-<p>The question of proprietary code is a little more challenging since the developer does not want the source code to make it&#39;s way to the end-users system at all. In this case I suggest one of two possibilities: 1) it may be possible to use encryption to prevent end-users from gaining access to the source, or 2) use an intermediary service that builds a package on a replica of the end users machine, turning over only the final results. Yes, this means complications for proprietary vendors, but it&#39;s one that could easily be turned into a service.</p>
-
-<p>The chore of the developer could then be greatly reduced to following a set of standards for organizing a project, providing metadata and optionally a build script for handling advanced build requirements. The target platform can take these pieces and build and install the package as is suitable to the platform. In other words, the platform takes care of the platform distinctions, not the developer.</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2007-12-March" title="March 12, 2007">March 12, 2007</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2006/11/11/we-all-live-in-a-yellow-submarine/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <h2 class="title"><a href="/2006/11/11/we-all-live-in-a-yellow-submarine/" rel="prefetch">We All Live In A Yellow Submarine</a></h2>
             <p><h1>We All Live in a Yellow Submarine</h1>
 
 <p>Anyone having read my previous posts, here and on ruby-talk, knows I love to explore ideas. It doesn&#39;t matter if they are considered &quot;good&quot; or &quot;bad&quot;. Most cannot be judged without first exponding on them anyway. In fact, half the time I have no idea where an idea might lead until I sit down and blog it.</p>
@@ -775,7 +199,7 @@ layout     : post</p>
 <p>Have fun! Unfortunately I&#39;m not. I&#39;m still stuck on the forementioned namespace issue! Oh well. Back to the coding board...</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
+                Written By <address></a> &mdash;
                 <time pubdate datetime="2006-11-November" title="November 11, 2006">November 11, 2006</time>
             </div>
         </div>
@@ -787,7 +211,237 @@ layout     : post</p>
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2006/08/26/the-persnickety-order-of-self-serving-modules/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <h2 class="title"><a href="/2006/11/10/separation-of-church-and-state/" rel="prefetch">Separation Of Church And State</a></h2>
+            <p><h1>Separation of Church and State</h1>
+
+<p>Have you ever had a class so choke full of interrelated data and function members that had trouble avoiding name clashes between the two. Of course it&#39;s a rare problem when you&#39;re in full control of the members, but when you&#39;re designing extensible classes, it become a major issue and you have to resort to some less-than-lovely work around.</p>
+
+<p>Let me give you a simple scenario.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Package</span>
+    <span class="c1"># Release date</span>
+    <span class="c1">#</span>
+    <span class="kp">attr</span> <span class="ss">:release</span>
+
+    <span class="c1"># Release the package.</span>
+    <span class="c1">#</span>
+    <span class="k">def</span> <span class="nf">release</span>
+       <span class="nb">puts</span> <span class="s2">&quot;Telling the world on </span><span class="si">#{</span><span class="vi">@release</span><span class="si">}</span><span class="s2">...&quot;</span>
+       <span class="c1"># ...</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>The issue here is clear. On one hand, we want to use release as a noun to represent the date of release. On the other, we want to use it as a verb for releasing the package to the world. Of course, under completely isolated circumstances we could just change one of the names and deal. But when we are working on the basis of extensibility, where these and additional data or functional members may be added readily, say via a plug-in system, then a solution is not as simple.</p>
+
+<p>So what can we do? The bottom line is that in some way or another the two member types must be distinguished from one another.</p>
+
+<p>One could transform one set of the members with a slightly different name via some uniform convention. For instance, all data members could start with &quot;my<em>&quot;, so release as a date would be my</em>release. Ruby actually makes this it a bit nicer in that we can use &#39;?&#39; or &#39;!&#39; prepended to method names. A fair solution might then be:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">def</span> <span class="nf">release?</span>
+      <span class="vi">@release</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>or</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">def</span> <span class="nf">release!</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Telling the world on </span><span class="si">#{</span><span class="n">release?</span><span class="si">}</span><span class="s2">...&quot;</span>
+      <span class="c1">#...</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>It&#39;s not a perfect solution however, especially as a matter of convention. It goes against the grian. &#39;?&#39; typically indicates a true/false query. And &#39;!&#39; indicates in place or caution. Consider how others will &quot;smell&quot; your code when they see a question mark for every reference to a data member.</p>
+
+<p>The other more traditional solution is to use delegation. In this case we make a subclass for either or both of the member types. For instance:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Package</span>
+
+    <span class="k">class</span> <span class="nc">Data</span>
+      <span class="kp">attr</span> <span class="ss">:release</span>
+    <span class="k">end</span>
+
+    <span class="kp">attr</span> <span class="ss">:data</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span>
+      <span class="vi">@data</span> <span class="o">=</span> <span class="no">Data</span><span class="o">.</span><span class="n">new</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">release</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Telling to the world on </span><span class="si">#{</span><span class="n">data</span><span class="o">.</span><span class="n">release</span><span class="si">}</span><span class="s2">...&quot;</span>
+      <span class="c1">#...</span>
+    <span class="k">end</span>
+
+  <span class="k">end</span>
+</code></pre></div>
+<p>Albeit a bit longer. It works very well. Delegation is a powerful tool. One could even emulate the former solution via method_missing, trapping method calls that end in &#39;?&#39; and rerouting them to @data. Another advantage is that we can readily pass around the data independent of the function members. On the flip side however, we are regulated to this special data.member interface. and likewise any reverse access by the data members to the functional members, if ever needed, would require us to also pass a reference to the Package instance into the Data instance.</p>
+
+<p>In considering all this of course, it becomes apparent that Ruby already has a means of distinguishing data members from functional members via instance variables. Clearly @release references the date. But Ruby does not give us the power to treat &quot;instance members&quot; publicly or programmaticly. We can&#39;t, for instance, use project.@release to access the release date. Nor can we wrap data members in order to massage their data, say:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">def</span> <span class="vi">@release</span>
+    <span class="k">super</span> <span class="o">||</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+  <span class="k">end</span>
+  <span class="kp">public</span> <span class="ss">:@release</span>
+</code></pre></div>
+<p>I&#39;m sure many readers will take such notion for simply god awful. But I think careful consideration at least warrants the fair question. &quot;Is a distinct separation between data and functional members useful?&quot; The mere existence of instance variables indicates that the distinction is in fact useful. In contrast, data members could have been made indistinguishable from functional members, or local variable persistence could be used in their stay. So if the distinction is useful, why hide public access to data members behind functional members acting as mini-delegates?</p>
+
+<p>To be a bit more pragmatic, how would a solution to our example pane out if data members were in fact accessible? Interestingly it could look exactly like the original example. Public access to the release date however would simply come via project.@release or preferably even project@release. And there would be no need for any name (mis)conventions or special-interface delegation.</p>
+
+<p>Of course let&#39;s be honest here. &#39;@&#39; itself is the Special Delegate of State to the Ruby &quot;Church&quot;. Too bad he&#39;s only allowed to preach to the choir.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2006-10-November" title="November 10, 2006">November 10, 2006</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2006/10/21/frustration-with-object-orientation/" rel="prefetch">Frustration With Object Orientation</a></h2>
+            <p><h1>Frustration with Object-Orientation</h1>
+
+<p>I&#39;ve spent more weeks than I care to count going around in circles.</p>
+
+<p>You see the problem is I have &quot;tools&quot; that are in essence methods. But the are generally complicated enough to warrent using state and being broken into many smaller supporting methods. That&#39;s fine and dandy until I try to tie a bunch of these tools together under the same class. Name clashes become a huge problem, to the point that it is simply unworkable. The need for local instance variables and methods becomes a big deal. The only way to currently achieve that is to use lambdas and define_method. Not ideal, and RDocs become all but useless. To avoid this I tried going in the opposite direction, defining the tools as their own classes instead. This works great until the tool needs to take part in a more complex structure. For example I have hosting service classes that provide releasing and publishing tools. Well, if &#39;release&#39; and &#39;publish&#39; are classes rather then methods how are they going to call the hosting service&#39;s login method? I&#39;m forced into using delegation, passing them the instance of the Host class to which they are supposed to belong. At that point the result is worse than the original problem. So in either case I&#39;m finding it neccessary to to write and maintain hacky code. And I&#39;m just fet up with it.</p>
+
+<p>Over the last five years I&#39;ve spent a great deal of time working with Ruby and learning Object-Oriented programming practices it&#39;s associated design patterns. It all seemed very logical at first. But as time wore on I found myself again and again feeling hemmed in. I assumed it was just that I did not understand it all well enough yet to use it well so I kept at it. Certainly my skills improved, but in retorsect it wasn&#39;t some great understanding as much it was &quot;don&#39;t do that&quot;. And even so, I still ran into these walls.</p>
+
+<p>And this is waht I think it is. OOP requires you to first design the encapsulating structure of your project. And your whole edifice depends on that supporting design. If for some reason any bit of that should change, you may well find yourself tearing down whole walls in order to build them up again. And this can happen over and over if you weren&#39;t sure of the original edifice from the start. For a large project that&#39;s a lot to ask --knowing how the whole outward structure should be before you even know the materials involved.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2006-21-October" title="October 21, 2006">October 21, 2006</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2006/10/02/i-see-you/" rel="prefetch">I See You</a></h2>
+            <p><h1>I See You</h1>
+
+<p><img src="/assets/images/iseeyou.jpg" alt="I See You Picture"></p>
+
+<p>You have to <a href="http://tenderlovemaking.com/2006/09/28/new-ruby-betabrite-002/">check this out</a>. Okay. I know. I know. It&#39;s been blogged by others many times now. In fact, you can check out these other blog posts too: Why<em>the</em>lucky_stiff has it on <a href="http://redhanded.hobix.com/inspect/hackASignOnSomeoneElseSWoodFloors.html#comments">Redhanded</a>, and <a href="http://www.eachmapinject.com/2006/9/29/betabrite">J&#39;ey</a> put out the word as well. But it&#39;s just so damn cool, I just had to blog it too!</p>
+
+<p>Go ahead. Try it at home:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">require</span> <span class="s1">&#39;drb&#39;</span>
+
+  <span class="k">def</span> <span class="nf">brite_shot</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;druby://eviladmins.org:9000&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="no">DRbObject</span><span class="o">.</span><span class="n">new_with_uri</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;out.jpg&quot;</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
+      <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span><span class="o">.</span><span class="n">write_simple</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">brite_shot</span><span class="p">(</span><span class="s2">&quot;I SEE YOU!&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>(And if a still picture isn&#39;t enough for you. How about an <a href="http://pastie.caboo.se/15646">animation</a>.)</p>
+
+<p>And so, a REAL picture is made for me by remote many thousands of miles away. How far I wonder? Well, with a GeoIP lookup and Google Maps, I found out <a href="http://maps.google.com/maps?f=q&amp;hl=en&amp;q=47.610%C2%B0N,+122.304%C2%B0W&amp;ie=UTF8&amp;z=17&amp;ll=47.61,-122.304&amp;spn=0.004231,0.012757&amp;t=h&amp;om=1">where this picture was made</a>. The world really is getting smaller.</p>
+
+<p>I See You!</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2006-02-October" title="October 02, 2006">October 02, 2006</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2006/09/21/i-no-longer-believe-in-methods/" rel="prefetch">I No Longer Believe In Methods</a></h2>
+            <p><h1>I No Longer Believe in Methods</h1>
+
+<p>Yes, that&#39;s right. I no longer believe in methods. Why? Becuase this is OOP and if the methods aren&#39;t honest to goodness objects from the start, without exception, then they are not really methods. They&#39;re just glorified functions.</p>
+
+<p>Let me show you what I mean. I have a Project class in which is defined a set of tools that can manipulate it. Clearly the proper implementation abstraction for these tools is the method.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="k">def</span> <span class="nf">announce</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>But these tools must be distinguishable from other supporting methods. Moreover additional information may be associated with these tools, like help information or valid states of the Project for the tool to be useful. How do we encode this information with Ruby? Since methods aren&#39;t first class objects, we are forced to return to functional programming. In which case, it is best to define some sort of DSL.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">ProjectDSL</span>
+    <span class="k">def</span> <span class="nf">help</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="n">text</span> <span class="p">)</span>
+      <span class="vi">@help</span> <span class="o">||=</span> <span class="p">{}</span>
+      <span class="vi">@help</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="n">text</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="nb">test</span> <span class="p">)</span>
+      <span class="vi">@valid</span> <span class="o">||=</span> <span class="p">{}</span>
+      <span class="vi">@valid</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="nb">test</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="kp">extend</span> <span class="no">ProjectDSL</span>
+
+    <span class="k">def</span> <span class="nf">announce</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">help</span> <span class="ss">:announce</span><span class="p">,</span> <span class="s2">&quot;Announces your project to the world!&quot;</span>
+    <span class="n">valid</span> <span class="ss">:announce</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Now this kind of thing has come up enough in large projects, such as Nitro, that a general means of annotation proved to be most effective.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">require</span> <span class="s1">&#39;facet/annotation&#39;</span>
+
+  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="k">def</span> <span class="nf">announce</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">ann</span> <span class="ss">:announce</span><span class="p">,</span> <span class="ss">:help</span> <span class="o">=&gt;</span> <span class="s2">&quot;Announces your project to the world!&quot;</span><span class="p">,</span>
+                   <span class="ss">:valid</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Annotations works very well, and if you find yourself in need of this kind of &quot;method metadata&quot; it is an excellent approach.</p>
+
+<p>But I&#39;ve worked with all this long enough now to be able to have a wide perspective on it and it&#39;s become very clear to me that the whole &quot;special needs&quot; arises out of the fact that Ruby is still just a functional language in this respect, and not a full OOPL. (And please no objections that method() and instance_method() make it otherwise, these do not provide a persitant object, but return a new object every time they are invoked.) So what might the above look like if it were not so? There would of course be more than one way to go about it, but imagine this:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Tool</span> <span class="o">&lt;</span> <span class="no">Method</span>
+    <span class="kp">attr_accessor</span> <span class="ss">:help</span>
+
+    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span> <span class="o">&amp;</span><span class="nb">test</span> <span class="p">)</span>
+      <span class="vi">@valid</span> <span class="o">=</span> <span class="nb">test</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="k">def</span> <span class="nf">announce</span> <span class="o">=&gt;</span> <span class="no">Tool</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">announce</span><span class="o">.</span><span class="n">help</span> <span class="o">=</span> <span class="s2">&quot;Announces your project to the world!&quot;</span>
+
+    <span class="n">announce</span><span class="o">.</span><span class="n">valid</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>I&#39;m taking some liberties with the syntax here for clarity. But in anycase it certainly paints a provocative idea. And I would argue that it paints the approprite OOP idea too.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2006-21-September" title="September 21, 2006">September 21, 2006</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2006/08/26/the-persnickety-order-of-self-serving-modules/" rel="prefetch">The Persnickety Order Of Self Serving Modules</a></h2>
             <p><h1>The Persnickety Order of Self-Serving Modules</h1>
 
 <p>This one caught me off guard.</p>
@@ -821,8 +475,209 @@ layout     : post</p>
 <p>Yes, another of the edge cases. But the preponderance weighs heavy on the Coding Spirit. The Dynamic Module Inclusion Problem is getting old.</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
+                Written By <address></a> &mdash;
                 <time pubdate datetime="2006-26-August" title="August 26, 2006">August 26, 2006</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2006/08/21/main-campaign-out-of-object-now/" rel="prefetch">Main Campaign Out Of Object Now</a></h2>
+            <p><h1>Main Campaign: Out of Object Now!</h1>
+
+<p>The word from Matz on Kernel as toplevel object:</p>
+
+<p>I don&#39;t feel that making Kernel as toplevel self is not a good idea,
+because:</p>
+
+<ul>
+<li>toplevel def does not define methods on Kernel, but Object.</li>
+<li>toplevel include does not include modules into Kernel, but Object.</li>
+<li>toplevel private etc. do not work on Kernel, but Object.</li>
+</ul>
+
+<p>I wouldn&#39;t call that an explanation exactly, more an explicative of the current behavior. I&#39;m sure Matz has his reasons, and we can just assume that he wants to keep the namespace distinct. Fair enough, and of course he can do that. (It&#39;s not REALLY a democracy after all!) So Kernel drops out of the race. But the Kernel&#39;s running mate, Main, is still here campaigning.</p>
+
+<p>You might be surprised to learn (as I was when I first discovered it):</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="no">Object</span><span class="o">.</span><span class="n">public_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span> <span class="o">+</span>
+  <span class="no">Object</span><span class="o">.</span><span class="n">private_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span> <span class="o">+</span>
+  <span class="no">Object</span><span class="o">.</span><span class="n">protected_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+  <span class="o">=&gt;</span> <span class="o">[]</span>
+</code></pre></div>
+<p>That&#39;s right. There&#39;s not a single method defined in Object. All the methods ri tells you belong to Object actually are inherited from Kernel. But from there, any toplevel method we define does end-up in Object. Hence the clear separation of namespace I mentioned above.</p>
+
+<p>Now a separate module, eg. Main, would do just as well. Kernel need not be used. And as I&#39;ve expressed before, Main could be induced into Object for all the same effects. The base hierarchy then being Object &lt; Main &lt; Kernel.</p>
+
+<p>But wait a second! Why are all these toplevel methods sneaking into all my Object&#39;s anyway? I can just as easily add them to Object myself if that&#39;s what I want. I don&#39;t need some cheap toplevel proxy to do it for me. In fact, that can be a problem too.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">Foo</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_missing</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="p">)</span>
+      <span class="k">super</span> <span class="k">unless</span> <span class="nb">require</span> <span class="s2">&quot;foo/</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">rescue</span> <span class="kp">nil</span>
+      <span class="nb">send</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span><span class="o">*</span><span class="n">args</span> <span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Then some unsuspecting nuby comes along (okay I admit, it was I and it happened to me today!) and innocently adds to the top level:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">def</span> <span class="nf">check</span><span class="p">(</span> <span class="nb">name</span> <span class="p">)</span>
+    <span class="nb">name</span> <span class="o">==</span> <span class="s2">&quot;foo&quot;</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Well, so much for my lazily required Foo.check routine. It&#39;s been whacked from the top down!</p>
+
+<p>You see where I&#39;m going now? Primaries are over Main has taken Kernel out of the running with a new divisive platform. &quot;Out of Object Now!&quot;</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2006-21-August" title="August 21, 2006">August 21, 2006</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2006/08/18/vote-kernel-for-toplevel-object/" rel="prefetch">Vote Kernel For Toplevel Object</a></h2>
+            <p><h1>Vote Kernel for Toplevel Object</h1>
+
+<p>As a follow up to my last post on the &quot;pain that is main&quot;, I want to offer a potential improvement for Ruby 2.0. I approached the topic on ruby-talk this week and while Matz initially took some interest, he hasn&#39;t followed up since his last comment:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">matz: Why?  If it is really required it&#39;s fairly
+easy to add toplevel methods like we did for #include.
+</code></pre></div>
+<p>But it isn&#39;t always easy. In order get my Taskable module to work, for instance, I had to make exceptions for the toplevel case, which is far from ideal and is fragile [Ed- in fact I&#39;m still getting bugs that I haven&#39;t yet pinned down]. These subtile difficulties arise becuase main acts as a partial proxy for the Object class. Anyone who has created a proxy object before knows the subtile issues that can come into play. In this case, only the bare minimal interface is supported --essentially the method #include. Yet, even if we take matz&#39; advice and add in all the missing proxy methods, we still won&#39;t be 100% out of the woods. The Object class and main are fundamentally two distinct objects --self is not the same, nor are their singleton classes, &amp;c. In the vast majority of cases this will never present an issue, but the distinction can creep in. Here&#39;s an highlight of one way it can:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">module</span> <span class="nn">Q</span>
+      <span class="n">define_method</span> <span class="ss">:q</span> <span class="k">do</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="nb">self</span>
+        <span class="n">define_method</span> <span class="ss">:r</span> <span class="k">do</span>
+          <span class="n">base</span> <span class="o">==</span> <span class="nb">self</span><span class="o">.</span><span class="n">class</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">C</span>
+      <span class="kp">extend</span> <span class="n">Q</span>
+      <span class="n">q</span>
+    <span class="k">end</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">new</span>
+    <span class="nb">p</span> <span class="n">c</span><span class="o">.</span><span class="n">r</span>
+
+    <span class="c1"># per matz&#39; direction</span>
+
+    <span class="k">def</span> <span class="nf">define_method</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">act</span> <span class="p">)</span>
+      <span class="no">Object</span><span class="o">.</span><span class="n">class_eval</span> <span class="p">{</span>
+        <span class="n">define_method</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">act</span> <span class="p">)</span>
+        <span class="kp">private</span> <span class="nb">name</span>
+      <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="kp">extend</span> <span class="n">Q</span>
+    <span class="n">q</span>
+    <span class="nb">p</span> <span class="n">r</span>
+</code></pre></div>
+<p>produces</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">    true
+    false
+</code></pre></div>
+<p>So in effect Ruby is mildly schizophrenic. The false reading is because main != Object. So, you can&#39;t necessarily create a DSL for Object to be used in main, and you can&#39;t neccessairly create a DSL for main to be used in any Object. Hence the devolution to DRYless code.</p>
+
+<p>There is a potentially elegant solution however, and I&#39;d really like to understand others insights into this (especially Matz&#39; of course): Instead of main being a special proxy object, just let it be a self extended module.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">module</span> <span class="nn">Main</span>
+      <span class="kp">extend</span> <span class="nb">self</span>
+      <span class="c1"># programs are written as if in here</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>This would provide all the facilities required of the toplevel without all the proxy troubles. Also, while I&#39;m not so convinced of the merits of every toplevel method becoming a private method of all objects (and with Main that can be easily prevented), it has proven workable in practice so it&#39;s not a significant factor of consideration here. Main can simply be include in Object to achieve that effect.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Object</span>
+      <span class="kp">include</span> <span class="no">Main</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>But when we do that it becomes very clear what Main appears to be: Kernel. That strikes me as esspecially interesting. Then again, there may be good reasons to keep the Kernel as a separate module, in which case we&#39;d just have a class hierachy:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="no">Object</span><span class="o">.</span><span class="n">ancestors</span>
+    <span class="o">=&gt;</span> <span class="o">[</span><span class="no">Object</span><span class="p">,</span> <span class="no">Main</span><span class="p">,</span> <span class="no">Kernel</span><span class="o">]</span>
+</code></pre></div>
+<p>Nevertheless, it is clear the Kernel could just as well serve as the toplevel object, which, IMHO, makes this an elegant proposition to consider. Perhaps I&#39;ll start a campaign as November elections roll around: &quot;Vote Kernel for Toplevel Object!&quot; ;-)</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2006-18-August" title="August 18, 2006">August 18, 2006</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2006/08/17/main-is-a-dry-pain/" rel="prefetch">Main Is A Dry Pain</a></h2>
+            <p><h1>Main is a DRY Pain</h1>
+
+<p>I have a module that depends on define_method and ancestors. It works great when I include it in other modules or classes. But if I try including it into the toplevel it fails miserably.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">NameError: undefined local variable or method `define_method&#39; for main:Object
+</code></pre></div>
+<p>That seems fairly peculiar when you consider that defining methods at toplevel is perfectly acceptable. One must then wonder, what is this toplevel thing anyway?</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">self</span>    <span class="c1">#=&gt; main</span>
+</code></pre></div>
+<p>Okay, it calls itself &quot;main&quot;. Great. But that doesn&#39;t really tell us anything. Let&#39;s check it&#39;s class:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">self</span><span class="o">.</span><span class="n">class</span>  <span class="c1">#=&gt; Object</span>
+</code></pre></div>
+<p>Ah. So it&#39;s an instance of Object. An instance of Object! How is that possible? A normal instance of Object and main can&#39;t be exactly the same. Indeed, they are not.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="p">(</span><span class="nb">public_methods</span> <span class="o">-</span> <span class="no">Object</span><span class="o">.</span><span class="n">public_instance_methods</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span>
+  <span class="c1">#=&gt; [&quot;include&quot;, &quot;private&quot;, &quot;public&quot;]</span>
+  <span class="nb">singleton_methods</span>
+  <span class="c1">#=&gt; [&quot;include&quot;, &quot;private&quot;, &quot;public&quot;, &quot;to_s&quot;]</span>
+</code></pre></div>
+<p>Notice include has been defined here specifically for main. So something special&#39;s going on when you include a module into the toplevel. Hmm... What about methods defined at the toplevel? If main is an instance of Object then are they singleton methods? Well, no. Turns out they get &quot;magically&quot; defined as private methods of the Object class itself, and main&#39;s singleton class space is actually something else entirely.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">;</span> <span class="s2">&quot;x&quot;</span><span class="p">;</span> <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">Q</span>
+    <span class="k">def</span> <span class="nf">q</span><span class="p">;</span> <span class="n">x</span><span class="p">;</span> <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">Q</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">q</span>
+  <span class="c1">#=&gt; NameError: undefined local variable or method &#39;s&#39; for #&lt;Q:0xb7ce9a3c&gt;</span>
+</code></pre></div>
+<p>Which means the sure solution for my problem...</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">Kernel</span>
+    <span class="kp">include</span> <span class="no">MyModule</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Can you guess?</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">M</span>
+    <span class="k">def</span> <span class="nf">m</span><span class="p">;</span> <span class="s2">&quot;m&quot;</span><span class="p">;</span> <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">module</span> <span class="nn">Kernel</span>
+    <span class="kp">include</span> <span class="n">M</span>
+  <span class="k">end</span>
+
+  <span class="n">m</span>
+  <span class="c1">#=&gt; NameError: undefined local variable or method `m&#39; for main:Object</span>
+
+  <span class="k">class</span> <span class="nc">Q</span>
+    <span class="k">def</span> <span class="nf">q</span><span class="p">;</span> <span class="n">m</span><span class="p">;</span> <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">Q</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">q</span>
+  <span class="c1">#=&gt; NameError: undefined local variable or method `m&#39; for #&lt;Q:0xb7cbb324&gt;</span>
+</code></pre></div>
+<p>Lands me squre in the face of the Module Inclusion Problem.</p>
+
+<p>All this leads me to two points. First, I&#39;m stuck! There seems to be no solution to my problem other than rewriting a second version of my module specifically for the toplevel. Talk about lack of DRY! And 2) Why in the world isn&#39;t main a self extended module?</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2006-17-August" title="August 17, 2006">August 17, 2006</time>
             </div>
         </div>
         <hr>

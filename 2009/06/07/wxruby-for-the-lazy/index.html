@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wxruby For The Lazy &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Wxruby For The Lazy ">
+    <link rel="canonical" href="http://trans.github.com/2009/06/07/wxruby-for-the-lazy/">
+     
+           
+    <meta property="og:title" content="Wxruby For The Lazy "/>
+    <meta property="og:url" content="http://trans.github.com/2009/06/07/wxruby-for-the-lazy/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="" target="_blank"></a> &mdash;
+                <time pubdate datetime="2009-07-June" title="June 07, 2009">June 07, 2009</time>
+            </div>
+            <h1 class="title">Wxruby For The Lazy</h1>
+            
+        </header>
+
+        <section>
+            <h1>WxRuby for the Lazy</h1>
+
+<p><a href="http://wxruby.rubyforge.org/wiki/wiki.pl">WxRuby</a> is probably the best overall GUI library for Ruby currently available. It is cross-platform, provides native look-and-feel and is stable enough for production use. All other GUI libraries, despite their various merits, fall short in at least one of the areas. However, WxRuby does have one major downfall. It is pretty much a straight port of the C API. Writing WxRuby code is largely the same as writing actual WxWidgets C code. It&#39;s far from the &quot;Ruby Way&quot;.</p>
+
+<p>So how did I mange to get fairly nice Ruby code despite a binding that is essentially a straight port of the underlying C API? I built it from the bottom-up using a lazy coding technique. And I mean &quot;bottom-up&quot; literally --the following code might actually be easier to read if you start from the bottom and work your way up to the top. The trick is to break down one&#39;s interface into individual widgets and create an instance method for each using the <code>||=</code> memoization trick. </p>
+
+<p>You can see from the following code I was able to apply this &quot;trick&quot; to everything but toolbar buttons (aka &#39;tools&#39;). This is because the toolbar itself is needed to create them. So I simply defined attributes for each tool, but actually created the tool buttons in the toolbar&#39;s method. <a href="https://gist.github.com/trans/182301">Have a look</a>.</p>
+
+<script src="https://gist.github.com/trans/182301.js"></script>
+
+<p>The thing to notice, if you haven&#39;t caught it yet, is how calling <code>#search<em>toolbar</code> leads to calling <code>#search</em>sizer</code> which in turn leads to calling <code>#search<em>panel</code>, and so forth all the way to the top <code>#frame</em>panel</code>. This code is a striped down version of actual code I am using. I hope it helps others create wxRuby application more easily. As I said in my previous post, I found in mind-numbingly difficult to create WxRuby interfaces until I worked out this approach. WxRuby is still a difficult API to master, but this technique makes the effort more manageable, and therefore more likely to succeed. </p>
+
+<p>For another example of building structures lazily, have a look at <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/122593">my solution</a> for <a href="http://rubyquiz.com/quiz10.html">Ruby Quiz 10 - Crosswords</a>.</p>
+
+<!--
+  title  : WxRuby for the Lazy
+  author : trans
+  tags   : [ruby, gui]
+  date   : 2009-06-07
+  layout : post
+-->
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank"></a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

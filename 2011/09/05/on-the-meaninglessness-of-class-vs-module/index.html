@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On The Meaninglessness Of Class Vs Module &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="On The Meaninglessness Of Class Vs Module ">
+    <link rel="canonical" href="http://trans.github.com/2011/09/05/on-the-meaninglessness-of-class-vs-module/">
+     
+           
+    <meta property="og:title" content="On The Meaninglessness Of Class Vs Module "/>
+    <meta property="og:url" content="http://trans.github.com/2011/09/05/on-the-meaninglessness-of-class-vs-module/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="" target="_blank"></a> &mdash;
+                <time pubdate datetime="2011-05-September" title="September 05, 2011">September 05, 2011</time>
+            </div>
+            <h1 class="title">On The Meaninglessness Of Class Vs Module</h1>
+            
+        </header>
+
+        <section>
+            <h1>Fear Not the Wereclass</h1>
+
+<p><strong>DRAFT</strong></p>
+
+<p>In the spirit of Halloween, lets take the fun example of the Werewolf. Lets say we already have classes for Man and Wolf at our disposal --some very smart programmer already did the hard work for us and developed these definitive representations ;)</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Man</span>
+      <span class="k">def</span> <span class="nf">shoot_gun</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Bang!&quot;</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">&quot;After it!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Wolf</span>
+      <span class="k">def</span> <span class="nf">howl</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Awoooooooo&quot;</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Woosh!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>Now what about our Werewolf? Half-man and half-wolf, what superclass do we use in its case? Most classes have a clear superclass, but some, such as our werewolf, are not as clear-cut. Perhaps we decide that a werewolf in our universe is more like a wolf than a man, so:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Werewolf</span> <span class="o">&lt;</span> <span class="no">Wolf</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>But we are still left to add Man&#39;s qualities . Ruby gives us no easy way to do this given our original classes. So we are forced to refactor the former Man class into a module.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">module</span> <span class="nn">ManLike</span>
+      <span class="k">def</span> <span class="nf">shoot_gun</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Bang!&quot;</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">&quot;After it!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Man</span>
+      <span class="kp">include</span> <span class="no">ManLike</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Werewolf</span> <span class="o">&lt;</span> <span class="no">Wolf</span>
+      <span class="kp">include</span> <span class="no">ManLike</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>Well there you go, a bit long winded perhaps, but it does the deed. But hang on. It appears things are a bit worse off than we might have suspected. We thought by using Wolf as the superclass we were saying a warewolf is essentially a wolf, but with some man like qualities. Surely that is what it must mean for a Warewolf to be a subclass of a Wolf. Unfortunately we would be wrong. When we ask a warewolf to <code>give_chase</code>, we discover it is doing it in quite the mainly way, not the wolfly way.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="n">werewolf</span> <span class="o">=</span> <span class="no">Werewolf</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">werewold</span><span class="o">.</span><span class="n">give_chase</span>  <span class="c1">#=&gt; &quot;After it!&quot;</span>
+</code></pre></div>
+<p>Oh dear, that&#39;s not good. The difference lies in the order of lookup. If two methods conflict, guess which one takes precedence? Would you be surprised to know that is not the superclass, but the rather the mixin?</p>
+
+<p>Well, it doesn&#39;t make a great deal of sense, but clearly we have no choice, we must refactor again.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">module</span> <span class="nn">WolfLike</span>
+      <span class="k">def</span> <span class="nf">howl</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Awoooooooo&quot;</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Woosh!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Wolf</span>
+      <span class="kp">include</span> <span class="no">WolfLike</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Werewolf</span> <span class="o">&lt;</span> <span class="no">Man</span>
+      <span class="kp">include</span> <span class="no">WolfLike</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>Well, there we are. Not our ideal conception of things, clearly, but it <i>does what we need it to do</i>... Of course, in the real world the original classes are not necessarily under our control, leading us to the only and unenviable option of re-implementing everything. What a waste.</p>
+
+<p>The fact that Ruby inheritance system in conjunction with it&#39;s mixin system produces a wonky order to method look-up; the fact that we can&#39;t <em>reuse</em> a class as a module when we might have need to do so; and the fact that we are left then only to do things in unseemly manners and duplicating lots of code too, well, to put it&#39;s all a bit frightful. But really, it not just our coding that become strained and more difficult --after all we are programmers, we &quot;work around&quot;. What really is a shame is that it severely limits the utility of Ruby&#39;s inheritance model and contributes in no small part as to why we see so little <em>semantic</em> subclassing in Ruby programs, as opposed to the simplistic base-class designs that we frequently see.</p>
+
+<p>The fact is the division is between class and module is essentially arbitrary.</p>
+
+<p>Consider this little trick:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Module</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">new</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+      <span class="n">c</span> <span class="o">=</span> <span class="no">Class</span><span class="o">.</span><span class="n">new</span>
+      <span class="n">c</span><span class="o">.</span><span class="n">include</span> <span class="nb">self</span>
+      <span class="n">c</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>The distinction between a module and a class it Ruby is purely a superficial one that has been hard coded into the language for no utilitarian reason. It is there only as an artifact of the original conceptualization.</p>
+
+<p>Removing the distinction of class vs module has nothing to do with multiple inheritance. Classes still only have a single superclass. Rather it is the principle of ... that is being violated. There is no need for a module to know it&#39;s a module or class it know it&#39;s a class. Both are merely encapsulations. What matters is how they are used.</p>
+
+<p>There is also a wonderful side benefit from this removal. Load order would no longer matter when two different scripts attempt to utilize the same namespace. </p>
+
+<p>Now I can all but guarantee that at some point someone, who very likely hasn&#39;t read this entire post, is going to say &quot;use delegation&quot;. Yes, yes. I am a big fan of delegation myself. But that is not what this article is about. It is about the utilization of Ruby&#39;s inheritance and mixin system. If delegation were always the answer then we might as well flush the whole inheritance and mixin things down the drain and use delegation for everythin. But that&#39;s a different debate. The question here is, if we are going to have inheritance and mixins, then obviously we should make the greatest use of them.</p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank"></a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

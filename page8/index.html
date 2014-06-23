@@ -60,78 +60,7 @@
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2006/08/17/main-is-a-dry-pain/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Main is a DRY Pain</h1>
-
-<p>I have a module that depends on define_method and ancestors. It works great when I include it in other modules or classes. But if I try including it into the toplevel it fails miserably.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">NameError: undefined local variable or method `define_method&#39; for main:Object
-</code></pre></div>
-<p>That seems fairly peculiar when you consider that defining methods at toplevel is perfectly acceptable. One must then wonder, what is this toplevel thing anyway?</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">self</span>    <span class="c1">#=&gt; main</span>
-</code></pre></div>
-<p>Okay, it calls itself &quot;main&quot;. Great. But that doesn&#39;t really tell us anything. Let&#39;s check it&#39;s class:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">self</span><span class="o">.</span><span class="n">class</span>  <span class="c1">#=&gt; Object</span>
-</code></pre></div>
-<p>Ah. So it&#39;s an instance of Object. An instance of Object! How is that possible? A normal instance of Object and main can&#39;t be exactly the same. Indeed, they are not.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="p">(</span><span class="nb">public_methods</span> <span class="o">-</span> <span class="no">Object</span><span class="o">.</span><span class="n">public_instance_methods</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span>
-  <span class="c1">#=&gt; [&quot;include&quot;, &quot;private&quot;, &quot;public&quot;]</span>
-  <span class="nb">singleton_methods</span>
-  <span class="c1">#=&gt; [&quot;include&quot;, &quot;private&quot;, &quot;public&quot;, &quot;to_s&quot;]</span>
-</code></pre></div>
-<p>Notice include has been defined here specifically for main. So something special&#39;s going on when you include a module into the toplevel. Hmm... What about methods defined at the toplevel? If main is an instance of Object then are they singleton methods? Well, no. Turns out they get &quot;magically&quot; defined as private methods of the Object class itself, and main&#39;s singleton class space is actually something else entirely.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-    <span class="k">def</span> <span class="nf">x</span><span class="p">;</span> <span class="s2">&quot;x&quot;</span><span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="k">class</span> <span class="nc">Q</span>
-    <span class="k">def</span> <span class="nf">q</span><span class="p">;</span> <span class="n">x</span><span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="n">Q</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">q</span>
-  <span class="c1">#=&gt; NameError: undefined local variable or method &#39;s&#39; for #&lt;Q:0xb7ce9a3c&gt;</span>
-</code></pre></div>
-<p>Which means the sure solution for my problem...</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">Kernel</span>
-    <span class="kp">include</span> <span class="no">MyModule</span>
-  <span class="k">end</span>
-</code></pre></div>
-<p>Can you guess?</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">M</span>
-    <span class="k">def</span> <span class="nf">m</span><span class="p">;</span> <span class="s2">&quot;m&quot;</span><span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="k">module</span> <span class="nn">Kernel</span>
-    <span class="kp">include</span> <span class="n">M</span>
-  <span class="k">end</span>
-
-  <span class="n">m</span>
-  <span class="c1">#=&gt; NameError: undefined local variable or method `m&#39; for main:Object</span>
-
-  <span class="k">class</span> <span class="nc">Q</span>
-    <span class="k">def</span> <span class="nf">q</span><span class="p">;</span> <span class="n">m</span><span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="n">Q</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">q</span>
-  <span class="c1">#=&gt; NameError: undefined local variable or method `m&#39; for #&lt;Q:0xb7cbb324&gt;</span>
-</code></pre></div>
-<p>Lands me squre in the face of the Module Inclusion Problem.</p>
-
-<p>All this leads me to two points. First, I&#39;m stuck! There seems to be no solution to my problem other than rewriting a second version of my module specifically for the toplevel. Talk about lack of DRY! And 2) Why in the world isn&#39;t main a self extended module?</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2006-17-August" title="August 17, 2006">August 17, 2006</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2006/07/23/taming-the-file-system-zoo/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <h2 class="title"><a href="/2006/07/23/taming-the-file-system-zoo/" rel="prefetch">Taming The File System Zoo</a></h2>
             <p><h1>Taming the File System Zoo</h1>
 
 <p>I&#39;m not quite sure I undestand why we have all these classes and modules: <code>Dir</code>, <code>File</code>, <code>FileUtils</code>, <code>FileTest</code> and <code>Pathname</code>. I understand what each does, of course, but I don&#39;t understand why the clearly related functionality has been spread about. I think a single <code>FileSystem</code> class or module would be in
@@ -156,8 +85,48 @@ order --a system we could use in much the same manner as we use the command shel
 <p>I also wonder how remote file systems might fit into this... interesting considerations all.</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
+                Written By <address></a> &mdash;
                 <time pubdate datetime="2006-23-July" title="July 23, 2006">July 23, 2006</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2006/07/22/from-singleton-to-legion/" rel="prefetch">From Singleton To Legion</a></h2>
+            <p><h1>From Singleton to Legion</h1>
+
+<p>For as long as I&#39;ve coded Ruby there has been some question as to the appropriateness of the term singleton class. This is the term generally used in Ruby parlance to refer to the language construct: class &lt;&lt; obj; self; end, and is the context of class methods and module methods.</p>
+
+<p>While the term is fitting in the sense that each object only has one of these classes (hence &quot;single&quot;), issue arises from a terminology clash with an already well accepted object-oriented programming term, <a href="http://en.wikipedia.org/wiki/Singleton_pattern">Singleton Pattern</a>. In OOP-speak a singleton class is a class that can only be instantiated once. Many have argued that the Singleton pattern itself is a flawed concept, since one can just instantiate an object and assign it to a constant to achieve the same end. So why restrict anyone from a second instance of a class if they so choose? That&#39;s a reasonable argument, although not always as practical as it might seem. Nonetheless, the terminology clash still remains.</p>
+
+<p>In light of nomenclature issue, many have offered alternative terms for Ruby&#39;s singleton class. Indeed, Ruby itself has used two alternatives in the past: virtual class and metaclass, and many people still prefer that later of these choices. Other suggestions include the well known _whyism <code>eigenclass</code>, the abbreviated <code>sclass</code>, the pronoun contingents &#39;myclass&#39; and &#39;ownclass&#39;, as well as my own concoctions <code>adhoc</code>, <code>quaclass</code> and <code>nonce</code>. Yet despite all these names, none of which ever stick, what is this singly thing really?</p>
+
+<p>Recently, our beloved Pit Capitan put it concisely when he said &quot;there are only two types of methods in Ruby, instance methods and singleton methods&quot;. Well said. Unfortunately it&#39;s not really true. Instance methods aren&#39;t really methods at all, they are just definitions for methods to be. That&#39;s why when you use #instance<em>method you get something called an UnboundMethod, not a Method. It only becomes a method when it&#39;s bound to an object. To clarify further how that distinction is a bit misleading, consider that when a singleton method is defined it falls into an inheritance hierarchy along side so-called instance methods. In other words, the singleton methods and instance methods exist on the same playing field, and the former can call on the other via #super. In fact, we can access these singleton methods in instance fashion via (class&lt;&lt;obj;self;end).instance</em>method(sym). So these methods are not really distinct in this manner after all. In fact there is no distinction between methods other than bound and unbound. And this distinction arises from the capability of class Module and class Class to harbor a set of method definitions that are not their own. Which is of course exactly why these constructs exist in the first place. So when we say singleton method, we are not referring to something different from instance method. We only mean that these methods are kept in a special &quot;singleton class&quot;, made just for a specific object, and consequently, are automatically bound to that object.</p>
+
+<p>Now, I&#39;m going to claim that the term &#39;singleton&#39; is a poor choice for a completely different reason than any given before. It may come as a bit of surprise, but singletons are not inherently single. They are only made so by an explicit restriction in the Ruby&#39;s source code. It is quite simple, actually, to remark the if-clause out of the source, recompile Ruby and then do:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">o</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+  <span class="k">def</span> <span class="nc">o</span><span class="o">.</span><span class="nf">x</span>
+    <span class="s2">&quot;x&quot;</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nc">o</span><span class="o">.</span><span class="nf">x</span>
+    <span class="k">super</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span>
+  <span class="k">end</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">x</span>   <span class="o">=&gt;</span> <span class="s2">&quot;xx&quot;</span>
+</code></pre></div>
+<p>The reason Ruby makes the per-object classes single is because it would be terribly inefficient to define a whole new class for every new singleton method defined. That&#39;s understandable, but it also comes at a cost. We can not reliably receive an object from the outside world and define our own singleton on it because we may be clobbering someone else&#39;s singleton method without even knowing it. (NOTE: It doesn&#39;t matter so much if you&#39;re just redefining a method altogether, but if you&#39;re calling super it very much matters.) Generally we don&#39;t even think about such things, but truth be told, object singleton methods often fail to survive code refactoring. Object singleton&#39;s really only exist as a side effect of Ruby&#39;s class model (and Smalltalk&#39;s) which utilize the singleton class as a means of separating a module/class method definitions from it&#39;s own actual methods. This could have been done another way of course, but then a class/module would be something wholly different from any other object. The use of the singleton allowed classes and modules to be just like any other object. So singletons are really a bit of cleverness that lie at the very heart of how Ruby works.</p>
+
+<p>But does it mean that they have to be singly? Could we remove the restriction and open up a additional robustness to these per-object classes? We could. In fact, this was the very first hack I ever made to the Ruby source code. My change simply checked to see if the method was already defined in the first &quot;singleton&quot; layer and continue upward until it either found a usable layer or ran out of layers, in which case it created a new one. Combined with the capability to selectively undefine particular methods of particular layers and we gain a flexible pre-object class hierarchy system that can be used without the caveats that currently make singletons so limited outside of class and module definitions.</p>
+
+<p>And then we no long can call them &quot;singleton&quot; but rather &quot;legion&quot; ;)</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2006-22-July" title="July 22, 2006">July 22, 2006</time>
             </div>
         </div>
         <hr>

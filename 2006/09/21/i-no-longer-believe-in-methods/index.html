@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I No Longer Believe In Methods &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="I No Longer Believe In Methods ">
+    <link rel="canonical" href="http://trans.github.com/2006/09/21/i-no-longer-believe-in-methods/">
+     
+           
+    <meta property="og:title" content="I No Longer Believe In Methods "/>
+    <meta property="og:url" content="http://trans.github.com/2006/09/21/i-no-longer-believe-in-methods/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="" target="_blank"></a> &mdash;
+                <time pubdate datetime="2006-21-September" title="September 21, 2006">September 21, 2006</time>
+            </div>
+            <h1 class="title">I No Longer Believe In Methods</h1>
+            
+        </header>
+
+        <section>
+            <h1>I No Longer Believe in Methods</h1>
+
+<p>Yes, that&#39;s right. I no longer believe in methods. Why? Becuase this is OOP and if the methods aren&#39;t honest to goodness objects from the start, without exception, then they are not really methods. They&#39;re just glorified functions.</p>
+
+<p>Let me show you what I mean. I have a Project class in which is defined a set of tools that can manipulate it. Clearly the proper implementation abstraction for these tools is the method.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="k">def</span> <span class="nf">announce</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>But these tools must be distinguishable from other supporting methods. Moreover additional information may be associated with these tools, like help information or valid states of the Project for the tool to be useful. How do we encode this information with Ruby? Since methods aren&#39;t first class objects, we are forced to return to functional programming. In which case, it is best to define some sort of DSL.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">ProjectDSL</span>
+    <span class="k">def</span> <span class="nf">help</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="n">text</span> <span class="p">)</span>
+      <span class="vi">@help</span> <span class="o">||=</span> <span class="p">{}</span>
+      <span class="vi">@help</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="n">text</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="nb">test</span> <span class="p">)</span>
+      <span class="vi">@valid</span> <span class="o">||=</span> <span class="p">{}</span>
+      <span class="vi">@valid</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="nb">test</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="kp">extend</span> <span class="no">ProjectDSL</span>
+
+    <span class="k">def</span> <span class="nf">announce</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">help</span> <span class="ss">:announce</span><span class="p">,</span> <span class="s2">&quot;Announces your project to the world!&quot;</span>
+    <span class="n">valid</span> <span class="ss">:announce</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Now this kind of thing has come up enough in large projects, such as Nitro, that a general means of annotation proved to be most effective.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">require</span> <span class="s1">&#39;facet/annotation&#39;</span>
+
+  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="k">def</span> <span class="nf">announce</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">ann</span> <span class="ss">:announce</span><span class="p">,</span> <span class="ss">:help</span> <span class="o">=&gt;</span> <span class="s2">&quot;Announces your project to the world!&quot;</span><span class="p">,</span>
+                   <span class="ss">:valid</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Annotations works very well, and if you find yourself in need of this kind of &quot;method metadata&quot; it is an excellent approach.</p>
+
+<p>But I&#39;ve worked with all this long enough now to be able to have a wide perspective on it and it&#39;s become very clear to me that the whole &quot;special needs&quot; arises out of the fact that Ruby is still just a functional language in this respect, and not a full OOPL. (And please no objections that method() and instance_method() make it otherwise, these do not provide a persitant object, but return a new object every time they are invoked.) So what might the above look like if it were not so? There would of course be more than one way to go about it, but imagine this:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Tool</span> <span class="o">&lt;</span> <span class="no">Method</span>
+    <span class="kp">attr_accessor</span> <span class="ss">:help</span>
+
+    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span> <span class="o">&amp;</span><span class="nb">test</span> <span class="p">)</span>
+      <span class="vi">@valid</span> <span class="o">=</span> <span class="nb">test</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="k">def</span> <span class="nf">announce</span> <span class="o">=&gt;</span> <span class="no">Tool</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">announce</span><span class="o">.</span><span class="n">help</span> <span class="o">=</span> <span class="s2">&quot;Announces your project to the world!&quot;</span>
+
+    <span class="n">announce</span><span class="o">.</span><span class="n">valid</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>I&#39;m taking some liberties with the syntax here for clarity. But in anycase it certainly paints a provocative idea. And I would argue that it paints the approprite OOP idea too.</p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank"></a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

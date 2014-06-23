@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Singleton To Legion &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="From Singleton To Legion ">
+    <link rel="canonical" href="http://trans.github.com/2006/07/22/from-singleton-to-legion/">
+     
+           
+    <meta property="og:title" content="From Singleton To Legion "/>
+    <meta property="og:url" content="http://trans.github.com/2006/07/22/from-singleton-to-legion/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="" target="_blank"></a> &mdash;
+                <time pubdate datetime="2006-22-July" title="July 22, 2006">July 22, 2006</time>
+            </div>
+            <h1 class="title">From Singleton To Legion</h1>
+            
+        </header>
+
+        <section>
+            <h1>From Singleton to Legion</h1>
+
+<p>For as long as I&#39;ve coded Ruby there has been some question as to the appropriateness of the term singleton class. This is the term generally used in Ruby parlance to refer to the language construct: class &lt;&lt; obj; self; end, and is the context of class methods and module methods.</p>
+
+<p>While the term is fitting in the sense that each object only has one of these classes (hence &quot;single&quot;), issue arises from a terminology clash with an already well accepted object-oriented programming term, <a href="http://en.wikipedia.org/wiki/Singleton_pattern">Singleton Pattern</a>. In OOP-speak a singleton class is a class that can only be instantiated once. Many have argued that the Singleton pattern itself is a flawed concept, since one can just instantiate an object and assign it to a constant to achieve the same end. So why restrict anyone from a second instance of a class if they so choose? That&#39;s a reasonable argument, although not always as practical as it might seem. Nonetheless, the terminology clash still remains.</p>
+
+<p>In light of nomenclature issue, many have offered alternative terms for Ruby&#39;s singleton class. Indeed, Ruby itself has used two alternatives in the past: virtual class and metaclass, and many people still prefer that later of these choices. Other suggestions include the well known _whyism <code>eigenclass</code>, the abbreviated <code>sclass</code>, the pronoun contingents &#39;myclass&#39; and &#39;ownclass&#39;, as well as my own concoctions <code>adhoc</code>, <code>quaclass</code> and <code>nonce</code>. Yet despite all these names, none of which ever stick, what is this singly thing really?</p>
+
+<p>Recently, our beloved Pit Capitan put it concisely when he said &quot;there are only two types of methods in Ruby, instance methods and singleton methods&quot;. Well said. Unfortunately it&#39;s not really true. Instance methods aren&#39;t really methods at all, they are just definitions for methods to be. That&#39;s why when you use #instance<em>method you get something called an UnboundMethod, not a Method. It only becomes a method when it&#39;s bound to an object. To clarify further how that distinction is a bit misleading, consider that when a singleton method is defined it falls into an inheritance hierarchy along side so-called instance methods. In other words, the singleton methods and instance methods exist on the same playing field, and the former can call on the other via #super. In fact, we can access these singleton methods in instance fashion via (class&lt;&lt;obj;self;end).instance</em>method(sym). So these methods are not really distinct in this manner after all. In fact there is no distinction between methods other than bound and unbound. And this distinction arises from the capability of class Module and class Class to harbor a set of method definitions that are not their own. Which is of course exactly why these constructs exist in the first place. So when we say singleton method, we are not referring to something different from instance method. We only mean that these methods are kept in a special &quot;singleton class&quot;, made just for a specific object, and consequently, are automatically bound to that object.</p>
+
+<p>Now, I&#39;m going to claim that the term &#39;singleton&#39; is a poor choice for a completely different reason than any given before. It may come as a bit of surprise, but singletons are not inherently single. They are only made so by an explicit restriction in the Ruby&#39;s source code. It is quite simple, actually, to remark the if-clause out of the source, recompile Ruby and then do:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">o</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+  <span class="k">def</span> <span class="nc">o</span><span class="o">.</span><span class="nf">x</span>
+    <span class="s2">&quot;x&quot;</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nc">o</span><span class="o">.</span><span class="nf">x</span>
+    <span class="k">super</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span>
+  <span class="k">end</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">x</span>   <span class="o">=&gt;</span> <span class="s2">&quot;xx&quot;</span>
+</code></pre></div>
+<p>The reason Ruby makes the per-object classes single is because it would be terribly inefficient to define a whole new class for every new singleton method defined. That&#39;s understandable, but it also comes at a cost. We can not reliably receive an object from the outside world and define our own singleton on it because we may be clobbering someone else&#39;s singleton method without even knowing it. (NOTE: It doesn&#39;t matter so much if you&#39;re just redefining a method altogether, but if you&#39;re calling super it very much matters.) Generally we don&#39;t even think about such things, but truth be told, object singleton methods often fail to survive code refactoring. Object singleton&#39;s really only exist as a side effect of Ruby&#39;s class model (and Smalltalk&#39;s) which utilize the singleton class as a means of separating a module/class method definitions from it&#39;s own actual methods. This could have been done another way of course, but then a class/module would be something wholly different from any other object. The use of the singleton allowed classes and modules to be just like any other object. So singletons are really a bit of cleverness that lie at the very heart of how Ruby works.</p>
+
+<p>But does it mean that they have to be singly? Could we remove the restriction and open up a additional robustness to these per-object classes? We could. In fact, this was the very first hack I ever made to the Ruby source code. My change simply checked to see if the method was already defined in the first &quot;singleton&quot; layer and continue upward until it either found a usable layer or ran out of layers, in which case it created a new one. Combined with the capability to selectively undefine particular methods of particular layers and we gain a flexible pre-object class hierarchy system that can be used without the caveats that currently make singletons so limited outside of class and module definitions.</p>
+
+<p>And then we no long can call them &quot;singleton&quot; but rather &quot;legion&quot; ;)</p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank"></a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

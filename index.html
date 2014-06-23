@@ -60,7 +60,45 @@
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2014/03/29/Next-Level-Please/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <h2 class="title"><a href="/2014/06/17/My-Critique-of-Elixir/" rel="prefetch">My Critique Of Elixir</a></h2>
+            <p><p>First, let me admonish myself for having limited knowledge of the subject. I am far from an Elixir expert. So I readily defer to those with more experience that can make a solid contrary argument against my conclusions. However, as I am unlikely to continue on in my adventures with Elixir, this is clearly the only time I have left to opine on the topic. So I will do so, and feel free to take my opinions with as much salt as you feel necessary.</p>
+
+<p>There are many things to like about Elixir. Most notable of them is it&#39;s inheritance from Erlang and it&#39;s improved syntax inspired by Ruby. Its Erlang roots bring so many great features to the table: true functional programming, rock solid stability, distributed computing, and so on. Anything that is good about Erlang, is likewise good about Elixir. On top of this, Elixir brings a much more pleasurable syntax and a few higher-level conveniences which really set it apart from Erlang. (Otherwise there would be no point but to use Erlang directly). But then there are the caveats. </p>
+
+<p>On the minor end, Elixir&#39;s code documentation is a bit odd. Documentation of modules is placed within the <code>defmodule</code> block, while documentation of functions are placed on the outside the <code>def</code> blocks. Why the difference? In addition there is no sigil at the beginning of documentation lines to clearly indicate a comment. If a documentation section were large enough, one could mistake examples for actual program code. Only by the magic of syntax highlighters are we saved from any such &quot;at a glance&quot; error. </p>
+
+<p>Then there is the minor issue of the <code>def</code> prefix on the definition of everything. <code>defmodule</code>, <code>defstruct</code>, <code>deftype</code>, etc. One can understand the desire to avoid too many keywords, but surely <code>module</code>, <code>struct</code> and <code>type</code> would do much better, as they do in almost every other language, and can be avoided as keywords if need be by appropriate context.</p>
+
+<p>A little more troubling is the awful block syntax. Despite all the inspiration form Ruby, Elixir did not adopt Ruby&#39;s elegant block syntax. Instead we get a strange twist of <code>fn</code> keyword, an arrow <code>-&gt;</code> and an <code>end</code> keyword, all within the argument parenthetical.</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">  <span class="no">Enum</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="k">fn</span> <span class="n">x</span> <span class="o">-&gt;</span>
+    <span class="o">...</span>
+  <span class="k">end</span><span class="p">)</span>
+</code></pre></div>
+<p>It feels a bit more like Javascript than Ruby. Ironically, this ugliness doesn&#39;t save us from a whole mess of seemingly extraneous <code>do</code> statements everywhere. Every <code>def*</code> and even every condition like <code>if</code> also requires a <code>do</code> to define the subsequent block.</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">  <span class="k">if</span> <span class="n">ok?</span><span class="p">()</span> <span class="k">do</span>
+<span class="k">     </span><span class="o">...</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>It might not seem like much, but when you write enough code and find yourself having to always fix missing do&#39;s first off, you can&#39;t help but feel as if your time could be spent on more useful endeavors.</p>
+
+<p>On a higher level of critique, I think Elixir, like Erlang and their ML brethren, suffer from <em>Overtype Syndrome</em>, if you will allow me to coin a phrase. Because the language is both functional and so strongly typed, every method comes by way of a module. So instead of say, <code>list.each{...}</code> as in Ruby, one much specify where <code>each</code> is defined, <code>Enum.each(list, ...)</code>. And because one must repeat these module names over and over, there is a naturally common practice of extreme abbreviation. In some fashion it&#39;s nice that names are concise. Yet it can be a bit difficult encountering module names like <code>IEx</code> in passing. In addition, we end up with a whole slew of modules and types with which to contend. Of course this can be true of any strongly typed language, but it seems especially so for the ML branch of languages.</p>
+
+<p>Finally, my last niggle is with functional programming in general. Honestly, it&#39;s pretty awesome. But just as honestly, it is difficult. The lack of procedural techniques puts a significant onus on the functional language to provide a large set of easy to understand and easy to utilize functions to pipe together to achieve the desired result. Partly it is due to lack of experience in thinking functionally, but it is clear enough that even for very component functional programmers it can be a real challenge to piece together the right functions to solve a complex problem. I believe this is because functional programming forces you to think about the whole more so than procedural programming. With a procedure, one can quickly break down a problem into parts. e.g. &quot;I have an array of strings, which I need to iterate over and extract each word, and for each word, make it lowercase, and then update a hash table to track the number of times the word occurs.&quot; Easy enough. Functionally the reads more like, &quot;I need to build a dict via a flat-map over a list of strings and the list of words in each while lowering the case of each word, with an updated key/value pair.&quot; Or something like that. It is simply harder to even to talk in functional terms.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2014-17-June" title="June 17, 2014">June 17, 2014</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2014/03/29/Next-Level-Please/" rel="prefetch">Next Level Please</a></h2>
             <p><p>What I want my computer to do the following:</p>
 
 <ul>
@@ -112,7 +150,7 @@ output:
   - File .jpg .png
 </code></pre></div></p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
+                Written By <address></a> &mdash;
                 <time pubdate datetime="2014-29-March" title="March 29, 2014">March 29, 2014</time>
             </div>
         </div>
@@ -124,7 +162,117 @@ output:
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2013/09/04/Revelation-Knowledge/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <h2 class="title"><a href="/2014/01/20/HTML-Follies/" rel="prefetch">Html Follies</a></h2>
+            <p><p>HTML Follies</p>
+
+<p><strong>DRAFT</strong></p>
+
+<p>Despite all its glories, HTML also has some serious follies. I&#39;ve never thought highly of the W3C in general. They seem to be on a never ending quest to build standards at a snails pace, yet end up with a result that is barely an improvement over previous solutions --if not actually worse. And unfortunately it is too often at an intolerable level of new complexity. For some reason K.I.S.S. seems to have been left off their principles sheet. For some clear examples, consider [XMLST] and [XML-fo]. I think [Web Components] are the latest ranking member.</p>
+
+<p>So let&#39;s go through some of the glaring issues with HTML, what would be an appropriate solution and perhaps make some suggestion for how to mitigate the issue while still under the yolk of current standards.</p>
+
+<h2>Headers Ought to be Titles</h2>
+
+<p>Presently HTML authors must handle the titling of sections as follows:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;section&gt;
+  &lt;h2&gt;New Chapter&lt;/h2&gt;
+  &lt;p&gt;...&lt;/p&gt;
+&lt;/section&gt;
+</code></pre></div>
+<p>We assume here that the author was at least wise enough to put the header in the section and not above it. But why <code>h2</code> (which is a common choice)? Why not <code>h1</code> or <code>h3</code>? Well, there is no real reason. The document creator simply choose <code>h2</code> because it was in suitable font size as setup in the CSS. And therein lies a clear failure of design. The element is not being selected semantically. A proper design would be:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;section&gt;
+  &lt;title&gt;New Chapter&lt;/title&gt;
+  &lt;p&gt;...&lt;/p&gt;
+&lt;/section&gt;
+</code></pre></div>
+<p>Alas, HTML has no <code>title</code> element (outside of <code>head</code>). We could argue for a numberless <code>h</code> instead, but it amounts to essentially the same thing. Yet the term <code>title</code> is much more telling. Likewise <code>subtitle</code> is much more telling than any <code>h2</code> or <code>h3</code>.</p>
+
+<p><strong>What to do now?</strong> Our best course of action is to always use <code>h1</code> for titles and use <code>h2</code> for subtitles. Headers <code>h3</code>-<code>h6</code> should rarely, if ever, be of any use.</p>
+
+<h2>Padding Undermines Width</h2>
+
+<p>Technically this is a CSS issue, but these days it&#39;s not reasonable to separate it from HTML. The two are intractably linked. </p>
+
+<p>Padding should not add width. If the width of an element is specified and a padding is added, then the inner width should reduce accordingly.</p>
+
+<p>Thankfully this has been addressed in the latest HTML version. <em>Hallelujah!</em> ...</p>
+
+<h2>Open Semantics</h2>
+
+<p>Lastly, the ultimate end point of the development of HTML is to separate the markup of structure from that of the meaning of the tags. This is in fact what the W3C was attempting with XML and XSLT. But that approach failed. It was too complicated. A new approach using CSS instead of XSLT could do better.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;chapter&gt;
+  &lt;p&gt;...&lt;/p&gt;
+&lt;/chapter&gt;
+</code></pre></div>
+<p>Chapter isn&#39;t a recognized tag. But the CSS could be used to identify it.</p>
+
+<p>chapter {
+    tag: section
+  }</p>
+
+<p>Thus the CSS informs the document to treat <code>chapter</code> tags as if they were <code>section</code> tags.</p>
+
+<p>Current the W3C&#39;s solution to this is Web Components. And while some of the Web Components specification is needed for more complex problems. It is still has a piss poor interface, and is a complete overkill for simple cases like the one above.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2014-20-January" title="January 20, 2014">January 20, 2014</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2013/09/17/Transpilers-to-Watch/" rel="prefetch">Transpilers To Watch</a></h2>
+            <p><h1>Transpilers to Watch</h1>
+
+<p><a href="">CoffeeScript</a> is fairly ubiquitous technology these days --a <em>transpiler</em> that converts it&#39;s own much nicer language into Javascript which can then be run via Node.js or on the Web. But it&#39;s not the only fish in this sea. Here are three similar projects that look very promising.</p>
+
+<h2><a href="http://texodus.github.io/forml/">Forml</a></h2>
+
+<blockquote>
+<p>A contemporary programming language for the discriminating programmer,
+intended to approximate the safety of Haskell and the expressiveness
+of Ruby. Should such an approximation turn out to exist.</p>
+</blockquote>
+
+<h2><a href="http://noflojs.org/">NoFlo</a></h2>
+
+<blockquote>
+<p>NoFlo is a JavaScript implementation of Flow-Based Programming (FBP).
+Separating the control flow of software from the actual software logic.
+Helping you organize large applications easier than traditional OOP
+paradigms, especially when importing and modifying large data sets.</p>
+</blockquote>
+
+<h2><a href="http://opalang.org/">Opal</a></h2>
+
+<blockquote>
+<p>Opa is a full-stack open source web development framework for JavaScript
+that lets you write secure and scalable web applications.
+Opa handles all aspects of web programming: frontend (client code),
+backend (server code) and database queries are all written in one
+consistent language and compiled to standards of the web.</p>
+</blockquote>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2013-17-September" title="September 17, 2013">September 17, 2013</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2013/09/04/Revelation-Knowledge/" rel="prefetch">Revelation Knowledge</a></h2>
             <p><p>I just had a revelation about programming languages.</p>
 
 <p>Coming into this project, my primary goal was to rate a Forth derivative, that added types, polymorphism and functional-orientation to the language. That goal is proceeded reasonably well. However, in the course of thinking about all the varying aspects of the design I hit upon a very interesting concept. I asked, &quot;What does the computer know?&quot; In other words, how are we really informing the computer about our systems as we program. It only stands the reason that the more the computer knows the more we easily we can communicate our intent.</p>
@@ -226,7 +374,7 @@ object Product(name, price)
 <p>Taking a step back, I believe it would be too much of undertaking for me to endeavor upon at this point. Nonetheless it does move me in a smarter direction with March --to make the language more knowledgeable.</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
+                Written By <address></a> &mdash;
                 <time pubdate datetime="2013-04-September" title="September 04, 2013">September 04, 2013</time>
             </div>
         </div>
@@ -238,7 +386,116 @@ object Product(name, price)
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2013/08/06/Should-You-Go/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <h2 class="title"><a href="/2013/08/11/drink-me/" rel="prefetch">Drink Me</a></h2>
+            <p><h1>Drink Me</h1>
+
+<p><strong>A Case For and Against Elixir</strong></p>
+
+<p>Is thinking functionally a bit of a black art?</p>
+
+<p>As I explained in a previous post, I have been writing a genetic algorithm to find the best layout of a keyboard based on a set of ergonomic principles. I decided to write the program in both Go and Elixir as a way to &quot;learn me some new programmings languages for the greater good&quot;. Writing the Go program went very smoothly. I had a good working program in just over a day&#39;s work. The Elixir code on the other hand has taken me close to three days and I am still trying to work out issues. I attribute most of this long spell to the paradigm shift one must make when switching from a procedural to a functional way of doing things.</p>
+
+<p>I have two examples from my work that I think demonstrate the difficultly of this shift.</p>
+
+<p>Originally I had written the following code:</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">    <span class="k">def</span> <span class="n">evolve</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span> <span class="k">do</span>
+<span class="k">      </span><span class="ss">:random</span><span class="o">.</span><span class="n">seed</span>
+
+      <span class="n">best</span> <span class="o">=</span> <span class="m">0</span>
+      <span class="n">size</span> <span class="o">=</span> <span class="m">16</span>
+
+      <span class="n">pop</span> <span class="o">=</span> <span class="n">random_keyboards</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+      <span class="no">Enum</span><span class="o">.</span><span class="n">reduce</span> <span class="p">(</span><span class="m">1</span> <span class="o">..</span> <span class="n">gen</span><span class="p">),</span> <span class="n">pop</span><span class="p">,</span> <span class="k">fn</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">-&gt;</span>
+        <span class="n">newpop</span> <span class="o">=</span> <span class="no">List</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">breed</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">newpop</span> <span class="o">=</span> <span class="n">natural_selection</span><span class="p">(</span><span class="n">newpop</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="n">first</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">childs</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">best</span> <span class="o">&lt;</span> <span class="n">first</span><span class="o">.</span><span class="n">score</span> <span class="k">do</span>
+<span class="k">          </span><span class="n">best</span> <span class="o">=</span> <span class="n">first</span><span class="o">.</span><span class="n">score</span>
+          <span class="n">size</span> <span class="o">=</span> <span class="m">16</span>
+        <span class="k">else</span>
+          <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">+</span> <span class="m">2</span>
+        <span class="k">end</span>         
+
+        <span class="n">newpop</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>It all seemed rather reasonable to me. Turns out however, Elixir thought otherwise:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">variable best is unused
+variable size is unused
+</code></pre></div>
+<p>My procedural mindset was geared toward the idea of using variables to track a state while iterating around in a loop. But for a functional language this is not the correct way to think about the problem. By reassigning best and size within the <code>reduce</code> block function I was in effect creating new variables, not reassigning the ones defined outside.</p>
+
+<p>The solution, as is the case with many such procedural conversions, is to think recursively.</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">    <span class="k">def</span> <span class="n">evolve</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span> <span class="k">do</span>
+<span class="k">      </span><span class="ss">:random</span><span class="o">.</span><span class="n">seed</span>
+      <span class="n">evolve</span><span class="p">(</span><span class="n">gen</span><span class="p">,</span> <span class="n">random_keyboards</span><span class="p">(</span><span class="m">16</span><span class="p">),</span> <span class="m">16</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="n">evolve</span><span class="p">(</span><span class="n">gen</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">best</span><span class="p">)</span> <span class="k">do</span>
+<span class="k">      if</span> <span class="n">gen</span> <span class="o">==</span> <span class="m">0</span> <span class="k">do</span>
+<span class="k">        </span><span class="n">pop</span>
+      <span class="k">else</span>
+        <span class="n">newpop</span> <span class="o">=</span> <span class="no">List</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">breed</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">newpop</span> <span class="o">=</span> <span class="n">natural_selection</span><span class="p">(</span><span class="n">newpop</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="n">first</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">childs</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">best</span> <span class="o">&lt;</span> <span class="n">first</span><span class="o">.</span><span class="n">score</span> <span class="k">do</span>
+<span class="k">          </span><span class="n">evolve</span><span class="p">(</span><span class="n">gen</span> <span class="o">-</span> <span class="m">1</span><span class="p">,</span> <span class="n">newpop</span><span class="p">,</span> <span class="m">16</span><span class="p">,</span> <span class="n">first</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="n">evolve</span><span class="p">(</span><span class="n">gen</span> <span class="o">-</span> <span class="m">1</span><span class="p">,</span> <span class="n">newpop</span><span class="p">,</span> <span class="n">size</span> <span class="o">+</span> <span class="m">2</span><span class="p">,</span> <span class="n">best</span><span class="p">)</span>
+        <span class="k">end</span>         
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>After working this out, a part of me has to agree the fanboys of functional languages. This does smack of an certain elegance that the procedure solution lacks. The solution is also efficient thanks to <em>tail recursion</em>, which avoids the usual call stack overhead of repeatedly calling nested functions.</p>
+
+<p>But then there was the routine that I have yet to figure out how to do in a more functional way. To get the following routine to work I basically had to make Elixir behave much like a procedural language --running in a loop shuffling list indexes around.</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">    <span class="k">def</span> <span class="n">cross</span><span class="p">(</span><span class="n">mother</span><span class="p">,</span> <span class="n">father</span><span class="p">)</span> <span class="k">do</span>
+<span class="k">      </span><span class="n">offset</span> <span class="o">=</span> <span class="m">0</span>
+
+      <span class="k">if</span> <span class="n">numeric_layout?</span><span class="p">()</span> <span class="k">do</span>
+<span class="k">        </span><span class="n">offset</span> <span class="o">=</span> <span class="m">9</span>
+      <span class="k">end</span>
+
+      <span class="n">n</span> <span class="o">=</span> <span class="n">number_of_actions</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>  <span class="c1"># 0 or 1</span>
+
+      <span class="n">child_layout</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">reduce</span> <span class="p">(</span><span class="m">0</span> <span class="o">..</span> <span class="n">n</span><span class="p">),</span> <span class="n">mother</span><span class="o">.</span><span class="n">layout</span><span class="p">,</span> <span class="k">fn</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="ss">:random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="n">offset</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">at</span> <span class="n">father</span><span class="o">.</span><span class="n">layout</span><span class="p">,</span> <span class="n">i</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">find_index</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="k">fn</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">q</span> <span class="o">==</span> <span class="n">l</span> <span class="k">end</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="k">do</span>
+<span class="k">          </span><span class="n">swap</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="n">c</span>  <span class="c1"># should generally never happen</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+      <span class="n">make_keyboard</span><span class="p">(</span><span class="n">mutate</span><span class="p">(</span><span class="n">child_layout</span><span class="p">))</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>Perhaps it is inevitable that some procedural-esque code will always be present. In fact, that is the one caveat about functional programming that makes me wonder if maybe it&#39;s <em>not quite all that</em>. Some problems, that are relatively easy to solve in a traditional procedural language, seem markedly harder to solve functionally.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2013-11-August" title="August 11, 2013">August 11, 2013</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2013/08/06/Should-You-Go/" rel="prefetch">Should You Go</a></h2>
             <p><h1>Should You Go?</h1>
 
 <p><strong>2012-080-06 [DRAFT]</strong></p>
@@ -282,7 +539,7 @@ object Product(name, price)
 <p>Go is the best new language to come along since I learned Ruby in 2002. I think anyone still coding C when it&#39;s not absolutely necessary, is just a glutton for punishment. I highly recommend you Go, and Go now.</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
+                Written By <address></a> &mdash;
                 <time pubdate datetime="2013-06-August" title="August 06, 2013">August 06, 2013</time>
             </div>
         </div>
@@ -294,7 +551,53 @@ object Product(name, price)
     <section class="index">
         <!-- -->
         <div>
-            <h2 class="title"><a href="/2013/02/28/the-end-of-ruby/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <h2 class="title"><a href="/2013/08/05/memory-frabrics/" rel="prefetch">Memory Frabrics</a></h2>
+            <p><p>I&#39;ve been thinking about data structure the last week, and I was wondering why data structures are implemented the way they are.</p>
+
+<p>It occurs to me that it is mostly due to the way computer memory is designed. Computer memory is a randomly accessible linear structure. Basically what you have is a large string of values that you can access by a single position index. This is the <em>interface</em> of memory, and all data structures are there root must use it in their implementation.</p>
+
+<p>But I wondered, how would data structures differ is memory itself was structured in some other fashion? For instance, what if memory wasn&#39;t a linear string of data, but a two-dimensional fabric? While arrays might be unaffected by such a change, clearly things like matrices could be stored in a much more literal fashion. It would be interesting to see the form of data structure talented individuals might devise with this.</p>
+
+<p>Even so, two-dimensions is still somewhat limiting, taking it to a third dimension could open tremendous possibilities in the <em>relative storage</em> of data.</p>
+
+<p>But might we go even further. What would prevent us from making the dimensionality definable? If a memory cell could be associated with any other memory cell as often as desired, then the <em>fabric</em> could have any structure desired. Interestingly, the effect of this would be to move what we already do in software, via indirect memory referencing, to the hardware itself.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2013-05-August" title="August 05, 2013">August 05, 2013</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2013/03/08/ruby-avoids-consistency-like-the-plague/" rel="prefetch">Ruby Avoids Consistency Like The Plague</a></h2>
+            <p><h1>Ruby Avoids consistency like the Plague</h1>
+
+<p>Ruby is such a great language in so many ways, it always feels especially disappointing when one discovers a way in which it lacks. I believe much of Ruby&#39;s less noble attributes stem from a single source: Matz and company eschew <em>consistency</em> as if it were a disease.</p>
+
+<p>Let&#39;s take a simple example that occurred to me today as I was working on a <a href="http://rubyworks.github.com/mirror">reflection</a> system for Ruby. It has probably slipped by every Rubyists on the planet, but once it is pointed out, it&#39;s pretty obvious. A <em>class</em> has <em>instance methods</em> of which we can get a list via the <code>#instance_methods</code> method, as opposed to an <em>instance</em> of a class whose methods we can list via <code>#methods</code>. That in itself might be an acceptable naming system accept the instance also has a method called <code>#instance_variables</code> (not to mention a number of other &quot;instance_&quot; methods). Give it a moments though and it becomes clear that the terms don&#39;t jive well. The problem lies in the fact that classes don&#39;t actually have &quot;instance methods&quot; per-se. They have <em>method definitions</em> that become instance methods when a class is instantiated. It would have made much more sense for the class&#39;s method to called <code>#methods</code> and the instance&#39;s to be called <code>#instance_methods</code>. Or, at the very least, the class terminology could have used something else like <code>#method_definitions</code>.</p>
+
+<p>Generally we developers just accept APIs as they a given us and go about using them without giving too much thought to the nomenclatures used. Unfortunately inconsistent terminology often leads to difficulties communicating with other developers, ultimately wasting time and energy. The above is just one example of such an inconsistency. But don&#39;t bother telling Matz or the rest of the Ruby core team. They will just tell you &quot;consistency is as a bad reason for language change&quot;. Perhaps in the short-term that is true to avoid backward compatibility issues. In the long-run, however, it&#39;s only a matter of time before people head to greener pastures.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2013-08-March" title="March 08, 2013">March 08, 2013</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2013/02/28/the-end-of-ruby/" rel="prefetch">The End Of Ruby</a></h2>
             <p><h1>The End of Ruby</h1>
 
 <p>I have given 10 years of my life to Ruby. And in return I have been ridiculed, mocked, cussed at, laughed at, shunned, harassed, ignored and all but excommunicated from the Ruby community. And all for nothing more than trying to be a helpful and constructive part of it. </p>
@@ -350,288 +653,8 @@ Perhaps it would seem ironic then that once again I did accept every critique (t
 <p>https://gist.github.com/tenderlove/92f5a886fd9dafba1685</p>
 </p>
             <div class="meta">
-                Written By <address>trans</a> &mdash;
+                Written By <address></a> &mdash;
                 <time pubdate datetime="2013-28-February" title="February 28, 2013">February 28, 2013</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2013/01/04/the-plethora-of-version-versions/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>The Plethora of Version Versions</h1>
-
-<p>A couple of my programs have need of a Version API --a library for handling version numbers, and handling them well. Not only do they need a class modeling a <em>version number</em>, but also a <em>version constraint</em> and in one case even a <em>version conflict resolver</em> for requirements. Presently each project had its own code for handling versions. But as these projects have evolved it has became increasingly clear that effort was being wasted and that I should pull the separate bits of code together into a single gem on which they all could depend.</p>
-
-<p>So I created the new project --actually it was some time ago, but I ran into that not-so-unusual snag, what to name it. Unfortunately there was already a <code>version</code> gem, and could think of no better name. So I put the whole thing on the back burner for some months. Today I finally returned to the question. I still don&#39;t have an answer, but to be thorough I searched of RubyGems.org using &quot;vers&quot;. I thought there were a lot of ANSI code gems!</p>
-
-<ul>
-<li><a href="https://github.com/Ataxo/app-version-git">app-version-git</a></li>
-<li><a href="https://github.com/westarete/aversion">Aversion</a></li>
-<li><a href="https://github.com/jeffp/gem_version">GemVersion</a></li>
-<li><a href="https://github.com/Bodacious/per-version">PerVersion</a></li>
-<li><a href="https://github.com/AlphaHydrae/rake-version">rake-version</a></li>
-<li><a href="https://github.com/martinkozak/ruby-version">Ruby Version</a></li>
-<li><a href="https://github.com/canton7/sem_version">SemVersion</a></li>
-<li><a href="https://github.com/stouset/version">version</a></li>
-<li><a href="https://github.com/jondot/version_bumper">version_bumper</a></li>
-<li><a href="https://github.com/djsun/version_string">version_string</a></li>
-<li><a href="https://github.com/RiverGlide/Versionary">Versionary</a></li>
-<li><a href="https://github.com/charlotte-ruby/versionator">Versionator</a></li>
-<li><a href="http://rubyforge.org/projects/versioncheck">VersionCheck</a></li>
-<li><a href="https://github.com/chaione/versioner">versioner</a></li>
-<li><a href="https://github.com/xaviervia/versionifier">Versionifier</a></li>
-<li><a href="https://github.com/jcangas/version_info">VersionInfo</a></li>
-<li><a href="http://rubygems.org/gems/versionize">Versionize</a></li>
-<li><a href="https://github.com/thomasbiddle/versionr">Versionr</a></li>
-<li><a href="https://github.com/defunkt/version_sorter">VersionSorter</a></li>
-<li><a href="https://github.com/meh/versionub">Versionub</a></li>
-</ul>
-
-<p>The majority of these gems address the same functionality, that of bumping a version number. Some of those provide rake tasks to do so, others just the API, and a couple go a step further handling git commits and gem pushes as well. One a few actually focus on modeling a <em>version number</em>, though all have some sort of internal model no matter how simplistic. Only one appears to provide a model any more sophisticated than simple comparison and accessing named components (major, minor, patch, etc.). SemVersion also has simple constraint testing.</p>
-
-<p>It&#39;s too bad there is not more cooperation among gem developers. I think this is an area in which the Perl community has shined. Surely in no small part to <a href="http://cpan.org">CPAN</a> and the culture of naming libraries functionally, rather then creatively. </p>
-
-<p>Still doesn&#39;t help me name mine.</p>
-
-<hr>
-
-<p>Note <a href="https://github.com/phs/versionable">Versionable</a> is something different, and pretty neat.</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2013-04-January" title="January 04, 2013">January 04, 2013</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2012/06/26/Example/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Example</h1>
-
-<p>This is an example. I am wondering how this gets saved.</p>
-
-<!-- Comment
-Can we hide things this way?
--->
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2012-26-June" title="June 26, 2012">June 26, 2012</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2012/06/14/autoload-smells-like-denmark/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Autoload Smells Like Denmark</h1>
-
-<p>Ruby has a very cool feature called <em>autoload</em>. With autoload, any undefined constant can automatically trigger the loading of a library file. Effectively this gives Ruby a convenient means of lazy loading. For example, lets say some of our app&#39;s executable scripts ultimately use the ANSI library, but others do not. We can use <code>autoload</code> to only load the ANSI library when it is needed.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="nb">autoload</span> <span class="no">ANSI</span><span class="p">,</span> <span class="s1">&#39;ansi&#39;</span>
-</code></pre></div>
-<p>This says to <code>require &quot;ansi&quot;</code> the first time an undefined ANSI constant is encountered.</p>
-
-<p>As wonderful as autoload seems, it has too glaring issues: 1) It doesn&#39;t use standard Kernel#require and 2) It is not thread safe. </p>
-
-<p>For the first, this means that any overriding of #require will not be supported by autoload. Of course such a thing is very rare, but it does occur. For instance the <a href="https://rubygems.org/gems/roll">Roll</a> library is all about overriding <code>#require</code>. Also RubyGems overrides #require, and in fact one can cause a bug to occur when using autoload because of it. Here&#39;s a very simple <a href="http://stackoverflow.com/questions/849622/autoload-raises-an-error-but-require-does-not-ruby">example</a>.</p>
-
-<p>On the second case the issue seems much more complicated, and a solution seems so unlikely that Matz has called for #autoload to be <a href="http://bugs.ruby-lang.org/issues/5653">removed</a> from Ruby by v3.0.0. That&#39;s a long way off but just the same it doesn&#39;t bode well for autoload. </p>
-
-<p>Now that Matz has effectively declared <code>#autoload</code> a code smell, I wonder if developers will take heed and stop using it? I have my doubts --it&#39;s just too damn convenient. I just wish it would use <code>Kernel#require</code> so I could use it along with Rolls.</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2012-14-June" title="June 14, 2012">June 14, 2012</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2012/04/14/all-quiet-on-the-google-front/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>All Quiet on the Google Front</h1>
-
-<p>As I write this I am am on hold to Google main line. I&#39;ve been on hold for nearly an hour. <i>&quot;... Your call is important to us and we appreciate your patience. Please stay on the line and our next available representative will be with you shortly...&quot;</i> </p>
-
-<p>How ironic that the help page for Google Groups says, &quot;The new Google Groups is faster, more powerful, and just plain cool.&quot; A few weeks ago, I noticed that Google de-listed Google Groups from the iGoogle menus and that all groups that are archive mirrors of external lists stopped working. As a maintainer of handful of such lists, I&#39;ve been investigating the issue for a while, but the only information I have been able to garner is by word of mouth via Matz, the creator of Ruby, &quot;friend of mine found out that recently google group started ignoring mails with List-ID header field.&quot; How <em>powerful cool</em> is that?</p>
-
-<p>When I finish this article I will hang-up the phone and proceed to deprecate a number of Google Groups that I manage, namely, <code>ruby-talk-google</code>, <code>yaml-core</code>, <code>libxml-devel</code> and <code>rubygems-developers</code>. All of which are mirrored lists. At first I will just put up a deprecation notice. In a few weeks I will remove the lists altogether. But I won&#39;t stop there. The fact that these lists have all stopped working with the advent of Google&#39;s recent push to the &quot;new Google Groups&quot; and that Google has not made a single announcement about this MAJOR feature deprecation is inexcusable. I have had my fair share of issues with Google in the past. The inability to sort my mail by sender has always been a pain in my gmail-side. And everyone knows Google&#39;s customer support is notoriously non-existent. But I have always stayed with them because their web applications are generally excellent and really outstrip the competition in most respects, not the least of which is online availability, which makes them extremely convenient. Until recently I also felt that Google followed their company motto of &quot;Do No Evil&quot; fairly well. And yet it seems Google, like so many giants of the past, has begun to topple and loose sight of its foundations.</p>
-
-<p>So, I plan to find a new home for my other non-mirrored lists as well. And sometime after that I will begin to look into new email options. I am hopeful, by the end of the year I will be Google free --for the first time since I first &quot;googled&quot; the Internet way back in 1999.</p>
-
-<p>Speaking of time. I&#39;ve now been on hold for two-hours. I think it&#39;s time the throw in the old towel. I have a lot of &quot;Googleblechs!&quot; to clean up.</p>
-
-<p><strong>[UPDATE]</strong> A few days after I wrote this, Google <em>mysteriously</em> fixed the issue, and now all mailing-lists are back online. I graciously concede that they have saved themselves from my abandonment, but <em>only</em> for the fact that there appear to be no comparable alternatives.</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2012-14-April" title="April 14, 2012">April 14, 2012</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2012/03/21/configuration-rodeo/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><h1>Configuration Rodeo</h1>
-
-<p>The history of configuration file conventions for Ruby projects has not been a particularly conclusive one. No one pervasive convention has ever developed. No developer has ever laid down a clear set of rules of engagement that we all can agree are worthy of follow. Rather, the realm of the developer in working out how to handle configuration for their project tools still smacks a bit of the Wild West. </p>
-
-<p>Nonetheless, although no one approach has superseded all others, there are handful of patterns that tend to be used. We will review these conventions and then consider a possible comprehensive solution that could move us past the chaos du jour. </p>
-
-<h2>The Conventions</h2>
-
-<h3>1. Dot File</h3>
-
-<p>Probably the oldest convention around is the dot-file. A dot-file is, as the name implies, a file with a dot in front of its name. Using traditional Unix shells, files that begin with a dot are <em>hidden files</em>. For the most part all this means is they do not show up in the typical directory listing, although some file tools will also ignore dot-files by default.</p>
-
-<p>Back in the day, these files became the conventional means of adding per-user configuration to a system by adding dot-files to a user&#39;s home directory. There it was easily associated to a user and accessible, yet hidden from normal view. Consequently, project tools have adopted the same idea for project configuration, evidenced most clearly by SCM tools like Subversion (<code>.svn</code>), Git (<code>.git</code>) and Mercurial (<code>.hg</code>). Many Ruby-based tools have followed suite, such as RDoc&#39;s <code>.document</code> and YARD&#39;s <code>.yardopts</code> and <code>.yardoc</code>.</p>
-
-<p>The advantages of the dot-file lies mostly in the fact that it&#39;s a well worn standard, and that it helps somewhat with directory clutter by keeping these files hidden under a typical listing. However, for the same reasons they are also a disadvantage. Many types of file listings do not actually hide these files, for example a GitHub listing, nor is it always advantageous that they be hidden because an important configuration file could go accidentally overlooked. Also dot-files are often without a proper file extension. While file extensions feel archaic, the fact remains that file extensions are still the primary way that file types are identified.</p>
-
-<h3>2. Crapfile</h3>
-
-<p>The so called &quot;Crapfile&quot; convention is another pattern that has been around for a long time in the form of the rather ubiquitous <code>Makefile</code>. Almost all C/C++ projects use the Make tool to handle compiling. In Ruby, this same convention came into vogue by way of the Rake tool, a Ruby emulation of the Make tool. Over the years this convention has become increasing popular. The Bundler project brought us the <code>Gemfile</code>. Heroku introduced the <code>Procfile</code>. And now a proverbial explosion of such files seems to be on the doorsteps of Ruby and Rails projects. </p>
-
-<p>The advantage of the Crapfile is that it is visible and even prominent thanks to it&#39;s initial capitalization. In this sense it is the exact opposite of the dot-file. It&#39;s disadvantage is that too many of them tend to clutter up a project directory. This issue could be partially resolved at least if file listings grouped these files together instead of sorting them in with all-caps files, but as of yet no file listing provides for it. Another disadvantage is again the lack of a file extension. As with dot-files, this leaves many tools such as file editors, unable to handle the file optimally. However some tools do allow for an optional extension, e.g. <code>Rakefile.rb</code> is recognized by Rake, so there is some mitigation of the extension issue.</p>
-
-<h3>3. Task Directory w/ Special Extension</h3>
-
-<p>A third type of common configuration file you will find in Ruby projects is the <code>task/&lt;foo&gt;.&lt;tool&gt;</code> or <code>tasks/&lt;foo&gt;.&lt;tool&gt;</code> file. These files came about as a means of splitting Rakefiles up into topical and shareable units, and indeed this pattern is predominantly used by Rake files, e.g. <code>task/test.rake</code>. But sometimes you will see the pattern used for other tools such as a <code>task/test.watchr</code> file.</p>
-
-<p>The use of <code>task</code> or <code>tasks</code> directory as a conventional location for project configuration files can be advantageous for many project tools. It makes it clear where to find them, the <code>task</code> directory itself is not hidden and does not clutter up a project&#39;s root directory and the design dictates the flexibility of allows multiple, and thus topical, configuration files. However, the issue of the file extension yet again effects these files due to the use the tool name as the extension. Also, there might be a slight downside if a project tool uses the configuration file as a project root marker. This is what Rake does with the Rakefile. While not a show-stopper --after all it can look for <code>task/*.&lt;tool&gt;</code>, it is not quite as ideal for the purpose.</p>
-
-<h3>4. Config Directory</h3>
-
-<p>Rails came along an introduced a variety of conventions for Ruby-based web applications, but also with ramifications for Ruby project&#39;s in general. One of the conventions introduced is the use of a <code>config</code> directory to house configuration files relevant to the Rails project. Unlike files in the <code>task</code> directory, there is no special extension involved. Generally the whole name of the file is used to identify the purpose of the file. For example <code>config/database.yml</code> is used to configure access to the underlying database.</p>
-
-<p>At first glance, using <code>config</code> seems to have all the advantages of the <code>task</code> directory without the any of downsides associated with using special extensions. Nonetheless, the convention hasn&#39;t caught on for non-Rails projects. The reason is unknown to me, but perhaps it as trivial as the the simple fact that the term <code>config</code> is six-characters long, whereas all conventional project directory names, that have managed to persist, are five or less and most often only three or four characters. It might seem a silly thing to get caught up on, but when a developer is looking at project file listings dozens of times a day or more, the fact the one entry should stick out excessively from the rest is what is commonly called an &quot;eye-sore&quot;. And an &quot;eye-sore&quot; is plenty of reason to deter usage. It is interesting to wonder if Rails had chosen a shorter term, say <code>conf/</code> or <code>cfg/</code> if it would have made the jump. In any case, that is mere speculation.</p>
-
-<p>There are a few project&#39;s that support a <code>config</code> directory, and do so to good effect. Cucumber for example will look for either &#39;cucumber.yml&#39;, &#39;config/cucumber.yml&#39; or &#39;.config/cucumber.yml&#39;.</p>
-
-<h3>5. Ordinary File</h3>
-
-<p>The last convention really isn&#39;t a convention at all. Some project tools just designate an ordinary file name as the configuration file and expect to find it in the project&#39;s root directory. In many ways, one could argue this is the best choice. It doesn&#39;t suffer from the file extension issue and the files generally sort separate from documentation files which are capitalized. However, it does suffer a bit in that these files don&#39;t stand out in any way as configuration files. And this fact allows them to still make a project seem cluttered if there are more than just a couple of them.</p>
-
-<h2>When to Use Which</h2>
-
-<p>Hidden dot-files have their place, but they are best reserved for files that the developer will rarely if ever need to edit. Generated files are the best example. The reason for this rule of thumb is simple. If a developer doesn&#39;t see a file, the developer might not realize it already exists or know that he/she may need to edit it. If dot-files do fit your use case, also consider using a dot-directory instead of just a file. This ensures that no additional entries will clutter up the root project directory should more than one configuration file prove necessary or useful.</p>
-
-<p>Crapfiles are not a horrible choice, but as the colorful name suggests, they are not nearly the best choice either. Some developers argue against the use of Crapfiles because the <code>-file</code> suffix is rather redundant. While that&#39;s a fair point, one can also argue that the suffix helps distinguish configuration files from other files. Since Crapfiles tend to standout, they are best suited to configurations that need frequent editing. A word of caution about naming, when you have a tool with a name like &quot;Foreman&quot; and it&#39;s configuration file is called &quot;Procfile&quot;, things are obviously not very intuitive. Consider carefully if perhaps an ordinary file name would suffice instead --it can always be capitalized if it needs to have prominence.</p>
-
-<p>Task files are a good approach for tools that can have multiple configurations or configuration profiles.  But even if a project does not support multiple configurations, there is nothing stopping the <code>task</code> directory form holding ordinary files. Which means it could effectively co-opt the advantages of the <code>config</code> directory too.</p>
-
-<p>As for the <code>config</code> directory. If you are developing a Rails project, obviously that is the place for configuration files. While some have argued that <code>config</code> is just for Rails and should not be co-opted for plain Ruby projects, presumably to save confusion, that seems too strict a view. If using the <code>task</code> directory to the same end doesn&#39;t strike your fancy, then <code>config</code> is clearly the best place to put configuration files. The only good exception is when special prominence is needed that only a root level and unhidden file can bring.</p>
-
-<p>Simple uncaptialized ordinary root level files, while seemingly the least problematic, also have nothing that makes them special, which probably accounts for why they are so rarely used. They might as well be placed in the <code>task</code> or <code>config</code> directory to avoid root directory clutter.</p>
-
-<h2>Is there a Better Way?</h2>
-
-<p>So, is there a better way? That depends on how you look at it. One thing is for certain, there is no <em>perfect</em> way, but that doesn&#39;t exclude the possibility of compelling approach that mitigates most issues.</p>
-
-<p>The overarching problem here is simply the fact that so many conventions exist. With such a variety of naming conventions, it exacerbates the issue of cluttered project directories multiple times over.
-Another disadvantage for all of these approaches, they make it difficult to share common configuration.</p>
-
-<p>In an effort to create a comprehensive solution, the <a href="http://github.com/rubyworks/rc">RC</a> project has been created. RC designate a single file, <code>Config.rb</code>, in which all tool configurations can be defined. A typical entry in this file is for test configuration. For example, to configure the <code>qed</code> test tool we might designate:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">profile</span> <span class="ss">:coverage</span> <span class="k">do</span>
-    <span class="n">config</span> <span class="ss">:qed</span> <span class="k">do</span>
-      <span class="nb">require</span> <span class="s1">&#39;simplecov&#39;</span>
-      <span class="no">SimpleCov</span><span class="o">.</span><span class="n">start</span> <span class="k">do</span>
-        <span class="n">coverage_dir</span> <span class="s1">&#39;log/coverage&#39;</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-</code></pre></div>
-<p>RC allows configurations to be grouped into profiles. Tool developers can take advantage of profiles to suite the needs of the tool (or not at all). The major advantage of using a single configuration file is the ability for variant configurations to share settings. Another advantage is to import configurations from other projects. For example, the QED project provides the basic SimpleCov configuration which can be easily reused.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">profile</span> <span class="ss">:coverage</span> <span class="k">do</span>
-    <span class="n">config</span> <span class="ss">:qed</span><span class="p">,</span> <span class="ss">:from</span><span class="o">=&gt;[</span><span class="ss">:qed</span><span class="p">,</span> <span class="ss">profile</span><span class="p">:</span> <span class="n">simplecov</span><span class="o">]</span>
-  <span class="k">end</span>
-</code></pre></div>
-<p>RC is still a work in progress, but the overarching design is in place with numerous advantages over the scattered approaches of the past. Though some of the traditional approaches might still be more suited to very specific cases, most tools can benefit from a unified approach.</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2012-21-March" title="March 21, 2012">March 21, 2012</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2012/01/19/rubys-unexceptional-exception-constructor/" rel="prefetch">Ruby AOP Made Simple</a></h2>
-            <p><p>You would think after all this time Ruby&#39;s Exception class would be a rather robust and clearly comprehensible class.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">raise</span><span class="p">(</span><span class="n">exception</span> <span class="o">[</span><span class="p">,</span> <span class="n">string</span> <span class="o">[</span><span class="p">,</span> <span class="n">array</span><span class="o">]]</span><span class="p">)</span>
-</code></pre></div>
-<p>Now lets try something </p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MyError</span> <span class="o">&lt;</span> <span class="no">Exception</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
-    <span class="k">super</span><span class="p">()</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div><div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="o">&gt;&gt;</span> <span class="k">raise</span> <span class="no">MyError</span>
-<span class="ss">MyError</span><span class="p">:</span> <span class="no">MyError</span>
-    <span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">12</span>
-    <span class="n">from</span> <span class="sr">/home/</span><span class="n">trans</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">1</span><span class="o">.</span><span class="mi">9</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="n">rc1</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">irb</span><span class="p">:</span><span class="mi">12</span><span class="ss">:in</span> <span class="sb">`&lt;main&gt;&#39;</span>
-</code></pre></div>
-<p>No problem. But now lets try to set the message and the backtrace.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="o">&gt;&gt;</span> <span class="k">raise</span> <span class="no">MyError</span><span class="p">,</span> <span class="s2">&quot;This is an error!&quot;</span>
-<span class="ss">ArgumentError</span><span class="p">:</span> <span class="n">wrong</span> <span class="n">number</span> <span class="n">of</span> <span class="n">arguments</span> <span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">8</span><span class="ss">:in</span> <span class="sb">`initialize&#39;</span>
-<span class="sb">    from (irb):13:in `</span><span class="n">exception</span><span class="s1">&#39;</span>
-<span class="s1">    from (irb):13:in `raise&#39;</span>
-</code></pre></div>
-<p>Clearly Ruby expects any Exception&#39;s initialize method to handle the message argument. That&#39;s a rather strict contract for something Ruby is letting us override. But okay, let&#39;s take that as a given. Obviously Ruby is routing the #raise call to the exception&#39;s initializer. So then we should that the third <code>array</code> argument would passed along too. Turns out that&#39;s not the case.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MyError</span> <span class="o">&lt;</span> <span class="no">Exception</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-    <span class="nb">p</span> <span class="n">args</span>
-    <span class="k">super</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div><div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="o">&gt;&gt;</span> <span class="k">raise</span> <span class="no">MyError</span><span class="p">,</span> <span class="s2">&quot;This is an error!&quot;</span><span class="p">,</span> <span class="nb">caller</span>
-<span class="o">[</span><span class="s2">&quot;This is an error!&quot;</span><span class="o">]</span>
-<span class="ss">RuntimeError</span><span class="p">:</span> <span class="no">This</span> <span class="n">is</span> <span class="n">an</span> <span class="no">Error</span><span class="o">!</span>
-    <span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">1</span>
-    <span class="n">from</span> <span class="sr">/home/</span><span class="n">trans</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">1</span><span class="o">.</span><span class="mi">9</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="n">rc1</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">irb</span><span class="p">:</span><span class="mi">12</span><span class="ss">:in</span> <span class="sb">`&lt;main&gt;&#39;</span>
-</code></pre></div>
-<p>Nope. No caller in sight. So where did it go? Turns out Ruby is setting the caller via the error&#39;s <code>#set_backtrace</code> method and doesn&#39;t depend on the initializer to handle it at all. This seems rather odd, since it was keen on letting the initializer handle the message argument, and would blow-up if the class won&#39;t take it.</p>
-
-<p>So the upshot seems to be that we can&#39;t customize an exceptions initializer adn expect <code>#raise</code> to play along.</p>
-
-<p>I actually had another point to make about how things gets even worse. Unfortunately had to take care of other chores and by the time I got back to this blog post (months later) I forgot what these &quot;worse things&quot; were. I think it had something to do with how <code>#message</code> calls <code>#to_s</code> rather then returning the message passed to the initializer. But as said I am not certain now. </p>
-
-<p>My conclusion however is this. I was attempting to make use of an Exception class as something more than a mere container for a string message for the <a href="http://github.com/rubyworks/assay">Assay</a> project. That is when I ran into these oddities which made doing so quite unpleasant. To my dismay I ended up abandoning the approach. I brought some aspects of this up in a <a href="http://bugs.ruby-lang.org/issues/5898">issue report</a>.</p>
-
-<p>For reference, here is the relevant Ruby <a href="https://github.com/ruby/ruby/blob/trunk/eval.c">source code</a>.</p>
-</p>
-            <div class="meta">
-                Written By <address>trans</a> &mdash;
-                <time pubdate datetime="2012-19-January" title="January 19, 2012">January 19, 2012</time>
             </div>
         </div>
         <hr>
