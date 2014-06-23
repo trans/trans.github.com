@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2010/10/13/My-Critique-of-Elixir/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2010/10/13/My-Critique-of-Elixir/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
+
+        <section>
+            <p>First, let me admonish myself for having limited knowledge of the subject. I am far from an Elixir expert. So I readily defer to those with more experience that can make a solid contrary argument against my conclusions. However, as I am unlikely to continue on in my adventures with Elixir, this is clearly the only time I have left to opine on the topic. So I will do so, and feel free to take my opinions with as much salt as you feel necessary.</p>
+
+<p>There are many things to like about Elixir. Most notable of them is it&#39;s inheritance from Erlang and it&#39;s improved syntax inspired by Ruby. Its Erlang roots bring so many great features to the table: true functional programming, rock solid stability, distributed computing, and so on. Anything that is good about Erlang, is likewise good about Elixir. On top of this, Elixir brings a much more pleasurable syntax and a few higher-level conveniences which really set it apart from Erlang. (Otherwise there would be no point but to use Erlang directly). But then there are the caveats. </p>
+
+<p>On the minor end, Elixir&#39;s code documentation is a bit odd. Documentation of modules is placed within the <code>defmodule</code> block, while documentation of functions are placed on the outside the <code>def</code> blocks. Why the difference? In addition there is no sigil at the beginning of documentation lines to clearly indicate a comment. If a documentation section were large enough, one could mistake examples for actual program code. Only by the magic of syntax highlighters are we saved from any such &quot;at a glance&quot; error. </p>
+
+<p>Then there is the minor issue of the <code>def</code> prefix on the definition of everything. <code>defmodule</code>, <code>defstruct</code>, <code>deftype</code>, etc. One can understand the desire to avoid too many keywords, but surely <code>module</code>, <code>struct</code> and <code>type</code> would do much better, as they do in almost every other language, and can be avoided as keywords if need be by appropriate context.</p>
+
+<p>A little more troubling is the awful block syntax. Despite all the inspiration form Ruby, Elixir did not adopt Ruby&#39;s elegant block syntax. Instead we get a strange twist of <code>fn</code> keyword, an arrow <code>-&gt;</code> and an <code>end</code> keyword, all within the argument parenthetical.</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">  <span class="no">Enum</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="k">fn</span> <span class="n">x</span> <span class="o">-&gt;</span>
+    <span class="o">...</span>
+  <span class="k">end</span><span class="p">)</span>
+</code></pre></div>
+<p>It feels a bit more like Javascript than Ruby. Ironically, this ugliness doesn&#39;t save us from a whole mess of seemingly extraneous <code>do</code> statements everywhere. Every <code>def*</code> and even every condition like <code>if</code> also requires a <code>do</code> to define the subsequent block.</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">  <span class="k">if</span> <span class="n">ok?</span><span class="p">()</span> <span class="k">do</span>
+<span class="k">     </span><span class="o">...</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>It might not seem like much, but when you write enough code and find yourself having to always fix missing do&#39;s first off, you can&#39;t help but feel as if your time could be spent on more useful endeavors.</p>
+
+<p>On a higher level of critique, I think Elixir, like Erlang and their ML brethren, suffer from <em>Overtype Syndrome</em>, if you will allow me to coin a phrase. Because the language is both functional and so strongly typed, every method comes by way of a module. So instead of say, <code>list.each{...}</code> as in Ruby, one much specify where <code>each</code> is defined, <code>Enum.each(list, ...)</code>. And because one must repeat these module names over and over, there is a naturally common practice of extreme abbreviation. In some fashion it&#39;s nice that names are concise. Yet it can be a bit difficult encountering module names like <code>IEx</code> in passing. In addition, we end up with a whole slew of modules and types with which to contend. Of course this can be true of any strongly typed language, but it seems especially so for the ML branch of languages.</p>
+
+<p>Finally, my last niggle is with functional programming in general. Honestly, it&#39;s pretty awesome. But just as honestly, it is difficult. The lack of procedural techniques puts a significant onus on the functional language to provide a large set of easy to understand and easy to utilize functions to pipe together to achieve the desired result. Partly it is due to lack of experience in thinking functionally, but it is clear enough that even for very component functional programmers it can be a real challenge to piece together the right functions to solve a complex problem. I believe this is because functional programming forces you to think about the whole more so than procedural programming. With a procedure, one can quickly break down a problem into parts. e.g. &quot;I have an array of strings, which I need to iterate over and extract each word, and for each word, make it lowercase, and then update a hash table to track the number of times the word occurs.&quot; Easy enough. Functionally the reads more like, &quot;I need to build a dict via a flat-map over a list of strings and the list of words in each while lowering the case of each word, with an updated key/value pair.&quot; Or something like that. It is simply harder to even to talk in functional terms.</p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

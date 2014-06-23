@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2010/10/13/a-failure-of-precedence/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2010/10/13/a-failure-of-precedence/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
+
+        <section>
+            <h1>A Failure of Precedence</h1>
+
+<p>(Ruby&#39;s Operator Precedence Can Be Improved)</p>
+
+<p>There&#39;s a lot to love about Ruby. Most of us know well the many great advantages it provides, as they say, &quot;making programming fun&quot;. However, Ruby is also notoriously dogged by a few small gotchas and inconsistancies. Some of these are understandable, such as the <a href="http://eigenclass.org/hiki/The+double+inclusion+problem">Double Inclusion Problem</a>; issues that are not worth the extensive effort to fix. On the other hand, some simple issues doggedly persist for little good reason (backward compatibility not withstanding).</p>
+
+<p>One of these issues is operator precedence. Not only is operator precedence set in stone, it is also
+woefully <i>bottom heavy</i> --there is only one binary operator available for use above the common arthmetic operations.</p>
+
+<p>Here is the table as given by the <a href="https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html">PickAxe</a>:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Method    Operator                Description
+Y         [ ] [ ]=                Element reference, element set
+Y         **                      Exponentiation
+Y         ! ~ + -                 Not, complement, unary plus and minus (method names for the last two are +@ and -@)
+Y         * / %                   Multiply, divide, and modulo
+Y         + -                     Plus and minus
+Y         &gt;&gt; &lt;&lt;                   Right and left shift
+Y         &amp;                       Bitwise `and&#39;
+Y         ^ |                     Bitwise exclusive `or&#39; and regular `or&#39;
+Y         &lt;= &lt; &gt; &gt;=               Comparison operators
+Y         &lt;=&gt; == === != =~ !~     Equality and pattern match operators (!= and !~ may not be defined as methods)
+          &amp;&amp;                      Logical `and&#39;
+          ||                      Logical `or&#39;
+          .. ...                  Range (inclusive and exclusive)
+            ? :                     Ternary if-then-else
+          = %= { /= -= += |= &amp;=   Assignment
+          &gt;&gt;= &lt;&lt;= *= &amp;&amp;= ||= **=   
+          defined?                Check if symbol defined
+          not                     Logical negation
+          or and                  Logical composition
+          if unless while until   Expression modifiers
+          begin/end               Block expression
+</code></pre></div>
+<p>The lack of any operators other then <tt>**</tt>, above the most commonly used, <tt>* / % + -</tt>, puts
+a frustrating limitation on the flexibility of this system. On this account, the most puzzling misplacement of an operator has to be Bitwise Exlusive Or, <tt>^</tt>. In many, if not most, programming languages <tt>^</tt> is the power operator. But in Ruby that function is delegated to <tt>**</tt>. While I personally do not favor <tt>**</tt> for the use, it&#39;s not something I mind either. However, that <tt>^</tt> doesn&#39;t share the same precedence is very awkward.</p>
+
+<p>Consider for instance, the implementation of a unit system.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">**</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;4 square meters&quot;</span>
+</code></pre></div>
+<p>Notice the power operator effects the unit and the value. So how would we go about notating <code>2 square meters</code>? We need some other means. The obvious answer is to redefine <tt>^</tt>:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;2 square meters&quot;</span>
+</code></pre></div>
+<p>Great. But wait, there is an ugliness now upon us.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;2 meters&quot;</span>
+</code></pre></div>
+<p>The answer should have been <tt>1 square meter</tt>, but due to precedence <tt>2 / 2</tt> is barring a <tt>1</tt> before the <tt>^</tt> power operator kicks-in.</p>
+
+<p>It is truly wonderful that Ruby&#39;s first 27 operators are actually methods, which means they can be defined to perform whatever function we would like of them. But despite being able to define these operators, there is no means of changing their precedence. Thus, the actual options we have defining new operations to suite our needs are hindered.</p>
+
+<p>Ideally we would be able to alter precedence on a per-class basis. While, some might argue that would create too much confusion, I would retort that good libraries would use the feature effectively, limiting the changes to the appropriate use-cases, so that it would not be an issue. After all, a library that scrambles precedence for no damn good reason will get little use.</p>
+
+<p>While we wait the day of true precedence freedom, I would like to see Ruby move <tt>^</tt> up with <tt>**</tt> and find a new Exclusive Or operator. Backward compatibility can be largely, although not completely, preserved by aliasing <tt>^</tt> to the new symbol. It&#39;s an obvious and simple improvement --a naggling issue that has been around for quite some time.</p>
+
+<hr>
+
+<p>title      : A Failure of Precedence
+author     : trans
+categories : [website]
+date       : 2009-12-13
+layout     : post</p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

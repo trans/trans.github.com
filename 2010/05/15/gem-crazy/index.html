@@ -1,77 +1,65 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>2010 05 15 gem crazy\7R4N5C0D3</title>
-  <meta name="author" content="Trans" />
-
-  <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
-
-  <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
-  <link rel="stylesheet" href="/assets/styles/code.css" type="text/css"/>  
-  <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
-
-  <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/>
-  <link rel="stylesheet" href="/assets/styles/social.css" type="text/css"/>  
-
-  <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
-
-  <!--[if lt IE 9]>
-  <script src="/scripts/html5.js"></script>
-  <![endif]-->
-
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
-  <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
-  <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
-
-  <script src="/assets/scripts/main.js"></script>
-
-  <script>
-    $(document).ready(function(){
-      $('#social-share').dcSocialShare({
-        twitterId: 'transgigamic',
-        tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
-        buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
-      });
-    });
-  </script>
-
-  <!-- tracking code here ? -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2010/05/15/gem-crazy/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2010/05/15/gem-crazy/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
 </head>
-
 <body>
-<div id="container">
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
 
-	<div id="header">
-		<h1>7R4N5C0D3</h1>
-	</div>
 
-	<div id="nav">
-    <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/Projects">Projects</a></li>
-    <li><a href="/Reads">Reads</a></li>
-    <li><a href="/Tools">Tools</a></li>
-    <li><a href="/tags.html">Tags</a></li>
-    <li><a href="/atom.xml">Feed</a></li>
-    <li><a href="https://github.com/trans/trans.github.com/wiki">Wiki</a> &gt;&gt;</li>
-    </ul>
-	</div>
+<article>
 
-<!-- CONTENT -->
-<div id="content-wrapper">
-<div id="content">
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2010-15-May" title="May 15, 2010">May 15, 2010</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
 
-<h1>Gem Crazy</h1>
+        <section>
+            <h1>Gem Crazy</h1>
 
-<p><b>I believe the Ruby community may have finally gone off the rails in it's collective
+<p><b>I believe the Ruby community may have finally gone off the rails in it&#39;s collective
 crazy train.</b> I have been reading about <a href="http://gembundler.com/">Bundler</a>,
-the spiffy new RubyGems manager to be default part of Rails 3.0, and I can't help but
+the spiffy new RubyGems manager to be default part of Rails 3.0, and I can&#39;t help but
 wonder what track we were even on.</p>
 
-<p>If you don't know about Bundler yet, you can learn about it
+<p>If you don&#39;t know about Bundler yet, you can learn about it
 <a href="http://yehudakatz.com/2009/11/03/using-the-new-gem-bundler-today/">here</a>.
 I imagine most of you are already aware of it and are now considering how it fits in
 with your future development plans. So I want so ask a more fundamental question:
@@ -79,9 +67,9 @@ Why does Bundler even exist?</p>
 
 <p>On the surface, we can of course thank Rails. The deployment of web applications
 stands apart from the distribution of Ruby packages. Deploying a Rails
-application usually means copying an app's files up to a server, as opposed to
+application usually means copying an app&#39;s files up to a server, as opposed to
 creating a distributable package file (like a gem) and installing that on
-the remote machine. Technically the later could be done, but it isn't, probably
+the remote machine. Technically the later could be done, but it isn&#39;t, probably
 because most web apps are proprietary and do not need wider distribution. Because
 Rails developers do not use the normal RubyGems distribution mechanism, which
 automatically installs dependencies, they need another way to ensure their apps
@@ -90,7 +78,7 @@ dependencies are present, hence the convenience of <code>bundle install</code>.<
 <p>Bundler achieves this goal in a grand fashion. As its name implies
 it does so by giving us the means to download the gems an application is dependent
 upon and store them directly within the project itself. These gems get stored in
-a project's <code>vendor/gems/</code> directory. The rationalized benefit being 
+a project&#39;s <code>vendor/gems/</code> directory. The rationalized benefit being 
 that you need never worry about remote services going down (e.g. <code>rubygems.org</code>)
 in order to deploy your application, nor ever worry about any potential changes
 in a dependent gem. So in brief, one can <em>bundle</em> dependent gems with ones
@@ -99,12 +87,12 @@ application.</p>
 <p>At first blush it seem like great idea. After all developers use vendoring to 
 do something similar while developing an application. But lets consider this
 a bit more carefully. The worry of a remote service going down is, honestly, bordering
-on paranoia. That's why mirrors of RubyGems.org exist. If one goes down, the others
+on paranoia. That&#39;s why mirrors of RubyGems.org exist. If one goes down, the others
 remain. The odds of all mirrors going down at the same time are extremely small, and
 as you might imagine, such a situation would be corrected very quickly, if it ever did
 occur. In fact, if it did happen, there is a fair chance your host will be down too.
 So the solution here is not bundling, but redundancy. As for the fear
-of "monkey releases" --new versions of a gem that that might break things,
+of &quot;monkey releases&quot; --new versions of a gem that that might break things,
 this is somewhat understandable, but redistributing every dependency with each app
 is shear overkill. If you are that concerned a gem will break an application you can
 always specify exact requirements in the gemspec, and use the <code>gem</code> method to nail the
@@ -112,23 +100,23 @@ version down. That, in fact, is the whole point of the <code>gem</code> method. 
 perfectly good solution for applications such as a Rails app. Unfortunately is not
 a very good solution for general purpose libraries. (As can be read about in any number
 of blog posts by searching
-<a href="http://www.google.com/search?q=Don%27t+require+%27rubygems%27">Don't require 'rubygems'</a>.)</p>
+<a href="http://www.google.com/search?q=Don%27t+require+%27rubygems%27">Don&#39;t require &#39;rubygems&#39;</a>.)</p>
 
 <p>[Update: I have been informed that the real benefit of bundling is to make
 it easier to install an application on machines that has limited Internet access.
 In such cases, I can see that Bundler might be handly.]</p>
 
 <p>I should mention that the latest version of Bundler (v0.9) has a light-weight rendition
-of bundling, called <em>locking</em>, which doesn't actually store the gem in the application,
+of bundling, called <em>locking</em>, which doesn&#39;t actually store the gem in the application,
 but automatically locks the gems your application uses to specific versions. In other
 words, it generates a file which (I assume) will ulitmately be used with the <code>gem</code> method
 to nail down the exact versions of gems your application is using at that time of the lock.
 This is a much better approach than bloating your application with .gem files, to achieve
-the same end, and to Bundler's credit it makes it easy to keep those <code>gem</code> calls current.
-However, it still ties your program to RubyGems, so again it's not a perfect solution
+the same end, and to Bundler&#39;s credit it makes it easy to keep those <code>gem</code> calls current.
+However, it still ties your program to RubyGems, so again it&#39;s not a perfect solution
 for reusable libraries.</p>
 
-<p>Another feature Bundler sets out to handle are <em>groups</em>. They are "gem environments"
+<p>Another feature Bundler sets out to handle are <em>groups</em>. They are &quot;gem environments&quot;
 which can be loaded as a collective, or even omitted during an install. In other words,
 they are a way to specify a specific group of gems to the <code>bundle</code> command or in ones
 code with <code>Bundler.require</code>. The most common groups you are likely to see are <code>runtime</code>
@@ -140,20 +128,20 @@ imagine the failures that will arise because a testing environment
 had a gem that the runtime environment forgot to add, but actually needed.</p>
 
 <p>In addition, the use of Bundler promotes the use of <code>Bundler.require</code>. How many
-countless hours have been spent reminding people not to put <code>require 'rubygems'</code>
+countless hours have been spent reminding people not to put <code>require &#39;rubygems&#39;</code>
 in their lib code? Now the issue will be doubly compounded. While we can hope
-that Bundler never makes it's way beyond Rails (or at least end-user apps), I have
+that Bundler never makes it&#39;s way beyond Rails (or at least end-user apps), I have
 already seen it in at least two non-Rails programs.</p>
 
 <p>Lastly, Bundler also provides an ability to depend on git repos, so long as
 they track a .gemspec. This feature is a clear address to vendoring, but
-via gem dependencies. I won't even go into all the issues that arise with this
-(and seems to somewhat contradict Bundler's primary purpose --or at least compound its need!).
+via gem dependencies. I won&#39;t even go into all the issues that arise with this
+(and seems to somewhat contradict Bundler&#39;s primary purpose --or at least compound its need!).
 You can read some of the back and forth on this idea <a href="http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/">here</a>.
 I will say, however, what really strikes me most about this is
-how an unproven system takes on such fanfare that it's proponents now declare we have
-all been doing it wrong! A <code>.gemspec</code> should never be generated by some "extraneous
-build tool", but ought to be edited by hand and checked into the scm repository. Wow.</p>
+how an unproven system takes on such fanfare that it&#39;s proponents now declare we have
+all been doing it wrong! A <code>.gemspec</code> should never be generated by some &quot;extraneous
+build tool&quot;, but ought to be edited by hand and checked into the scm repository. Wow.</p>
 
 <p>I realized the Bundler is addressing certain needs, primarily of the Rails community.
 The problem with Bundler is that it is trying to correct something that is fundamentally
@@ -167,77 +155,61 @@ of the matter, and it stems from the fundamental lack of version support in Ruby
 In my opinion, until that is addressed, all of these fancy solutions are simply trains headed
 up the wrong track.</p>
 
-<hr><p>title      : Gem Crazy
+<hr>
+
+<p>title      : Gem Crazy
 author     : trans
 categories : [ruby, rubygems]
 date       : 2010-05-15
 layout     : post</p>
 
-<!--
-<div id="related">
-  <h2>Related Posts</h2>
-  <ul class="posts">
-    {% for post in site.related_posts limit:3 %}
-      <li><span class="post-date">July 07, 2012</span> &raquo; <a href="">2010 05 15 gem crazy</a></li>
-    {% endfor %}
-  </ul>
-</div>
--->
+            
+        </section>
 
-</div>
-</div>
-<!-- END CONTENT -->
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
 
-<!-- Start Shareaholic Sexybookmarks -->
-<div class="shr_class shareaholic-show-on-load">
-</div>
+        </footer>
 
-<script type="text/javascript">
-var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
-</script>
+        
+    </div>
+</article>
 
-<script type="text/javascript">
-(function() {
-var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
-sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
-var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
-})();
-</script>
-<!-- End Shareaholic Sexybookmarks -->
 
-<!-- Start Disqus Commments -->
-<div id="comments">
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-    /**
-     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
-     */
-    (function() {
-     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-     dsq.src = 'http://transcode.disqus.com/embed.js';
-     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
-  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-<!-- End Disqus Commands -->
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
 
-<div id="social-share"></div>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
 
-<!-- FOOTER -->
 
-<div id="footer">
-  <div class="tiger">
-  </div>
-	<small>Last edited by <b>trans</b> on July 07, 2012.</small>
-	<small style="float:right;">
-		This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
-		mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
-	</small>
-</div>
 
-</div>
+
+
+
 </body>
 </html>
-

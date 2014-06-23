@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2010/10/13/crossing-the-assets-divide/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2010/10/13/crossing-the-assets-divide/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
+
+        <section>
+            <h1>Crossing the Assets Divide</h1>
+
+<p>Working on <a href="http://github.com/rubyworks/smeagol">Smeagol</a>, a read-only Gollum server and static site generator, I&#39;ve come across an unusual issue. One of the features Smeagol provides is the ability to view page history. By providing a git commit-id or a tag name in the URL, an older version of any page can be viewed. Now, if a page includes a local asset, an image being the typical example, that file clearly must come from the same commit as well. And here is were a problem arises. While <em>content assets</em> must be versioned, <em>design assets</em> must not. We may want to look at the content of an old page for historical reference; we don&#39;t want look at it as if on the website as it was designed way back when. Indeed, the functionality of the site back then might have had bugs in it, it might have a had a very stark layout, it might have any number of issues which have since been corrected. Certainly the site should not serve up old stylesheets, javascripts, background images and the like. Only old <em>content</em> must be served.</p>
+
+<p>As it has become the fashion in web-design, stylesheets, javascripts, images, and so on are placed in a single <code>assets/</code> directory. (Even without an <code>assets/</code> directory, asset files are generally placed in central bins such as <code>images/</code>.)  Because of this there is no straight forward way to determine which files are for content and which are for site design. So, as it happens, there turns out to be a need to divide the assets in two. One directory for design and another for content.</p>
+
+<p>I now find myself with the unenviable decision of what to name these two directories. Do I keep <code>assets/</code> for design or content? And what do I name the other directory? Or should I use two new names altogether?</p>
+
+<p>[UPDATE] At present I have opted to keep <code>assets/</code> for design-related files and move content assets to <code>media/</code>. Technically, it turns out that it doesn&#39;t matter where the content files go as long as it is not in <code>assets/</code>. </p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

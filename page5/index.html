@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRANSCODE &mdash; Trans Technology and Programming Blog</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="TRANSCODE">
+    <link rel="canonical" href="http://trans.github.com/page5/">
+     
+           
+    <meta property="og:title" content="TRANSCODE"/>
+    <meta property="og:url" content="http://trans.github.com/page5/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+<div class="blog-cover" style="background-image:url(/images/blog-cover.jpg);">
+    
+    <section>
+        <div class="container">
+            <h1>TRANSCODE</h1>
+            <h3>Trans Technology and Programming Blog</h3>
+        
+            
+            
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss"></i>
+            </a>
+        </div>
+    </section>
+</div>
+
+<article class="container">
+
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/directory-based-configuration/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Directory-based Configuration</h1>
+
+<p>With regards to <a href="http://proutils.github.com/pom">POM</a>, 
+the most cumbersome issue I have had to struggle with over the course
+of its long and somewhat painful development, is the question of
+configuration storage. You see, many years ago I hit upon the idea of
+using the file system itself as a &quot;hash&quot; for heirarchical storage.
+In other words, instead of using a YAML or JSON or an INI file, POM could
+use the file system itself.</p>
+
+<p>For example, lets say we have a config file <code>pom.yaml</code>:</p>
+<div class="highlight"><pre><code class="yaml language-yaml" data-lang="yaml">    <span class="l-Scalar-Plain">---</span>
+    <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">POM</span>
+    <span class="l-Scalar-Plain">summary</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Project Object Model for Ruby</span>
+    <span class="l-Scalar-Plain">authors</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">Trans</span>
+    <span class="l-Scalar-Plain">sites</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">homepage</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://proutils.github.com/pom</span>
+      <span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://github.com/proutils/pom</span>
+</code></pre></div>
+<p>Using the a directory-based configuration system instead
+we would have this file hierachy:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">pom/
+  name
+  summary
+  authors
+  sites/
+    homepage
+    development
+</code></pre></div>
+<p>And each file would contain the data in plain text given in the YAML example above.</p>
+
+<p><i>Does this seam crazy to you?</i>. I think, to most developers, this design will simply strike them as some form of mild insanity. However, I also think reason is mostly form a lack of familiarity, not the ideas relative merits. We are not accustomed to utilizing the file system in this fashion, so it is not surprising the initial reactions would be negative. But lets consider the benefits.</p>
+
+<p>To it&#39;s advantage, a directory-based configuration does not need a support library to read, parse or write any data. Indeed, any coder can put together a viable system to handle directory-based configs in just a few lines of code. Becuase of this, any language, including shell scripts, can utilize the information. There is no concern that my language of choice won&#39;t be able to handle it. It also means that the computer can work with the data very easily, without disrupting the human readability of the same data. Whereas, a YAML file for instance, might become an ugly mess after a program rewrites the file in order to update a single entry. Along the same lines, it becomes very easy to scaffold entries. Copy some files and your good. Old files not specifically copied over remain intact. This &quot;low-bar&quot; of utilily gives directory-based configuration a huge advantage.</p>
+
+<p>But if it is so great, why is it not common place already? Good question. The material cause is that file systems are piss-poor at efficiently storing small files. Even if the file contains a single byte of data most file systems will waste 4K to store it. Becuase of this <i>page size</i> issue the thought of storing many small files <i>on purpose</i> has never been taken seriously. This is changing however. It will be a few more years before the lastest systems are mainstream, but the next generation of file systems (which began I beleive with RieserFS 4) mitigate this problem to the point of irrelevance.</p>
+
+<p>The other major disadvantage it the lack of tools. Because directory-based configuration is not widespread, there are no tools for making it easier to work with data layed out in this fashion. For instance, it is often convenient to edit a group of config options all at once. The best one can with he a directory structure is open a bunch of files simulataneously in a text editor (<code>gedit *</code>) --not an optimal solution. Another example are conversion tools, say converting the data to JSON for transimition via HTTP. To mitigate this we need to create tools that understand the idea of directory-based configuration and give us comfortable interfaces for working with the data within them.</p>
+
+<p>So there are the relative merits, both good and bad, of directory-based configuration storage. If anyone has any others to add I would very muich to hear them. Going on this analysis, I think it is clear that the advantages out weigh the disadvantages since all the disadvantages are becoming or can be mitigated.</p>
+
+<p>However, despite this, I have am seriously considering a move back to a file-based configuration. Why? Becuase directory-based configuration, while arguably better, is simply not common. In 5 to 10 years perhaps it will become more so, but until then it might simply be an design too far ahead of it&#39;s time to gain traction with any mainstrean developers. Clearly it is more important that a tool be found useful to a wide audiance, than it utilize a nifty feature, no matter how nifty it might be.</p>
+
+<hr>
+
+<p>title      : Directory-based Configuration
+author     : trans
+date       : 2010-05-13
+categories : [pom, metadata, configuration]
+layout     : post</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/crossing-the-assets-divide/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Crossing the Assets Divide</h1>
+
+<p>Working on <a href="http://github.com/rubyworks/smeagol">Smeagol</a>, a read-only Gollum server and static site generator, I&#39;ve come across an unusual issue. One of the features Smeagol provides is the ability to view page history. By providing a git commit-id or a tag name in the URL, an older version of any page can be viewed. Now, if a page includes a local asset, an image being the typical example, that file clearly must come from the same commit as well. And here is were a problem arises. While <em>content assets</em> must be versioned, <em>design assets</em> must not. We may want to look at the content of an old page for historical reference; we don&#39;t want look at it as if on the website as it was designed way back when. Indeed, the functionality of the site back then might have had bugs in it, it might have a had a very stark layout, it might have any number of issues which have since been corrected. Certainly the site should not serve up old stylesheets, javascripts, background images and the like. Only old <em>content</em> must be served.</p>
+
+<p>As it has become the fashion in web-design, stylesheets, javascripts, images, and so on are placed in a single <code>assets/</code> directory. (Even without an <code>assets/</code> directory, asset files are generally placed in central bins such as <code>images/</code>.)  Because of this there is no straight forward way to determine which files are for content and which are for site design. So, as it happens, there turns out to be a need to divide the assets in two. One directory for design and another for content.</p>
+
+<p>I now find myself with the unenviable decision of what to name these two directories. Do I keep <code>assets/</code> for design or content? And what do I name the other directory? Or should I use two new names altogether?</p>
+
+<p>[UPDATE] At present I have opted to keep <code>assets/</code> for design-related files and move content assets to <code>media/</code>. Technically, it turns out that it doesn&#39;t matter where the content files go as long as it is not in <code>assets/</code>. </p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/about-those-refinements/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>About those Refinements</h1>
+
+<p>Well, after a ridiculously long discussion about refinements, it&#39;s finally become clear what Matz is up to. It would have helped if he had mentioned from the start that he&#39;s patterning them directly off of Smalltalk wrappers and CLOS method combinations. Instead we get <a href="http://bugs.ruby-lang.org/projects/ruby-trunk/wiki/RefinementsSpec">this</a> &quot;offical&quot; spec. Hardly. It was only thanks to Charles Nutters careful <a href="https://bugs.ruby-lang.org/issues/4085#note-217">analysis</a> that I was able to to get a clear picture. Oh, the time and data that could have been saved!</p>
+
+<p>So allow me to save you all the trouble and explain refinements in very simple phrase: <em>macros des méthodes</em>. In plain English, they are macros that act on method invocations. For example,</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">M</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">string</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
+    <span class="n">string</span><span class="o">.</span><span class="n">to_s</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nn">Q</span>
+  <span class="n">refine</span> <span class="nb">String</span>
+    <span class="k">def</span> <span class="nf">to_s</span>
+      <span class="s2">&quot;Every string is </span><span class="si">#{</span><span class="k">super</span><span class="si">}</span><span class="s2">!&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">using</span> <span class="n">Q</span>
+
+<span class="n">M</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="s2">&quot;okay&quot;</span><span class="p">)</span> <span class="c1">#=&gt; &quot;okay&quot;</span>
+</code></pre></div>
+<p>Notice, the <code>M.string</code> method is not effected by the refinement of <code>String#to_s</code> even though it uses <code>#to_s</code> in its definition. However, if we use <code>#to_s</code> explicitly in the scope of the refinement&#39;s use we get:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="s2">&quot;okay&quot;</span><span class="o">.</span><span class="n">to_s</span> <span class="c1">#=&gt; &quot;Every string is okay!&quot;</span>
+</code></pre></div>
+<p>Even though that is exactly what the definition of <code>M.string</code> is, it produces the refined result instead. Since the call was explicit the refinement interceded.</p>
+
+<p>That&#39;s really the crux of refinements. Most of the remaining questions pertain to the order in which multiple refinements interact, but it is all pretty much as one would intuit it to be, so we won&#39;t go into detail in that regard.</p>
+
+<p>Now I thought it might be helpful to take an extreme example of what one could do with refinements and see if it leads us to anything interesting.</p>
+
+<p>Let&#39;s take just a bare class.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Now lets create two refinements defining two different roles a person might take.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">Buyer</span>
+  <span class="n">refine</span> <span class="no">Person</span> <span class="k">do</span>
+    <span class="kp">attr</span> <span class="ss">:stuff</span><span class="p">,</span> <span class="ss">:money</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">money</span><span class="p">,</span> <span class="o">*</span><span class="n">stuff</span><span class="p">)</span>
+      <span class="vi">@money</span> <span class="o">=</span> <span class="n">money</span><span class="o">.</span><span class="n">to_f</span>
+      <span class="vi">@stuff</span> <span class="o">=</span> <span class="n">stuff</span>
+    <span class="k">end</span>
+    <span class="k">def</span> <span class="nf">buy</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+      <span class="vi">@stuff</span><span class="o">.</span><span class="n">push</span> <span class="n">product</span>
+      <span class="vi">@money</span> <span class="o">-=</span> <span class="vi">@money</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nn">Seller</span>
+  <span class="n">refine</span> <span class="no">Person</span> <span class="k">do</span>
+    <span class="kp">attr</span> <span class="ss">:stuff</span><span class="p">,</span> <span class="ss">:money</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">money</span><span class="p">,</span> <span class="o">*</span><span class="n">stuff</span><span class="p">)</span>
+      <span class="vi">@money</span> <span class="o">=</span> <span class="n">money</span><span class="o">.</span><span class="n">to_f</span>
+      <span class="vi">@stuff</span> <span class="o">=</span> <span class="n">stuff</span>
+    <span class="k">end</span>
+    <span class="k">def</span> <span class="nf">sell</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+      <span class="vi">@stuff</span><span class="o">.</span><span class="n">delete</span> <span class="n">product</span>
+      <span class="vi">@money</span> <span class="o">+=</span> <span class="vi">@money</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Now let&#39;s define an activity in which persons interact as each of these roles.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="n">using</span> <span class="no">Seller</span>
+<span class="n">using</span> <span class="no">Buyer</span>
+
+<span class="k">class</span> <span class="nc">SalesTransaction</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">make</span><span class="p">(</span><span class="n">buyer</span><span class="p">,</span> <span class="n">seller</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+    <span class="n">buyer</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+    <span class="n">seller</span><span class="o">.</span><span class="n">sell</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Interesting? Person has no built-in behavior, and yet we&#39;ve managed to use the class to model a sales transaction and give each person state of what they own and how much money they have. And an outside interface can&#39;t find this state out unless it knows what role to apply!</p>
+
+<p>You might recognize the pattern of this example. It is <a href="http://en.wikipedia.org/wiki/Data,_context_and_interaction">DCI</a>. Does this mean refinements are a prefect fit for DCI-based designs? Might we see a whole new paradigm in Ruby architecture built around the DCI? That&#39;s a good question. At first glance it certainly seems to be possible. But we should note a obvious downsides.</p>
+
+<ol>
+<li>Both refinements required an <code>#initialize</code> method to ensure the instance variables are initialized. So  refinements of this kind would have to be compatible in this respect in order to be used together.</li>
+<li>The context, in this case <code>SalesTransaction</code>, has to exist in it&#39;s own file so only the appropriate refinements apply. There is no way to define contexts that use different refinements in the same file because refinements are applied on a per-file basis. Although, some level of cleverness could be played if certain contexts simply add additional refinements on top of those used earlier in the file.</li>
+<li>While it remains to be seen, it is unlikely that an entire system written in this fashion will be very fast. Nor is entirely certain the it would very comprehensible, but perhaps that has more to do with DCI then refinements.</li>
+</ol>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/a-failure-of-precedence/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>A Failure of Precedence</h1>
+
+<p>(Ruby&#39;s Operator Precedence Can Be Improved)</p>
+
+<p>There&#39;s a lot to love about Ruby. Most of us know well the many great advantages it provides, as they say, &quot;making programming fun&quot;. However, Ruby is also notoriously dogged by a few small gotchas and inconsistancies. Some of these are understandable, such as the <a href="http://eigenclass.org/hiki/The+double+inclusion+problem">Double Inclusion Problem</a>; issues that are not worth the extensive effort to fix. On the other hand, some simple issues doggedly persist for little good reason (backward compatibility not withstanding).</p>
+
+<p>One of these issues is operator precedence. Not only is operator precedence set in stone, it is also
+woefully <i>bottom heavy</i> --there is only one binary operator available for use above the common arthmetic operations.</p>
+
+<p>Here is the table as given by the <a href="https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html">PickAxe</a>:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Method    Operator                Description
+Y         [ ] [ ]=                Element reference, element set
+Y         **                      Exponentiation
+Y         ! ~ + -                 Not, complement, unary plus and minus (method names for the last two are +@ and -@)
+Y         * / %                   Multiply, divide, and modulo
+Y         + -                     Plus and minus
+Y         &gt;&gt; &lt;&lt;                   Right and left shift
+Y         &amp;                       Bitwise `and&#39;
+Y         ^ |                     Bitwise exclusive `or&#39; and regular `or&#39;
+Y         &lt;= &lt; &gt; &gt;=               Comparison operators
+Y         &lt;=&gt; == === != =~ !~     Equality and pattern match operators (!= and !~ may not be defined as methods)
+          &amp;&amp;                      Logical `and&#39;
+          ||                      Logical `or&#39;
+          .. ...                  Range (inclusive and exclusive)
+            ? :                     Ternary if-then-else
+          = %= { /= -= += |= &amp;=   Assignment
+          &gt;&gt;= &lt;&lt;= *= &amp;&amp;= ||= **=   
+          defined?                Check if symbol defined
+          not                     Logical negation
+          or and                  Logical composition
+          if unless while until   Expression modifiers
+          begin/end               Block expression
+</code></pre></div>
+<p>The lack of any operators other then <tt>**</tt>, above the most commonly used, <tt>* / % + -</tt>, puts
+a frustrating limitation on the flexibility of this system. On this account, the most puzzling misplacement of an operator has to be Bitwise Exlusive Or, <tt>^</tt>. In many, if not most, programming languages <tt>^</tt> is the power operator. But in Ruby that function is delegated to <tt>**</tt>. While I personally do not favor <tt>**</tt> for the use, it&#39;s not something I mind either. However, that <tt>^</tt> doesn&#39;t share the same precedence is very awkward.</p>
+
+<p>Consider for instance, the implementation of a unit system.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">**</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;4 square meters&quot;</span>
+</code></pre></div>
+<p>Notice the power operator effects the unit and the value. So how would we go about notating <code>2 square meters</code>? We need some other means. The obvious answer is to redefine <tt>^</tt>:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;2 square meters&quot;</span>
+</code></pre></div>
+<p>Great. But wait, there is an ugliness now upon us.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;2 meters&quot;</span>
+</code></pre></div>
+<p>The answer should have been <tt>1 square meter</tt>, but due to precedence <tt>2 / 2</tt> is barring a <tt>1</tt> before the <tt>^</tt> power operator kicks-in.</p>
+
+<p>It is truly wonderful that Ruby&#39;s first 27 operators are actually methods, which means they can be defined to perform whatever function we would like of them. But despite being able to define these operators, there is no means of changing their precedence. Thus, the actual options we have defining new operations to suite our needs are hindered.</p>
+
+<p>Ideally we would be able to alter precedence on a per-class basis. While, some might argue that would create too much confusion, I would retort that good libraries would use the feature effectively, limiting the changes to the appropriate use-cases, so that it would not be an issue. After all, a library that scrambles precedence for no damn good reason will get little use.</p>
+
+<p>While we wait the day of true precedence freedom, I would like to see Ruby move <tt>^</tt> up with <tt>**</tt> and find a new Exclusive Or operator. Backward compatibility can be largely, although not completely, preserved by aliasing <tt>^</tt> to the new symbol. It&#39;s an obvious and simple improvement --a naggling issue that has been around for quite some time.</p>
+
+<hr>
+
+<p>title      : A Failure of Precedence
+author     : trans
+categories : [website]
+date       : 2009-12-13
+layout     : post</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/Transpilers-to-Watch/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Transpilers to Watch</h1>
+
+<p><a href="">CoffeeScript</a> is fairly ubiquitous technology these days --a <em>transpiler</em> that converts it&#39;s own much nicer language into Javascript which can then be run via Node.js or on the Web. But it&#39;s not the only fish in this sea. Here are three similar projects that look very promising.</p>
+
+<h2><a href="http://texodus.github.io/forml/">Forml</a></h2>
+
+<blockquote>
+<p>A contemporary programming language for the discriminating programmer,
+intended to approximate the safety of Haskell and the expressiveness
+of Ruby. Should such an approximation turn out to exist.</p>
+</blockquote>
+
+<h2><a href="http://noflojs.org/">NoFlo</a></h2>
+
+<blockquote>
+<p>NoFlo is a JavaScript implementation of Flow-Based Programming (FBP).
+Separating the control flow of software from the actual software logic.
+Helping you organize large applications easier than traditional OOP
+paradigms, especially when importing and modifying large data sets.</p>
+</blockquote>
+
+<h2><a href="http://opalang.org/">Opal</a></h2>
+
+<blockquote>
+<p>Opa is a full-stack open source web development framework for JavaScript
+that lets you write secure and scalable web applications.
+Opa handles all aspects of web programming: frontend (client code),
+backend (server code) and database queries are all written in one
+consistent language and compiled to standards of the web.</p>
+</blockquote>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/My-Critique-of-Elixir/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><p>First, let me admonish myself for having limited knowledge of the subject. I am far from an Elixir expert. So I readily defer to those with more experience that can make a solid contrary argument against my conclusions. However, as I am unlikely to continue on in my adventures with Elixir, this is clearly the only time I have left to opine on the topic. So I will do so, and feel free to take my opinions with as much salt as you feel necessary.</p>
+
+<p>There are many things to like about Elixir. Most notable of them is it&#39;s inheritance from Erlang and it&#39;s improved syntax inspired by Ruby. Its Erlang roots bring so many great features to the table: true functional programming, rock solid stability, distributed computing, and so on. Anything that is good about Erlang, is likewise good about Elixir. On top of this, Elixir brings a much more pleasurable syntax and a few higher-level conveniences which really set it apart from Erlang. (Otherwise there would be no point but to use Erlang directly). But then there are the caveats. </p>
+
+<p>On the minor end, Elixir&#39;s code documentation is a bit odd. Documentation of modules is placed within the <code>defmodule</code> block, while documentation of functions are placed on the outside the <code>def</code> blocks. Why the difference? In addition there is no sigil at the beginning of documentation lines to clearly indicate a comment. If a documentation section were large enough, one could mistake examples for actual program code. Only by the magic of syntax highlighters are we saved from any such &quot;at a glance&quot; error. </p>
+
+<p>Then there is the minor issue of the <code>def</code> prefix on the definition of everything. <code>defmodule</code>, <code>defstruct</code>, <code>deftype</code>, etc. One can understand the desire to avoid too many keywords, but surely <code>module</code>, <code>struct</code> and <code>type</code> would do much better, as they do in almost every other language, and can be avoided as keywords if need be by appropriate context.</p>
+
+<p>A little more troubling is the awful block syntax. Despite all the inspiration form Ruby, Elixir did not adopt Ruby&#39;s elegant block syntax. Instead we get a strange twist of <code>fn</code> keyword, an arrow <code>-&gt;</code> and an <code>end</code> keyword, all within the argument parenthetical.</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">  <span class="no">Enum</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="k">fn</span> <span class="n">x</span> <span class="o">-&gt;</span>
+    <span class="o">...</span>
+  <span class="k">end</span><span class="p">)</span>
+</code></pre></div>
+<p>It feels a bit more like Javascript than Ruby. Ironically, this ugliness doesn&#39;t save us from a whole mess of seemingly extraneous <code>do</code> statements everywhere. Every <code>def*</code> and even every condition like <code>if</code> also requires a <code>do</code> to define the subsequent block.</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">  <span class="k">if</span> <span class="n">ok?</span><span class="p">()</span> <span class="k">do</span>
+<span class="k">     </span><span class="o">...</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>It might not seem like much, but when you write enough code and find yourself having to always fix missing do&#39;s first off, you can&#39;t help but feel as if your time could be spent on more useful endeavors.</p>
+
+<p>On a higher level of critique, I think Elixir, like Erlang and their ML brethren, suffer from <em>Overtype Syndrome</em>, if you will allow me to coin a phrase. Because the language is both functional and so strongly typed, every method comes by way of a module. So instead of say, <code>list.each{...}</code> as in Ruby, one much specify where <code>each</code> is defined, <code>Enum.each(list, ...)</code>. And because one must repeat these module names over and over, there is a naturally common practice of extreme abbreviation. In some fashion it&#39;s nice that names are concise. Yet it can be a bit difficult encountering module names like <code>IEx</code> in passing. In addition, we end up with a whole slew of modules and types with which to contend. Of course this can be true of any strongly typed language, but it seems especially so for the ML branch of languages.</p>
+
+<p>Finally, my last niggle is with functional programming in general. Honestly, it&#39;s pretty awesome. But just as honestly, it is difficult. The lack of procedural techniques puts a significant onus on the functional language to provide a large set of easy to understand and easy to utilize functions to pipe together to achieve the desired result. Partly it is due to lack of experience in thinking functionally, but it is clear enough that even for very component functional programmers it can be a real challenge to piece together the right functions to solve a complex problem. I believe this is because functional programming forces you to think about the whole more so than procedural programming. With a procedure, one can quickly break down a problem into parts. e.g. &quot;I have an array of strings, which I need to iterate over and extract each word, and for each word, make it lowercase, and then update a hash table to track the number of times the word occurs.&quot; Easy enough. Functionally the reads more like, &quot;I need to build a dict via a flat-map over a list of strings and the list of words in each while lowering the case of each word, with an updated key/value pair.&quot; Or something like that. It is simply harder to even to talk in functional terms.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/HTML-Follies/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><p>HTML Follies</p>
+
+<p><strong>DRAFT</strong></p>
+
+<p>Despite all its glories, HTML also has some serious follies. I&#39;ve never thought highly of the W3C in general. They seem to be on a never ending quest to build standards at a snails pace, yet end up with a result that is barely an improvement over previous solutions --if not actually worse. And unfortunately it is too often at an intolerable level of new complexity. For some reason K.I.S.S. seems to have been left off their principles sheet. For some clear examples, consider [XMLST] and [XML-fo]. I think [Web Components] are the latest ranking member.</p>
+
+<p>So let&#39;s go through some of the glaring issues with HTML, what would be an appropriate solution and perhaps make some suggestion for how to mitigate the issue while still under the yolk of current standards.</p>
+
+<h2>Headers Ought to be Titles</h2>
+
+<p>Presently HTML authors must handle the titling of sections as follows:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;section&gt;
+  &lt;h2&gt;New Chapter&lt;/h2&gt;
+  &lt;p&gt;...&lt;/p&gt;
+&lt;/section&gt;
+</code></pre></div>
+<p>We assume here that the author was at least wise enough to put the header in the section and not above it. But why <code>h2</code> (which is a common choice)? Why not <code>h1</code> or <code>h3</code>? Well, there is no real reason. The document creator simply choose <code>h2</code> because it was in suitable font size as setup in the CSS. And therein lies a clear failure of design. The element is not being selected semantically. A proper design would be:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;section&gt;
+  &lt;title&gt;New Chapter&lt;/title&gt;
+  &lt;p&gt;...&lt;/p&gt;
+&lt;/section&gt;
+</code></pre></div>
+<p>Alas, HTML has no <code>title</code> element (outside of <code>head</code>). We could argue for a numberless <code>h</code> instead, but it amounts to essentially the same thing. Yet the term <code>title</code> is much more telling. Likewise <code>subtitle</code> is much more telling than any <code>h2</code> or <code>h3</code>.</p>
+
+<p><strong>What to do now?</strong> Our best course of action is to always use <code>h1</code> for titles and use <code>h2</code> for subtitles. Headers <code>h3</code>-<code>h6</code> should rarely, if ever, be of any use.</p>
+
+<h2>Padding Undermines Width</h2>
+
+<p>Technically this is a CSS issue, but these days it&#39;s not reasonable to separate it from HTML. The two are intractably linked. </p>
+
+<p>Padding should not add width. If the width of an element is specified and a padding is added, then the inner width should reduce accordingly.</p>
+
+<p>Thankfully this has been addressed in the latest HTML version. <em>Hallelujah!</em> ...</p>
+
+<h2>Open Semantics</h2>
+
+<p>Lastly, the ultimate end point of the development of HTML is to separate the markup of structure from that of the meaning of the tags. This is in fact what the W3C was attempting with XML and XSLT. But that approach failed. It was too complicated. A new approach using CSS instead of XSLT could do better.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;chapter&gt;
+  &lt;p&gt;...&lt;/p&gt;
+&lt;/chapter&gt;
+</code></pre></div>
+<p>Chapter isn&#39;t a recognized tag. But the CSS could be used to identify it.</p>
+
+<p>chapter {
+    tag: section
+  }</p>
+
+<p>Thus the CSS informs the document to treat <code>chapter</code> tags as if they were <code>section</code> tags.</p>
+
+<p>Current the W3C&#39;s solution to this is Web Components. And while some of the Web Components specification is needed for more complex problems. It is still has a piss poor interface, and is a complete overkill for simple cases like the one above.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/Going-Generic/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Going Generic</h1>
+
+<p>My Grandmother will often buy generic brands at the grocery to save a few dollars. A child of the depression, she knows the true value of a thing[^1]. Go could take a lesson from her.</p>
+
+<p>Let me provide an example. Here is code to concat two array of string.[^2]</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">func concat(a, b []string) []string {
+  ret := make([]string, len(a) + len(b))
+  copy(ret, a)
+  copy(ret[len(a):], b)
+  return ret
+}
+</code></pre></div>
+<p>It can only be used for []string values. Nothing else. If I need to concat two int arrays, well then I need another function.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">func concat(a, b []int) []int {
+  ret := make([]int, len(a) + len(b))
+  copy(ret, a)
+  copy(ret[len(a):], b)
+  return ret
+}
+</code></pre></div>
+<p>There is no difference between these two functions except the array&#39;s element type. Ideally a general solution would allow use to name the type, e.g.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">func concat(a, b []&lt;t&gt;) []&lt;t&gt; {
+  ret := make([]&lt;t&gt;, len(a) + len(b))
+  copy(ret, a)
+  copy(ret[len(a):], b)
+  return ret
+}
+</code></pre></div>
+<p>From what I have heard there are some strict criteria to be met for any general solution to this issue. I plan to do some further reading.</p>
+
+<p>[^1]: Sometimes too much so actually. Of an emptied product container she&#39;ll often say, &quot;this is fine container, surely you must have something you can put in it&quot;. :)</p>
+
+<p>[^2]:  Yes, there is simpler way to concat two arrays, i.e. <code>append(a1, a2...)</code>, but the concat function makes for a clear example of the generics issue. The specific functionality is not important.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/06/02/xdg-next-generation/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>XDG NG</h1>
+
+<p>I can never stress enough the value of using the XDG directory standard to
+developers. This is one of those standards that can only really benefit us
+all if enough developers truly care to make a better eco-system.</p>
+
+<p>I have decided to take two approaches to my encouragment. The first is to
+improve the current XDG API to the point of triviality. It will be one script,
+which others can copy to their project if they prefer it to having another
+dependency. And I will make it even easier to use --one point of entry,
+and readily obvious semantics.</p>
+
+<p>But more I have decided to go beyond this and crrate a new standard --a derivation to
+the XDG standard that takes an well demonstrated Rails practice into account: convention
+over configuration. By doing so the standard can be further simplified and thus 
+become even more trivial, and hopfully in this manner become widely supported to 
+the benefit of us all.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">~/.cache
+~/.config
+~/.data
+</code></pre></div>
+<p>Update: I started a project for this. See <a href="https://github.com/tabcomputing/bds">BDS</a>.</p>
+
+<hr>
+
+<p>title      : XDG Next Generation
+author     : trans
+categories : [xdg, fhs]
+date       : 2010-06-02
+layout     : post
+published  : false</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-02-June" title="June 02, 2010">June 02, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/05/19/a-second-look-at-bundler/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>A Second Look at Bundler</h1>
+
+<p>A few days ago I wrote an article on my concerns with Bundler. Since then I&#39;ve received enough feedback to refine my thoughts. My opinion that the Ruby/Rails community is on a &quot;crazy train&quot; with regards to Bundler has everything to do with state of complexity of Rails code these days and it&#39;s infiltration into plain vanilla Ruby projects. Of course, Bundler&#39;s intent is to do just the opposite, but such is the danger of new technologies that we must be cautious of inevitable unexpected consequences. So, taking the feedback into account, here&#39;s a better breakdown of the ups and downs of Bundler as I now see them.</p>
+
+<h2>On the Upside</h2>
+
+<p><b>Bundling</b>: I have been informed that the ability to bundle gems is a useful feature for administrators of systems with limited Internet access. I did not expect this to be common enough to even warrant a tool (just use a tarball). But apparently is common enough. For this use Bundler is understandably useful. It&#39;s ability to resolve dependencies pre-runtime makes it especially good at doing so.</p>
+
+<p><b>Installs</b>: The <code>bundle install</code> feature has similar applications to bundle. It can be used to ease deployment. More specifically, a deployment script can contain a simple invoke &#39;bundle install&#39;, rather then handle the installation of each gem itself. In addition it makes it easier for developers to get up and running quickly, a simple &#39;bundle install&#39; will install everything you need to develop a project. So this feature has it&#39;s clear benefits.</p>
+
+<p><b>Groups:</b> Groups are convenient when selecting certain gems from the list of all requirement, as a means to specialize usage to the end-users needs. Although perhaps a minor benefit, one can see how it can be useful to the developer. As currently implemented Bundler only supports opt-out groups. It might be nice if it also provided for opt-in selections.</p>
+
+<p><b>Locking</b>: The locking feature is probably Bundler&#39;s most significant feature. It allows the developer to nail down their application to the latest gems that best meet all the requirements as given in the Gemfile. </p>
+
+<p><b>Gemfile</b>: Of course, Rubyists are accustomed to nice DSL to &quot;describe&quot; code. The Gemfile makes excellent use of this ability and it is especially nice to have a single clear file to describe all the dependencies of a project.</p>
+
+<h2>On the Downside</h2>
+
+<p><b>Bundling</b>: The downside of bundling comes when developers misuse the feature. Because Bundler does more than just bundle gems for special deployments, there may be a tendency towards using it in this way regardless of the need to do so. For example, yesterday I cloned the <a href="http::/github.com/qrush/gemcutter">Gemcutter</a> repository. The download consumed 22.61 MiB of space. On close inspection I discovered why. The <code>vendor/cache</code> directory contains a copy of every gem on which Gemcutter depends. Consider what this means. In effect, Bundler has undermined the entire purpose of having a package manger!</p>
+
+<p>If Bundler were an application that handled this feature and only this feature, then I think it would be a much better tool. In doing so it would help deter misuse. And the other features could be left to the domain of another library, or even better, RubyGems proper.</p>
+
+<p><b>Installs</b>: The downside of <code>bundle install</code>, is the lack of refinement it grants the end user. An example is the Rails Gemfile which will installs the sqlite3, postgresql and mysql bindings, regardless of what databases the system actually supports. There may also be other subtle conditions that need to be taken into account on installation. To account for these, the temptation will be to add conditions to the Gemfile itself, blurring the lines between it and a Capfile (as an example). But this will in turn effect the developer&#39;s use of the other features. In the end, the inter-complexities this will cause will simply prove too much.</p>
+
+<p><b>Groups</b>: You&#39;ll be happy to know there is nothing intrinsically problematic with groups. Other than the additional complexities they add to the process of designing a Gemfile and the installation thereof, they server their purpose. Sometimes additional complexity is the necessity of capability.</p>
+
+<p><b>Locking</b>: Ironically, Bundler&#39;s most useful feature is probably it&#39;s most problematic. First, in order to achieve this level of functionality, Bundler must download a slew of gems to your system in order to calculate the best fitting requirements. But worse than this, locking brings <code>Bundler.require</code> into play. <code>Bundler.require</code> admits of the same issues as <code>require &#39;rubygems&#39;</code>. It can not be used without limiting an program to the RubyGems package manager. If it is to be used congenially, special conditions will need to be put in place by the developer to ensure a program still runs whether RubyGems is being used or not. Bundler might mitigate this issue by gracefully downgrading if RubyGems is not loaded, but then it must also consider where Bundler&#39;s lock file will be located, say if setup.rb is used for installation.</p>
+
+<p><b>Gemfile</b>: As mentioned, the Gemfile is great to have as a single configuration file to describe dependencies. However, if a project has a gemspec, it still requires dependencies be stated there as well. RubyGems is not able to utilize the Gemfile. Having to state requirements twice violates the DRY principle.</p>
+
+<p>In addition, because the Gemfile is Ruby code it can be full of conditional statements, dynamic code, and all sorts of other spaghetti. All of which make the file unusable to anything but a Ruby script. Worse still, the ability to use conditions has the potential for creating a very unwieldy level of complexity. There is no way, for instance, to query the Gemfile for all requirements that may be need because some of them may be hidden by the current state of an environment variable. The clear remedy to this is to switch to a static file format. Such a format could be utilized by many tools, not just Bundler, including RubyGems itself. This would also help resolve some the issues with bundle install as mentioned above.</p>
+
+<h2>In Conclusion</h2>
+
+<p>Taking the &quot;good, the bad and ugly&quot; into account as we have, the end result would indicate the following potenial points of action:</p>
+
+<ul>
+<li>Use a static file format for the Gemfile.</li>
+<li>Allow groups to be opt-in as well as opt-out.</li>
+<li>Split Bundler into two projects. One strictly for bundling.</li>
+<li>Non-bundling features might be integrated into RubyGems proper.</li>
+<li>At the very least allow RubyGems to utilize the Gemfile for gem building.</li>
+<li>Gracefully downgrade when RubyGems/Bundler is not used.</li>
+</ul>
+
+<p>By applying these points, we can tame some of the &quot;crazy train&quot; of complexity. The principles of POLS and KISS are halmarks of a good Rubyist. Let&#39;s not loose that.</p>
+
+<hr>
+
+<p>title      : A Second Look at Bundler
+author     : trans
+categories : [bundler, rubygems]
+date       : 2010-05-19
+layout     : post</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-19-May" title="May 19, 2010">May 19, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+    <section class="pagination" style="text-align:center">
+      
+        
+        <a href="/page4" class="btn btn-outline">‹ Newer</a>
+        
+      
+      
+        <a href="/page6" class="btn btn-outline">Older ›</a>
+      
+    </section>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

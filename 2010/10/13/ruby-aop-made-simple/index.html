@@ -1,76 +1,64 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>2010 10 13 ruby aop made simple\7R4N5C0D3</title>
-  <meta name="author" content="Trans" />
-
-  <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
-
-  <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
-  <link rel="stylesheet" href="/assets/styles/code.css" type="text/css"/>  
-  <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
-
-  <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/>
-  <link rel="stylesheet" href="/assets/styles/social.css" type="text/css"/>  
-
-  <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
-
-  <!--[if lt IE 9]>
-  <script src="/scripts/html5.js"></script>
-  <![endif]-->
-
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
-  <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
-  <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
-
-  <script src="/assets/scripts/main.js"></script>
-
-  <script>
-    $(document).ready(function(){
-      $('#social-share').dcSocialShare({
-        twitterId: 'transgigamic',
-        tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
-        buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
-      });
-    });
-  </script>
-
-  <!-- tracking code here ? -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2010/10/13/ruby-aop-made-simple/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2010/10/13/ruby-aop-made-simple/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
 </head>
-
 <body>
-<div id="container">
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
 
-	<div id="header">
-		<h1>7R4N5C0D3</h1>
-	</div>
 
-	<div id="nav">
-    <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/Projects">Projects</a></li>
-    <li><a href="/Reads">Reads</a></li>
-    <li><a href="/Tools">Tools</a></li>
-    <li><a href="/tags.html">Tags</a></li>
-    <li><a href="/atom.xml">Feed</a></li>
-    <li><a href="https://github.com/trans/trans.github.com/wiki">Wiki</a> &gt;&gt;</li>
-    </ul>
-	</div>
+<article>
 
-<!-- CONTENT -->
-<div id="content-wrapper">
-<div id="content">
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
 
-<h1>Ruby AOP Made Easy</h1>
+        <section>
+            <h1>Ruby AOP Made Simple</h1>
 
 <h2>Quick Recap</h2>
 
 <p>Aspect Oriented Programming (AOP) is a topic I have spent a fair amount of
 time contemplating. I, along with Peter VanBroekhoven, developed
-the concept of Cut-based AOP back in <code>05-</code>06. A limited "toy" implementation of
+the concept of Cut-based AOP back in 2005-2006. A limited &quot;toy&quot; implementation of
 which can be had by installing the <code>cuts</code> gem. The basic idea behind Cut-based
 AOP is the <i>transparent subclass</i>, a.k.a. the <em>cut</em>, which is essentially
 a subclass that subsumes the role of the class it effects without the programmer
@@ -80,27 +68,22 @@ construct in a purely object-oriented appraoch to AOP. You can read more about i
 
 <p>In dicussing this idea on the ruby-talk mailing list it was suggested that
 an easier approach would be to forgo the Cut class and simply allow modules
-to be "prepended" to the class or module to which they are applied. So for
+to be &quot;prepended&quot; to the class or module to which they are applied. So for
 instance we might write:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">C</span>
+      <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">;</span> <span class="k">end</span>
+    <span class="k">end</span>
 
-<div class="highlight">
-<pre>  <span class="k">class</span> <span class="nc">C</span>
-    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s2">"</span><span class="si">#{</span><span class="n">s</span><span class="si">}</span><span class="s2">"</span> <span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
+    <span class="k">module</span> <span class="nn">A</span>
+      <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span> <span class="p">;</span> <span class="k">end</span>
+    <span class="k">end</span>
 
-  <span class="k">module</span> <span class="nn">A</span>
-    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s1">'{'</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">'}'</span> <span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
+    <span class="k">class</span> <span class="nc">C</span>
+      <span class="n">prepend</span> <span class="n">A</span>
+    <span class="k">end</span>
 
-  <span class="k">class</span> <span class="nc">C</span>
-    <span class="n">prepend</span> <span class="n">A</span>
-  <span class="k">end</span>
-
-  <span class="n">C</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">)</span>  <span class="c1">#=&gt; "{hello}"</span>
-</pre>
-</div>
-
-
+    <span class="n">C</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>  <span class="c1">#=&gt; &quot;{hello}&quot;</span>
+</code></pre></div>
 <p>Cut-based AOP is a general OOP design that can be applied to any
 object-oriented programming language. But for Ruby, the idea of <code>prepend</code>,
 while more limited, does serve much of the same purpose, and the idea is up for 
@@ -110,149 +93,119 @@ while more limited, does serve much of the same purpose, and the idea is up for
 
 <p>There is however another way to essentially use prepend-like AOP in Ruby without
 extending Ruby in any special way. The trick is simply to design classes
-and module to be "AOP-ready". Here is an example of the above using nothing
+and module to be &quot;AOP-ready&quot;. Here is an example of the above using nothing
 more than standard Ruby.</p>
-
-<div class="highlight">
-<pre>  <span class="k">class</span> <span class="nc">C</span>
-    <span class="k">module</span> <span class="nn">Joinable</span>
-      <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s2">"</span><span class="si">#{</span><span class="n">s</span><span class="si">}</span><span class="s2">"</span> <span class="p">;</span> <span class="k">end</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">C</span>
+      <span class="k">module</span> <span class="nn">Joinable</span>
+        <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">;</span> <span class="k">end</span>
+      <span class="k">end</span>
+      <span class="kp">include</span> <span class="no">Joinable</span>
     <span class="k">end</span>
-    <span class="kp">include</span> <span class="no">Joinable</span>
-  <span class="k">end</span>
 
-  <span class="k">module</span> <span class="nn">A</span>
-    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s1">'{'</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">'}'</span> <span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
+    <span class="k">module</span> <span class="nn">A</span>
+      <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span> <span class="p">;</span> <span class="k">end</span>
+    <span class="k">end</span>
 
-  <span class="k">class</span> <span class="nc">C</span>
-    <span class="kp">include</span> <span class="n">A</span>
-  <span class="k">end</span>
+    <span class="k">class</span> <span class="nc">C</span>
+      <span class="kp">include</span> <span class="n">A</span>
+    <span class="k">end</span>
 
-  <span class="n">C</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">)</span>  <span class="c1">#=&gt; "{hello}"</span>
-</pre>
-</div>
-
-
-<p>Pretty easy. We have simply encapsulate C's instance methods in a "Joinable"
+    <span class="n">C</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>  <span class="c1">#=&gt; &quot;{hello}&quot;</span>
+</code></pre></div>
+<p>Pretty easy. We have simply encapsulate C&#39;s instance methods in a &quot;Joinable&quot;
 module, thus any new inclusions into C itself will actually come <em>before</em>
 these methods.</p>
 
 <p>This of course raises the issue of including modules in the normal fashion,
 in which case we would need in include them in Joinable itself, e.g.</p>
-
-<div class="highlight">
-<pre>  <span class="k">class</span> <span class="nc">C</span>
-    <span class="k">module</span> <span class="nn">Joinable</span>
-      <span class="kp">include</span> <span class="no">Foo</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">C</span>
+      <span class="k">module</span> <span class="nn">Joinable</span>
+        <span class="kp">include</span> <span class="no">Foo</span>
+      <span class="k">end</span>
     <span class="k">end</span>
-  <span class="k">end</span>
-</pre>
-</div>
-
-
+</code></pre></div>
 <p>We could facilitate this will a little bit of Ruby magic.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Module</span>
+      <span class="n">alias_method</span> <span class="ss">:_include</span><span class="p">,</span> <span class="ss">:include</span>
 
-<div class="highlight">
-<pre>  <span class="k">class</span> <span class="nc">Module</span>
-    <span class="n">alias_method</span> <span class="ss">:_include</span><span class="p">,</span> <span class="ss">:include</span>
+      <span class="k">def</span> <span class="nf">include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">const_defined?</span><span class="p">(</span><span class="ss">:Joinable</span><span class="p">)</span>
+          <span class="n">core</span> <span class="o">=</span> <span class="nb">const_get</span><span class="p">(</span><span class="ss">:Joinable</span><span class="p">)</span>
+          <span class="n">core</span><span class="o">.</span><span class="n">_include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="n">_include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
 
-    <span class="k">def</span> <span class="nf">include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
-      <span class="k">if</span> <span class="nb">const_defined?</span><span class="p">(</span><span class="ss">:Joinable</span><span class="p">)</span>
-        <span class="n">core</span> <span class="o">=</span> <span class="nb">const_get</span><span class="p">(</span><span class="ss">:Joinable</span><span class="p">)</span>
-        <span class="n">core</span><span class="o">.</span><span class="n">_include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
-      <span class="k">else</span>
-        <span class="n">_include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+      <span class="k">def</span> <span class="nf">prepend</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">const_defined?</span><span class="p">(</span><span class="ss">:Joinable</span><span class="p">)</span>
+          <span class="n">_include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="k">raise</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">self</span><span class="si">}</span><span class="s2"> is not Joinable&quot;</span>
+        <span class="k">end</span>
       <span class="k">end</span>
     <span class="k">end</span>
-
-    <span class="k">def</span> <span class="nf">prepend</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
-      <span class="k">if</span> <span class="nb">const_defined?</span><span class="p">(</span><span class="ss">:Joinable</span><span class="p">)</span>
-        <span class="n">_include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
-      <span class="k">else</span>
-        <span class="k">raise</span> <span class="s2">"</span><span class="si">#{</span><span class="nb">self</span><span class="si">}</span><span class="s2"> is not Joinable"</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-</pre>
-</div>
-
-
+</code></pre></div>
 <p>This is a very simplistic implementation, but a robust implementation would
 be only slightly more complex. Now, as along as we use <code>Joinable</code>,
 we can use #prepend.</p>
 
-<hr><p>title      : Ruby AOP Made Simple
-author     : trans
-date       : 2010-10-13
-categories : [aop, cuts, ruby]
-layout     : post</p>
-
-<!--
-<div id="related">
-  <h2>Related Posts</h2>
-  <ul class="posts">
-    {% for post in site.related_posts limit:3 %}
-      <li><span class="post-date">July 07, 2012</span> &raquo; <a href="">2010 10 13 ruby aop made simple</a></li>
-    {% endfor %}
-  </ul>
-</div>
+<!-- ---
+title: Ruby AOP Made Simple
+author:
+  name: trans
+date: 2010-10-13
+categories: [aop, cuts, ruby]
+layout: post
 -->
 
-</div>
-</div>
-<!-- END CONTENT -->
+            
+        </section>
 
-<!-- Start Shareaholic Sexybookmarks -->
-<div class="shr_class shareaholic-show-on-load">
-</div>
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
 
-<script type="text/javascript">
-var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
-</script>
+        </footer>
 
-<script type="text/javascript">
-(function() {
-var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
-sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
-var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
-})();
-</script>
-<!-- End Shareaholic Sexybookmarks -->
+        
+    </div>
+</article>
 
-<!-- Start Disqus Commments -->
-<div id="comments">
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-    /**
-     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
-     */
-    (function() {
-     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-     dsq.src = 'http://transcode.disqus.com/embed.js';
-     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
-  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-<!-- End Disqus Commands -->
 
-<div id="social-share"></div>
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
 
-<!-- FOOTER -->
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
 
-<div id="footer">
-  <div class="tiger">
-  </div>
-	<small>Last edited by <b>trans</b> on July 07, 2012.</small>
-	<small style="float:right;">
-		This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
-		mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
-	</small>
-</div>
 
-</div>
+
+
+
+
 </body>
 </html>
-

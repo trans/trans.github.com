@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2010/10/13/kill-the-proxy-and-save-toplevel/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2010/10/13/kill-the-proxy-and-save-toplevel/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
+
+        <section>
+            <h1>Kill the Proxy and Save Toplevel</h1>
+
+<p>One of the more curious aspects of Ruby is the &quot;top level&quot; object, otherwise known as <code>main</code>.</p>
+<div class="highlight"><pre><code class="bash language-bash" data-lang="bash">  <span class="nv">$ </span>pry
+  <span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nv">self</span>
+  <span class="o">=</span>&gt; main
+</code></pre></div>
+<p>This <code>main</code> is rather odd entity in that it is a special object with special functionality that delegates to the Object class. For example, using <code>def</code> at the top level actually defines a new private method on the Object class.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="k">def</span> <span class="nf">hello_world</span>
+  <span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span>   <span class="s2">&quot;Hello Wolrd&quot;</span>
+  <span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="k">end</span>
+  <span class="o">[</span><span class="mi">4</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="no">Object</span><span class="o">.</span><span class="n">private_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+  <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:DelegateClass</span><span class="p">,</span> <span class="ss">:hello_world</span><span class="o">]</span>
+</code></pre></div>
+<p>Did you have any idea that the top level was so powerful as to pervade every object in the system? Well, usually it doesn&#39;t present an issue since NO ONE IN THEIR RIGHT MIND EVER DEFINES A METHOD AT THE TOP LEVEL, at least not in production applications.</p>
+
+<p>Unfortunately it has some other negative side effects as well. For instance, one can&#39;t as easily create a DSL-based scripting language out of Ruby because the DSL methods will end up in every object, which can cause unexpected consequences. One can work around this by using top level singleton methods instead, but then you have to make sure your users know this too and always prefix their methods with <code>self.</code>. Another issue is that <code>main</code> isn&#39;t even a full proxy for <code>Object</code>. For instance, try defining a dynamically named method at the top level using <code>define_method</code>.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">define_method</span><span class="p">(</span><span class="ss">:hello_world</span><span class="p">)</span> <span class="k">do</span>
+  <span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span>  <span class="s2">&quot;Hello World&quot;</span>
+  <span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="k">end</span>
+  <span class="ss">NoMethodError</span><span class="p">:</span> <span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`define_method&#39; for main:Object</span>
+</code></pre></div>
+<p>For a very long time I have advocated that both of the these issues be banished by changing the top level into a self extended module instead of the current half-baked proxy. In effect:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">MAIN</span>
+    <span class="kp">extend</span> <span class="nb">self</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>When a Ruby script is executed it would be executed within this MAIN namespace. With it, all expected functionality is available to us, such as <code>def</code>, as well as the module methods like <code>define_method</code>. Methods defined in MAIN would no longer invade every object, leaving us free to use the top level as serves our application best.</p>
+
+<p>Some neat side effects of this approach include the ability to include MAIN in class definitions if it suits our usecase, as well as calling on methods defined on MAIN.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Cool</span>
+    <span class="k">def</span> <span class="nf">hello_world</span>
+      <span class="k">if</span> <span class="no">MAIN</span><span class="o">.</span><span class="n">method_defined?</span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span>
+        <span class="no">MAIN</span><span class="o">.</span><span class="n">hello_world</span>
+      <span class="k">else</span>
+        <span class="s2">&quot;Not so worldy, hello.&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>But by far my favourite use of such a design is the ability to use the top level for Ruby-based DSL scripting. For a familiar example consider Rake. Rake has a Rake::DSL module which is included in a special execution context where rakefiles are evaluated via special loading code. But with MAIN, it would be possible to mix Rake::DSL directly into it and then rakefiles could be loaded with a simple local <code>require</code>.</p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

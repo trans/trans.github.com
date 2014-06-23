@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRANSCODE &mdash; Trans Technology and Programming Blog</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="TRANSCODE">
+    <link rel="canonical" href="http://trans.github.com/page4/">
+     
+           
+    <meta property="og:title" content="TRANSCODE"/>
+    <meta property="og:url" content="http://trans.github.com/page4/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+<div class="blog-cover" style="background-image:url(/images/blog-cover.jpg);">
+    
+    <section>
+        <div class="container">
+            <h1>TRANSCODE</h1>
+            <h3>Trans Technology and Programming Blog</h3>
+        
+            
+            
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss"></i>
+            </a>
+        </div>
+    </section>
+</div>
+
+<article class="container">
+
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/kill-the-proxy-and-save-toplevel/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Kill the Proxy and Save Toplevel</h1>
+
+<p>One of the more curious aspects of Ruby is the &quot;top level&quot; object, otherwise known as <code>main</code>.</p>
+<div class="highlight"><pre><code class="bash language-bash" data-lang="bash">  <span class="nv">$ </span>pry
+  <span class="o">[</span>1<span class="o">]</span> pry<span class="o">(</span>main<span class="o">)</span>&gt; <span class="nv">self</span>
+  <span class="o">=</span>&gt; main
+</code></pre></div>
+<p>This <code>main</code> is rather odd entity in that it is a special object with special functionality that delegates to the Object class. For example, using <code>def</code> at the top level actually defines a new private method on the Object class.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="k">def</span> <span class="nf">hello_world</span>
+  <span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span>   <span class="s2">&quot;Hello Wolrd&quot;</span>
+  <span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="k">end</span>
+  <span class="o">[</span><span class="mi">4</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="no">Object</span><span class="o">.</span><span class="n">private_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+  <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:DelegateClass</span><span class="p">,</span> <span class="ss">:hello_world</span><span class="o">]</span>
+</code></pre></div>
+<p>Did you have any idea that the top level was so powerful as to pervade every object in the system? Well, usually it doesn&#39;t present an issue since NO ONE IN THEIR RIGHT MIND EVER DEFINES A METHOD AT THE TOP LEVEL, at least not in production applications.</p>
+
+<p>Unfortunately it has some other negative side effects as well. For instance, one can&#39;t as easily create a DSL-based scripting language out of Ruby because the DSL methods will end up in every object, which can cause unexpected consequences. One can work around this by using top level singleton methods instead, but then you have to make sure your users know this too and always prefix their methods with <code>self.</code>. Another issue is that <code>main</code> isn&#39;t even a full proxy for <code>Object</code>. For instance, try defining a dynamically named method at the top level using <code>define_method</code>.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">define_method</span><span class="p">(</span><span class="ss">:hello_world</span><span class="p">)</span> <span class="k">do</span>
+  <span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span>  <span class="s2">&quot;Hello World&quot;</span>
+  <span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="k">end</span>
+  <span class="ss">NoMethodError</span><span class="p">:</span> <span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`define_method&#39; for main:Object</span>
+</code></pre></div>
+<p>For a very long time I have advocated that both of the these issues be banished by changing the top level into a self extended module instead of the current half-baked proxy. In effect:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">MAIN</span>
+    <span class="kp">extend</span> <span class="nb">self</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>When a Ruby script is executed it would be executed within this MAIN namespace. With it, all expected functionality is available to us, such as <code>def</code>, as well as the module methods like <code>define_method</code>. Methods defined in MAIN would no longer invade every object, leaving us free to use the top level as serves our application best.</p>
+
+<p>Some neat side effects of this approach include the ability to include MAIN in class definitions if it suits our usecase, as well as calling on methods defined on MAIN.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Cool</span>
+    <span class="k">def</span> <span class="nf">hello_world</span>
+      <span class="k">if</span> <span class="no">MAIN</span><span class="o">.</span><span class="n">method_defined?</span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span>
+        <span class="no">MAIN</span><span class="o">.</span><span class="n">hello_world</span>
+      <span class="k">else</span>
+        <span class="s2">&quot;Not so worldy, hello.&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>But by far my favourite use of such a design is the ability to use the top level for Ruby-based DSL scripting. For a familiar example consider Rake. Rake has a Rake::DSL module which is included in a special execution context where rakefiles are evaluated via special loading code. But with MAIN, it would be possible to mix Rake::DSL directly into it and then rakefiles could be loaded with a simple local <code>require</code>.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/is-it-time-to-leave-home/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Is It Time to Leave Home?</h1>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/instance-variables-as-syntax-sugar/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Instance Variables as Syntax Sugar</h1>
+
+<p>What are instance variables? If we think of them as a single unit we note that they represent an object <em>state</em>, which as a data structure is really nothing more than a <em>hash</em>. Indeed, it is quite feasible to forgo the use of instance variables altogether save one, to serve as the object&#39;s state.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Example</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">attr_reader</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+      <span class="n">define_method</span><span class="p">(</span><span class="nb">name</span><span class="p">){</span> <span class="vi">@state</span><span class="o">[</span><span class="nb">name</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">attr_writer</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+      <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">){</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="vi">@state</span><span class="o">[</span><span class="nb">name</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">=</span> <span class="n">v</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">attr_accessor</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+      <span class="kp">attr_reader</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+      <span class="kp">attr_writer</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span>
+      <span class="vi">@state</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>So if instance variables are essentially a hash, why is it that we cannot work with them as such? In other words, why not have <code>@</code> just represent a syntax sugar for a special hash (even if it&#39;s not a standard Ruby Hash instance under the hood, it can behave as if it were). With such a change, handling instance variables immediately become much easier and intuitive since we can apply all our knowledge if hashes.</p>
+
+<p>Some neat capabilities immediately become apparent. Looking up an instance variable give a variable name can be done with:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="err">@</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span>
+</code></pre></div>
+<p>Assigning an instance variable likewise can be done with:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="err">@</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
+</code></pre></div>
+<p>No longer would the long-winded <code>instance_variable_get</code> and <code>instance_variable_set</code> be needed.</p>
+
+<p>Let&#39;s take a more complex example. Have you ever wanted to reproduce the name and values of an object instance variable. It&#39;s not uncommon really. Any type of object serialization is going to need such a routine -- YAML, Marshal, etc. To do this presently requires some verbose code:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">hash</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="nb">instance_variables</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">var</span><span class="o">|</span>
+    <span class="nb">hash</span><span class="o">[</span><span class="n">var</span><span class="o">]</span> <span class="o">=</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="nb">hash</span>
+</code></pre></div>
+<p>But with <code>@</code> sugar we can simply use:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">hash</span> <span class="o">=</span> <span class="err">@</span><span class="o">.</span><span class="n">to_h</span>
+</code></pre></div>
+<p>Or if we just want to iterate over them:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="err">@</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
+    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Since we have #each, then all Enumerable methods would be at our disposal.</p>
+
+<p>For a public interface <code>instance_variables</code> could reference the internal <code>@</code> instead of just the list of instance variable names. We could deprecate <code>#instance_variable_get</code> and <code>#instance_variable_set</code> altogether.</p>
+
+<p>By recognizing the nature of instance variables and applying the preexisting functionality of Hash, we gain much greater capability while using fewer brain cells to do it. And that&#39;s always a win.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/i-see-you/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>I See You</h1>
+
+<p><img src="/assets/images/iseeyou.jpg" alt="I See You Picture"></p>
+
+<p>You have to <a href="http://tenderlovemaking.com/2006/09/28/new-ruby-betabrite-002/">check this out</a>. Okay. I know. I know. It&#39;s been blogged by others many times now. In fact, you can check out these other blog posts too: Why<em>the</em>lucky_stiff has it on <a href="http://redhanded.hobix.com/inspect/hackASignOnSomeoneElseSWoodFloors.html#comments">Redhanded</a>, and <a href="http://www.eachmapinject.com/2006/9/29/betabrite">J&#39;ey</a> put out the word as well. But it&#39;s just so damn cool, I just had to blog it too!</p>
+
+<p>Go ahead. Try it at home:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">require</span> <span class="s1">&#39;drb&#39;</span>
+
+  <span class="k">def</span> <span class="nf">brite_shot</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;druby://eviladmins.org:9000&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="no">DRbObject</span><span class="o">.</span><span class="n">new_with_uri</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;out.jpg&quot;</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
+      <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span><span class="o">.</span><span class="n">write_simple</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">brite_shot</span><span class="p">(</span><span class="s2">&quot;I SEE YOU!&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>(And if a still picture isn&#39;t enough for you. How about an <a href="http://pastie.caboo.se/15646">animation</a>.)</p>
+
+<p>And so, a REAL picture is made for me by remote many thousands of miles away. How far I wonder? Well, with a GeoIP lookup and Google Maps, I found out <a href="http://maps.google.com/maps?f=q&amp;hl=en&amp;q=47.610%C2%B0N,+122.304%C2%B0W&amp;ie=UTF8&amp;z=17&amp;ll=47.61,-122.304&amp;spn=0.004231,0.012757&amp;t=h&amp;om=1">where this picture was made</a>. The world really is getting smaller.</p>
+
+<p>I See You!</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/i-no-longer-believe-in-methods/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>I No Longer Believe in Methods</h1>
+
+<p>Yes, that&#39;s right. I no longer believe in methods. Why? Becuase this is OOP and if the methods aren&#39;t honest to goodness objects from the start, without exception, then they are not really methods. They&#39;re just glorified functions.</p>
+
+<p>Let me show you what I mean. I have a Project class in which is defined a set of tools that can manipulate it. Clearly the proper implementation abstraction for these tools is the method.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="k">def</span> <span class="nf">announce</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>But these tools must be distinguishable from other supporting methods. Moreover additional information may be associated with these tools, like help information or valid states of the Project for the tool to be useful. How do we encode this information with Ruby? Since methods aren&#39;t first class objects, we are forced to return to functional programming. In which case, it is best to define some sort of DSL.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">ProjectDSL</span>
+    <span class="k">def</span> <span class="nf">help</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="n">text</span> <span class="p">)</span>
+      <span class="vi">@help</span> <span class="o">||=</span> <span class="p">{}</span>
+      <span class="vi">@help</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="n">text</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="nb">test</span> <span class="p">)</span>
+      <span class="vi">@valid</span> <span class="o">||=</span> <span class="p">{}</span>
+      <span class="vi">@valid</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="nb">test</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="kp">extend</span> <span class="no">ProjectDSL</span>
+
+    <span class="k">def</span> <span class="nf">announce</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">help</span> <span class="ss">:announce</span><span class="p">,</span> <span class="s2">&quot;Announces your project to the world!&quot;</span>
+    <span class="n">valid</span> <span class="ss">:announce</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Now this kind of thing has come up enough in large projects, such as Nitro, that a general means of annotation proved to be most effective.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">require</span> <span class="s1">&#39;facet/annotation&#39;</span>
+
+  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="k">def</span> <span class="nf">announce</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">ann</span> <span class="ss">:announce</span><span class="p">,</span> <span class="ss">:help</span> <span class="o">=&gt;</span> <span class="s2">&quot;Announces your project to the world!&quot;</span><span class="p">,</span>
+                   <span class="ss">:valid</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Annotations works very well, and if you find yourself in need of this kind of &quot;method metadata&quot; it is an excellent approach.</p>
+
+<p>But I&#39;ve worked with all this long enough now to be able to have a wide perspective on it and it&#39;s become very clear to me that the whole &quot;special needs&quot; arises out of the fact that Ruby is still just a functional language in this respect, and not a full OOPL. (And please no objections that method() and instance_method() make it otherwise, these do not provide a persitant object, but return a new object every time they are invoked.) So what might the above look like if it were not so? There would of course be more than one way to go about it, but imagine this:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Tool</span> <span class="o">&lt;</span> <span class="no">Method</span>
+    <span class="kp">attr_accessor</span> <span class="ss">:help</span>
+
+    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span> <span class="o">&amp;</span><span class="nb">test</span> <span class="p">)</span>
+      <span class="vi">@valid</span> <span class="o">=</span> <span class="nb">test</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="no">Class</span> <span class="no">Project</span>
+    <span class="k">def</span> <span class="nf">announce</span> <span class="o">=&gt;</span> <span class="no">Tool</span>
+      <span class="nb">puts</span> <span class="s2">&quot;This is my new project!&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">announce</span><span class="o">.</span><span class="n">help</span> <span class="o">=</span> <span class="s2">&quot;Announces your project to the world!&quot;</span>
+
+    <span class="n">announce</span><span class="o">.</span><span class="n">valid</span> <span class="p">{</span> <span class="vi">@version</span> <span class="o">&gt;</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>I&#39;m taking some liberties with the syntax here for clarity. But in anycase it certainly paints a provocative idea. And I would argue that it paints the approprite OOP idea too.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/frustration-with-object-orientation/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Frustration with Object-Orientation</h1>
+
+<p>I&#39;ve spent more weeks than I care to count going around in circles.</p>
+
+<p>You see the problem is I have &quot;tools&quot; that are in essence methods. But the are generally complicated enough to warrent using state and being broken into many smaller supporting methods. That&#39;s fine and dandy until I try to tie a bunch of these tools together under the same class. Name clashes become a huge problem, to the point that it is simply unworkable. The need for local instance variables and methods becomes a big deal. The only way to currently achieve that is to use lambdas and define_method. Not ideal, and RDocs become all but useless. To avoid this I tried going in the opposite direction, defining the tools as their own classes instead. This works great until the tool needs to take part in a more complex structure. For example I have hosting service classes that provide releasing and publishing tools. Well, if &#39;release&#39; and &#39;publish&#39; are classes rather then methods how are they going to call the hosting service&#39;s login method? I&#39;m forced into using delegation, passing them the instance of the Host class to which they are supposed to belong. At that point the result is worse than the original problem. So in either case I&#39;m finding it neccessary to to write and maintain hacky code. And I&#39;m just fet up with it.</p>
+
+<p>Over the last five years I&#39;ve spent a great deal of time working with Ruby and learning Object-Oriented programming practices it&#39;s associated design patterns. It all seemed very logical at first. But as time wore on I found myself again and again feeling hemmed in. I assumed it was just that I did not understand it all well enough yet to use it well so I kept at it. Certainly my skills improved, but in retorsect it wasn&#39;t some great understanding as much it was &quot;don&#39;t do that&quot;. And even so, I still ran into these walls.</p>
+
+<p>And this is waht I think it is. OOP requires you to first design the encapsulating structure of your project. And your whole edifice depends on that supporting design. If for some reason any bit of that should change, you may well find yourself tearing down whole walls in order to build them up again. And this can happen over and over if you weren&#39;t sure of the original edifice from the start. For a large project that&#39;s a lot to ask --knowing how the whole outward structure should be before you even know the materials involved.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/from-singleton-to-legion/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>From Singleton to Legion</h1>
+
+<p>For as long as I&#39;ve coded Ruby there has been some question as to the appropriateness of the term singleton class. This is the term generally used in Ruby parlance to refer to the language construct: class &lt;&lt; obj; self; end, and is the context of class methods and module methods.</p>
+
+<p>While the term is fitting in the sense that each object only has one of these classes (hence &quot;single&quot;), issue arises from a terminology clash with an already well accepted object-oriented programming term, <a href="http://en.wikipedia.org/wiki/Singleton_pattern">Singleton Pattern</a>. In OOP-speak a singleton class is a class that can only be instantiated once. Many have argued that the Singleton pattern itself is a flawed concept, since one can just instantiate an object and assign it to a constant to achieve the same end. So why restrict anyone from a second instance of a class if they so choose? That&#39;s a reasonable argument, although not always as practical as it might seem. Nonetheless, the terminology clash still remains.</p>
+
+<p>In light of nomenclature issue, many have offered alternative terms for Ruby&#39;s singleton class. Indeed, Ruby itself has used two alternatives in the past: virtual class and metaclass, and many people still prefer that later of these choices. Other suggestions include the well known _whyism <code>eigenclass</code>, the abbreviated <code>sclass</code>, the pronoun contingents &#39;myclass&#39; and &#39;ownclass&#39;, as well as my own concoctions <code>adhoc</code>, <code>quaclass</code> and <code>nonce</code>. Yet despite all these names, none of which ever stick, what is this singly thing really?</p>
+
+<p>Recently, our beloved Pit Capitan put it concisely when he said &quot;there are only two types of methods in Ruby, instance methods and singleton methods&quot;. Well said. Unfortunately it&#39;s not really true. Instance methods aren&#39;t really methods at all, they are just definitions for methods to be. That&#39;s why when you use #instance<em>method you get something called an UnboundMethod, not a Method. It only becomes a method when it&#39;s bound to an object. To clarify further how that distinction is a bit misleading, consider that when a singleton method is defined it falls into an inheritance hierarchy along side so-called instance methods. In other words, the singleton methods and instance methods exist on the same playing field, and the former can call on the other via #super. In fact, we can access these singleton methods in instance fashion via (class&lt;&lt;obj;self;end).instance</em>method(sym). So these methods are not really distinct in this manner after all. In fact there is no distinction between methods other than bound and unbound. And this distinction arises from the capability of class Module and class Class to harbor a set of method definitions that are not their own. Which is of course exactly why these constructs exist in the first place. So when we say singleton method, we are not referring to something different from instance method. We only mean that these methods are kept in a special &quot;singleton class&quot;, made just for a specific object, and consequently, are automatically bound to that object.</p>
+
+<p>Now, I&#39;m going to claim that the term &#39;singleton&#39; is a poor choice for a completely different reason than any given before. It may come as a bit of surprise, but singletons are not inherently single. They are only made so by an explicit restriction in the Ruby&#39;s source code. It is quite simple, actually, to remark the if-clause out of the source, recompile Ruby and then do:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">o</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+  <span class="k">def</span> <span class="nc">o</span><span class="o">.</span><span class="nf">x</span>
+    <span class="s2">&quot;x&quot;</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nc">o</span><span class="o">.</span><span class="nf">x</span>
+    <span class="k">super</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span>
+  <span class="k">end</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">x</span>   <span class="o">=&gt;</span> <span class="s2">&quot;xx&quot;</span>
+</code></pre></div>
+<p>The reason Ruby makes the per-object classes single is because it would be terribly inefficient to define a whole new class for every new singleton method defined. That&#39;s understandable, but it also comes at a cost. We can not reliably receive an object from the outside world and define our own singleton on it because we may be clobbering someone else&#39;s singleton method without even knowing it. (NOTE: It doesn&#39;t matter so much if you&#39;re just redefining a method altogether, but if you&#39;re calling super it very much matters.) Generally we don&#39;t even think about such things, but truth be told, object singleton methods often fail to survive code refactoring. Object singleton&#39;s really only exist as a side effect of Ruby&#39;s class model (and Smalltalk&#39;s) which utilize the singleton class as a means of separating a module/class method definitions from it&#39;s own actual methods. This could have been done another way of course, but then a class/module would be something wholly different from any other object. The use of the singleton allowed classes and modules to be just like any other object. So singletons are really a bit of cleverness that lie at the very heart of how Ruby works.</p>
+
+<p>But does it mean that they have to be singly? Could we remove the restriction and open up a additional robustness to these per-object classes? We could. In fact, this was the very first hack I ever made to the Ruby source code. My change simply checked to see if the method was already defined in the first &quot;singleton&quot; layer and continue upward until it either found a usable layer or ran out of layers, in which case it created a new one. Combined with the capability to selectively undefine particular methods of particular layers and we gain a flexible pre-object class hierarchy system that can be used without the caveats that currently make singletons so limited outside of class and module definitions.</p>
+
+<p>And then we no long can call them &quot;singleton&quot; but rather &quot;legion&quot; ;)</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/evolution-of-a-programmer/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Evolution of a Programmer [DRAFT]</h1>
+
+<p>As of next year I will have been programming in Ruby for over a decade. Ten years!</p>
+
+<h3>Bye Bye WebRI</h3>
+
+<p>RDoc 4.0 is coming out and can now render documentation directly from ri stores. That&#39;s great news. I had written just such a program back in 2008 called WebRI. It was a terrible hack, and slow as molasses running up a tree. So it never got much use. But it was still pretty neat because it made it possible to browse all installed gems in one go. It was wild to see every single class and module of every gem listed in the side pane. I hope RDoc 4.0 will be able to do something like that. I am certain it will be better in just about every other way at least. My implementation may have sucked, but the idea was obviously a good one. It&#39;s always nice to feel a bit of vindication in that way.</p>
+
+<p><img src="http://trans.github.com/media/webri.png" alt="WebRI"></p>
+
+<p>Of course, this also means that WebRI is completely obsolete now. Come the new year I will delete the repository and yank the gem. No reason to keep useless cruft about.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/drink-me/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Drink Me</h1>
+
+<p><strong>A Case For and Against Elixir</strong></p>
+
+<p>Is thinking functionally a bit of a black art?</p>
+
+<p>As I explained in a previous post, I have been writing a genetic algorithm to find the best layout of a keyboard based on a set of ergonomic principles. I decided to write the program in both Go and Elixir as a way to &quot;learn me some new programmings languages for the greater good&quot;. Writing the Go program went very smoothly. I had a good working program in just over a day&#39;s work. The Elixir code on the other hand has taken me close to three days and I am still trying to work out issues. I attribute most of this long spell to the paradigm shift one must make when switching from a procedural to a functional way of doing things.</p>
+
+<p>I have two examples from my work that I think demonstrate the difficultly of this shift.</p>
+
+<p>Originally I had written the following code:</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">    <span class="k">def</span> <span class="n">evolve</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span> <span class="k">do</span>
+<span class="k">      </span><span class="ss">:random</span><span class="o">.</span><span class="n">seed</span>
+
+      <span class="n">best</span> <span class="o">=</span> <span class="m">0</span>
+      <span class="n">size</span> <span class="o">=</span> <span class="m">16</span>
+
+      <span class="n">pop</span> <span class="o">=</span> <span class="n">random_keyboards</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+      <span class="no">Enum</span><span class="o">.</span><span class="n">reduce</span> <span class="p">(</span><span class="m">1</span> <span class="o">..</span> <span class="n">gen</span><span class="p">),</span> <span class="n">pop</span><span class="p">,</span> <span class="k">fn</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">-&gt;</span>
+        <span class="n">newpop</span> <span class="o">=</span> <span class="no">List</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">breed</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">newpop</span> <span class="o">=</span> <span class="n">natural_selection</span><span class="p">(</span><span class="n">newpop</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="n">first</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">childs</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">best</span> <span class="o">&lt;</span> <span class="n">first</span><span class="o">.</span><span class="n">score</span> <span class="k">do</span>
+<span class="k">          </span><span class="n">best</span> <span class="o">=</span> <span class="n">first</span><span class="o">.</span><span class="n">score</span>
+          <span class="n">size</span> <span class="o">=</span> <span class="m">16</span>
+        <span class="k">else</span>
+          <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">+</span> <span class="m">2</span>
+        <span class="k">end</span>         
+
+        <span class="n">newpop</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>It all seemed rather reasonable to me. Turns out however, Elixir thought otherwise:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">variable best is unused
+variable size is unused
+</code></pre></div>
+<p>My procedural mindset was geared toward the idea of using variables to track a state while iterating around in a loop. But for a functional language this is not the correct way to think about the problem. By reassigning best and size within the <code>reduce</code> block function I was in effect creating new variables, not reassigning the ones defined outside.</p>
+
+<p>The solution, as is the case with many such procedural conversions, is to think recursively.</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">    <span class="k">def</span> <span class="n">evolve</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span> <span class="k">do</span>
+<span class="k">      </span><span class="ss">:random</span><span class="o">.</span><span class="n">seed</span>
+      <span class="n">evolve</span><span class="p">(</span><span class="n">gen</span><span class="p">,</span> <span class="n">random_keyboards</span><span class="p">(</span><span class="m">16</span><span class="p">),</span> <span class="m">16</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="n">evolve</span><span class="p">(</span><span class="n">gen</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">best</span><span class="p">)</span> <span class="k">do</span>
+<span class="k">      if</span> <span class="n">gen</span> <span class="o">==</span> <span class="m">0</span> <span class="k">do</span>
+<span class="k">        </span><span class="n">pop</span>
+      <span class="k">else</span>
+        <span class="n">newpop</span> <span class="o">=</span> <span class="no">List</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">breed</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">newpop</span> <span class="o">=</span> <span class="n">natural_selection</span><span class="p">(</span><span class="n">newpop</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="n">first</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">childs</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">best</span> <span class="o">&lt;</span> <span class="n">first</span><span class="o">.</span><span class="n">score</span> <span class="k">do</span>
+<span class="k">          </span><span class="n">evolve</span><span class="p">(</span><span class="n">gen</span> <span class="o">-</span> <span class="m">1</span><span class="p">,</span> <span class="n">newpop</span><span class="p">,</span> <span class="m">16</span><span class="p">,</span> <span class="n">first</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="n">evolve</span><span class="p">(</span><span class="n">gen</span> <span class="o">-</span> <span class="m">1</span><span class="p">,</span> <span class="n">newpop</span><span class="p">,</span> <span class="n">size</span> <span class="o">+</span> <span class="m">2</span><span class="p">,</span> <span class="n">best</span><span class="p">)</span>
+        <span class="k">end</span>         
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>After working this out, a part of me has to agree the fanboys of functional languages. This does smack of an certain elegance that the procedure solution lacks. The solution is also efficient thanks to <em>tail recursion</em>, which avoids the usual call stack overhead of repeatedly calling nested functions.</p>
+
+<p>But then there was the routine that I have yet to figure out how to do in a more functional way. To get the following routine to work I basically had to make Elixir behave much like a procedural language --running in a loop shuffling list indexes around.</p>
+<div class="highlight"><pre><code class="elixir language-elixir" data-lang="elixir">    <span class="k">def</span> <span class="n">cross</span><span class="p">(</span><span class="n">mother</span><span class="p">,</span> <span class="n">father</span><span class="p">)</span> <span class="k">do</span>
+<span class="k">      </span><span class="n">offset</span> <span class="o">=</span> <span class="m">0</span>
+
+      <span class="k">if</span> <span class="n">numeric_layout?</span><span class="p">()</span> <span class="k">do</span>
+<span class="k">        </span><span class="n">offset</span> <span class="o">=</span> <span class="m">9</span>
+      <span class="k">end</span>
+
+      <span class="n">n</span> <span class="o">=</span> <span class="n">number_of_actions</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>  <span class="c1"># 0 or 1</span>
+
+      <span class="n">child_layout</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">reduce</span> <span class="p">(</span><span class="m">0</span> <span class="o">..</span> <span class="n">n</span><span class="p">),</span> <span class="n">mother</span><span class="o">.</span><span class="n">layout</span><span class="p">,</span> <span class="k">fn</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="ss">:random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="n">offset</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">at</span> <span class="n">father</span><span class="o">.</span><span class="n">layout</span><span class="p">,</span> <span class="n">i</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="no">Enum</span><span class="o">.</span><span class="n">find_index</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="k">fn</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">q</span> <span class="o">==</span> <span class="n">l</span> <span class="k">end</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="k">do</span>
+<span class="k">          </span><span class="n">swap</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="n">c</span>  <span class="c1"># should generally never happen</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+      <span class="n">make_keyboard</span><span class="p">(</span><span class="n">mutate</span><span class="p">(</span><span class="n">child_layout</span><span class="p">))</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>Perhaps it is inevitable that some procedural-esque code will always be present. In fact, that is the one caveat about functional programming that makes me wonder if maybe it&#39;s <em>not quite all that</em>. Some problems, that are relatively easy to solve in a traditional procedural language, seem markedly harder to solve functionally.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/do-the-right-thing-git-porcelain/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>The &quot;Do The Right Thing&quot; Git Porcelain</h1>
+
+<p>Before making any changes to a program, a good developer will make an entry in an issue tracker and then create a separate branch in which to handle the issue. Only then making the necessary changes and finally merge the changes into to the master branch when they are ready. All before finally marking off the issue as complete.</p>
+
+<p>That&#39;s the ideal anyway. It is, unfortunately, too easy to not do these things by skipping a step or never bothering with them at all. Who really wants to waste time with all this? Developer&#39;s just want to get the job done. To remedy this, we might create a &quot;Do The Right Thing&quot; Git porcelain.</p>
+
+<p>Lets say we had a bug to fix. We could simply invoke our DTRT command:</p>
+<div class="highlight"><pre><code class="bash language-bash" data-lang="bash">  <span class="nv">$ </span>dtrt new
+</code></pre></div>
+<p>An editor (provided by <code>$EDITOR</code>) opens to allow the developer to describe the issue in detail. When saved and exited, it will automatically create a new branch with a name based on the description and check the branch out, ready to go.</p>
+
+<p>Now changes can be made. When complete (which means passing tests, right?) we simply tell DTRT again.</p>
+<div class="highlight"><pre><code class="bash language-bash" data-lang="bash">  <span class="nv">$ </span>dtrt <span class="k">done</span>
+</code></pre></div>
+<p>And it will merge the current topic branch into master using the issue description we originally gave it. All done. And, hey, we did the right thing!</p>
+
+<p>Such a porcelain alone would be useful, but it gets even better when we start adding hooks into this process.</p>
+
+<p>For instance, a hook can be added such that new issue creation can post an entry directly to an issue tracker such as GitHub Issues. Not only can it post the issue, but when an issue is complete, it can label the ticket with the version it belongs and closes it. Notice the added benefit of this: it creates automatic changelogs! No more writing those tired HISTORY files. In fact, by using DTRT religeously, we can use a tool like <a href="http://rubyworks.github.com/vclog">VCLog</a> to pop out prefect HISTORY files in almost any format.</p>
+
+<p>To encourage proper TDD, a hook on new issue creation could automatically create a test in a preferred format and drop the developer directly into an editor with it. Thus putting TDD in our proverbial laps.</p>
+
+<p>Another hook placed on merging could prevent the completion of the issue branch until all tests pass, thus helping to improve the quality of check-ins.</p>
+
+<p>I have no doubt other&#39;s might come up with a few other helpful hooks as well.</p>
+
+<p>I have not endeavored to implement this, having too many other projects to work on already. But it would make a good project for another inspired soul.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+    <section class="pagination" style="text-align:center">
+      
+        
+        <a href="/page3" class="btn btn-outline">‹ Newer</a>
+        
+      
+      
+        <a href="/page5" class="btn btn-outline">Older ›</a>
+      
+    </section>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

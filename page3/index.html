@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRANSCODE &mdash; Trans Technology and Programming Blog</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="TRANSCODE">
+    <link rel="canonical" href="http://trans.github.com/page3/">
+     
+           
+    <meta property="og:title" content="TRANSCODE"/>
+    <meta property="og:url" content="http://trans.github.com/page3/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+<div class="blog-cover" style="background-image:url(/images/blog-cover.jpg);">
+    
+    <section>
+        <div class="container">
+            <h1>TRANSCODE</h1>
+            <h3>Trans Technology and Programming Blog</h3>
+        
+            
+            
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss"></i>
+            </a>
+        </div>
+    </section>
+</div>
+
+<article class="container">
+
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/ruby-avoids-consistency-like-the-plague/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Ruby Avoids consistency like the Plague</h1>
+
+<p>Ruby is such a great language in so many ways, it always feels especially disappointing when one discovers a way in which it lacks. I believe much of Ruby&#39;s less noble attributes stem from a single source: Matz and company eschew <em>consistency</em> as if it were a disease.</p>
+
+<p>Let&#39;s take a simple example that occurred to me today as I was working on a <a href="http://rubyworks.github.com/mirror">reflection</a> system for Ruby. It has probably slipped by every Rubyists on the planet, but once it is pointed out, it&#39;s pretty obvious. A <em>class</em> has <em>instance methods</em> of which we can get a list via the <code>#instance_methods</code> method, as opposed to an <em>instance</em> of a class whose methods we can list via <code>#methods</code>. That in itself might be an acceptable naming system accept the instance also has a method called <code>#instance_variables</code> (not to mention a number of other &quot;instance_&quot; methods). Give it a moments though and it becomes clear that the terms don&#39;t jive well. The problem lies in the fact that classes don&#39;t actually have &quot;instance methods&quot; per-se. They have <em>method definitions</em> that become instance methods when a class is instantiated. It would have made much more sense for the class&#39;s method to called <code>#methods</code> and the instance&#39;s to be called <code>#instance_methods</code>. Or, at the very least, the class terminology could have used something else like <code>#method_definitions</code>.</p>
+
+<p>Generally we developers just accept APIs as they a given us and go about using them without giving too much thought to the nomenclatures used. Unfortunately inconsistent terminology often leads to difficulties communicating with other developers, ultimately wasting time and energy. The above is just one example of such an inconsistency. But don&#39;t bother telling Matz or the rest of the Ruby core team. They will just tell you &quot;consistency is as a bad reason for language change&quot;. Perhaps in the short-term that is true to avoid backward compatibility issues. In the long-run, however, it&#39;s only a matter of time before people head to greener pastures.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/ruby-aop-made-simple/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Ruby AOP Made Simple</h1>
+
+<h2>Quick Recap</h2>
+
+<p>Aspect Oriented Programming (AOP) is a topic I have spent a fair amount of
+time contemplating. I, along with Peter VanBroekhoven, developed
+the concept of Cut-based AOP back in 2005-2006. A limited &quot;toy&quot; implementation of
+which can be had by installing the <code>cuts</code> gem. The basic idea behind Cut-based
+AOP is the <i>transparent subclass</i>, a.k.a. the <em>cut</em>, which is essentially
+a subclass that subsumes the role of the class it effects without the programmer
+needing any knowledge of it doing do. In this way, the cut serves as the atomic
+construct in a purely object-oriented appraoch to AOP. You can read more about it
+<a href="http://github.com/rubyworks/cuts/blob/master/RCR.textile">here</a>.</p>
+
+<p>In dicussing this idea on the ruby-talk mailing list it was suggested that
+an easier approach would be to forgo the Cut class and simply allow modules
+to be &quot;prepended&quot; to the class or module to which they are applied. So for
+instance we might write:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">C</span>
+      <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">;</span> <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">module</span> <span class="nn">A</span>
+      <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span> <span class="p">;</span> <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">C</span>
+      <span class="n">prepend</span> <span class="n">A</span>
+    <span class="k">end</span>
+
+    <span class="n">C</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>  <span class="c1">#=&gt; &quot;{hello}&quot;</span>
+</code></pre></div>
+<p>Cut-based AOP is a general OOP design that can be applied to any
+object-oriented programming language. But for Ruby, the idea of <code>prepend</code>,
+while more limited, does serve much of the same purpose, and the idea is up for 
+<a href="">consideration</a> in a future verison of Ruby.</p>
+
+<h2>Another Way</h2>
+
+<p>There is however another way to essentially use prepend-like AOP in Ruby without
+extending Ruby in any special way. The trick is simply to design classes
+and module to be &quot;AOP-ready&quot;. Here is an example of the above using nothing
+more than standard Ruby.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">C</span>
+      <span class="k">module</span> <span class="nn">Joinable</span>
+        <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">;</span> <span class="k">end</span>
+      <span class="k">end</span>
+      <span class="kp">include</span> <span class="no">Joinable</span>
+    <span class="k">end</span>
+
+    <span class="k">module</span> <span class="nn">A</span>
+      <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span> <span class="p">;</span> <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">C</span>
+      <span class="kp">include</span> <span class="n">A</span>
+    <span class="k">end</span>
+
+    <span class="n">C</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>  <span class="c1">#=&gt; &quot;{hello}&quot;</span>
+</code></pre></div>
+<p>Pretty easy. We have simply encapsulate C&#39;s instance methods in a &quot;Joinable&quot;
+module, thus any new inclusions into C itself will actually come <em>before</em>
+these methods.</p>
+
+<p>This of course raises the issue of including modules in the normal fashion,
+in which case we would need in include them in Joinable itself, e.g.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">C</span>
+      <span class="k">module</span> <span class="nn">Joinable</span>
+        <span class="kp">include</span> <span class="no">Foo</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>We could facilitate this will a little bit of Ruby magic.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Module</span>
+      <span class="n">alias_method</span> <span class="ss">:_include</span><span class="p">,</span> <span class="ss">:include</span>
+
+      <span class="k">def</span> <span class="nf">include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">const_defined?</span><span class="p">(</span><span class="ss">:Joinable</span><span class="p">)</span>
+          <span class="n">core</span> <span class="o">=</span> <span class="nb">const_get</span><span class="p">(</span><span class="ss">:Joinable</span><span class="p">)</span>
+          <span class="n">core</span><span class="o">.</span><span class="n">_include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="n">_include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">prepend</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">const_defined?</span><span class="p">(</span><span class="ss">:Joinable</span><span class="p">)</span>
+          <span class="n">_include</span><span class="p">(</span><span class="o">*</span><span class="n">mods</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="k">raise</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">self</span><span class="si">}</span><span class="s2"> is not Joinable&quot;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>This is a very simplistic implementation, but a robust implementation would
+be only slightly more complex. Now, as along as we use <code>Joinable</code>,
+we can use #prepend.</p>
+
+<!-- ---
+title: Ruby AOP Made Simple
+author:
+  name: trans
+date: 2010-10-13
+categories: [aop, cuts, ruby]
+layout: post
+-->
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/real-metal/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Real Metal</h1>
+
+<p>One of the most regarded capabilities of Ruby, in contrast to many other programming languages, is its powerful meta-programming chops. While not every aspect of the language is meta-programmable, the vast majority of Ruby is. But despite its prowess, there is a serious weaknesses in its design: <em>The functions on which meta-coders depend have no guarantee</em>. </p>
+
+<p>Consider the most basic reflection method of determining the class of an object, fundamental to almost any meta-programming (and some not-so-meta0programming). We can write a class that completely subverts the ability to determine an object&#39;s class.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Foo</span>
+  <span class="k">def</span> <span class="nf">class</span>
+    <span class="s2">&quot;I Confuse You!&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Because <code>Foo</code> has overridden the <code>#class</code> method, there is no way to determine the class of an instance of Foo. Any code dependent on the <code>#class</code> method &quot;contract&quot; is going to choke.</p>
+
+<p>We can be thankful that most programs will, by simple happenstance, never tread on any of these important methods. In the few cases where they might, most Ruby coders are aware enough to steer clear. Yet there are other cases not so easily handled. Consider Ruby&#39;s relatively new BasicObject class. It has the minimal number of methods necessary to function as an object in Ruby. This is excellent for the construction of open classes akin to OpenStruct, but consequently there is no way to find out what methods are defined on such an object because there is no such methods as <code>#methods</code> or <code>#instance_methods</code>. Moreover, BasicObject is still not completely empty. It still defines <code>__id__</code>, <code>__send__</code>, <code>instance_eval</code>, <code>instance_exec</code> and a few others, without which an object simply wouldn&#39;t be usable.</p>
+
+<p>So basically Ruby has settled on a &quot;close enough&quot; approach to handling reflection and meta-programming. But why should we be willing to settle for any risk at all? The reasoning I have most often heard is an OOPL ideological principle arguing that no method should stand outside the realm of the inheritance chain, and thus all methods are necessarily subject to overrides. But I am not convinced for the simple reason that meta-programming is by it&#39;s nature &quot;<em>meta</em>&quot;.</p>
+
+<p>As an experiment. I developed a small library to take the risk out of meta-coding. The library basically works as follows:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="vg">$meta</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">obj</span><span class="o">|</span>
+    <span class="no">Functor</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">op</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="o">|</span>
+      <span class="no">Kernel</span><span class="o">.</span><span class="n">instance_method</span><span class="p">(</span><span class="n">op</span><span class="p">)</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="vg">$meta</span><span class="o">[</span><span class="s2">&quot;some string&quot;</span><span class="o">].</span><span class="n">class</span> <span class="c1">#=&gt; String</span>
+</code></pre></div>
+<p>This meta-function works fairly well in most cases. However it has three shortcomings that make it essentially impractical for production use: 1) It lacks module methods; 2) It is terribly inefficient; and 3) It doesn&#39;t work for BasicObject instances.</p>
+
+<p>While my little library might be improved upon, ideally Ruby would provide a set of &quot;meta-functions&quot; that cannot be overridden in-class. These methods could all be defined in a special module, but used via alternate notation so as not to conflict with ordinary methods. To that end I suggest using <code>$</code> on regular objects:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"> <span class="n">obj</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+ <span class="n">obj</span><span class="vg">$class</span> <span class="c1">#=&gt; String</span>
+</code></pre></div>
+<p>Numerous other methods would be made available through this, in general all public Kernel methods are candidates for inclusion, and some Module methods usable just for classes and modules, such as <code>#instance_methods</code>.</p>
+
+<p>The robustness this would bring to Ruby&#39;s meta-programming would be a great boon and should not be understated. When a single line of code can so easily cause every object in a program to fail, it&#39;s not unreasonable to prefer some guarantees. Moreover, it makes the meta-programmer&#39;s task much easier --he knows exactly what methods on which to depend.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/proper-construction-of-a-class/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>The Proper Construction of a Class [DRAFT]</h1>
+
+<p>A general principle of good programming is SOC, Separation of Concerns. SOC
+is a general rule that helps us break code up into logical groups around a single concern.
+More often the principle is applied at a systems level via separate packages, tools, libraries
+or components. But the principle is equally applicable to a class itself.</p>
+
+<p>Ruby&#39;s own Hash class provides a good example to demonstrate how this principle can be applied.
+When we consider the concerns of the Hash class we must think of the methods that make it a Hash.
+The most fundamental distinction between methods for any class is the fundamental methods versus
+the derivative methods. In other words, derivative methods depend on the fundamental methods, and
+have no direct contact to the under-lying state of the object except via the fundamental methods.
+This division not only gives us guidance on how to organize our classes, but also how to best
+write methods for our classes --by attempting to use the minimum number of necessary fundamental
+methods.</p>
+
+<p>For Ruby&#39;s Hash, the fundamental methods are more or less <code>#fetch</code>, <code>#store</code>, <code>#delete</code>, <code>#keys</code>, <code>#key?</code> and perhaps <code>#size</code> in addition to any necessary equality methods, such as <code>#==</code>. There are, of course, Ruby system methods also, such as <code>#hash</code> and <code>#inspect</code>, but we can take them for granted. All other methods, such as <code>#update</code> and <code>#each</code> can be built from these methods.</p>
+
+<p>Of course Ruby&#39;s Hash isn&#39;t actually implemented in this way. But is <strong>should</strong> be! This kind of design I call &quot;CRUDifed&quot;, because the fundamental methods of any class are generally the ones that represent create, read, update and delete functions.</p>
+
+<p>Who would have ever though this was good advice? &quot;Make your models CRUDy!&quot; :-)</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/peanut-butter-and-chocolate-handlebars/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Peanut Butter and Chocolate Handlebars</h1>
+
+<p>This week I&#39;ve been working on the <a href="http://github.com/rubyworks/shomen">Shomen</a> documentation project. In particular I&#39;ve been converting the templates of my three web-based documentation viewers to compiled templates in order to boost rendering speed. Originally these viewers were using <a href="http://aefxx.com/jquery-plugins/jqote2/">jqote2</a> in one case (<a href="http://github.com/rubyworks/hypervisor">hypervisor</a>) and <a href="https://github.com/jquery/jquery-tmpl">jquery-tmpl</a> in the other two cases (<a href="http://github.com/rubyworks/rebecca">rebecca</a> and <a href="http://github.com/rubyworks/rubyfaux">rubyfaux</a>). While ascertaining what compilation solution to use, I tried the <a href="https://github.com/wookiehangover/jquery-tmpl-jst">jquery-tmpl-jst</a> for the later two, but immediately ran into fundamental errors. (Sorry, I don&#39;t recollect exactly what the errors were now). They were problematic enough to send me looking else where, and ultimately I decided on <a href="http://handlebarsjs.com/">Handlebars.js</a>.</p>
+
+<p>Handlebars is great... mostly. Handlebars a variant of <a href="http://mustache.github.com/">Mustache</a> and is billed like Mustache as &quot;logic-less&quot; templates. But, whereas Mustache is <em>pure</em> about this ideal, Handlebars backs off a bit and at least allows some computation to take place via helpers. Unfortunately, from my experience I have found the ideal of &quot;logic-less&quot; templates to be largely misplaced, and not even Handlebars goes far enough to rectify the situation. What one ends up doing is just moving the &quot;logic&quot; to a separate file where it mostly consists of bits of trivial code and where it is more difficult to maintain because it is separated from the specific bit of markup it supports.</p>
+
+<p>Take this example. It&#39;s the last bit of jqeury-tmpl I needed to convert to Handlebars for rubyfaux.</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html">  ${divy  = Rubyfaux.divy_methods(methods),&#39;&#39;}
+  ${scope = [&#39;class&#39;,&#39;instance&#39;],&#39;&#39;}
+  ${sight = [&#39;public&#39;,&#39;protected&#39;,&#39;private&#39;],&#39;&#39;}
+
+
+
+
+        <span class="nt">&lt;h3&gt;</span>${v.capitalize()} ${s.capitalize()} METHODS<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;reference-list&quot;</span><span class="nt">&gt;</span>
+
+
+
+        <span class="nt">&lt;/ul&gt;</span>
+</code></pre></div>
+<p>How does one translate this to Handlbars.js? It isn&#39;t a straight forward process. Handlebars doesn&#39;t allow the embedded assignments. So right off we see that <code>scope</code> and <code>sight</code> must be extracted. Secondly, the fact that some of the template is only shown if the combination of <code>scope</code> and <code>sight</code> has any entries, means this can&#39;t be rendered via a single Handlebars block helper. It has to be broken up so we can use a helper to render only if there are entries for each combination. But then it becomes difficult, if not impossible, to loop over <code>scope</code> and <code>sight</code> to keep our code DRY. Instead we end up with something like:</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html">    <span class="nt">&lt;h3&gt;</span>PUBLIC CLASS METHODS<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;reference-list&quot;</span><span class="nt">&gt;</span>
+
+
+
+
+
+
+
+  ... ditto for each combination of scope and sight ...
+</code></pre></div>
+<p>Thank goodness there are only six combinations!</p>
+
+<p>Of course, there is a way around this explosion in code. We can use a single block helper, but only if we render the <code>h3</code> and <code>ul</code> tags via the block helper too.</p>
+<div class="highlight"><pre><code class="javascript language-javascript" data-lang="javascript"><span class="nx">Handlebars</span><span class="p">.</span><span class="nx">registerHelper</span><span class="p">(</span><span class="s1">&#39;methods_categorized&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">meths</span> <span class="o">=</span> <span class="nx">Rubyfaux</span><span class="p">.</span><span class="nx">divy_methods</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">methods</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">,</span><span class="s1">&#39;instance&#39;</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">sight</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;public&#39;</span><span class="p">,</span><span class="s1">&#39;protected&#39;</span><span class="p">,</span><span class="s1">&#39;private&#39;</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">methods</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">scope</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="p">(</span><span class="nx">j</span> <span class="k">in</span> <span class="nx">sight</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">combination</span> <span class="o">=</span> <span class="nx">meths</span><span class="p">[</span><span class="nx">scope</span><span class="p">[</span><span class="nx">i</span><span class="p">]][</span><span class="nx">sight</span><span class="p">[</span><span class="nx">j</span><span class="p">]];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">combination</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">out</span> <span class="o">=</span> <span class="nx">out</span> <span class="o">+</span> <span class="s2">&quot;&lt;h3&gt;&quot;</span> <span class="o">+</span> <span class="nx">scope</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">capitalize</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nx">sight</span><span class="p">[</span><span class="nx">j</span><span class="p">].</span><span class="nx">capitalize</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; METHODS&lt;/h3&gt;\n&quot;</span><span class="p">;</span>
+          <span class="nx">out</span> <span class="o">=</span> <span class="nx">out</span> <span class="o">+</span> <span class="s1">&#39;&lt;ul class=&quot;reference-list&quot;&gt;&#39;</span> <span class="o">+</span> <span class="s2">&quot;\n&quot;</span><span class="p">;</span>
+          <span class="k">for</span> <span class="p">(</span><span class="nx">k</span> <span class="k">in</span> <span class="nx">combination</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">out</span> <span class="o">=</span> <span class="nx">out</span> <span class="o">+</span> <span class="nx">block</span><span class="p">(</span><span class="nx">meths</span><span class="p">);</span>
+          <span class="p">};</span>
+          <span class="nx">out</span> <span class="o">=</span> <span class="nx">out</span> <span class="o">+</span> <span class="s2">&quot;\n&lt;/ul&gt;&quot;</span><span class="p">;</span>
+        <span class="p">};</span>
+      <span class="p">};</span>
+    <span class="p">};</span>    
+  <span class="p">};</span>
+
+  <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Then our Handlebars template becomes the very simple:</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html">
+</code></pre></div>
+<p>But what on earth have we done!? Pursuing the ideal of keeping our views cleansed of logic, and DRY, we&#39;ve ended up putting our view in our logic! You would think this is an obvious &quot;no no&quot; too, but look at some of the examples on <a href="http://handlebarsjs.com/">Handlebars.js</a> website and you will see they do this quite regularly.</p>
+
+<p>Perhaps there is a more appropriate way to handle the above example, and I am all ears. But after giving the whole concept of keeping logic completely out of views, I&#39;ve come to the conclusion that it&#39;s really not so ideal. Like Reese&#39;s mixing chocolate and peanut butter, mixing views and logic can be a good thing. The trick is limiting the logic to particular domains, let&#39;s call it &quot;view logic&quot; as opposed to &quot;data logic&quot;.</p>
+
+<p>View logic should be limited to these purposes:</p>
+
+<ul>
+<li>Conditions</li>
+<li>Sorting</li>
+<li>Categorizing</li>
+<li>Formatting</li>
+</ul>
+
+<p>By limiting view logic to these, I&#39;d say we have still achieved the ideal of &quot;logic-less templates&quot;. By being zealots about the logic-less concept we end-up just creating the opposite problem of mixing our templates into our logic, which is just as bad, if not worse. Template engines, like Handlebars.js, would do well to take this into account and expand their capabilities to include more flexible conditions, sorting, categorizing and formatting constructs and helpers out of the box.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/on-the-meaninglessness-of-class-vs-module/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Fear Not the Wereclass</h1>
+
+<p><strong>DRAFT</strong></p>
+
+<p>In the spirit of Halloween, lets take the fun example of the Werewolf. Lets say we already have classes for Man and Wolf at our disposal --some very smart programmer already did the hard work for us and developed these definitive representations ;)</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Man</span>
+      <span class="k">def</span> <span class="nf">shoot_gun</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Bang!&quot;</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">&quot;After it!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Wolf</span>
+      <span class="k">def</span> <span class="nf">howl</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Awoooooooo&quot;</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Woosh!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>Now what about our Werewolf? Half-man and half-wolf, what superclass do we use in its case? Most classes have a clear superclass, but some, such as our werewolf, are not as clear-cut. Perhaps we decide that a werewolf in our universe is more like a wolf than a man, so:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Werewolf</span> <span class="o">&lt;</span> <span class="no">Wolf</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>But we are still left to add Man&#39;s qualities . Ruby gives us no easy way to do this given our original classes. So we are forced to refactor the former Man class into a module.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">module</span> <span class="nn">ManLike</span>
+      <span class="k">def</span> <span class="nf">shoot_gun</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Bang!&quot;</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">&quot;After it!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Man</span>
+      <span class="kp">include</span> <span class="no">ManLike</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Werewolf</span> <span class="o">&lt;</span> <span class="no">Wolf</span>
+      <span class="kp">include</span> <span class="no">ManLike</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>Well there you go, a bit long winded perhaps, but it does the deed. But hang on. It appears things are a bit worse off than we might have suspected. We thought by using Wolf as the superclass we were saying a warewolf is essentially a wolf, but with some man like qualities. Surely that is what it must mean for a Warewolf to be a subclass of a Wolf. Unfortunately we would be wrong. When we ask a warewolf to <code>give_chase</code>, we discover it is doing it in quite the mainly way, not the wolfly way.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="n">werewolf</span> <span class="o">=</span> <span class="no">Werewolf</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">werewold</span><span class="o">.</span><span class="n">give_chase</span>  <span class="c1">#=&gt; &quot;After it!&quot;</span>
+</code></pre></div>
+<p>Oh dear, that&#39;s not good. The difference lies in the order of lookup. If two methods conflict, guess which one takes precedence? Would you be surprised to know that is not the superclass, but the rather the mixin?</p>
+
+<p>Well, it doesn&#39;t make a great deal of sense, but clearly we have no choice, we must refactor again.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">module</span> <span class="nn">WolfLike</span>
+      <span class="k">def</span> <span class="nf">howl</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Awoooooooo&quot;</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">give_chase</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Woosh!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Wolf</span>
+      <span class="kp">include</span> <span class="no">WolfLike</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">Werewolf</span> <span class="o">&lt;</span> <span class="no">Man</span>
+      <span class="kp">include</span> <span class="no">WolfLike</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>Well, there we are. Not our ideal conception of things, clearly, but it <i>does what we need it to do</i>... Of course, in the real world the original classes are not necessarily under our control, leading us to the only and unenviable option of re-implementing everything. What a waste.</p>
+
+<p>The fact that Ruby inheritance system in conjunction with it&#39;s mixin system produces a wonky order to method look-up; the fact that we can&#39;t <em>reuse</em> a class as a module when we might have need to do so; and the fact that we are left then only to do things in unseemly manners and duplicating lots of code too, well, to put it&#39;s all a bit frightful. But really, it not just our coding that become strained and more difficult --after all we are programmers, we &quot;work around&quot;. What really is a shame is that it severely limits the utility of Ruby&#39;s inheritance model and contributes in no small part as to why we see so little <em>semantic</em> subclassing in Ruby programs, as opposed to the simplistic base-class designs that we frequently see.</p>
+
+<p>The fact is the division is between class and module is essentially arbitrary.</p>
+
+<p>Consider this little trick:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Module</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">new</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+      <span class="n">c</span> <span class="o">=</span> <span class="no">Class</span><span class="o">.</span><span class="n">new</span>
+      <span class="n">c</span><span class="o">.</span><span class="n">include</span> <span class="nb">self</span>
+      <span class="n">c</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>The distinction between a module and a class it Ruby is purely a superficial one that has been hard coded into the language for no utilitarian reason. It is there only as an artifact of the original conceptualization.</p>
+
+<p>Removing the distinction of class vs module has nothing to do with multiple inheritance. Classes still only have a single superclass. Rather it is the principle of ... that is being violated. There is no need for a module to know it&#39;s a module or class it know it&#39;s a class. Both are merely encapsulations. What matters is how they are used.</p>
+
+<p>There is also a wonderful side benefit from this removal. Load order would no longer matter when two different scripts attempt to utilize the same namespace. </p>
+
+<p>Now I can all but guarantee that at some point someone, who very likely hasn&#39;t read this entire post, is going to say &quot;use delegation&quot;. Yes, yes. I am a big fan of delegation myself. But that is not what this article is about. It is about the utilization of Ruby&#39;s inheritance and mixin system. If delegation were always the answer then we might as well flush the whole inheritance and mixin things down the drain and use delegation for everythin. But that&#39;s a different debate. The question here is, if we are going to have inheritance and mixins, then obviously we should make the greatest use of them.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/negative-arrays/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Negative Arrays</h1>
+
+<p>My current work involves the creation of an extensive configuration file format representing project information. In a number of cases I have had need of an inclusion list, representing files and file patterns to include for some operation --say, what files to include in a package. In such a case I generally end up with a least two parameters which I basically label include and exclude. While include is the list of files to use, exclude is list of files to exclude from the included list. Using exclude makes it easier to specify a large selection and then subsequently omit a file or two. The include list typically has a suitable default value, so a third parameter is sometimes also of use, append, which concats to the defaults as opposed to replacing the include parameter outright.</p>
+
+<p>Since these three parameters help define what is essentially one list of data, it would be nice if they could be specified as a single parameter too. So I gave the problem some thought.</p>
+
+<p>Taking inspiration from the notion of a negated symbol (see facets/symbol/not). It occurred to me that any object that can be added or subtracted is taking part in the same &quot;algebraic group&quot; as whole numbers. And just as a whole number can be negative, why not also an array?</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="n">a</span> <span class="o">=</span>  <span class="o">[</span><span class="ss">:a</span><span class="p">,</span><span class="ss">:b</span><span class="p">,</span><span class="ss">:c</span><span class="p">,</span><span class="ss">:d</span><span class="p">,</span><span class="ss">:e</span><span class="o">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="o">-[</span><span class="ss">:d</span><span class="p">,</span><span class="ss">:e</span><span class="o">]</span>
+    <span class="n">a</span> <span class="o">+</span> <span class="n">n</span> <span class="c1">#=&gt; [:a,:b,:c]</span>
+</code></pre></div>
+<p>So this could be very helpful. And it shouldn&#39;t be too much hard to implement.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Array</span>
+      <span class="k">def</span> <span class="err">@</span><span class="o">-</span>
+        <span class="vi">@negative</span> <span class="o">=</span> <span class="o">!</span><span class="vi">@negative</span>
+        <span class="nb">self</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">negative?</span>
+        <span class="vi">@negative</span>
+      <span class="k">end</span>
+
+      <span class="k">alias</span> <span class="ss">:add</span> <span class="ss">:+</span>
+      <span class="k">alias</span> <span class="ss">:sub</span> <span class="ss">:-</span>
+
+      <span class="k">def</span> <span class="nf">+</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">negative?</span>
+          <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">negative?</span>
+            <span class="o">-</span><span class="n">add</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+          <span class="k">else</span>
+            <span class="o">-</span><span class="nb">sub</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+          <span class="k">end</span>
+        <span class="k">else</span>
+          <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">negative?</span>
+            <span class="nb">sub</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+          <span class="k">else</span>
+            <span class="n">add</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>I&#39;m sure tighter implementation is possible, but you get the idea. So then include and exclude parameters could be specified in a single parameter.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">files</span> <span class="o">=</span> <span class="o">[</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="o">-[</span> <span class="s1">&#39;Installedfiles&#39;</span> <span class="o">]</span> <span class="o">]</span>
+</code></pre></div>
+<p>Neat! But unfortunately it doesn&#39;t really solve the whole problem since YAML doesn&#39;t understand this negative listing concept either. It could still be of use in general Ruby scripts though. Notations such as this often prove very powerful. And in fact the idea does move us in a possible workable direction. There&#39;s no reason a string can&#39;t be marked as negative as well. After all it&#39;s just a flag. In fact, if we move the core method @- to Object itself, then any object can be so indicated. The above line could then be written:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">files</span> <span class="o">=</span> <span class="o">[</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="o">-</span><span class="s1">&#39;Installedfiles&#39;</span> <span class="o">]</span>
+</code></pre></div>
+<p>Methods such as Dir.multiglob(*files) (another Facet) could use this extra bit of information to provide the desired results, equivalent to:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="n">files</span> <span class="o">=</span> <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;**/*&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;InstalledFiles&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Of course, this still doesn&#39;t quite help us with the YAML configuration file, but with a little fudging we can get a useful format.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="ss">files</span><span class="p">:</span> <span class="o">[</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="s1">&#39;-InstalledFiles&#39;</span> <span class="o">]</span>
+</code></pre></div>
+<p>As for the append parameter that was mentioned as the beginning, we could just add a special notation for this as well, say, &#39;$&#39; to mean defaults.</p>
+
+<p>Okay. So will I use this bit of trickery to reduce three parameters to one? Perhaps. While the result is wonderfully practical in usage, it&#39;s not necessarily so simple to implement. Either a filter would have to split the one entry into three parts when loading, or an untold number of methods would have to augmented to take the trick into consideration. The later I imagine would simply prove too extensive w/o pre-established support for the negation concept. The former might be reasonable however. I&#39;ll give it a try.</p>
+
+<p>In any case it was in interesting thought experiment. Although perhaps you have a better way to represent this kind of information?</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/memory-frabrics/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><p>I&#39;ve been thinking about data structure the last week, and I was wondering why data structures are implemented the way they are.</p>
+
+<p>It occurs to me that it is mostly due to the way computer memory is designed. Computer memory is a randomly accessible linear structure. Basically what you have is a large string of values that you can access by a single position index. This is the <em>interface</em> of memory, and all data structures are there root must use it in their implementation.</p>
+
+<p>But I wondered, how would data structures differ is memory itself was structured in some other fashion? For instance, what if memory wasn&#39;t a linear string of data, but a two-dimensional fabric? While arrays might be unaffected by such a change, clearly things like matrices could be stored in a much more literal fashion. It would be interesting to see the form of data structure talented individuals might devise with this.</p>
+
+<p>Even so, two-dimensions is still somewhat limiting, taking it to a third dimension could open tremendous possibilities in the <em>relative storage</em> of data.</p>
+
+<p>But might we go even further. What would prevent us from making the dimensionality definable? If a memory cell could be associated with any other memory cell as often as desired, then the <em>fabric</em> could have any structure desired. Interestingly, the effect of this would be to move what we already do in software, via indirect memory referencing, to the hardware itself.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/main-campaign-out-of-object-now/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Main Campaign: Out of Object Now!</h1>
+
+<p>The word from Matz on Kernel as toplevel object:</p>
+
+<p>I don&#39;t feel that making Kernel as toplevel self is not a good idea,
+because:</p>
+
+<ul>
+<li>toplevel def does not define methods on Kernel, but Object.</li>
+<li>toplevel include does not include modules into Kernel, but Object.</li>
+<li>toplevel private etc. do not work on Kernel, but Object.</li>
+</ul>
+
+<p>I wouldn&#39;t call that an explanation exactly, more an explicative of the current behavior. I&#39;m sure Matz has his reasons, and we can just assume that he wants to keep the namespace distinct. Fair enough, and of course he can do that. (It&#39;s not REALLY a democracy after all!) So Kernel drops out of the race. But the Kernel&#39;s running mate, Main, is still here campaigning.</p>
+
+<p>You might be surprised to learn (as I was when I first discovered it):</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="no">Object</span><span class="o">.</span><span class="n">public_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span> <span class="o">+</span>
+  <span class="no">Object</span><span class="o">.</span><span class="n">private_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span> <span class="o">+</span>
+  <span class="no">Object</span><span class="o">.</span><span class="n">protected_instance_methods</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+  <span class="o">=&gt;</span> <span class="o">[]</span>
+</code></pre></div>
+<p>That&#39;s right. There&#39;s not a single method defined in Object. All the methods ri tells you belong to Object actually are inherited from Kernel. But from there, any toplevel method we define does end-up in Object. Hence the clear separation of namespace I mentioned above.</p>
+
+<p>Now a separate module, eg. Main, would do just as well. Kernel need not be used. And as I&#39;ve expressed before, Main could be induced into Object for all the same effects. The base hierarchy then being Object &lt; Main &lt; Kernel.</p>
+
+<p>But wait a second! Why are all these toplevel methods sneaking into all my Object&#39;s anyway? I can just as easily add them to Object myself if that&#39;s what I want. I don&#39;t need some cheap toplevel proxy to do it for me. In fact, that can be a problem too.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">Foo</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_missing</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="p">)</span>
+      <span class="k">super</span> <span class="k">unless</span> <span class="nb">require</span> <span class="s2">&quot;foo/</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">rescue</span> <span class="kp">nil</span>
+      <span class="nb">send</span><span class="p">(</span> <span class="nb">name</span><span class="p">,</span><span class="o">*</span><span class="n">args</span> <span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Then some unsuspecting nuby comes along (okay I admit, it was I and it happened to me today!) and innocently adds to the top level:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">def</span> <span class="nf">check</span><span class="p">(</span> <span class="nb">name</span> <span class="p">)</span>
+    <span class="nb">name</span> <span class="o">==</span> <span class="s2">&quot;foo&quot;</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Well, so much for my lazily required Foo.check routine. It&#39;s been whacked from the top down!</p>
+
+<p>You see where I&#39;m going now? Primaries are over Main has taken Kernel out of the running with a new divisive platform. &quot;Out of Object Now!&quot;</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/10/13/lazy-plus-enumerable-begats-denumerable/" rel="prefetch">Ruby AOP Made Simple</a></h2>
+            <p><h1>Lazy + Enumerable = Denumerable</h1>
+
+<p>All Rubyists know and love Enumerable. It&#39;s the really the showcase of Ruby&#39;s mixin system. Some Rubyists also know and appreciate <a href="http://moonbase.rydia.net/software/lazy.rb/">lazy.rb</a> MenTaLguY&#39;s excellent lazy evaluation library. But did you know there is library that essentially cross-breeds the ideas of both? It&#39;s called <a href="http://github.com/rubyworks/facets/blob/master/lib/core/facets/denumerable.rb">Denumerable</a> and is included in Ruby Facets (<code>require &#39;facets/denumerable&#39;</code>).</p>
+
+<p>According to Webster&#39;s The term <code>denumerable</code> is just a synonym for <code>enumerable</code>. In Ruby parlance, it takes a more useful distinction of &quot;deferred enumerable&quot;. In other words Denumerable defers actual calculations of a chain of enumerable method calls until the results are actually needed. That&#39;s where the &quot;laziness&quot; comes in. By deferring calculation Ruby is able to optimize the algorithm, in many cases greatly improving performance. It&#39;s even possible to enumerate infinite ranges if the end result itself is finite.</p>
+
+<p>To make it even more convenient there is <a href="http://github.com/rubyworks/facets/blob/master/lib/core/facets/enumerable/defer.rb">Enumerable#defer</a> (<code>require &#39;facets/enumerable/defer&#39;</code>) which delegates an Enumerable object through a Denumerator, just like Ruby&#39;s core Enumerator class.</p>
+
+<p>So, enough talk, right? How about an example.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">1_000_000_000</span><span class="p">)</span><span class="o">.</span><span class="n">defer</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span><span class="o">.</span>
+                                 <span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">100</span> <span class="p">}</span><span class="o">.</span>
+                                 <span class="n">take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span>
+    <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">102</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">108</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">120</span><span class="o">]</span>
+</code></pre></div>
+<p>The performance gains of Denumerable cannot be understated. The above example takes 1/10000th of a second to run on my system. I wanted to provide the time it takes to run without <code>defer</code>, but after an hour of waiting and listening to it eat my hard drive for breakfast, I gave up.</p>
+</p>
+            <div class="meta">
+                Written By <address>trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+    <section class="pagination" style="text-align:center">
+      
+        
+        <a href="/page2" class="btn btn-outline">‹ Newer</a>
+        
+      
+      
+        <a href="/page4" class="btn btn-outline">Older ›</a>
+      
+    </section>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

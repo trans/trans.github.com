@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2009/07/04/The-Form-of-Project-Metadata/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2009/07/04/The-Form-of-Project-Metadata/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2009-04-July" title="July 04, 2009">July 04, 2009</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
+
+        <section>
+            <h1>The Form of Project Metadata</h1>
+
+<h2>Ruby Script</h2>
+
+<p>Ruby-scripts as configuration is popular among gung-ho Ruby-enthusiests. And there is certainly
+some merit to it&#39;s use, but along with the powerful advantages are serious disadvantages as well.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Computable settings is very flexiable.</li>
+<li>Support full type support --Array, String, Integer, etc.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Using Ruby code as configuration limits their use to Ruby programs.</li>
+<li>Providing the full power of a scriptling language presents a higher security risk.</li>
+<li>Automated modification of configuration scripts is difficult.</li>
+</ul>
+
+<p>Ruby scripts are not an uncommon configuration format, especailly in the area of
+project tools --.gemspec files for instance are Ruby scripts. Their greatest advantage
+is in their flexability --properties can be set computationally. However, the issues
+of interoperability, security and editing automation make them a very limited
+option.</p>
+
+<h2>YAML</h2>
+
+<p>In the world Ruby programming YAML is certainly the most common choice
+of configuration storage. Since YAML is a human-readable serialization format,
+this stand to reason.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Popular format amoung Rubyists; and becoming more popular with other languages.</li>
+<li>Supports serialization types (string, array, hash, integer, time, etc).</li>
+<li>Easy to en masse edit, as all settings can be in a single file.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Requires dependency on a hefty parser library.</li>
+<li>Difficult to automate selective modification. (Whole file needs to rewritten.)</li>
+</ul>
+
+<p>YAML has the advantage of en masse editing, which will certainly seems more comfortable
+to the average Ruby coder. However, this advantage is limited primarily to first-time
+editing of configuration data since, in our usecase, most properties will not
+change once set.</p>
+
+<p>YAML also has the advantage of supporting of basic types like String, Array, Hash,
+and, in the Syck implementation, Time and Integer as well. These types provide some
+extra information that can be used in determining the value of a property. However,
+this also opens us up to greater potenial of data-type errors.</p>
+
+<h2>INI</h2>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>INI files are very human readible and easy to edit.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Requires parser library (but much smaller than YAML&#39;s).</li>
+<li>Entries are generally limited to a single line entry.</li>
+<li>No data types --all data are strings.</li>
+</ul>
+
+<p>INI files are even easier to read and write than YAML files. However they lack
+serialization types. So all properties are strings and it&#39;s up to the application
+to determine the type of data.  Also, on the whole, entries are limited
+to a single line. This means list entries usually need to be separated by
+a delimiter (<code>, : ;</code>), and long description entries need special consideration.</p>
+
+<p>While INI files are conceptually simpler than YAML files, and in so being are
+a more attractive solution (IMO), the difference between YAML and INI
+does not seem great enough to warrant their use over the convention of
+Rubyists to use YAML instead.</p>
+
+<h2>Per-Property Files</h2>
+
+<p>The use of one file per property has some significant advantages, but likewise
+has a few issues that keep it from being a perfect solution.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>No special parser library is required.</li>
+<li>Individual file can be selectively loaded.</li>
+<li>Very easy to automate selective update.</li>
+<li>Usable by any language or tool.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Cumbursome to edit properties en masse.</li>
+<li>No data types --all data are strings (unless we use file extensions).</li>
+<li>Wastes file system space (ie. block size).</li>
+<li>Not as easily scrapable by search engines.</li>
+<li>Highly unconventional appraoch.</li>
+</ul>
+
+<p>While some may take serious issue with the waste of file system space, this is increasingly
+a negligable downside. Some modern file systems handle small files quite gacefully, and
+the number of potential properties limits the waste in anycase.</p>
+
+<p>While not being able to easily edit en masse might seem like a show-stopper, for this
+usecase it is usually only needed for the initial editing. After that, editing metadata
+tends to be very selective.</p>
+
+<p>While per-propery files do not support data types per-se, if neccessary file extensions on
+header comment lines (shebang lines) could be used to convey type.</p>
+
+<p>Probably the biggest downside to the per-propery file approach though is the lack of convention
+for doing so. It no doubt will strike most developers as a &quot;bad thing&quot;, at least at first.</p>
+
+<h2>Analysis</h2>
+
+<p>In considering the possible configuration formats, it becomes clear there are trade-offs.
+No solution is perfect, but no solution is without it&#39;s merits either.</p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2013/01/04/the-plethora-of-version-versions/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2013/01/04/the-plethora-of-version-versions/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2013-04-January" title="January 04, 2013">January 04, 2013</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
+
+        <section>
+            <h1>The Plethora of Version Versions</h1>
+
+<p>A couple of my programs have need of a Version API --a library for handling version numbers, and handling them well. Not only do they need a class modeling a <em>version number</em>, but also a <em>version constraint</em> and in one case even a <em>version conflict resolver</em> for requirements. Presently each project had its own code for handling versions. But as these projects have evolved it has became increasingly clear that effort was being wasted and that I should pull the separate bits of code together into a single gem on which they all could depend.</p>
+
+<p>So I created the new project --actually it was some time ago, but I ran into that not-so-unusual snag, what to name it. Unfortunately there was already a <code>version</code> gem, and could think of no better name. So I put the whole thing on the back burner for some months. Today I finally returned to the question. I still don&#39;t have an answer, but to be thorough I searched of RubyGems.org using &quot;vers&quot;. I thought there were a lot of ANSI code gems!</p>
+
+<ul>
+<li><a href="https://github.com/Ataxo/app-version-git">app-version-git</a></li>
+<li><a href="https://github.com/westarete/aversion">Aversion</a></li>
+<li><a href="https://github.com/jeffp/gem_version">GemVersion</a></li>
+<li><a href="https://github.com/Bodacious/per-version">PerVersion</a></li>
+<li><a href="https://github.com/AlphaHydrae/rake-version">rake-version</a></li>
+<li><a href="https://github.com/martinkozak/ruby-version">Ruby Version</a></li>
+<li><a href="https://github.com/canton7/sem_version">SemVersion</a></li>
+<li><a href="https://github.com/stouset/version">version</a></li>
+<li><a href="https://github.com/jondot/version_bumper">version_bumper</a></li>
+<li><a href="https://github.com/djsun/version_string">version_string</a></li>
+<li><a href="https://github.com/RiverGlide/Versionary">Versionary</a></li>
+<li><a href="https://github.com/charlotte-ruby/versionator">Versionator</a></li>
+<li><a href="http://rubyforge.org/projects/versioncheck">VersionCheck</a></li>
+<li><a href="https://github.com/chaione/versioner">versioner</a></li>
+<li><a href="https://github.com/xaviervia/versionifier">Versionifier</a></li>
+<li><a href="https://github.com/jcangas/version_info">VersionInfo</a></li>
+<li><a href="http://rubygems.org/gems/versionize">Versionize</a></li>
+<li><a href="https://github.com/thomasbiddle/versionr">Versionr</a></li>
+<li><a href="https://github.com/defunkt/version_sorter">VersionSorter</a></li>
+<li><a href="https://github.com/meh/versionub">Versionub</a></li>
+</ul>
+
+<p>The majority of these gems address the same functionality, that of bumping a version number. Some of those provide rake tasks to do so, others just the API, and a couple go a step further handling git commits and gem pushes as well. One a few actually focus on modeling a <em>version number</em>, though all have some sort of internal model no matter how simplistic. Only one appears to provide a model any more sophisticated than simple comparison and accessing named components (major, minor, patch, etc.). SemVersion also has simple constraint testing.</p>
+
+<p>It&#39;s too bad there is not more cooperation among gem developers. I think this is an area in which the Perl community has shined. Surely in no small part to <a href="http://cpan.org">CPAN</a> and the culture of naming libraries functionally, rather then creatively. </p>
+
+<p>Still doesn&#39;t help me name mine.</p>
+
+<hr>
+
+<p>Note <a href="https://github.com/phs/versionable">Versionable</a> is something different, and pretty neat.</p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

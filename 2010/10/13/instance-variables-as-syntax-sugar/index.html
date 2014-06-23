@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2010/10/13/instance-variables-as-syntax-sugar/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2010/10/13/instance-variables-as-syntax-sugar/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
+
+        <section>
+            <h1>Instance Variables as Syntax Sugar</h1>
+
+<p>What are instance variables? If we think of them as a single unit we note that they represent an object <em>state</em>, which as a data structure is really nothing more than a <em>hash</em>. Indeed, it is quite feasible to forgo the use of instance variables altogether save one, to serve as the object&#39;s state.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="nc">Example</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">attr_reader</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+      <span class="n">define_method</span><span class="p">(</span><span class="nb">name</span><span class="p">){</span> <span class="vi">@state</span><span class="o">[</span><span class="nb">name</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">attr_writer</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+      <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">){</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="vi">@state</span><span class="o">[</span><span class="nb">name</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">=</span> <span class="n">v</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">attr_accessor</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+      <span class="kp">attr_reader</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+      <span class="kp">attr_writer</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span>
+      <span class="vi">@state</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>So if instance variables are essentially a hash, why is it that we cannot work with them as such? In other words, why not have <code>@</code> just represent a syntax sugar for a special hash (even if it&#39;s not a standard Ruby Hash instance under the hood, it can behave as if it were). With such a change, handling instance variables immediately become much easier and intuitive since we can apply all our knowledge if hashes.</p>
+
+<p>Some neat capabilities immediately become apparent. Looking up an instance variable give a variable name can be done with:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="err">@</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span>
+</code></pre></div>
+<p>Assigning an instance variable likewise can be done with:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="err">@</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
+</code></pre></div>
+<p>No longer would the long-winded <code>instance_variable_get</code> and <code>instance_variable_set</code> be needed.</p>
+
+<p>Let&#39;s take a more complex example. Have you ever wanted to reproduce the name and values of an object instance variable. It&#39;s not uncommon really. Any type of object serialization is going to need such a routine -- YAML, Marshal, etc. To do this presently requires some verbose code:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">hash</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="nb">instance_variables</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">var</span><span class="o">|</span>
+    <span class="nb">hash</span><span class="o">[</span><span class="n">var</span><span class="o">]</span> <span class="o">=</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="nb">hash</span>
+</code></pre></div>
+<p>But with <code>@</code> sugar we can simply use:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">hash</span> <span class="o">=</span> <span class="err">@</span><span class="o">.</span><span class="n">to_h</span>
+</code></pre></div>
+<p>Or if we just want to iterate over them:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="err">@</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
+    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Since we have #each, then all Enumerable methods would be at our disposal.</p>
+
+<p>For a public interface <code>instance_variables</code> could reference the internal <code>@</code> instead of just the list of instance variable names. We could deprecate <code>#instance_variable_get</code> and <code>#instance_variable_set</code> altogether.</p>
+
+<p>By recognizing the nature of instance variables and applying the preexisting functionality of Hash, we gain much greater capability while using fewer brain cells to do it. And that&#39;s always a win.</p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>

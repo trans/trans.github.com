@@ -1,223 +1,161 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>2006 08 17 main is a dry pain\7R4N5C0D3</title>
-  <meta name="author" content="Trans" />
-
-  <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
-
-  <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
-  <link rel="stylesheet" href="/assets/styles/code.css" type="text/css"/>  
-  <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
-
-  <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/>
-  <link rel="stylesheet" href="/assets/styles/social.css" type="text/css"/>  
-
-  <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
-
-  <!--[if lt IE 9]>
-  <script src="/scripts/html5.js"></script>
-  <![endif]-->
-
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
-  <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
-  <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
-
-  <script src="/assets/scripts/main.js"></script>
-
-  <script>
-    $(document).ready(function(){
-      $('#social-share').dcSocialShare({
-        twitterId: 'transgigamic',
-        tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
-        buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
-      });
-    });
-  </script>
-
-  <!-- tracking code here ? -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2006/08/17/main-is-a-dry-pain/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2006/08/17/main-is-a-dry-pain/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
 </head>
-
 <body>
-<div id="container">
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
 
-	<div id="header">
-		<h1>7R4N5C0D3</h1>
-	</div>
 
-	<div id="nav">
-    <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/Projects">Projects</a></li>
-    <li><a href="/Reads">Reads</a></li>
-    <li><a href="/Tools">Tools</a></li>
-    <li><a href="/tags.html">Tags</a></li>
-    <li><a href="/atom.xml">Feed</a></li>
-    <li><a href="https://github.com/trans/trans.github.com/wiki">Wiki</a> &gt;&gt;</li>
-    </ul>
-	</div>
+<article>
 
-<!-- CONTENT -->
-<div id="content-wrapper">
-<div id="content">
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2006-17-August" title="August 17, 2006">August 17, 2006</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
 
-<h1>Main is a DRY Pain</h1>
+        <section>
+            <h1>Main is a DRY Pain</h1>
 
 <p>I have a module that depends on define_method and ancestors. It works great when I include it in other modules or classes. But if I try including it into the toplevel it fails miserably.</p>
-
-<pre><code>NameError: undefined local variable or method `define_method' for main:Object
-</code></pre>
-
+<div class="highlight"><pre><code class="text language-text" data-lang="text">NameError: undefined local variable or method `define_method&#39; for main:Object
+</code></pre></div>
 <p>That seems fairly peculiar when you consider that defining methods at toplevel is perfectly acceptable. One must then wonder, what is this toplevel thing anyway?</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">self</span>    <span class="c1">#=&gt; main</span>
+</code></pre></div>
+<p>Okay, it calls itself &quot;main&quot;. Great. But that doesn&#39;t really tell us anything. Let&#39;s check it&#39;s class:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">self</span><span class="o">.</span><span class="n">class</span>  <span class="c1">#=&gt; Object</span>
+</code></pre></div>
+<p>Ah. So it&#39;s an instance of Object. An instance of Object! How is that possible? A normal instance of Object and main can&#39;t be exactly the same. Indeed, they are not.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="p">(</span><span class="nb">public_methods</span> <span class="o">-</span> <span class="no">Object</span><span class="o">.</span><span class="n">public_instance_methods</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span>
+  <span class="c1">#=&gt; [&quot;include&quot;, &quot;private&quot;, &quot;public&quot;]</span>
+  <span class="nb">singleton_methods</span>
+  <span class="c1">#=&gt; [&quot;include&quot;, &quot;private&quot;, &quot;public&quot;, &quot;to_s&quot;]</span>
+</code></pre></div>
+<p>Notice include has been defined here specifically for main. So something special&#39;s going on when you include a module into the toplevel. Hmm... What about methods defined at the toplevel? If main is an instance of Object then are they singleton methods? Well, no. Turns out they get &quot;magically&quot; defined as private methods of the Object class itself, and main&#39;s singleton class space is actually something else entirely.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">;</span> <span class="s2">&quot;x&quot;</span><span class="p">;</span> <span class="k">end</span>
+  <span class="k">end</span>
 
-<div class="highlight">
-<pre><span class="nb">self</span>    <span class="c1">#=&gt; main</span>
-</pre>
-</div>
+  <span class="k">class</span> <span class="nc">Q</span>
+    <span class="k">def</span> <span class="nf">q</span><span class="p">;</span> <span class="n">x</span><span class="p">;</span> <span class="k">end</span>
+  <span class="k">end</span>
 
-
-<p>Okay, it calls itself "main". Great. But that doesn't really tell us anything. Let's check it's class:</p>
-
-<div class="highlight">
-<pre><span class="nb">self</span><span class="o">.</span><span class="n">class</span>  <span class="c1">#=&gt; Object</span>
-</pre>
-</div>
-
-
-<p>Ah. So it's an instance of Object. An instance of Object! How is that possible? A normal instance of Object and main can't be exactly the same. Indeed, they are not.</p>
-
-<div class="highlight">
-<pre><span class="p">(</span><span class="nb">public_methods</span> <span class="o">-</span> <span class="no">Object</span><span class="o">.</span><span class="n">public_instance_methods</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span>
-<span class="c1">#=&gt; ["include", "private", "public"]</span>
-<span class="nb">singleton_methods</span>
-<span class="c1">#=&gt; ["include", "private", "public", "to_s"]</span>
-</pre>
-</div>
-
-
-<p>Notice include has been defined here specifically for main. So something special's going on when you include a module into the toplevel. Hmm... What about methods defined at the toplevel? If main is an instance of Object then are they singleton methods? Well, no. Turns out they get "magically" defined as private methods of the Object class itself, and main's singleton class space is actually something else entirely.</p>
-
-<div class="highlight">
-<pre><span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-  <span class="k">def</span> <span class="nf">x</span><span class="p">;</span> <span class="s2">"x"</span><span class="p">;</span> <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="k">class</span> <span class="nc">Q</span>
-  <span class="k">def</span> <span class="nf">q</span><span class="p">;</span> <span class="n">x</span><span class="p">;</span> <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="n">Q</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">q</span>
-<span class="c1">#=&gt; NameError: undefined local variable or method 's' for #&lt;Q:0xb7ce9a3c&gt;</span>
-</pre>
-</div>
-
-
+  <span class="n">Q</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">q</span>
+  <span class="c1">#=&gt; NameError: undefined local variable or method &#39;s&#39; for #&lt;Q:0xb7ce9a3c&gt;</span>
+</code></pre></div>
 <p>Which means the sure solution for my problem...</p>
-
-<div class="highlight">
-<pre><span class="k">module</span> <span class="nn">Kernel</span>
-  <span class="kp">include</span> <span class="no">MyModule</span>
-<span class="k">end</span>
-</pre>
-</div>
-
-
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">Kernel</span>
+    <span class="kp">include</span> <span class="no">MyModule</span>
+  <span class="k">end</span>
+</code></pre></div>
 <p>Can you guess?</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">M</span>
+    <span class="k">def</span> <span class="nf">m</span><span class="p">;</span> <span class="s2">&quot;m&quot;</span><span class="p">;</span> <span class="k">end</span>
+  <span class="k">end</span>
 
-<div class="highlight">
-<pre><span class="k">module</span> <span class="nn">M</span>
-  <span class="k">def</span> <span class="nf">m</span><span class="p">;</span> <span class="s2">"m"</span><span class="p">;</span> <span class="k">end</span>
-<span class="k">end</span>
+  <span class="k">module</span> <span class="nn">Kernel</span>
+    <span class="kp">include</span> <span class="n">M</span>
+  <span class="k">end</span>
 
-<span class="k">module</span> <span class="nn">Kernel</span>
-  <span class="kp">include</span> <span class="n">M</span>
-<span class="k">end</span>
+  <span class="n">m</span>
+  <span class="c1">#=&gt; NameError: undefined local variable or method `m&#39; for main:Object</span>
 
-<span class="n">m</span>
-<span class="c1">#=&gt; NameError: undefined local variable or method `m' for main:Object</span>
+  <span class="k">class</span> <span class="nc">Q</span>
+    <span class="k">def</span> <span class="nf">q</span><span class="p">;</span> <span class="n">m</span><span class="p">;</span> <span class="k">end</span>
+  <span class="k">end</span>
 
-<span class="k">class</span> <span class="nc">Q</span>
-  <span class="k">def</span> <span class="nf">q</span><span class="p">;</span> <span class="n">m</span><span class="p">;</span> <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="n">Q</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">q</span>
-<span class="c1">#=&gt; NameError: undefined local variable or method `m' for #&lt;Q:0xb7cbb324&gt;</span>
-</pre>
-</div>
-
-
+  <span class="n">Q</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">q</span>
+  <span class="c1">#=&gt; NameError: undefined local variable or method `m&#39; for #&lt;Q:0xb7cbb324&gt;</span>
+</code></pre></div>
 <p>Lands me squre in the face of the Module Inclusion Problem.</p>
 
-<p>All this leads me to two points. First, I'm stuck! There seems to be no solution to my problem other than rewriting a second version of my module specifically for the toplevel. Talk about lack of DRY! And 2) Why in the world isn't main a self extended module?</p>
+<p>All this leads me to two points. First, I&#39;m stuck! There seems to be no solution to my problem other than rewriting a second version of my module specifically for the toplevel. Talk about lack of DRY! And 2) Why in the world isn&#39;t main a self extended module?</p>
 
-<!--
-<div id="related">
-  <h2>Related Posts</h2>
-  <ul class="posts">
-    {% for post in site.related_posts limit:3 %}
-      <li><span class="post-date">July 07, 2012</span> &raquo; <a href="">2006 08 17 main is a dry pain</a></li>
-    {% endfor %}
-  </ul>
-</div>
--->
+            
+        </section>
 
-</div>
-</div>
-<!-- END CONTENT -->
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
 
-<!-- Start Shareaholic Sexybookmarks -->
-<div class="shr_class shareaholic-show-on-load">
-</div>
+        </footer>
 
-<script type="text/javascript">
-var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
-</script>
+        
+    </div>
+</article>
 
-<script type="text/javascript">
-(function() {
-var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
-sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
-var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
-})();
-</script>
-<!-- End Shareaholic Sexybookmarks -->
 
-<!-- Start Disqus Commments -->
-<div id="comments">
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-    /**
-     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
-     */
-    (function() {
-     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-     dsq.src = 'http://transcode.disqus.com/embed.js';
-     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
-  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-<!-- End Disqus Commands -->
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
 
-<div id="social-share"></div>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
 
-<!-- FOOTER -->
 
-<div id="footer">
-  <div class="tiger">
-  </div>
-	<small>Last edited by <b>trans</b> on July 07, 2012.</small>
-	<small style="float:right;">
-		This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
-		mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
-	</small>
-</div>
 
-</div>
+
+
+
 </body>
 </html>
-

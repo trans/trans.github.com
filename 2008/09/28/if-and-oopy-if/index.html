@@ -1,152 +1,125 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>2008 09 28 if and oopy if\7R4N5C0D3</title>
-  <meta name="author" content="Trans" />
-
-  <link rel="icon" type="image/png" href="/assets/images/trans-logo.png">
-
-  <link rel="stylesheet" href="/assets/styles/main.css" type="text/css"/> 
-  <link rel="stylesheet" href="/assets/styles/code.css" type="text/css"/>  
-  <link rel="stylesheet" href="/assets/styles/pygment.css" type="text/css"/>
-
-  <link rel="stylesheet" href="/assets/styles/custom.css" type="text/css"/>
-  <link rel="stylesheet" href="/assets/styles/social.css" type="text/css"/>  
-
-  <link href='http://fonts.googleapis.com/css?family=Jura:400,500' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
-
-  <!--[if lt IE 9]>
-  <script src="/scripts/html5.js"></script>
-  <![endif]-->
-
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
-  <script type="text/javascript" src="/assets/scripts/jquery.easing.js"></script>
-  <script type="text/javascript" src="/assets/scripts/jquery.social.share.1.2.min.js"></script>
-
-  <script src="/assets/scripts/main.js"></script>
-
-  <script>
-    $(document).ready(function(){
-      $('#social-share').dcSocialShare({
-        twitterId: 'transgigamic',
-        tabText: '<img src="/assets/images/tab_share.png" alt="Share" />',
-        buttons: 'twitter,facebook,plusone,stumbleupon,digg,linkedin,pinit'
-      });
-    });
-  </script>
-
-  <!-- tracking code here ? -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2008/09/28/if-and-oopy-if/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2008/09/28/if-and-oopy-if/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
 </head>
-
 <body>
-<div id="container">
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
 
-	<div id="header">
-		<h1>7R4N5C0D3</h1>
-	</div>
 
-	<div id="nav">
-    <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/Projects">Projects</a></li>
-    <li><a href="/Reads">Reads</a></li>
-    <li><a href="/Tools">Tools</a></li>
-    <li><a href="/tags.html">Tags</a></li>
-    <li><a href="/atom.xml">Feed</a></li>
-    <li><a href="https://github.com/trans/trans.github.com/wiki">Wiki</a> &gt;&gt;</li>
-    </ul>
-	</div>
+<article>
 
-<!-- CONTENT -->
-<div id="content-wrapper">
-<div id="content">
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2008-28-September" title="September 28, 2008">September 28, 2008</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
 
-<h1>An Ally OOP for If-Conditions</h1>
+        <section>
+            <h1>An Ally OOP for If-Conditions</h1>
 
 <p>Ruby takes a unique approach to conditional evaluation: <i>All
 objects are equivalent to <code>true</code> except <code>nil</code>
 and <code>false</code></i>. No doubt this is a more object-oriented
-approach than, say, C's use of <code>0</code> as false, but it's far
+approach than, say, C&#39;s use of <code>0</code> as false, but it&#39;s far
 from the ideal of OOP all the way down, as any
 <a href="http://pozorvlak.livejournal.com/94558.html">Smalltalker</a>
 can attest.</p>
 
 <p>Consider the following case. For a while now. I have wanted in my arsonal
 of Ruby classes a NullClass defined basically as:</p>
-
-<div class="highlight">
-<pre>  <span class="k">class</span> <span class="nc">NullClass</span> <span class="o">&lt;</span> <span class="no">NilClass</span>
-    <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
-      <span class="nb">self</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">NullClass</span> <span class="o">&lt;</span> <span class="no">NilClass</span>
+      <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+        <span class="nb">self</span>
+      <span class="k">end</span>
     <span class="k">end</span>
-  <span class="k">end</span>
 
-  <span class="no">NULL</span> <span class="o">=</span> <span class="no">NullClass</span><span class="o">.</span><span class="n">new</span>
+    <span class="no">NULL</span> <span class="o">=</span> <span class="no">NullClass</span><span class="o">.</span><span class="n">new</span>
 
-  <span class="k">def</span> <span class="nf">null</span>
-    <span class="no">NULL</span>
-  <span class="k">end</span>
-</pre>
-</div>
-
-
+    <span class="k">def</span> <span class="nf">null</span>
+      <span class="no">NULL</span>
+    <span class="k">end</span>
+</code></pre></div>
 <p>This object would greatly benefit fluent interfaces. Instead of returning
 <code>nil</code>, such intefaces could return <code>null</code>, and no 
 error would be thrown when invoking any method against it.</p>
-
-<div class="highlight">
-<pre>  <span class="n">obj</span> <span class="o">=</span> <span class="n">null</span>
-  <span class="n">obj</span><span class="o">.</span><span class="n">it</span><span class="o">.</span><span class="n">does</span><span class="o">.</span><span class="n">not</span><span class="o">.</span><span class="n">matter</span>  <span class="c1">#=&gt; null</span>
-</pre>
-</div>
-
-
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="n">obj</span> <span class="o">=</span> <span class="n">null</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">it</span><span class="o">.</span><span class="n">does</span><span class="o">.</span><span class="n">not</span><span class="o">.</span><span class="n">matter</span>  <span class="c1">#=&gt; null</span>
+</code></pre></div>
 <p>Unfortunately <code>null</code> is not very viable in Ruby
 because <code>null</code> still evaluates as <code>true</code>
 when used as the expression of a condition. The fact remains,
 Ruby is hardcoded to see only the singleton instances of 
 <code>NilClass</code> and <code>FalseClass</code> as false.</p>
 
-<p>I've requested that <code>NullClass</code> be added to core Ruby in
+<p>I&#39;ve requested that <code>NullClass</code> be added to core Ruby in
 the past (as of yet to no avail) and though I still would like to
 see it included, it may be better still to take an altogether 
 object-oriented approach to conditions --in the spirit of Smalltalk.
-This would allow us to freely create "false" objects, like the
+This would allow us to freely create &quot;false&quot; objects, like the
 <code>NullClass</code>, ourselves.</p>
 
 <p>The adoption of such a capability does not require the odd syntax 
 used by Smalltalk (<code>ifTrue</code> / <code>ifFalse</code>).
-Rather, it can take an approach more akin to Ruby's own <code>case</code>
-statements. As with <code>case</code>'s use of <code>#===</code>,
-a particular method would be used to evaluate the "truthiness" of
+Rather, it can take an approach more akin to Ruby&#39;s own <code>case</code>
+statements. As with <code>case</code>&#39;s use of <code>#===</code>,
+a particular method would be used to evaluate the &quot;truthiness&quot; of
 a value. This would apply for all types of conditions: 
 <code>while</code>, <code>until</code>, etc. </p>
 
-<p>To clarify, let's say this special method is simply called #if, then...</p>
-
-<div class="highlight">
-<pre>  <span class="k">class</span> <span class="nc">IfExample</span>
-    <span class="kp">attr</span> <span class="ss">:if</span>
-    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="vi">@if</span><span class="p">)</span>
-      <span class="vi">@if</span> <span class="o">=</span> <span class="k">if</span>
+<p>To clarify, let&#39;s say this special method is simply called #if, then...</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">IfExample</span>
+      <span class="kp">attr</span> <span class="ss">:if</span>
+      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="vi">@if</span><span class="p">)</span>
+        <span class="vi">@if</span> <span class="o">=</span> <span class="k">if</span>
+      <span class="k">end</span>
     <span class="k">end</span>
-  <span class="k">end</span>
 
-  <span class="n">x</span> <span class="o">=</span> <span class="no">IfExample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="no">IfExample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
 
-  <span class="k">if</span> <span class="n">x</span>
-    <span class="s2">"Yes"</span>
-  <span class="k">else</span>
-    <span class="s2">"No"</span>
-  <span class="k">end</span>
-</pre>
-</div>
-
-
-<p>The result of this condition would be <code>"No"</code>.</p>
+    <span class="k">if</span> <span class="n">x</span>
+      <span class="s2">&quot;Yes&quot;</span>
+    <span class="k">else</span>
+      <span class="s2">&quot;No&quot;</span>
+    <span class="k">end</span>
+</code></pre></div>
+<p>The result of this condition would be <code>&quot;No&quot;</code>.</p>
 
 <p>While it may not be an earth shattering adjustment, the additional
 flexibility opens up some interesting doors. Not only would classes
@@ -160,79 +133,63 @@ to false in order to walk through the false side of a condition.</p>
 
 <p>The idea would require some getting used to --after all a simple 
 if-statement would no longer do what we Rubyists presently take 
-for granted. But then, that's the nature of progress, is it not?</p>
+for granted. But then, that&#39;s the nature of progress, is it not?</p>
 
-<hr><p>title      : If and OOPy If
+<hr>
+
+<p>title      : If and OOPy If
 author     : trans
 date       : 2008-09-28
 categories : [ruby, nullclass]
 layout     : post</p>
 
-<!--
-<div id="related">
-  <h2>Related Posts</h2>
-  <ul class="posts">
-    {% for post in site.related_posts limit:3 %}
-      <li><span class="post-date">July 07, 2012</span> &raquo; <a href="">2008 09 28 if and oopy if</a></li>
-    {% endfor %}
-  </ul>
-</div>
--->
+            
+        </section>
 
-</div>
-</div>
-<!-- END CONTENT -->
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
 
-<!-- Start Shareaholic Sexybookmarks -->
-<div class="shr_class shareaholic-show-on-load">
-</div>
+        </footer>
 
-<script type="text/javascript">
-var SHRSB_Settings = {"shr_class":{"src":"/assets/shareaholic","link":"","service":"236,45,5,7,88,92,61,204,202,102,3,40,10,2,38,195,27,48,6,1,218,24,46,267,74,191,265,219,210,78,240,207,54,53,52,201","apikey":"6ffe2cbf142c45bd4cd03b01ec46b8658","localize":true,"shortener":"google","shortener_key":"","designer_toolTips":true,"twitter_template":"${title} - ${short_link} via @Shareaholic"}};
-</script>
+        
+    </div>
+</article>
 
-<script type="text/javascript">
-(function() {
-var sb = document.createElement("script"); sb.type = "text/javascript";sb.async = true;
-sb.src = ("https:" == document.location.protocol ? "https://dtym7iokkjlif.cloudfront.net" : "http://cdn.shareaholic.com") + "/media/js/jquery.shareaholic-publishers-sb.min.js";
-var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sb, s);
-})();
-</script>
-<!-- End Shareaholic Sexybookmarks -->
 
-<!-- Start Disqus Commments -->
-<div id="comments">
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-    /**
-     * var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread] 
-     */
-    (function() {
-     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-     dsq.src = 'http://transcode.disqus.com/embed.js';
-     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=transcode">comments powered by Disqus.</a></noscript>
-  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-<!-- End Disqus Commands -->
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
 
-<div id="social-share"></div>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
 
-<!-- FOOTER -->
 
-<div id="footer">
-  <div class="tiger">
-  </div>
-	<small>Last edited by <b>trans</b> on July 07, 2012.</small>
-	<small style="float:right;">
-		This site is a <a href="https://github.com/blog/699-making-github-more-open-git-backed-wikis">GitHub Wiki</a>
-		mirror powered by <a href="http://rubyworks.github.com/smeagol">Smeagol</a>.
-	</small>
-</div>
 
-</div>
+
+
+
 </body>
 </html>
-

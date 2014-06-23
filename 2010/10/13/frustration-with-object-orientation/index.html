@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby AOP Made Simple &mdash; TRANSCODE</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="TRANSCODE" />
+    <meta name="title" content="Ruby AOP Made Simple ">
+    <link rel="canonical" href="http://trans.github.com/2010/10/13/frustration-with-object-orientation/">
+     
+           
+    <meta property="og:title" content="Ruby AOP Made Simple "/>
+    <meta property="og:url" content="http://trans.github.com/2010/10/13/frustration-with-object-orientation/"/>
+    
+    
+    <meta property="og:site_name" content="TRANSCODE">
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="Inc">
+            </a>
+            <a href="/" class="home">Blog</a>
+            <a href="http://incorporated.sendtoinc.com/">Product</a>
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        <nav class="tagline">
+            <span>Get a modern blog for your company</span>
+            <a href="http://incorporated.sendtoinc.com/" class="btn btn-outline">Learn More</a>
+        </nav>
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="trans" target="_blank">trans</a> &mdash;
+                <time pubdate datetime="2010-13-October" title="October 13, 2010">October 13, 2010</time>
+            </div>
+            <h1 class="title">Ruby AOP Made Simple</h1>
+            
+        </header>
+
+        <section>
+            <h1>Frustration with Object-Orientation</h1>
+
+<p>I&#39;ve spent more weeks than I care to count going around in circles.</p>
+
+<p>You see the problem is I have &quot;tools&quot; that are in essence methods. But the are generally complicated enough to warrent using state and being broken into many smaller supporting methods. That&#39;s fine and dandy until I try to tie a bunch of these tools together under the same class. Name clashes become a huge problem, to the point that it is simply unworkable. The need for local instance variables and methods becomes a big deal. The only way to currently achieve that is to use lambdas and define_method. Not ideal, and RDocs become all but useless. To avoid this I tried going in the opposite direction, defining the tools as their own classes instead. This works great until the tool needs to take part in a more complex structure. For example I have hosting service classes that provide releasing and publishing tools. Well, if &#39;release&#39; and &#39;publish&#39; are classes rather then methods how are they going to call the hosting service&#39;s login method? I&#39;m forced into using delegation, passing them the instance of the Host class to which they are supposed to belong. At that point the result is worse than the original problem. So in either case I&#39;m finding it neccessary to to write and maintain hacky code. And I&#39;m just fet up with it.</p>
+
+<p>Over the last five years I&#39;ve spent a great deal of time working with Ruby and learning Object-Oriented programming practices it&#39;s associated design patterns. It all seemed very logical at first. But as time wore on I found myself again and again feeling hemmed in. I assumed it was just that I did not understand it all well enough yet to use it well so I kept at it. Certainly my skills improved, but in retorsect it wasn&#39;t some great understanding as much it was &quot;don&#39;t do that&quot;. And even so, I still ran into these walls.</p>
+
+<p>And this is waht I think it is. OOP requires you to first design the encapsulating structure of your project. And your whole edifice depends on that supporting design. If for some reason any bit of that should change, you may well find yourself tearing down whole walls in order to build them up again. And this can happen over and over if you weren&#39;t sure of the original edifice from the start. For a large project that&#39;s a lot to ask --knowing how the whole outward structure should be before you even know the materials involved.</p>
+
+            
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">trans</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+    </div>
+</article>
+
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://tabcomputing.com/">Tab Computing</a> &middot;
+            <a href="/">Blog</a> &middot;
+            <a href="http://incorporated.sendtoinc.com/">Product</a> &middot; 
+            <a href="https://tabcomputing.com/about/">About</a>
+        </nav>
+        
+        <nav class="social">
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>
