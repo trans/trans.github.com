@@ -62,6 +62,41 @@
     <section class="index">
         <!-- -->
         <div>
+            <h2 class="title"><a href="/2014/06/25/YAML-Logic/" rel="prefetch">Yaml Logic</a></h2>
+            <p><h1>YAML Logic</h1>
+
+<p>When designing YES, YAML Easy Schema, it became clear that the specification would have to support logical relationships. Now, that seems a rather tricky thing to try to express in YAML. And my first thought was that I&#39;d have to resort to some level of string parsing, which did not sit well with me. I wanted the whole spec to be YAML all the way down.</p>
+
+<p>Eventually I realized that it was in fact possible. The trick was to use special logical types: <code>!and</code> and <code>!or</code>. Then it is easy enough to create logical graphs.</p>
+<div class="highlight"><pre><code class="yaml language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">example</span><span class="p-Indicator">:</span> <span class="kt">!and</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">this</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">that</span>
+  <span class="p-Indicator">-</span> <span class="kt">!or</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">these</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">those</span>
+</code></pre></div>
+<p>In addition we can add a <code>!not</code> type.</p>
+<div class="highlight"><pre><code class="yaml language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">example</span><span class="p-Indicator">:</span> <span class="kt">!and</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">this</span>
+  <span class="p-Indicator">-</span> <span class="kt">!not</span> <span class="l-Scalar-Plain">that</span>
+</code></pre></div>
+<p>And that about wraps it up. </p>
+
+<p>Has anyone else come across a need for this sort of thing? Any ideas for improvements? Any caveats I overlooked?</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2014-25-June" title="June 25, 2014">June 25, 2014</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
             <h2 class="title"><a href="/2014/06/17/My-Critique-of-Elixir/" rel="prefetch">My Critique Of Elixir</a></h2>
             <p><p>First, let me admonish myself for having limited knowledge of the subject. I am far from an Elixir expert. So I readily defer to those with more experience that can make a solid contrary argument against my conclusions. However, as I am unlikely to continue on in my adventures with Elixir, this is clearly the only time I have left to opine on the topic. So I will do so, and feel free to take my opinions with as much salt as you feel necessary.</p>
 
@@ -583,74 +618,6 @@ variable size is unused
             <div class="meta">
                 Written By <address></a> &mdash;
                 <time pubdate datetime="2013-08-March" title="March 08, 2013">March 08, 2013</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2013/02/28/the-end-of-ruby/" rel="prefetch">The End Of Ruby</a></h2>
-            <p><h1>The End of Ruby</h1>
-
-<p>I have given 10 years of my life to Ruby. And in return I have been ridiculed, mocked, cussed at, laughed at, shunned, harassed, ignored and all but excommunicated from the Ruby community. And all for nothing more than trying to be a helpful and constructive part of it. </p>
-
-<p>Let me be clear. I am not a saint. Lord knows I can get emotional and put my foot squarely in my mouth at times. I have not always been the nicest guy. But I can tell you I have tried to be, and when I haven&#39;t it has been in reaction to others poor behaviour. And when I have found myself going too far I apologize. I don&#39;t hold grudges, I am gracious about being proven wrong and I always work with people as professionally as I can, even with people I basically can&#39;t stand (b/c of the way they have treated me).</p>
-
-<p>I suppose it all started with GUtopIa. Long ago, when I first learned Ruby I wanted to create a very cool Ruby GUI that provided an unified interface to any GUI back-end (Gnome/GTK, KDE/Qt, Fox, tcl/tk, etc.) Some others were enthused about the project and we began to discuss privately. Having initiated the project I just assumed a leadership roll and began working out how to proceed. At the time I didn&#39;t really understand that I was in over my head (I was decent procedural programmer, but had zero OOP nor Agile experience.) This presumption irked a few a people and Rich Kilmer emailed me a lovely message letting me know that they &quot;did not work&quot; for me. I was a bit taken aback. I did not mean to come off that way and apologized, but it was too late. They informed me that they would be working a WxWidgets binding instead. It was a valuable lesson. And while I would like to think my apology was accepted, those initial ill feelings could have carried on into the community. I have no way to know. </p>
-
-<p>Other then a few sometimes mildly heated arguments. I imagine some people disliked me b/c I was willing to argue a point in great detail and at length. I can see how that would be frustrating on the other end. But among those individuals --David Black, Ara Howard, Austin Ziegler, Guy Wright, and so on, despite what they might have felt about me personally, they maintained a high level of professionalism, put heated debates in proper context and moved on cooperatively with the shared of endeavour of being and becoming great Rubyists.</p>
-
-<p>Bu then there was Ryan Davis. The first thing Ryan Davis ever said about me (AFAIK) was a <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/215440">slander</a> of my first two Ruby projects.</p>
-
-<blockquote>
-<p>&quot;No, I never looked at reap. I wouldn&#39;t touch it or facets with someone else&#39;s ten foot pole.&quot;</p>
-</blockquote>
-
-<p>Sounds like an objective point of view, doesn&#39;t it? He hadn&#39;t even looked at the project but he knew he wouldn&#39;t touch it. Why the prejudice? I had no idea. But I would later come to understand that it actually had nothing to do with code. Reap and Facets were the first two open-source projects I had ever attempted to personally maintain in my life, and at that time they hadn&#39;t been out long. Both were early in their 0.x series of release. So I accepted the criticism, despite its nonconstructive form and worked to make my projects better. And with time, the quality and quantity of project continued to improve. But the way I was treated did not.</p>
-
-<p>I submitted a patch to RubyGems once to allow a list of resource links in the gemspec, e.g. <code>home</code>, <code>docs</code>, <code>wiki</code>, <code>issues</code>, etc. Ryan did nothing but tear it apart, offering little in the way of constructive advice, but spilling slurs and curse words throughout his line by line &quot;critique&quot;. When I responded --in order to have a <em>dialog</em> about why I coded things the way I did, he only became more vitriolic. A comment he posted, containing a dialogue he had with a colleague of his (most likely Aaron Patterson), in some ill attempt to justify his behaviour:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">5:13:17 PM Professor: he tried to defend every single one
-5:13:26 PM Professor: none of them he went &quot;ok, thats fine, i&#39;ll do it that way&quot;
-5:13:28 PM zenspider: he needs to learn how the fuck to take critiques
-</code></pre></div>
-<p>It would seem he and his company think dialog is nothing more than a questioning of their authority.
-Perhaps it would seem ironic then that once again I did accept every critique (that is the actual ones which were mostly provided by Eric Hodel), whether I agreed with it or not (I had no avenue for discussing it), and made a <a href="https://github.com/rubygems/rubygems/pull/15">new patch</a> that addressed every point. And though I specifically asked that anyone but Ryan Davis review it, I and the patch were ignored. Months later the request was closed with only a small comment from Ryan Davis, &quot;Looks like this is dead.&quot; To this day the gemspec does not support links, and one must still enter them by hand on rubygems.org.</p>
-
-<p>Eventually I learned that Ryan Davis and Aaron Patterson are co-workers, and along with Eric Hodel they are the leading members of a club called <a href="">Seattle.rb</a>. While greatly gifted as developers, they are also notoriously arrogant. They have demonstrated this time and again and in numerous ways. From simply failing to comment their code to ganging up on some poor coder just trying to be constructive. One of their favourite tactics is to gang up on others, making it look like independent analysis through the visor of the Internet, when in fact it is per-determined plan. Unfortunately this group has systematically taken over much, if not most, of Ruby&#39;s development. They hold great power over MRI now, and they control most of the major projects of the standard library --RubyGems, Nokogiri, Psych, RDoc, etc.</p>
-
-<p>&quot;But what about Matz?&quot; I hear you ask. &quot;Surely he remains in firm control?&quot; Every one knows Matz is a nice guy, and that is true. Matz has always been a nice guy. But Matz has also always been a very passive personality. No one is perfectly nice. So I suspect Matz&#39; outlet is classic passive-aggressive behaviour. A good example of this is his complete avoidance of the <a href="https://bugs.ruby-lang.org/issues/7716">autoload issue</a>. Even though he announced over a year ago that &quot;autoload will be dead&quot;, none of the code in the standard lib has made any changes to remove it. When asked, the maintainers said they had no plans to do so. I have been asking for <em>five years</em> for the simplest of patches to fix this issue --I even submitted a patch myself and I am not a C coder, but never has it been addressed. I have email Matz directly and received no response. To this day I have at least three programs that can not be fully utilized because of it. So, a nice as Matz might be, he lacks the requisite character to be a strong leader to enforce professionalism among those he deem technically merited to work on Ruby. </p>
-
-<p>...</p>
-
-<p>The last straw..</p>
-
-<p>Sometime ago I improved the design of FileUtils a good bit and <a href="https://bugs.ruby-lang.org/issues/4970">submitted a patch</a> to ruby-core. I did so because Ruby Facets adds a couple of extensions to FileUtils, and they way the code had been written made it very cumbersome to do so properly. The patch was review and accepted.</p>
-
-<p>Last week Eric Hodel found an subtle bug in the code --none of the tests caught it. The problem was easy enough to ascertain and to fix. I actually offered an idea for a solution that would actually make the code even better. Again there was no dialog. I was ignored. Eric sanctimoniously appointed himself maintainer for fileutils.rb and decided to revert all the improvements back to the old code. Despite the fact that the new code already went out with Ruby 2.0 preview release (so much for &quot;feature freezes&quot;). Despite the fact the the new code is far superior to the old (<a href="http://bugs.ruby-lang.org/projects/ruby-trunk/repository/revisions/39544/diff/lib/fileutils.rb">compare for yourself</a>). And despite my objections. There is only one reason Eric reverted that code. To spite me. </p>
-
-<p>He would deny it, of course. But the evidence is clear enough. Why no dialog? Why such a drastic reversion of clearly improved code that passes all tests? Why was Aaron the only other person to comment with out any constructive thing to say, just a &quot;yea do it&quot;. Taken in conjunction with the combined history of this groups persecution of me, the answer is obvious.</p>
-
-<p>When a project begins reverting released code solely on the basis of personal vindictiveness, that project is on a fast track to doom. Ruby has become such a project. I am not the <a href="http://news.cnet.com/8301-13846_3-9838477-62.html">first to see it</a>, or the first to <a href="http://www.rubyinside.com/why-the-lucky-stiff-is-missing-2278.html">react to it</a>, and comments about it are only increasing.</p>
-
-<ul>
-<li>http://www.jperla.com/blog/post/ruby-is-a-ghetto</li>
-<li>http://gilesbowkett.blogspot.com/2013/02/nodejs-hatred-reveals-significant.html</li>
-<li>http://www.zohararad.com/2012/11/16/10-reasons-not-to-use-ruby/</li>
-<li>http://drbacchus.com/geek-arrogance-and-chauvinism</li>
-<li>http://blog.majesticseacreature.com/rubygems-nerd-rage-is-optional-and-discourage</li>
-</ul>
-
-<p>That main clique now running the roost are arrogant ingrates, rude and vindictive. They are utterly lacking in professionalism. I have no doubt some people will want to disagree --most of whom have not had enough interaction with these individuals to really know them. But enough people have seen it and have remarked on it.</p>
-
-<p>https://gist.github.com/tenderlove/92f5a886fd9dafba1685</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2013-28-February" title="February 28, 2013">February 28, 2013</time>
             </div>
         </div>
         <hr>

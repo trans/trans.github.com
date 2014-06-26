@@ -62,6 +62,38 @@
     <section class="index">
         <!-- -->
         <div>
+            <h2 class="title"><a href="/2007/03/12/package-management-is-a-red-herring/" rel="prefetch">Package Management Is A Red Herring</a></h2>
+            <p><h1>Package Management is a Red Herring</h1>
+
+<p>Traditionally package management has been fairly complicated. Developers must navigate the matrix of platform support, package format and configuration choices that are often as time consuming as they are restrictive. </p>
+
+<p>For instance, the goto format of the day on most Linux platforms is the Debian package format. Debian packages follow closely to the <code>FHS</code> (File Hierarchy standard), and tend to enforce fairly strict Debian packaging policies, such as placing development files in separate packages. Debian packages require the creation of a control file with information about the build as well as a &quot;fuax installation&quot; that is packaged up into a <code>.deb</code> file. All of this takes a fair bit of effort on the developer&#39;s part. And that&#39;s just the work involved for supporting one package format for a limited selection of platforms.</p>
+
+<p>For Ruby developers, RubyGems has come along to make life a fair bit easier. They have dispensed with FHS compliance, to the dismay if Debian maintainers, and provided a relatively easy means of packaging up a library or application for redistribution by following the <em>convention over configuration</em> philosophy. Of course, it helps that the target source is Ruby, which has very simple file-based import system, as opposed to C or Java.</p>
+
+<p>Even so, package management can be even easier if we simply recognize the gorilla in the room: version control systems. All developers now use source code managers (<code>SCM</code>) to track changes to code and <em>distribute</em> source between developers. See the keyword there? The ability to <em>distribute</em> a program is half the battle of package management.</p>
+
+<p>The other half is installation. For a pure-Ruby program installation if fairly trivial, it&#39;s just a matter to putting the files in a proper location on the file system. For C or Java packages there is the further matter of the <em>compile</em>. For open-source projects that&#39;s not particularly difficult, a build script can be provided and as long as the end installer has the necessary build tools, the program can be compiled on demand. For proprietary code it gets more complicated, but lets put that aside for the moment.</p>
+
+<p>Taking all of this into consideration, packaging systems should be fairly trivial --a wrapper around SCM tools that pull down the current or tagged version of source, run the build script and copy the resulting files to an appropriate place on disk. Such a system would be very light weight. In fact, with the exception of dependency management code, there&#39;s no reason that such a system to take up more than a few hundred lines of code.</p>
+
+<p>The question of proprietary code is a little more challenging since the developer does not want the source code to make it&#39;s way to the end-users system at all. In this case I suggest one of two possibilities: 1) it may be possible to use encryption to prevent end-users from gaining access to the source, or 2) use an intermediary service that builds a package on a replica of the end users machine, turning over only the final results. Yes, this means complications for proprietary vendors, but it&#39;s one that could easily be turned into a service.</p>
+
+<p>The chore of the developer could then be greatly reduced to following a set of standards for organizing a project, providing metadata and optionally a build script for handling advanced build requirements. The target platform can take these pieces and build and install the package as is suitable to the platform. In other words, the platform takes care of the platform distinctions, not the developer.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2007-12-March" title="March 12, 2007">March 12, 2007</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
             <h2 class="title"><a href="/2006/12/03/negative-arrays/" rel="prefetch">Negative Arrays</a></h2>
             <p><h1>Negative Arrays</h1>
 
@@ -609,77 +641,6 @@ easy to add toplevel methods like we did for #include.
             <div class="meta">
                 Written By <address></a> &mdash;
                 <time pubdate datetime="2006-18-August" title="August 18, 2006">August 18, 2006</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2006/08/17/main-is-a-dry-pain/" rel="prefetch">Main Is A Dry Pain</a></h2>
-            <p><h1>Main is a DRY Pain</h1>
-
-<p>I have a module that depends on define_method and ancestors. It works great when I include it in other modules or classes. But if I try including it into the toplevel it fails miserably.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">NameError: undefined local variable or method `define_method&#39; for main:Object
-</code></pre></div>
-<p>That seems fairly peculiar when you consider that defining methods at toplevel is perfectly acceptable. One must then wonder, what is this toplevel thing anyway?</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">self</span>    <span class="c1">#=&gt; main</span>
-</code></pre></div>
-<p>Okay, it calls itself &quot;main&quot;. Great. But that doesn&#39;t really tell us anything. Let&#39;s check it&#39;s class:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="nb">self</span><span class="o">.</span><span class="n">class</span>  <span class="c1">#=&gt; Object</span>
-</code></pre></div>
-<p>Ah. So it&#39;s an instance of Object. An instance of Object! How is that possible? A normal instance of Object and main can&#39;t be exactly the same. Indeed, they are not.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="p">(</span><span class="nb">public_methods</span> <span class="o">-</span> <span class="no">Object</span><span class="o">.</span><span class="n">public_instance_methods</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span>
-  <span class="c1">#=&gt; [&quot;include&quot;, &quot;private&quot;, &quot;public&quot;]</span>
-  <span class="nb">singleton_methods</span>
-  <span class="c1">#=&gt; [&quot;include&quot;, &quot;private&quot;, &quot;public&quot;, &quot;to_s&quot;]</span>
-</code></pre></div>
-<p>Notice include has been defined here specifically for main. So something special&#39;s going on when you include a module into the toplevel. Hmm... What about methods defined at the toplevel? If main is an instance of Object then are they singleton methods? Well, no. Turns out they get &quot;magically&quot; defined as private methods of the Object class itself, and main&#39;s singleton class space is actually something else entirely.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-    <span class="k">def</span> <span class="nf">x</span><span class="p">;</span> <span class="s2">&quot;x&quot;</span><span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="k">class</span> <span class="nc">Q</span>
-    <span class="k">def</span> <span class="nf">q</span><span class="p">;</span> <span class="n">x</span><span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="n">Q</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">q</span>
-  <span class="c1">#=&gt; NameError: undefined local variable or method &#39;s&#39; for #&lt;Q:0xb7ce9a3c&gt;</span>
-</code></pre></div>
-<p>Which means the sure solution for my problem...</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">Kernel</span>
-    <span class="kp">include</span> <span class="no">MyModule</span>
-  <span class="k">end</span>
-</code></pre></div>
-<p>Can you guess?</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">module</span> <span class="nn">M</span>
-    <span class="k">def</span> <span class="nf">m</span><span class="p">;</span> <span class="s2">&quot;m&quot;</span><span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="k">module</span> <span class="nn">Kernel</span>
-    <span class="kp">include</span> <span class="n">M</span>
-  <span class="k">end</span>
-
-  <span class="n">m</span>
-  <span class="c1">#=&gt; NameError: undefined local variable or method `m&#39; for main:Object</span>
-
-  <span class="k">class</span> <span class="nc">Q</span>
-    <span class="k">def</span> <span class="nf">q</span><span class="p">;</span> <span class="n">m</span><span class="p">;</span> <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="n">Q</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">q</span>
-  <span class="c1">#=&gt; NameError: undefined local variable or method `m&#39; for #&lt;Q:0xb7cbb324&gt;</span>
-</code></pre></div>
-<p>Lands me squre in the face of the Module Inclusion Problem.</p>
-
-<p>All this leads me to two points. First, I&#39;m stuck! There seems to be no solution to my problem other than rewriting a second version of my module specifically for the toplevel. Talk about lack of DRY! And 2) Why in the world isn&#39;t main a self extended module?</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2006-17-August" title="August 17, 2006">August 17, 2006</time>
             </div>
         </div>
         <hr>

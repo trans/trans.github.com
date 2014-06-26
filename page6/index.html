@@ -62,6 +62,122 @@
     <section class="index">
         <!-- -->
         <div>
+            <h2 class="title"><a href="/2009/10/23/a-proper-require/" rel="prefetch">A Proper Require</a></h2>
+            <p><h1>A Proper Require</h1>
+
+<p>Recently I <a href="http://groups.google.com/group/ruby-talk-google/browse_thread/thread/6a46c837ffc84761">posted</a>
+a light diatribe against improper use of relative requires in Ruby programs.
+I pointed-out a bit of code, I recently came across, that added a relative path to Ruby&#39;s
+<code>$LOAD_PATH</code> from within a <code>bin/</code> executable.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + &quot;/../lib&quot;))
+</code></pre></div>
+<p>I suspect the author little realized that his program would not function if it were installed
+according to traditional <a href="http://www.pathname.com/fhs/">FHS</a>-based standards. And I fear many
+young Rubyists, having known nothing but the use of RubyGems and/or deployment (as opposed to release)
+of Rails apps, do not understand the nature of the issue. In my post I stated some general rules.</p>
+
+<h2>The Rules of Relative Loading</h2>
+
+<ul>
+<li>Don&#39;t mess with the <code>$LOAD_PATH</code>.</li>
+<li>Use relative lookup only when you must, eg. using bundled HTML templates.</li>
+<li>Any relative paths you do use must remain within the confines of their main directory (eg. lib/)</li>
+<li>Don&#39;t use a relative lookup for any .rb or .so/.dll loading.</li>
+<li>It should never be necessary to require &#39;rubygems&#39;.</li>
+</ul>
+
+<p><a href="http://blog.grayproductions.net/">James Edward Gray II</a> pointed out that
+I had not been clear in stating the exceptions to these rules, so I add the
+following.</p>
+
+<h2>When the Rules Do <em>Not</em> Apply</h2>
+
+<ul>
+<li>They do not apply to Rails Apps since they are deployed, rather than packaged and installed.</li>
+<li>Testing and building scripts are free from the rules since they are localized operations.</li>
+</ul>
+
+<p>Even when the rules do not apply, try to adhear to them as much as possible. For exmaple, minimize
+the points of entry. At the very least it can benefit refactoring.</p>
+
+<h2>Understanding the Rules</h2>
+
+<p>Most of the responses to my post expressed understanding of the last rule, as there have been a few
+write-ups on that subject before. But many could not understand the reasons behind the other points.
+And it&#39;s no wonder. I did some research and discovered there to be a fair bit of misinformation
+circulating promoting the use of relative loading as a &quot;proper&quot; solution, and very little information
+explaining what is actually best practice.</p>
+
+<p>It was the last reply to my post that made me realize I should take a moment to write this 
+blog entry to more fully explain.</p>
+
+<blockquote>
+"As someone who wrote a dependency-resolving code loading gem, I am extremely
+dubious that one can always avoid code loading using relative paths.
+How would you ordinarily go about loading some .rb files in a subdirectory
+beneath the directory in which the current file is located?"
+</blockquote>
+
+<p>Clearly we have a quite capable programmer here, having written &quot;a dependency-resolving code loading gem&quot;,
+but the fact the he states that he wrote a &quot;gem&quot; rather then a &quot;library&quot; struck me as an indication
+that some crucial old school knowledge is missing from his repertoire that inevitably lead him to
+his second sentence.</p>
+
+<p>The key, I believe, to alleviating this misunderstanding is Minero Aoki&#39;s <a href="http://i.loveruby.net/en/projects/setup/">Setup.rb</a>.
+Before we had RubyGems, Aoki&#39;s <code>setup.rb</code> script was <em>the</em> way to install Ruby software, and his
+work helped lay the foundation for the way in which Ruby projects are structured to this very day. The
+first two sections of the Setup.rb <a href="http://i.loveruby.net/en/projects/setup/doc/">documentation</a>
+should be required reading for all Rubyists.</p>
+
+<p>Once we understand how Setup.rb works --where it puts a project&#39;s files upon installation, we can
+then understand when we can and when we cannot get away with using relative requires. However, even
+when we can do so, it does not mean we should. The idea of Setup.rb is to install your files
+into the system locations where the <code>$LOAD_PATH</code> is already set to look. In other words,
+you should not effect the <code>$LOAD_PATH</code> in your code, but make sure your code is where
+the <code>$LOAD_PATH</code> expects it to be. The <code>$LOAD_PATH</code> is something managed externally,
+by a system administrator, or a specially designed program for just such a purpose (like RubyGems).
+By placing our code in the correct system locations, we will only ever need standard 
+<code>require &#39;mylib/mysubdir/myfile&#39;</code> type load calls.</p>
+
+<h2>How to Follow the Rules</h2>
+
+<p>So how do we make sure our code is where it needs to be? In the old days we just used <code>setup.rb</code>.
+By following it&#39;s conventions and installing our software with it, all was well. But today most Rubyists
+use RubyGems. That works just as well, but there are two configuration issues that attend it&#39;s use.</p>
+
+<ol>
+<li>Our project&#39;s gemspec must have the proper <code>require_paths</code> setting. The default is the setup.rb standard <code>lib/</code>.</li>
+<li>Our RUBYOPT environment setting must contain &quot;-rubygems&quot;.</li>
+</ol>
+
+<p>As I mentioned in the above bullet points, it is okay to add to the <code>$LOAD_PATH</code> when running tests --that&#39;s essential to avoid having to reinstall your project after every code change. But it&#39;s not acceptable to do so in your actual program.</p>
+
+<p>I believe Minero Aoki has completed his work on Setup.rb, as there has not been any activity on his project
+in some time. A while ago, I <a href="http://github.com/proutils/setup">forked Setup.rb</a> in order to make it a stand-alone package that can be installed via RubyGems. Since then I have continued it&#39;s development, working on few aspects of the system such as using optparse.rb for command-line parsing, removing the (unused) multi-package feature, adding doc/ installation and most recenty I started to rewrite the install code to be atomic (would love some assistance on that, btw!).</p>
+
+<p>With the advent of RubyGems, <code>setup.rb</code> is not as widely needed as it once was (though it still gets used in some cases). Yet the ground work it laid is still with us, and should be understood if one wishes to be an effective Ruby programmer.</p>
+
+<hr>
+
+<p>title      : A Proper Require
+author     : trans
+categories : [ruby, require]
+date       : 2009-10-23
+layout     : post</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2009-23-October" title="October 23, 2009">October 23, 2009</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
             <h2 class="title"><a href="/2009/07/04/The-Form-of-Project-Metadata/" rel="prefetch">The Form Of Project Metadata</a></h2>
             <p><h1>The Form of Project Metadata</h1>
 
@@ -851,38 +967,6 @@ layout     : post</p>
             <div class="meta">
                 Written By <address></a> &mdash;
                 <time pubdate datetime="2007-02-May" title="May 02, 2007">May 02, 2007</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2007/03/12/package-management-is-a-red-herring/" rel="prefetch">Package Management Is A Red Herring</a></h2>
-            <p><h1>Package Management is a Red Herring</h1>
-
-<p>Traditionally package management has been fairly complicated. Developers must navigate the matrix of platform support, package format and configuration choices that are often as time consuming as they are restrictive. </p>
-
-<p>For instance, the goto format of the day on most Linux platforms is the Debian package format. Debian packages follow closely to the <code>FHS</code> (File Hierarchy standard), and tend to enforce fairly strict Debian packaging policies, such as placing development files in separate packages. Debian packages require the creation of a control file with information about the build as well as a &quot;fuax installation&quot; that is packaged up into a <code>.deb</code> file. All of this takes a fair bit of effort on the developer&#39;s part. And that&#39;s just the work involved for supporting one package format for a limited selection of platforms.</p>
-
-<p>For Ruby developers, RubyGems has come along to make life a fair bit easier. They have dispensed with FHS compliance, to the dismay if Debian maintainers, and provided a relatively easy means of packaging up a library or application for redistribution by following the <em>convention over configuration</em> philosophy. Of course, it helps that the target source is Ruby, which has very simple file-based import system, as opposed to C or Java.</p>
-
-<p>Even so, package management can be even easier if we simply recognize the gorilla in the room: version control systems. All developers now use source code managers (<code>SCM</code>) to track changes to code and <em>distribute</em> source between developers. See the keyword there? The ability to <em>distribute</em> a program is half the battle of package management.</p>
-
-<p>The other half is installation. For a pure-Ruby program installation if fairly trivial, it&#39;s just a matter to putting the files in a proper location on the file system. For C or Java packages there is the further matter of the <em>compile</em>. For open-source projects that&#39;s not particularly difficult, a build script can be provided and as long as the end installer has the necessary build tools, the program can be compiled on demand. For proprietary code it gets more complicated, but lets put that aside for the moment.</p>
-
-<p>Taking all of this into consideration, packaging systems should be fairly trivial --a wrapper around SCM tools that pull down the current or tagged version of source, run the build script and copy the resulting files to an appropriate place on disk. Such a system would be very light weight. In fact, with the exception of dependency management code, there&#39;s no reason that such a system to take up more than a few hundred lines of code.</p>
-
-<p>The question of proprietary code is a little more challenging since the developer does not want the source code to make it&#39;s way to the end-users system at all. In this case I suggest one of two possibilities: 1) it may be possible to use encryption to prevent end-users from gaining access to the source, or 2) use an intermediary service that builds a package on a replica of the end users machine, turning over only the final results. Yes, this means complications for proprietary vendors, but it&#39;s one that could easily be turned into a service.</p>
-
-<p>The chore of the developer could then be greatly reduced to following a set of standards for organizing a project, providing metadata and optionally a build script for handling advanced build requirements. The target platform can take these pieces and build and install the package as is suitable to the platform. In other words, the platform takes care of the platform distinctions, not the developer.</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2007-12-March" title="March 12, 2007">March 12, 2007</time>
             </div>
         </div>
         <hr>

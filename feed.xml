@@ -6,9 +6,40 @@
     <atom:link href="http://trans.github.com/feed.xml" rel="self" type="application/rss+xml" />
     <description></description>
     <language>en-us</language>
-    <pubDate>Mon, 23 Jun 2014 19:06:17 +0000</pubDate>
-    <lastBuildDate>Mon, 23 Jun 2014 19:06:17 +0000</lastBuildDate>
+    <pubDate>Thu, 26 Jun 2014 23:24:53 +0000</pubDate>
+    <lastBuildDate>Thu, 26 Jun 2014 23:24:53 +0000</lastBuildDate>
 
+    
+    
+    <item>
+      <title>Yaml Logic</title>
+      <link>http://trans.github.com/2014/06/25/YAML-Logic/</link>
+      <pubDate>Wed, 25 Jun 2014 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://trans.github.com/2014/06/25/YAML-Logic</guid>
+      <description>&lt;h1&gt;YAML Logic&lt;/h1&gt;
+
+&lt;p&gt;When designing YES, YAML Easy Schema, it became clear that the specification would have to support logical relationships. Now, that seems a rather tricky thing to try to express in YAML. And my first thought was that I&amp;#39;d have to resort to some level of string parsing, which did not sit well with me. I wanted the whole spec to be YAML all the way down.&lt;/p&gt;
+
+&lt;p&gt;Eventually I realized that it was in fact possible. The trick was to use special logical types: &lt;code&gt;!and&lt;/code&gt; and &lt;code&gt;!or&lt;/code&gt;. Then it is easy enough to create logical graphs.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;yaml language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;!and&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;this&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;that&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;!or&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;these&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;those&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In addition we can add a &lt;code&gt;!not&lt;/code&gt; type.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;yaml language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;!and&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;this&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;!not&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;that&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And that about wraps it up. &lt;/p&gt;
+
+&lt;p&gt;Has anyone else come across a need for this sort of thing? Any ideas for improvements? Any caveats I overlooked?&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>

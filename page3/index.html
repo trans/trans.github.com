@@ -62,6 +62,35 @@
     <section class="index">
         <!-- -->
         <div>
+            <h2 class="title"><a href="/2012/06/14/autoload-smells-like-denmark/" rel="prefetch">Autoload Smells Like Denmark</a></h2>
+            <p><h1>Autoload Smells Like Denmark</h1>
+
+<p>Ruby has a very cool feature called <em>autoload</em>. With autoload, any undefined constant can automatically trigger the loading of a library file. Effectively this gives Ruby a convenient means of lazy loading. For example, lets say some of our app&#39;s executable scripts ultimately use the ANSI library, but others do not. We can use <code>autoload</code> to only load the ANSI library when it is needed.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="nb">autoload</span> <span class="no">ANSI</span><span class="p">,</span> <span class="s1">&#39;ansi&#39;</span>
+</code></pre></div>
+<p>This says to <code>require &quot;ansi&quot;</code> the first time an undefined ANSI constant is encountered.</p>
+
+<p>As wonderful as autoload seems, it has too glaring issues: 1) It doesn&#39;t use standard Kernel#require and 2) It is not thread safe. </p>
+
+<p>For the first, this means that any overriding of #require will not be supported by autoload. Of course such a thing is very rare, but it does occur. For instance the <a href="https://rubygems.org/gems/roll">Roll</a> library is all about overriding <code>#require</code>. Also RubyGems overrides #require, and in fact one can cause a bug to occur when using autoload because of it. Here&#39;s a very simple <a href="http://stackoverflow.com/questions/849622/autoload-raises-an-error-but-require-does-not-ruby">example</a>.</p>
+
+<p>On the second case the issue seems much more complicated, and a solution seems so unlikely that Matz has called for #autoload to be <a href="http://bugs.ruby-lang.org/issues/5653">removed</a> from Ruby by v3.0.0. That&#39;s a long way off but just the same it doesn&#39;t bode well for autoload. </p>
+
+<p>Now that Matz has effectively declared <code>#autoload</code> a code smell, I wonder if developers will take heed and stop using it? I have my doubts --it&#39;s just too damn convenient. I just wish it would use <code>Kernel#require</code> so I could use it along with Rolls.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-14-June" title="June 14, 2012">June 14, 2012</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
             <h2 class="title"><a href="/2012/06/13/instance-variables-as-syntax-sugar/" rel="prefetch">Instance Variables As Syntax Sugar</a></h2>
             <p><h1>Instance Variables as Syntax Sugar</h1>
 
@@ -579,36 +608,6 @@ Another disadvantage for all of these approaches, they make it difficult to shar
             <div class="meta">
                 Written By <address></a> &mdash;
                 <time pubdate datetime="2012-19-January" title="January 19, 2012">January 19, 2012</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2011/10/04/lazy-plus-enumerable-begats-denumerable/" rel="prefetch">Lazy Plus Enumerable Begats Denumerable</a></h2>
-            <p><h1>Lazy + Enumerable = Denumerable</h1>
-
-<p>All Rubyists know and love Enumerable. It&#39;s the really the showcase of Ruby&#39;s mixin system. Some Rubyists also know and appreciate <a href="http://moonbase.rydia.net/software/lazy.rb/">lazy.rb</a> MenTaLguY&#39;s excellent lazy evaluation library. But did you know there is library that essentially cross-breeds the ideas of both? It&#39;s called <a href="http://github.com/rubyworks/facets/blob/master/lib/core/facets/denumerable.rb">Denumerable</a> and is included in Ruby Facets (<code>require &#39;facets/denumerable&#39;</code>).</p>
-
-<p>According to Webster&#39;s The term <code>denumerable</code> is just a synonym for <code>enumerable</code>. In Ruby parlance, it takes a more useful distinction of &quot;deferred enumerable&quot;. In other words Denumerable defers actual calculations of a chain of enumerable method calls until the results are actually needed. That&#39;s where the &quot;laziness&quot; comes in. By deferring calculation Ruby is able to optimize the algorithm, in many cases greatly improving performance. It&#39;s even possible to enumerate infinite ranges if the end result itself is finite.</p>
-
-<p>To make it even more convenient there is <a href="http://github.com/rubyworks/facets/blob/master/lib/core/facets/enumerable/defer.rb">Enumerable#defer</a> (<code>require &#39;facets/enumerable/defer&#39;</code>) which delegates an Enumerable object through a Denumerator, just like Ruby&#39;s core Enumerator class.</p>
-
-<p>So, enough talk, right? How about an example.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">1_000_000_000</span><span class="p">)</span><span class="o">.</span><span class="n">defer</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">}</span><span class="o">.</span>
-                                 <span class="n">map</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">100</span> <span class="p">}</span><span class="o">.</span>
-                                 <span class="n">take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span>
-    <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">102</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">108</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">120</span><span class="o">]</span>
-</code></pre></div>
-<p>The performance gains of Denumerable cannot be understated. The above example takes 1/10000th of a second to run on my system. I wanted to provide the time it takes to run without <code>defer</code>, but after an hour of waiting and listening to it eat my hard drive for breakfast, I gave up.</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2011-04-October" title="October 04, 2011">October 04, 2011</time>
             </div>
         </div>
         <hr>

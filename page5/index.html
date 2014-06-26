@@ -62,6 +62,131 @@
     <section class="index">
         <!-- -->
         <div>
+            <h2 class="title"><a href="/2010/05/15/gem-crazy/" rel="prefetch">Gem Crazy</a></h2>
+            <p><h1>Gem Crazy</h1>
+
+<p><b>I believe the Ruby community may have finally gone off the rails in it&#39;s collective
+crazy train.</b> I have been reading about <a href="http://gembundler.com/">Bundler</a>,
+the spiffy new RubyGems manager to be default part of Rails 3.0, and I can&#39;t help but
+wonder what track we were even on.</p>
+
+<p>If you don&#39;t know about Bundler yet, you can learn about it
+<a href="http://yehudakatz.com/2009/11/03/using-the-new-gem-bundler-today/">here</a>.
+I imagine most of you are already aware of it and are now considering how it fits in
+with your future development plans. So I want so ask a more fundamental question:
+Why does Bundler even exist?</p>
+
+<p>On the surface, we can of course thank Rails. The deployment of web applications
+stands apart from the distribution of Ruby packages. Deploying a Rails
+application usually means copying an app&#39;s files up to a server, as opposed to
+creating a distributable package file (like a gem) and installing that on
+the remote machine. Technically the later could be done, but it isn&#39;t, probably
+because most web apps are proprietary and do not need wider distribution. Because
+Rails developers do not use the normal RubyGems distribution mechanism, which
+automatically installs dependencies, they need another way to ensure their apps
+dependencies are present, hence the convenience of <code>bundle install</code>.</p>
+
+<p>Bundler achieves this goal in a grand fashion. As its name implies
+it does so by giving us the means to download the gems an application is dependent
+upon and store them directly within the project itself. These gems get stored in
+a project&#39;s <code>vendor/gems/</code> directory. The rationalized benefit being 
+that you need never worry about remote services going down (e.g. <code>rubygems.org</code>)
+in order to deploy your application, nor ever worry about any potential changes
+in a dependent gem. So in brief, one can <em>bundle</em> dependent gems with ones
+application.</p>
+
+<p>At first blush it seem like great idea. After all developers use vendoring to 
+do something similar while developing an application. But lets consider this
+a bit more carefully. The worry of a remote service going down is, honestly, bordering
+on paranoia. That&#39;s why mirrors of RubyGems.org exist. If one goes down, the others
+remain. The odds of all mirrors going down at the same time are extremely small, and
+as you might imagine, such a situation would be corrected very quickly, if it ever did
+occur. In fact, if it did happen, there is a fair chance your host will be down too.
+So the solution here is not bundling, but redundancy. As for the fear
+of &quot;monkey releases&quot; --new versions of a gem that that might break things,
+this is somewhat understandable, but redistributing every dependency with each app
+is shear overkill. If you are that concerned a gem will break an application you can
+always specify exact requirements in the gemspec, and use the <code>gem</code> method to nail the
+version down. That, in fact, is the whole point of the <code>gem</code> method. And it is a
+perfectly good solution for applications such as a Rails app. Unfortunately is not
+a very good solution for general purpose libraries. (As can be read about in any number
+of blog posts by searching
+<a href="http://www.google.com/search?q=Don%27t+require+%27rubygems%27">Don&#39;t require &#39;rubygems&#39;</a>.)</p>
+
+<p>[Update: I have been informed that the real benefit of bundling is to make
+it easier to install an application on machines that has limited Internet access.
+In such cases, I can see that Bundler might be handly.]</p>
+
+<p>I should mention that the latest version of Bundler (v0.9) has a light-weight rendition
+of bundling, called <em>locking</em>, which doesn&#39;t actually store the gem in the application,
+but automatically locks the gems your application uses to specific versions. In other
+words, it generates a file which (I assume) will ulitmately be used with the <code>gem</code> method
+to nail down the exact versions of gems your application is using at that time of the lock.
+This is a much better approach than bloating your application with .gem files, to achieve
+the same end, and to Bundler&#39;s credit it makes it easy to keep those <code>gem</code> calls current.
+However, it still ties your program to RubyGems, so again it&#39;s not a perfect solution
+for reusable libraries.</p>
+
+<p>Another feature Bundler sets out to handle are <em>groups</em>. They are &quot;gem environments&quot;
+which can be loaded as a collective, or even omitted during an install. In other words,
+they are a way to specify a specific group of gems to the <code>bundle</code> command or in ones
+code with <code>Bundler.require</code>. The most common groups you are likely to see are <code>runtime</code>
+or <code>production</code>, <code>test</code> and <code>development</code>, patterned after Rails own database
+environments. While I will not dismiss out-of-hand the potential of deriving some
+utility from this feature, on the whole I suspect it is a YAGNI. Moreover,
+it exposes the developer to even more potential deployment errors. I can only 
+imagine the failures that will arise because a testing environment
+had a gem that the runtime environment forgot to add, but actually needed.</p>
+
+<p>In addition, the use of Bundler promotes the use of <code>Bundler.require</code>. How many
+countless hours have been spent reminding people not to put <code>require &#39;rubygems&#39;</code>
+in their lib code? Now the issue will be doubly compounded. While we can hope
+that Bundler never makes it&#39;s way beyond Rails (or at least end-user apps), I have
+already seen it in at least two non-Rails programs.</p>
+
+<p>Lastly, Bundler also provides an ability to depend on git repos, so long as
+they track a .gemspec. This feature is a clear address to vendoring, but
+via gem dependencies. I won&#39;t even go into all the issues that arise with this
+(and seems to somewhat contradict Bundler&#39;s primary purpose --or at least compound its need!).
+You can read some of the back and forth on this idea <a href="http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/">here</a>.
+I will say, however, what really strikes me most about this is
+how an unproven system takes on such fanfare that it&#39;s proponents now declare we have
+all been doing it wrong! A <code>.gemspec</code> should never be generated by some &quot;extraneous
+build tool&quot;, but ought to be edited by hand and checked into the scm repository. Wow.</p>
+
+<p>I realized the Bundler is addressing certain needs, primarily of the Rails community.
+The problem with Bundler is that it is trying to correct something that is fundamentally
+problematic from the start. On two fronts... The first being that RubyGems ties
+a packaging system to versioning, so using the <code>gem</code> command will never be a universally
+applicable solution to lock down versions. And the second, more significant issue, that RubyGems,
+and hence Bundler, cannot avoid <b>version conflicts</b>. RubyGems blows-up when it
+encounters a conflict. Bundler only mitigates this issue by selectin suiable version before
+runtime. But niether allow different versions to run simultatneously. This is the real heart
+of the matter, and it stems from the fundamental lack of version support in Ruby itself.
+In my opinion, until that is addressed, all of these fancy solutions are simply trains headed
+up the wrong track.</p>
+
+<hr>
+
+<p>title      : Gem Crazy
+author     : trans
+categories : [ruby, rubygems]
+date       : 2010-05-15
+layout     : post</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2010-15-May" title="May 15, 2010">May 15, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
             <h2 class="title"><a href="/2010/05/13/directory-based-configuration/" rel="prefetch">Directory Based Configuration</a></h2>
             <p><h1>Directory-based Configuration</h1>
 
@@ -860,122 +985,6 @@ layout     : post</p>
             <div class="meta">
                 Written By <address></a> &mdash;
                 <time pubdate datetime="2009-26-October" title="October 26, 2009">October 26, 2009</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2009/10/23/a-proper-require/" rel="prefetch">A Proper Require</a></h2>
-            <p><h1>A Proper Require</h1>
-
-<p>Recently I <a href="http://groups.google.com/group/ruby-talk-google/browse_thread/thread/6a46c837ffc84761">posted</a>
-a light diatribe against improper use of relative requires in Ruby programs.
-I pointed-out a bit of code, I recently came across, that added a relative path to Ruby&#39;s
-<code>$LOAD_PATH</code> from within a <code>bin/</code> executable.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + &quot;/../lib&quot;))
-</code></pre></div>
-<p>I suspect the author little realized that his program would not function if it were installed
-according to traditional <a href="http://www.pathname.com/fhs/">FHS</a>-based standards. And I fear many
-young Rubyists, having known nothing but the use of RubyGems and/or deployment (as opposed to release)
-of Rails apps, do not understand the nature of the issue. In my post I stated some general rules.</p>
-
-<h2>The Rules of Relative Loading</h2>
-
-<ul>
-<li>Don&#39;t mess with the <code>$LOAD_PATH</code>.</li>
-<li>Use relative lookup only when you must, eg. using bundled HTML templates.</li>
-<li>Any relative paths you do use must remain within the confines of their main directory (eg. lib/)</li>
-<li>Don&#39;t use a relative lookup for any .rb or .so/.dll loading.</li>
-<li>It should never be necessary to require &#39;rubygems&#39;.</li>
-</ul>
-
-<p><a href="http://blog.grayproductions.net/">James Edward Gray II</a> pointed out that
-I had not been clear in stating the exceptions to these rules, so I add the
-following.</p>
-
-<h2>When the Rules Do <em>Not</em> Apply</h2>
-
-<ul>
-<li>They do not apply to Rails Apps since they are deployed, rather than packaged and installed.</li>
-<li>Testing and building scripts are free from the rules since they are localized operations.</li>
-</ul>
-
-<p>Even when the rules do not apply, try to adhear to them as much as possible. For exmaple, minimize
-the points of entry. At the very least it can benefit refactoring.</p>
-
-<h2>Understanding the Rules</h2>
-
-<p>Most of the responses to my post expressed understanding of the last rule, as there have been a few
-write-ups on that subject before. But many could not understand the reasons behind the other points.
-And it&#39;s no wonder. I did some research and discovered there to be a fair bit of misinformation
-circulating promoting the use of relative loading as a &quot;proper&quot; solution, and very little information
-explaining what is actually best practice.</p>
-
-<p>It was the last reply to my post that made me realize I should take a moment to write this 
-blog entry to more fully explain.</p>
-
-<blockquote>
-"As someone who wrote a dependency-resolving code loading gem, I am extremely
-dubious that one can always avoid code loading using relative paths.
-How would you ordinarily go about loading some .rb files in a subdirectory
-beneath the directory in which the current file is located?"
-</blockquote>
-
-<p>Clearly we have a quite capable programmer here, having written &quot;a dependency-resolving code loading gem&quot;,
-but the fact the he states that he wrote a &quot;gem&quot; rather then a &quot;library&quot; struck me as an indication
-that some crucial old school knowledge is missing from his repertoire that inevitably lead him to
-his second sentence.</p>
-
-<p>The key, I believe, to alleviating this misunderstanding is Minero Aoki&#39;s <a href="http://i.loveruby.net/en/projects/setup/">Setup.rb</a>.
-Before we had RubyGems, Aoki&#39;s <code>setup.rb</code> script was <em>the</em> way to install Ruby software, and his
-work helped lay the foundation for the way in which Ruby projects are structured to this very day. The
-first two sections of the Setup.rb <a href="http://i.loveruby.net/en/projects/setup/doc/">documentation</a>
-should be required reading for all Rubyists.</p>
-
-<p>Once we understand how Setup.rb works --where it puts a project&#39;s files upon installation, we can
-then understand when we can and when we cannot get away with using relative requires. However, even
-when we can do so, it does not mean we should. The idea of Setup.rb is to install your files
-into the system locations where the <code>$LOAD_PATH</code> is already set to look. In other words,
-you should not effect the <code>$LOAD_PATH</code> in your code, but make sure your code is where
-the <code>$LOAD_PATH</code> expects it to be. The <code>$LOAD_PATH</code> is something managed externally,
-by a system administrator, or a specially designed program for just such a purpose (like RubyGems).
-By placing our code in the correct system locations, we will only ever need standard 
-<code>require &#39;mylib/mysubdir/myfile&#39;</code> type load calls.</p>
-
-<h2>How to Follow the Rules</h2>
-
-<p>So how do we make sure our code is where it needs to be? In the old days we just used <code>setup.rb</code>.
-By following it&#39;s conventions and installing our software with it, all was well. But today most Rubyists
-use RubyGems. That works just as well, but there are two configuration issues that attend it&#39;s use.</p>
-
-<ol>
-<li>Our project&#39;s gemspec must have the proper <code>require_paths</code> setting. The default is the setup.rb standard <code>lib/</code>.</li>
-<li>Our RUBYOPT environment setting must contain &quot;-rubygems&quot;.</li>
-</ol>
-
-<p>As I mentioned in the above bullet points, it is okay to add to the <code>$LOAD_PATH</code> when running tests --that&#39;s essential to avoid having to reinstall your project after every code change. But it&#39;s not acceptable to do so in your actual program.</p>
-
-<p>I believe Minero Aoki has completed his work on Setup.rb, as there has not been any activity on his project
-in some time. A while ago, I <a href="http://github.com/proutils/setup">forked Setup.rb</a> in order to make it a stand-alone package that can be installed via RubyGems. Since then I have continued it&#39;s development, working on few aspects of the system such as using optparse.rb for command-line parsing, removing the (unused) multi-package feature, adding doc/ installation and most recenty I started to rewrite the install code to be atomic (would love some assistance on that, btw!).</p>
-
-<p>With the advent of RubyGems, <code>setup.rb</code> is not as widely needed as it once was (though it still gets used in some cases). Yet the ground work it laid is still with us, and should be understood if one wishes to be an effective Ruby programmer.</p>
-
-<hr>
-
-<p>title      : A Proper Require
-author     : trans
-categories : [ruby, require]
-date       : 2009-10-23
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2009-23-October" title="October 23, 2009">October 23, 2009</time>
             </div>
         </div>
         <hr>
