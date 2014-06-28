@@ -6,8 +6,8 @@
     <atom:link href="http://trans.github.com/feed.xml" rel="self" type="application/rss+xml" />
     <description></description>
     <language>en-us</language>
-    <pubDate>Sat, 28 Jun 2014 16:40:41 +0000</pubDate>
-    <lastBuildDate>Sat, 28 Jun 2014 16:40:41 +0000</lastBuildDate>
+    <pubDate>Sat, 28 Jun 2014 16:58:33 +0000</pubDate>
+    <lastBuildDate>Sat, 28 Jun 2014 16:58:33 +0000</lastBuildDate>
 
     
     
@@ -58,7 +58,7 @@ a truly proper underling. Oh, the irony.
       <pubDate>Wed, 25 Jun 2014 00:00:00 +0000</pubDate>
       <author></author>
       <guid>http://trans.github.com/2014/06/25/YAML-Logic</guid>
-      <description>&lt;h1&gt;YAML Logic&lt;/h1&gt;
+      <description>&lt;h1&gt;Expressing Logical Relations in YAML&lt;/h1&gt;
 
 &lt;p&gt;When designing YES, YAML Easy Schema, it became clear that the specification would have to support logical relationships. Now, that seems a rather tricky thing to try to express in YAML. And my first thought was that I&amp;#39;d have to resort to some level of string parsing, which did not sit well with me. I wanted the whole spec to be YAML all the way down.&lt;/p&gt;
 
@@ -84,12 +84,14 @@ a truly proper underling. Oh, the irony.
     
     
     <item>
-      <title>My Critique Of Elixir</title>
-      <link>http://trans.github.com/2014/06/17/My-Critique-of-Elixir/</link>
+      <title>Drink Me</title>
+      <link>http://trans.github.com/2014/06/17/Drink-Me/</link>
       <pubDate>Tue, 17 Jun 2014 00:00:00 +0000</pubDate>
       <author></author>
-      <guid>http://trans.github.com/2014/06/17/My-Critique-of-Elixir</guid>
-      <description>&lt;p&gt;First, let me admonish myself for having limited knowledge of the subject. I am far from an Elixir expert. So I readily defer to those with more experience that can make a solid contrary argument against my conclusions. However, as I am unlikely to continue on in my adventures with Elixir, this is clearly the only time I have left to opine on the topic. So I will do so, and feel free to take my opinions with as much salt as you feel necessary.&lt;/p&gt;
+      <guid>http://trans.github.com/2014/06/17/Drink-Me</guid>
+      <description>&lt;h1&gt;My Critique of Elixir&lt;/h1&gt;
+
+&lt;p&gt;First, let me admonish myself for having limited knowledge of the subject. I am far from an Elixir expert. So I readily defer to those with more experience that can make a solid contrary argument against my conclusions. However, as I am unlikely to continue on in my adventures with Elixir, this is clearly the only time I have left to opine on the topic. So I will do so, and feel free to take my opinions with as much salt as you feel necessary.&lt;/p&gt;
 
 &lt;p&gt;There are many things to like about Elixir. Most notable of them is it&amp;#39;s inheritance from Erlang and it&amp;#39;s improved syntax inspired by Ruby. Its Erlang roots bring so many great features to the table: true functional programming, rock solid stability, distributed computing, and so on. Anything that is good about Erlang, is likewise good about Elixir. On top of this, Elixir brings a much more pleasurable syntax and a few higher-level conveniences which really set it apart from Erlang. (Otherwise there would be no point but to use Erlang directly). But then there are the caveats. &lt;/p&gt;
 
@@ -365,16 +367,12 @@ object Product(name, price)
     
     
     <item>
-      <title>Drink Me</title>
-      <link>http://trans.github.com/2013/08/11/drink-me/</link>
+      <title>Hardly Functional</title>
+      <link>http://trans.github.com/2013/08/11/Hardly-Functional/</link>
       <pubDate>Sun, 11 Aug 2013 00:00:00 +0000</pubDate>
       <author></author>
-      <guid>http://trans.github.com/2013/08/11/drink-me</guid>
-      <description>&lt;h1&gt;Drink Me&lt;/h1&gt;
-
-&lt;p&gt;&lt;strong&gt;A Case For and Against Elixir&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Is thinking functionally a bit of a black art?&lt;/p&gt;
+      <guid>http://trans.github.com/2013/08/11/Hardly-Functional</guid>
+      <description>&lt;h1&gt;Is Thinking Functionally a Black Art?&lt;/h1&gt;
 
 &lt;p&gt;As I explained in a previous post, I have been writing a genetic algorithm to find the best layout of a keyboard based on a set of ergonomic principles. I decided to write the program in both Go and Elixir as a way to &amp;quot;learn me some new programmings languages for the greater good&amp;quot;. Writing the Go program went very smoothly. I had a good working program in just over a day&amp;#39;s work. The Elixir code on the other hand has taken me close to three days and I am still trying to work out issues. I attribute most of this long spell to the paradigm shift one must make when switching from a procedural to a functional way of doing things.&lt;/p&gt;
 
