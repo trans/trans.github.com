@@ -6,8 +6,8 @@
     <atom:link href="http://trans.github.com/feed.xml" rel="self" type="application/rss+xml" />
     <description></description>
     <language>en-us</language>
-    <pubDate>Sat, 28 Jun 2014 17:56:13 +0000</pubDate>
-    <lastBuildDate>Sat, 28 Jun 2014 17:56:13 +0000</lastBuildDate>
+    <pubDate>Sat, 28 Jun 2014 18:07:59 +0000</pubDate>
+    <lastBuildDate>Sat, 28 Jun 2014 18:07:59 +0000</lastBuildDate>
 
     
     
@@ -25,7 +25,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now, assuming that others do in fact have the same difficulty (and love for Skittles) has it not occurred any of the creators of syntax highlighting for Lisp, that perhaps it would be a good idea to color coordinate the parentheticals?&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;media/lisp-highlight.png&quot; alt=&quot;Lisp the Rainbow&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://trans.github.io/media/lisp-highlight.png&quot; alt=&quot;Lisp the Rainbow&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;Oh, yea. You can almost taste that Rainbow!&lt;/p&gt;
 </description>
