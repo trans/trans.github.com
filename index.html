@@ -62,6 +62,55 @@
     <section class="index">
         <!-- -->
         <div>
+            <h2 class="title"><a href="/2014/06/28/Lisp-Rainbows/" rel="prefetch">Lisp Rainbows</a></h2>
+            <p><p>I always thought Skittles and Lisp should have more in common. Perhaps it&#39;s just me. Perhaps I am the only one that has trouble following all those damn parentheses. It doesn&#39;t take many of them, honestly. Three of four levels in and I start to get a little dizzy. Here&#39;s an example I was just looking at this morning, from <a href="http://docs.racket-lang.org/quick/">Racket&#39;s Quick Introduction</a>.</p>
+<div class="highlight"><pre><code class="racket language-racket" data-lang="racket"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">checker</span> <span class="nv">p1</span> <span class="nv">p2</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">([</span><span class="nf">p12</span> <span class="p">(</span><span class="nf">hc-append</span> <span class="nv">p1</span> <span class="nv">p2</span><span class="p">)]</span>
+        <span class="p">[</span><span class="nf">p21</span> <span class="p">(</span><span class="nf">hc-append</span> <span class="nv">p2</span> <span class="nv">p1</span><span class="p">)])</span>
+    <span class="p">(</span><span class="nf">vc-append</span> <span class="nv">p12</span> <span class="nv">p21</span><span class="p">)))</span>
+</code></pre></div>
+<p>Now, assuming that others do in fact have the same difficulty (and love for Skittles) has it not occurred any of the creators of syntax highlighting for Lisp, that perhaps it would be a good idea to color coordinate the parentheticals?</p>
+
+<p><img src="media/lisp-highlight.png" alt="Lisp the Rainbow"></p>
+
+<p>Oh, yea. You can almost taste that Rainbow!</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2014-28-June" title="June 28, 2014">June 28, 2014</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2014/06/27/The-Leaning-Tower-of-Markdown/" rel="prefetch">The Leaning Tower Of Markdown</a></h2>
+            <p><p>You would think that any reasonable human being endeavoring to invent a light-weight markup format would look at <code>_foo_</code> and naturally conclude without a second thought, that if it were to do anything at all it would render as an underlined <u>foo</u>. But apparently, if you happen to be John Gruber and the creator of the most popular markup format in use today, Markdown, that cold case of obviousness is somehow completely wrong. Gruber instead decided it should do the exact same italic emphases as <code>*foo*</code>. </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Sad little _foo_. How sad for you.
+To be underlined is your sole pursue.
+But regulated to lean, like an Italian Pisa
+it would seem, never to truly be
+a truly proper underling. Oh, the irony.
+</code></pre></div>
+<p>By the way, Redcarpet, Github&#39;s markdown parser, does support an <code>:underline</code> configuration option. It sure would be <em>nice</em> if they <em>turned it on</em>! And if others followed suite.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2014-27-June" title="June 27, 2014">June 27, 2014</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
             <h2 class="title"><a href="/2014/06/25/YAML-Logic/" rel="prefetch">Yaml Logic</a></h2>
             <p><h1>YAML Logic</h1>
 
@@ -136,7 +185,7 @@
         <!-- -->
         <div>
             <h2 class="title"><a href="/2014/03/29/Next-Level-Please/" rel="prefetch">Next Level Please</a></h2>
-            <p><p>What I want my computer to do the following:</p>
+            <p><p>I wish my computer was more integrated. There are a number of things I want it to do right &quot;out-of-the-box&quot; and I want them all to come to me through a single integrated interface.</p>
 
 <ul>
 <li>Authenticate id</li>
@@ -152,40 +201,21 @@
 <li>Translate other languages</li>
 <li>Search and Surf Internet</li>
 <li>File Manager (Advanced)</li>
-<li>Play music (personal and internet stations)</li>
+<li>Play music  (personal and internet stations)</li>
+<li>Play and movies (personal and internet stations)</li>
 <li>Show pictures
 
 <ul>
-<li>Multiple i/o Dropbox, Google Drive, Local ?</li>
+<li>Multiple sources such as Dropbox, Google Drive and Local</li>
 </ul></li>
-</ul>
-
-<p>Premium modules</p>
-
-<ul>
 <li>Edit Photos</li>
 <li>Vector Drawing (has own tools interface)</li>
 </ul>
 
-<h2>Interface</h2>
+<p>Ultimately everything should be voice driven. Voice commands are translated into a set of objectives. The user can see these objectives in simple command form and decide if it is acceptable. And that&#39;s key --everything should be scriptable.</p>
 
-<p>Everything should be voice driven. Voice commands are translated into a set of objectives. The user can see these objectives in simple command form and decide if it is acceptable. </p>
-
-<h2>Implementation</h2>
-
-<p>Each module shall be written to a shared interchange specification. 
-Messages are sent via JSON (or JSONP) and results received.
-Some results contain caching <em>functors</em> which perform the same function as the original call.
-The cache allows light-weight functionality to be hosted cost-effectively, without bandwidth saturation.</p>
-
-<p>So for example, say I want to provide a photo effect algorithm.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">---
-input:
-  - uri: *.jpg *.png
-  - return-type:
-output:
-  - File .jpg .png
-</code></pre></div></p>
+<p>I wonder if we will ever have anything like.</p>
+</p>
             <div class="meta">
                 Written By <address></a> &mdash;
                 <time pubdate datetime="2014-29-March" title="March 29, 2014">March 29, 2014</time>
@@ -572,52 +602,6 @@ variable size is unused
             <div class="meta">
                 Written By <address></a> &mdash;
                 <time pubdate datetime="2013-06-August" title="August 06, 2013">August 06, 2013</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2013/08/05/memory-frabrics/" rel="prefetch">Memory Frabrics</a></h2>
-            <p><p>I&#39;ve been thinking about data structure the last week, and I was wondering why data structures are implemented the way they are.</p>
-
-<p>It occurs to me that it is mostly due to the way computer memory is designed. Computer memory is a randomly accessible linear structure. Basically what you have is a large string of values that you can access by a single position index. This is the <em>interface</em> of memory, and all data structures are there root must use it in their implementation.</p>
-
-<p>But I wondered, how would data structures differ is memory itself was structured in some other fashion? For instance, what if memory wasn&#39;t a linear string of data, but a two-dimensional fabric? While arrays might be unaffected by such a change, clearly things like matrices could be stored in a much more literal fashion. It would be interesting to see the form of data structure talented individuals might devise with this.</p>
-
-<p>Even so, two-dimensions is still somewhat limiting, taking it to a third dimension could open tremendous possibilities in the <em>relative storage</em> of data.</p>
-
-<p>But might we go even further. What would prevent us from making the dimensionality definable? If a memory cell could be associated with any other memory cell as often as desired, then the <em>fabric</em> could have any structure desired. Interestingly, the effect of this would be to move what we already do in software, via indirect memory referencing, to the hardware itself.</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2013-05-August" title="August 05, 2013">August 05, 2013</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2013/03/08/ruby-avoids-consistency-like-the-plague/" rel="prefetch">Ruby Avoids Consistency Like The Plague</a></h2>
-            <p><h1>Ruby Avoids consistency like the Plague</h1>
-
-<p>Ruby is such a great language in so many ways, it always feels especially disappointing when one discovers a way in which it lacks. I believe much of Ruby&#39;s less noble attributes stem from a single source: Matz and company eschew <em>consistency</em> as if it were a disease.</p>
-
-<p>Let&#39;s take a simple example that occurred to me today as I was working on a <a href="http://rubyworks.github.com/mirror">reflection</a> system for Ruby. It has probably slipped by every Rubyists on the planet, but once it is pointed out, it&#39;s pretty obvious. A <em>class</em> has <em>instance methods</em> of which we can get a list via the <code>#instance_methods</code> method, as opposed to an <em>instance</em> of a class whose methods we can list via <code>#methods</code>. That in itself might be an acceptable naming system accept the instance also has a method called <code>#instance_variables</code> (not to mention a number of other &quot;instance_&quot; methods). Give it a moments though and it becomes clear that the terms don&#39;t jive well. The problem lies in the fact that classes don&#39;t actually have &quot;instance methods&quot; per-se. They have <em>method definitions</em> that become instance methods when a class is instantiated. It would have made much more sense for the class&#39;s method to called <code>#methods</code> and the instance&#39;s to be called <code>#instance_methods</code>. Or, at the very least, the class terminology could have used something else like <code>#method_definitions</code>.</p>
-
-<p>Generally we developers just accept APIs as they a given us and go about using them without giving too much thought to the nomenclatures used. Unfortunately inconsistent terminology often leads to difficulties communicating with other developers, ultimately wasting time and energy. The above is just one example of such an inconsistency. But don&#39;t bother telling Matz or the rest of the Ruby core team. They will just tell you &quot;consistency is as a bad reason for language change&quot;. Perhaps in the short-term that is true to avoid backward compatibility issues. In the long-run, however, it&#39;s only a matter of time before people head to greener pastures.</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2013-08-March" title="March 08, 2013">March 08, 2013</time>
             </div>
         </div>
         <hr>

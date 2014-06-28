@@ -62,6 +62,118 @@
     <section class="index">
         <!-- -->
         <div>
+            <h2 class="title"><a href="/2012/02/25/setting-priorities-trumps-warnings/" rel="prefetch">Setting Priorities Trumps Warnings</a></h2>
+            <p><h1>Setting Priorities Trumps Warnings</h1>
+
+<p>Today I had to consider how best to handle omission exceptions in the context of test frameworks, and their use case to mark <em>pending tests</em>. In the course of doing so, I realized there are at least two reasonable levels of omission, those there are &quot;ASAP&quot; and those that are &quot;NSM&quot; (Not So Much). Where as other frameworks used their own specially defined classes for these, e.g <code>Pending</code> and <code>Omission</code>, my approach is to re-utilize Ruby&#39;s own <code>NotImplementedError</code>. But then I had to consider how to differentiate between these priorities.</p>
+
+<p>And that&#39;s when the more general notion occurred to me of <strong>Exception Priorities</strong>.</p>
+
+<p>Consider that instead of raising a warning:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="nb">warn</span> <span class="s2">&quot;Don&#39;t do it, mate!&quot;</span>
+</code></pre></div>
+<p>We could use the the Exception system, setting a low &quot;warning&quot; level priority.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">raise</span> <span class="s2">&quot;Don&#39;t do it, mate!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre></div>
+<p>All things being nominal, Ruby would see the priority of this exception is below 0, output the message to <code>$stderr</code> if <code>$VERBOSE=true</code> and then continue on. Hence it is a warning!</p>
+
+<p>With this, <code>#warn</code> could become a simple alias for <code>#raise</code> with a default negative priority.</p>
+
+<p>Now, if that was all there was to it, then there would be little reason to adopt the idea. But there are some really nice advantages to this approach.</p>
+
+<p>With regards to warning messages, we could use the <code>$VERBOSE</code> setting to refine the level of warning we want to be notified about. </p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="vg">$VERBOSE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">raise</span> <span class="s2">&quot;More Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">raise</span> <span class="s2">&quot;Less Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span>
+</code></pre></div>
+<p>In this case we would never see the <code>-2</code> level warning b/c we&#39;ve indicated we don&#39;t want to see those by setting $VERBOSE to higher specific level.</p>
+
+<p>Interestingly enough, we can do the same for actually raising errors! Let&#39;s call the setting <code>$PRIORITY</code> for the sake of discussion.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="vg">$PRIORITY</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">raise</span> <span class="s2">&quot;More Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">raise</span> <span class="s2">&quot;Less Serious Warning!&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span>
+</code></pre></div>
+<p>Where as before, the &quot;More Serious Warning&quot; would just have printed a warning message to <code>$stderr</code>, in this case the Exception will actually be raised, b/c we have lowered the threshold at which exceptions are to be raised.</p>
+
+<p>This refinement to Ruby&#39;s Exception system, effectively subsuming the warning system within it, makes for a much more powerful, flexible and thus useful system. Take my original use case, I can set the priority of NotImplementedError to <code>1</code> for ASAPs and <code>0</code> for NSMs, and I can go further allowing testers to set high priorities to be selectable from the command line.</p>
+
+<p>Want another use case? How about a <code>DeprecatedError</code> that has a default priority of <code>-1</code>.</p>
+
+<p>I am certain other will think of other use cases as well. This is one of those pliable features that tend to have far wider applicability then the originating use case.</p>
+
+<p>P.S. I&#39;ve always thought is would make more sense if <code>$VERBOSE</code> were called <code>$WARN</code>.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-25-February" title="February 25, 2012">February 25, 2012</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2012/01/19/rubys-unexceptional-exception-constructor/" rel="prefetch">Rubys Unexceptional Exception Constructor</a></h2>
+            <p><p>You would think after all this time Ruby&#39;s Exception class would be a rather robust and clearly comprehensible class.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">raise</span><span class="p">(</span><span class="n">exception</span> <span class="o">[</span><span class="p">,</span> <span class="n">string</span> <span class="o">[</span><span class="p">,</span> <span class="n">array</span><span class="o">]]</span><span class="p">)</span>
+</code></pre></div>
+<p>Now lets try something </p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MyError</span> <span class="o">&lt;</span> <span class="no">Exception</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
+    <span class="k">super</span><span class="p">()</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div><div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="o">&gt;&gt;</span> <span class="k">raise</span> <span class="no">MyError</span>
+<span class="ss">MyError</span><span class="p">:</span> <span class="no">MyError</span>
+    <span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">12</span>
+    <span class="n">from</span> <span class="sr">/home/</span><span class="n">trans</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">1</span><span class="o">.</span><span class="mi">9</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="n">rc1</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">irb</span><span class="p">:</span><span class="mi">12</span><span class="ss">:in</span> <span class="sb">`&lt;main&gt;&#39;</span>
+</code></pre></div>
+<p>No problem. But now lets try to set the message and the backtrace.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="o">&gt;&gt;</span> <span class="k">raise</span> <span class="no">MyError</span><span class="p">,</span> <span class="s2">&quot;This is an error!&quot;</span>
+<span class="ss">ArgumentError</span><span class="p">:</span> <span class="n">wrong</span> <span class="n">number</span> <span class="n">of</span> <span class="n">arguments</span> <span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">8</span><span class="ss">:in</span> <span class="sb">`initialize&#39;</span>
+<span class="sb">    from (irb):13:in `</span><span class="n">exception</span><span class="s1">&#39;</span>
+<span class="s1">    from (irb):13:in `raise&#39;</span>
+</code></pre></div>
+<p>Clearly Ruby expects any Exception&#39;s initialize method to handle the message argument. That&#39;s a rather strict contract for something Ruby is letting us override. But okay, let&#39;s take that as a given. Obviously Ruby is routing the #raise call to the exception&#39;s initializer. So then we should that the third <code>array</code> argument would passed along too. Turns out that&#39;s not the case.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MyError</span> <span class="o">&lt;</span> <span class="no">Exception</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="nb">p</span> <span class="n">args</span>
+    <span class="k">super</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div><div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="o">&gt;&gt;</span> <span class="k">raise</span> <span class="no">MyError</span><span class="p">,</span> <span class="s2">&quot;This is an error!&quot;</span><span class="p">,</span> <span class="nb">caller</span>
+<span class="o">[</span><span class="s2">&quot;This is an error!&quot;</span><span class="o">]</span>
+<span class="ss">RuntimeError</span><span class="p">:</span> <span class="no">This</span> <span class="n">is</span> <span class="n">an</span> <span class="no">Error</span><span class="o">!</span>
+    <span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">1</span>
+    <span class="n">from</span> <span class="sr">/home/</span><span class="n">trans</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">1</span><span class="o">.</span><span class="mi">9</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="n">rc1</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">irb</span><span class="p">:</span><span class="mi">12</span><span class="ss">:in</span> <span class="sb">`&lt;main&gt;&#39;</span>
+</code></pre></div>
+<p>Nope. No caller in sight. So where did it go? Turns out Ruby is setting the caller via the error&#39;s <code>#set_backtrace</code> method and doesn&#39;t depend on the initializer to handle it at all. This seems rather odd, since it was keen on letting the initializer handle the message argument, and would blow-up if the class won&#39;t take it.</p>
+
+<p>So the upshot seems to be that we can&#39;t customize an exceptions initializer adn expect <code>#raise</code> to play along.</p>
+
+<p>I actually had another point to make about how things gets even worse. Unfortunately had to take care of other chores and by the time I got back to this blog post (months later) I forgot what these &quot;worse things&quot; were. I think it had something to do with how <code>#message</code> calls <code>#to_s</code> rather then returning the message passed to the initializer. But as said I am not certain now. </p>
+
+<p>My conclusion however is this. I was attempting to make use of an Exception class as something more than a mere container for a string message for the <a href="http://github.com/rubyworks/assay">Assay</a> project. That is when I ran into these oddities which made doing so quite unpleasant. To my dismay I ended up abandoning the approach. I brought some aspects of this up in a <a href="http://bugs.ruby-lang.org/issues/5898">issue report</a>.</p>
+
+<p>For reference, here is the relevant Ruby <a href="https://github.com/ruby/ruby/blob/trunk/eval.c">source code</a>.</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2012-19-January" title="January 19, 2012">January 19, 2012</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
             <h2 class="title"><a href="/2011/10/04/lazy-plus-enumerable-begats-denumerable/" rel="prefetch">Lazy Plus Enumerable Begats Denumerable</a></h2>
             <p><h1>Lazy + Enumerable = Denumerable</h1>
 
@@ -741,121 +853,6 @@ layout: post
             <div class="meta">
                 Written By <address></a> &mdash;
                 <time pubdate datetime="2010-04-June" title="June 04, 2010">June 04, 2010</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2010/06/02/xdg-next-generation/" rel="prefetch">Xdg Next Generation</a></h2>
-            <p><h1>XDG NG</h1>
-
-<p>I can never stress enough the value of using the XDG directory standard to
-developers. This is one of those standards that can only really benefit us
-all if enough developers truly care to make a better eco-system.</p>
-
-<p>I have decided to take two approaches to my encouragment. The first is to
-improve the current XDG API to the point of triviality. It will be one script,
-which others can copy to their project if they prefer it to having another
-dependency. And I will make it even easier to use --one point of entry,
-and readily obvious semantics.</p>
-
-<p>But more I have decided to go beyond this and crrate a new standard --a derivation to
-the XDG standard that takes an well demonstrated Rails practice into account: convention
-over configuration. By doing so the standard can be further simplified and thus 
-become even more trivial, and hopfully in this manner become widely supported to 
-the benefit of us all.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">~/.cache
-~/.config
-~/.data
-</code></pre></div>
-<p>Update: I started a project for this. See <a href="https://github.com/tabcomputing/bds">BDS</a>.</p>
-
-<hr>
-
-<p>title      : XDG Next Generation
-author     : trans
-categories : [xdg, fhs]
-date       : 2010-06-02
-layout     : post
-published  : false</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2010-02-June" title="June 02, 2010">June 02, 2010</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2010/05/19/a-second-look-at-bundler/" rel="prefetch">A Second Look At Bundler</a></h2>
-            <p><h1>A Second Look at Bundler</h1>
-
-<p>A few days ago I wrote an article on my concerns with Bundler. Since then I&#39;ve received enough feedback to refine my thoughts. My opinion that the Ruby/Rails community is on a &quot;crazy train&quot; with regards to Bundler has everything to do with state of complexity of Rails code these days and it&#39;s infiltration into plain vanilla Ruby projects. Of course, Bundler&#39;s intent is to do just the opposite, but such is the danger of new technologies that we must be cautious of inevitable unexpected consequences. So, taking the feedback into account, here&#39;s a better breakdown of the ups and downs of Bundler as I now see them.</p>
-
-<h2>On the Upside</h2>
-
-<p><b>Bundling</b>: I have been informed that the ability to bundle gems is a useful feature for administrators of systems with limited Internet access. I did not expect this to be common enough to even warrant a tool (just use a tarball). But apparently is common enough. For this use Bundler is understandably useful. It&#39;s ability to resolve dependencies pre-runtime makes it especially good at doing so.</p>
-
-<p><b>Installs</b>: The <code>bundle install</code> feature has similar applications to bundle. It can be used to ease deployment. More specifically, a deployment script can contain a simple invoke &#39;bundle install&#39;, rather then handle the installation of each gem itself. In addition it makes it easier for developers to get up and running quickly, a simple &#39;bundle install&#39; will install everything you need to develop a project. So this feature has it&#39;s clear benefits.</p>
-
-<p><b>Groups:</b> Groups are convenient when selecting certain gems from the list of all requirement, as a means to specialize usage to the end-users needs. Although perhaps a minor benefit, one can see how it can be useful to the developer. As currently implemented Bundler only supports opt-out groups. It might be nice if it also provided for opt-in selections.</p>
-
-<p><b>Locking</b>: The locking feature is probably Bundler&#39;s most significant feature. It allows the developer to nail down their application to the latest gems that best meet all the requirements as given in the Gemfile. </p>
-
-<p><b>Gemfile</b>: Of course, Rubyists are accustomed to nice DSL to &quot;describe&quot; code. The Gemfile makes excellent use of this ability and it is especially nice to have a single clear file to describe all the dependencies of a project.</p>
-
-<h2>On the Downside</h2>
-
-<p><b>Bundling</b>: The downside of bundling comes when developers misuse the feature. Because Bundler does more than just bundle gems for special deployments, there may be a tendency towards using it in this way regardless of the need to do so. For example, yesterday I cloned the <a href="http::/github.com/qrush/gemcutter">Gemcutter</a> repository. The download consumed 22.61 MiB of space. On close inspection I discovered why. The <code>vendor/cache</code> directory contains a copy of every gem on which Gemcutter depends. Consider what this means. In effect, Bundler has undermined the entire purpose of having a package manger!</p>
-
-<p>If Bundler were an application that handled this feature and only this feature, then I think it would be a much better tool. In doing so it would help deter misuse. And the other features could be left to the domain of another library, or even better, RubyGems proper.</p>
-
-<p><b>Installs</b>: The downside of <code>bundle install</code>, is the lack of refinement it grants the end user. An example is the Rails Gemfile which will installs the sqlite3, postgresql and mysql bindings, regardless of what databases the system actually supports. There may also be other subtle conditions that need to be taken into account on installation. To account for these, the temptation will be to add conditions to the Gemfile itself, blurring the lines between it and a Capfile (as an example). But this will in turn effect the developer&#39;s use of the other features. In the end, the inter-complexities this will cause will simply prove too much.</p>
-
-<p><b>Groups</b>: You&#39;ll be happy to know there is nothing intrinsically problematic with groups. Other than the additional complexities they add to the process of designing a Gemfile and the installation thereof, they server their purpose. Sometimes additional complexity is the necessity of capability.</p>
-
-<p><b>Locking</b>: Ironically, Bundler&#39;s most useful feature is probably it&#39;s most problematic. First, in order to achieve this level of functionality, Bundler must download a slew of gems to your system in order to calculate the best fitting requirements. But worse than this, locking brings <code>Bundler.require</code> into play. <code>Bundler.require</code> admits of the same issues as <code>require &#39;rubygems&#39;</code>. It can not be used without limiting an program to the RubyGems package manager. If it is to be used congenially, special conditions will need to be put in place by the developer to ensure a program still runs whether RubyGems is being used or not. Bundler might mitigate this issue by gracefully downgrading if RubyGems is not loaded, but then it must also consider where Bundler&#39;s lock file will be located, say if setup.rb is used for installation.</p>
-
-<p><b>Gemfile</b>: As mentioned, the Gemfile is great to have as a single configuration file to describe dependencies. However, if a project has a gemspec, it still requires dependencies be stated there as well. RubyGems is not able to utilize the Gemfile. Having to state requirements twice violates the DRY principle.</p>
-
-<p>In addition, because the Gemfile is Ruby code it can be full of conditional statements, dynamic code, and all sorts of other spaghetti. All of which make the file unusable to anything but a Ruby script. Worse still, the ability to use conditions has the potential for creating a very unwieldy level of complexity. There is no way, for instance, to query the Gemfile for all requirements that may be need because some of them may be hidden by the current state of an environment variable. The clear remedy to this is to switch to a static file format. Such a format could be utilized by many tools, not just Bundler, including RubyGems itself. This would also help resolve some the issues with bundle install as mentioned above.</p>
-
-<h2>In Conclusion</h2>
-
-<p>Taking the &quot;good, the bad and ugly&quot; into account as we have, the end result would indicate the following potenial points of action:</p>
-
-<ul>
-<li>Use a static file format for the Gemfile.</li>
-<li>Allow groups to be opt-in as well as opt-out.</li>
-<li>Split Bundler into two projects. One strictly for bundling.</li>
-<li>Non-bundling features might be integrated into RubyGems proper.</li>
-<li>At the very least allow RubyGems to utilize the Gemfile for gem building.</li>
-<li>Gracefully downgrade when RubyGems/Bundler is not used.</li>
-</ul>
-
-<p>By applying these points, we can tame some of the &quot;crazy train&quot; of complexity. The principles of POLS and KISS are halmarks of a good Rubyist. Let&#39;s not loose that.</p>
-
-<hr>
-
-<p>title      : A Second Look at Bundler
-author     : trans
-categories : [bundler, rubygems]
-date       : 2010-05-19
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2010-19-May" title="May 19, 2010">May 19, 2010</time>
             </div>
         </div>
         <hr>

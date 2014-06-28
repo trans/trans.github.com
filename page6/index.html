@@ -62,6 +62,121 @@
     <section class="index">
         <!-- -->
         <div>
+            <h2 class="title"><a href="/2009/12/13/a-failure-of-precedence/" rel="prefetch">A Failure Of Precedence</a></h2>
+            <p><h1>A Failure of Precedence</h1>
+
+<p>(Ruby&#39;s Operator Precedence Can Be Improved)</p>
+
+<p>There&#39;s a lot to love about Ruby. Most of us know well the many great advantages it provides, as they say, &quot;making programming fun&quot;. However, Ruby is also notoriously dogged by a few small gotchas and inconsistancies. Some of these are understandable, such as the <a href="http://eigenclass.org/hiki/The+double+inclusion+problem">Double Inclusion Problem</a>; issues that are not worth the extensive effort to fix. On the other hand, some simple issues doggedly persist for little good reason (backward compatibility not withstanding).</p>
+
+<p>One of these issues is operator precedence. Not only is operator precedence set in stone, it is also
+woefully <i>bottom heavy</i> --there is only one binary operator available for use above the common arthmetic operations.</p>
+
+<p>Here is the table as given by the <a href="https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html">PickAxe</a>:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Method    Operator                Description
+Y         [ ] [ ]=                Element reference, element set
+Y         **                      Exponentiation
+Y         ! ~ + -                 Not, complement, unary plus and minus (method names for the last two are +@ and -@)
+Y         * / %                   Multiply, divide, and modulo
+Y         + -                     Plus and minus
+Y         &gt;&gt; &lt;&lt;                   Right and left shift
+Y         &amp;                       Bitwise `and&#39;
+Y         ^ |                     Bitwise exclusive `or&#39; and regular `or&#39;
+Y         &lt;= &lt; &gt; &gt;=               Comparison operators
+Y         &lt;=&gt; == === != =~ !~     Equality and pattern match operators (!= and !~ may not be defined as methods)
+          &amp;&amp;                      Logical `and&#39;
+          ||                      Logical `or&#39;
+          .. ...                  Range (inclusive and exclusive)
+            ? :                     Ternary if-then-else
+          = %= { /= -= += |= &amp;=   Assignment
+          &gt;&gt;= &lt;&lt;= *= &amp;&amp;= ||= **=   
+          defined?                Check if symbol defined
+          not                     Logical negation
+          or and                  Logical composition
+          if unless while until   Expression modifiers
+          begin/end               Block expression
+</code></pre></div>
+<p>The lack of any operators other then <tt>**</tt>, above the most commonly used, <tt>* / % + -</tt>, puts
+a frustrating limitation on the flexibility of this system. On this account, the most puzzling misplacement of an operator has to be Bitwise Exlusive Or, <tt>^</tt>. In many, if not most, programming languages <tt>^</tt> is the power operator. But in Ruby that function is delegated to <tt>**</tt>. While I personally do not favor <tt>**</tt> for the use, it&#39;s not something I mind either. However, that <tt>^</tt> doesn&#39;t share the same precedence is very awkward.</p>
+
+<p>Consider for instance, the implementation of a unit system.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">**</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;4 square meters&quot;</span>
+</code></pre></div>
+<p>Notice the power operator effects the unit and the value. So how would we go about notating <code>2 square meters</code>? We need some other means. The obvious answer is to redefine <tt>^</tt>:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;2 square meters&quot;</span>
+</code></pre></div>
+<p>Great. But wait, there is an ugliness now upon us.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;2 meters&quot;</span>
+</code></pre></div>
+<p>The answer should have been <tt>1 square meter</tt>, but due to precedence <tt>2 / 2</tt> is barring a <tt>1</tt> before the <tt>^</tt> power operator kicks-in.</p>
+
+<p>It is truly wonderful that Ruby&#39;s first 27 operators are actually methods, which means they can be defined to perform whatever function we would like of them. But despite being able to define these operators, there is no means of changing their precedence. Thus, the actual options we have defining new operations to suite our needs are hindered.</p>
+
+<p>Ideally we would be able to alter precedence on a per-class basis. While, some might argue that would create too much confusion, I would retort that good libraries would use the feature effectively, limiting the changes to the appropriate use-cases, so that it would not be an issue. After all, a library that scrambles precedence for no damn good reason will get little use.</p>
+
+<p>While we wait the day of true precedence freedom, I would like to see Ruby move <tt>^</tt> up with <tt>**</tt> and find a new Exclusive Or operator. Backward compatibility can be largely, although not completely, preserved by aliasing <tt>^</tt> to the new symbol. It&#39;s an obvious and simple improvement --a naggling issue that has been around for quite some time.</p>
+
+<hr>
+
+<p>title      : A Failure of Precedence
+author     : trans
+categories : [website]
+date       : 2009-12-13
+layout     : post</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2009-13-December" title="December 13, 2009">December 13, 2009</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2009/10/26/quiet-revolt-against-the-fhs/" rel="prefetch">Quiet Revolt Against The Fhs</a></h2>
+            <p><h1>Quiet Revolt Against the FHS?</h1>
+
+<p>Prompted by the disocvery of improper use of relative require in a number or Ruby project&#39;s executables, my last <a href="http://protuils.github.com/2009/10/proper-require.html">post</a> dicussed <i>why</i> and <i>when</i> to avoid using relative require. To summarize, there are two broad reasons to avoid relative loading. The first is simply YAGNI. In most cases you simply don&#39;t need to do it. Your script is on the $LOAD_PATH and all that is needed is the normal <code>require &#39;mylib/mydir/myfile&#39;</code> to load it. The second, and up until today I felt the more important concern, is conformance to the <a href="http://www.pathname.com/fhs/">File Hierarchy Standard</a>. While there is plenty of room to use relative requires and not tread on the FHS, it is easy enough to run afoul if one is not careful and aware of the issues. Such was the case with the executables.</p>
+
+<p>Now I have discovered that another popular Ruby program is &quot;broken&quot; with regards to the FHS -- RDoc. In more recent versions, RDoc designed it&#39;s auto-loading of 3rd party templates to use <code>lib/rdoc/discover.rb</code>. In other words, if you want to create a template &quot;plug-in&quot; for RDoc you need to have a <code>lib/rdoc/discover.rb</code> file in your project in which you require the file(s) that contain your actual plug-in code. There is one serious problem with this. If more than one such 3rd-party template project is installed via an old-fashioned site_ruby install (eg. using setup.rb), then the last installed project&#39;s <code>discover.rb</code> file will clobber the prior&#39;s.</p>
+
+<p>As a gem user you might not think it a big deal, but I can tell you that Linux distro maintainers do care. Any Ruby library they decide is worthy of a distro package, in particular a <code>.deb</code> package, they must ensure it conforms to the FHS. <a href="http://facets.rubyforge.org">Ruby Facets</a>, for instance, is slightly difficult in site install because it has two separate load paths. I received more that one nasty email about that when I no longer shipped a <code>setup.rb</code> script with the package. I have since updated the stand-alone version of <a href="http://proutils.github.com/setup">Ruby Setup</a> to handle such an install properly so long a <code>meta/loadpath</code> file is provided.</p>
+
+<p>But now I have to wonder. If RDoc has a site install flaw in it&#39;s latest design, and the aforementioned use of relative loading in bin scripts in other projects is likewise flawed, not to mention the numerous other violations that are surely out there... Is there a quiet revolution against the FHS going-on? Perhaps a revolution by default, because people don&#39;t know any better or forget to take it into account?</p>
+
+<p>Honestly, I have to say I hope so. In years past I had attempted to rail against the FHS. I even used <a href="http://gobolinux.org/">GoboLinux</a> as my main platform for a while. But as much as I would spout about the need to move beyond the FHS, along with <a href="http://gobolinux.org/index.php?lang=en_US&amp;page=doc/articles/clueless">other voices</a>, there never seemed to be any progress. We were stuck. And so I had given up and settled myself with the FHS way of doing things. (No doubt, this accounts in part for why I am so acutely aware Ruby code  that breaks under the standard.) But I have never been happy with it. I could only hope that one day, somehow, it would change. And maybe it has...</p>
+
+<p>Are those of you using RubyGems, and using relative requires, ready to stand with your code, in defiance of the FHS, indifferent to site_ruby installation? Can we finally all say &quot;f@#k setup.rb&quot;? Can I discontinue my maintenance of the setup.rb code base? Can I now feel free to use relative require and RDoc-like <code>discover.rb</code>&#39;s to my joyous hearts abandon?</p>
+
+<p>I wonder, is this kind of thing occurring in other language domains too, such as Perl, Python and Rebol? It would appear so. I recently learned, as one might expect, that the guys over at GoboLinux are on the forefront of this. Check out the article, <a href="http://mwh.geek.nz/2009/07/23/an-overview-of-systemaliens/">An overview of /System/Aliens</a>.</p>
+
+<p>Is the revolt under way?</p>
+
+<hr>
+
+<p>title      : Quiet Revolt Against the FHS?
+author     : trans
+categories : [ruby, require]
+date       : 2009-10-26
+layout     : post</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2009-26-October" title="October 26, 2009">October 26, 2009</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
             <h2 class="title"><a href="/2009/10/23/a-proper-require/" rel="prefetch">A Proper Require</a></h2>
             <p><h1>A Proper Require</h1>
 
@@ -730,243 +845,6 @@ layout     : post</p>
             <div class="meta">
                 Written By <address></a> &mdash;
                 <time pubdate datetime="2008-28-September" title="September 28, 2008">September 28, 2008</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2008/09/12/taskable/" rel="prefetch">Taskable</a></h2>
-            <p><h1>Taskable</h1>
-
-<p>On more than a few occasions I have taken a stab at writing a general
-purpose task system, akin to Rake&#39;s, but one that works within the
-framework of Ruby class inheritance. I recall my first attempt was
-quite an unwieldy beast, and my subsequent attempts were fairly
-unwieldy too, but over time they became more concise. Below is the
-most concise variation yet, and I was wondering what other thought
-of it -- do you see any flaws in the design; does it satisfy all the
-criteria of such a system; would you find it useful; etc.</p>
-
-<p>One issue to note about the code, is the use of the <code>*_trigger</code> methods.
-I&#39;m not sure that&#39;s the best approach. My original approach was
-to provide a #run method (you can see it commented out), but this
-requires dividing Taskable into two parts, a module for extending and
-a module for including, and I try to avoid that design when I can.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">module</span> <span class="nn">Taskable</span>
-
-      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">append_features</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-        <span class="n">base</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
-      <span class="k">end</span>
-
-      <span class="c1"># Without an argument, returns list of tasks defined for this class.</span>
-      <span class="c1">#</span>
-      <span class="c1"># If a task&#39;s target name is given, will return the first</span>
-      <span class="c1"># task matching the name found in the class&#39; inheritance chain.</span>
-      <span class="c1"># This is important to ensure tasks are inherited in the same manner</span>
-      <span class="c1"># that methods are.</span>
-      <span class="k">def</span> <span class="nf">tasks</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">target</span>
-          <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">to_sym</span>
-          <span class="n">anc</span> <span class="o">=</span> <span class="nb">ancestors</span><span class="o">.</span><span class="n">select</span><span class="p">{</span><span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="no">Taskable</span><span class="p">}</span> <span class="c1">#DSL</span>
-          <span class="n">t</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">;</span> <span class="n">anc</span><span class="o">.</span><span class="n">find</span><span class="p">{</span><span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">t</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">tasks</span><span class="o">[</span><span class="n">target</span><span class="o">]</span><span class="p">}</span>
-          <span class="k">return</span> <span class="n">t</span>
-        <span class="k">else</span>
-          <span class="vi">@tasks</span> <span class="o">||=</span> <span class="p">{}</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-
-      <span class="c1"># Set a description to be used by then next defined task in this class.</span>
-      <span class="k">def</span> <span class="nf">desc</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
-        <span class="vi">@desc</span> <span class="o">=</span> <span class="n">description</span>
-      <span class="k">end</span>
-
-      <span class="c1"># Define a task.</span>
-      <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">target_and_requisite</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span>
-        <span class="n">target</span><span class="p">,</span> <span class="n">requisite</span><span class="p">,</span> <span class="n">function</span> <span class="o">=</span> <span class="o">*</span><span class="no">Task</span><span class="o">.</span><span class="n">parse_arguments</span><span class="p">(</span><span class="n">target_and_requisite</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span>
-        <span class="n">task</span> <span class="o">=</span> <span class="n">tasks</span><span class="o">[</span><span class="n">target</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">||=</span> <span class="p">(</span>
-          <span class="n">tdesc</span> <span class="o">=</span> <span class="vi">@desc</span>
-          <span class="vi">@desc</span> <span class="o">=</span> <span class="kp">nil</span>
-          <span class="no">Task</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">tdesc</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">task</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">requisite</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span>
-        <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">target</span><span class="si">}</span><span class="s2">_trigger&quot;</span><span class="p">){</span> <span class="n">task</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># or use #run?</span>
-        <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">target</span><span class="si">}</span><span class="s2">:task&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span> <span class="c1"># TODO: in 1.9 use instance_exec instead.</span>
-      <span class="k">end</span>
-
-      <span class="c1"># Run a task.</span>
-      <span class="c1"># Hmmm... to add this would require another module (to include).</span>
-      <span class="c1"># But I&#39;m not sure. Maybe trigger method is the better way?</span>
-      <span class="c1">#</span>
-      <span class="c1">#def run(target)</span>
-      <span class="c1">#  #t = self.class.tasks(target)</span>
-      <span class="c1">#  #t.run(self)</span>
-      <span class="c1">#  send(&quot;#{target}_trigger&quot;)</span>
-      <span class="c1">#end</span>
-
-      <span class="c1"># = Task Class</span>
-      <span class="c1">#</span>
-      <span class="k">class</span> <span class="nc">Task</span>
-        <span class="kp">attr</span> <span class="ss">:base</span>
-        <span class="kp">attr</span> <span class="ss">:target</span>
-        <span class="kp">attr</span> <span class="ss">:requisite</span>
-        <span class="kp">attr</span> <span class="ss">:function</span>
-        <span class="kp">attr</span> <span class="ss">:description</span>
-
-        <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kp">nil</span><span class="p">,</span> <span class="n">requisite</span><span class="o">=</span><span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span>
-          <span class="vi">@base</span>        <span class="o">=</span> <span class="n">base</span>
-          <span class="vi">@target</span>      <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">to_sym</span>
-          <span class="vi">@description</span> <span class="o">=</span> <span class="n">description</span>
-          <span class="vi">@requisite</span>   <span class="o">=</span> <span class="n">requisite</span> <span class="o">||</span> <span class="o">[]</span>
-          <span class="vi">@function</span>    <span class="o">=</span> <span class="n">function</span>
-        <span class="k">end</span>
-
-        <span class="c1">#</span>
-        <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">requisite</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">)</span>
-          <span class="vi">@requisite</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">requisite</span><span class="p">)</span><span class="o">.</span><span class="n">uniq!</span>
-          <span class="vi">@function</span> <span class="o">=</span> <span class="n">function</span> <span class="k">if</span> <span class="n">function</span>
-        <span class="k">end</span>
-
-        <span class="c1">#</span>
-        <span class="k">def</span> <span class="nf">prerequisite</span>
-          <span class="n">base</span><span class="o">.</span><span class="n">ancestors</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="no">Taskable</span><span class="p">)</span> <span class="p">}</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
-            <span class="n">a</span><span class="o">.</span><span class="n">tasks</span><span class="o">[</span><span class="n">target</span><span class="o">].</span><span class="n">requisite</span>
-          <span class="p">}</span><span class="o">.</span><span class="n">flatten</span><span class="o">.</span><span class="n">uniq</span>
-        <span class="k">end</span>
-
-        <span class="c1"># invoke target</span>
-        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
-          <span class="n">rd</span> <span class="o">=</span> <span class="n">rule_dag</span>
-          <span class="n">rd</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
-            <span class="n">object</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">t</span><span class="si">}</span><span class="s2">:task&quot;</span><span class="p">)</span>
-          <span class="k">end</span>
-        <span class="k">end</span>
-
-        <span class="c1">#</span>
-        <span class="c1">#def call(object)</span>
-        <span class="c1">#  object.instance_eval(&amp;function)</span>
-        <span class="c1">#end</span>
-
-        <span class="c1"># Collect task dependencies for running.</span>
-        <span class="k">def</span> <span class="nf">rule_dag</span><span class="p">(</span><span class="n">cache</span><span class="o">=[]</span><span class="p">)</span>
-          <span class="n">prerequisite</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
-            <span class="k">next</span> <span class="k">if</span> <span class="n">cache</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-            <span class="n">t</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">tasks</span><span class="o">[</span><span class="n">r</span><span class="o">]</span>
-            <span class="n">t</span><span class="o">.</span><span class="n">rule_dag</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span>
-            <span class="c1">#cache &lt;&lt; dep</span>
-          <span class="k">end</span>
-          <span class="n">cache</span> <span class="o">&lt;&lt;</span> <span class="n">target</span><span class="o">.</span><span class="n">to_s</span>
-          <span class="n">cache</span>
-        <span class="k">end</span>
-
-        <span class="c1">#</span>
-        <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">parse_arguments</span><span class="p">(</span><span class="n">name_and_reqs</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">action</span><span class="p">)</span>
-          <span class="k">if</span> <span class="no">Hash</span><span class="o">===</span><span class="n">name_and_reqs</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="n">name_and_reqs</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">to_s</span>
-            <span class="n">reqs</span> <span class="o">=</span> <span class="o">[</span><span class="n">name_and_reqs</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">first</span><span class="o">].</span><span class="n">flatten</span>
-          <span class="k">else</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="n">name_and_reqs</span><span class="o">.</span><span class="n">to_s</span>
-            <span class="n">reqs</span> <span class="o">=</span> <span class="o">[]</span>
-          <span class="k">end</span>
-          <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">reqs</span><span class="p">,</span> <span class="n">action</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-</code></pre></div>
-<p>Here&#39;s a very simple <a href="http://quarry.rubyforge.org">QEDoc</a> demo/spec:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="k">class</span> <span class="nc">Example</span>
-      <span class="kp">include</span> <span class="no">Taskable</span>
-
-      <span class="n">task</span> <span class="ss">:task_with_no_requisites</span> <span class="k">do</span>
-        <span class="n">cache</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;task_with_no_requisites&quot;</span>
-      <span class="k">end</span>
-
-      <span class="n">task</span> <span class="ss">:task_with_one_requisite</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:task_with_no_requisites</span><span class="o">]</span> <span class="k">do</span>
-        <span class="n">cache</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;task_with_one_requisite&quot;</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">cache</span>
-        <span class="vi">@cache</span> <span class="o">||=</span> <span class="o">[]</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-
-    <span class="n">example</span> <span class="o">=</span> <span class="no">Example</span><span class="o">.</span><span class="n">new</span>
-    <span class="c1">#example.run :task_with_no_requisites</span>
-    <span class="n">example</span><span class="o">.</span><span class="n">task_with_no_requisites_trigger</span>
-    <span class="n">example</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">assert</span> <span class="o">==</span> <span class="o">[</span><span class="s2">&quot;task_with_no_requisites&quot;</span><span class="o">]</span>
-
-    <span class="n">example</span> <span class="o">=</span> <span class="no">Example</span><span class="o">.</span><span class="n">new</span>
-    <span class="c1">#example.run :task_with_one_requisite</span>
-    <span class="n">example</span><span class="o">.</span><span class="n">task_with_one_requisite_trigger</span>
-    <span class="n">example</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">assert</span> <span class="o">==</span> <span class="o">[</span><span class="s2">&quot;task_with_no_requisites&quot;</span><span class="p">,</span> <span class="s2">&quot;task_with_one_requisite&quot;</span><span class="o">]</span>
-</code></pre></div>
-<p>So, what do you think?</p>
-
-<hr>
-
-<p>title      : Taskable
-date       : 2008-09-12
-categories : [ruby]
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2008-12-September" title="September 12, 2008">September 12, 2008</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2007/05/02/the-library-poll/" rel="prefetch">The Library Poll</a></h2>
-            <p><h1>The Library Poll</h1>
-
-<p>I&#39;ve been thinking far too long about how best to organize and distribute programming libraries. Having a hard time coming to any firm conclusions, I&#39;ve decided to try an inductive approach --via a poll. If you have a moment, I&#39;d really appreciate your thoughtful answers to the following questions. Thanks!</p>
-
-<p><strong>Sorry, the polls are closed</strong>. But here are the results:</p>
-
-<p>1) Which library name would you prefer: (<code>126</code> votes)</p>
-
-<ul>
-<li><code>37%</code> livelibs-file</li>
-<li><code>63%</code> filestorm</li>
-</ul>
-
-<p>2) Which library would you be more likely to try: (<code>204</code> votes)</p>
-
-<ul>
-<li><code>62%</code> cliutils</li>
-<li><code>10%</code> cli/best</li>
-<li><code>03%</code> cliBest</li>
-<li><code>24%</code> climax</li>
-</ul>
-
-<p>3) Should programming libraries be named: (<code>211</code> votes)</p>
-
-<ul>
-<li><code>45%</code> Creatively</li>
-<li><code>55%</code> Categorically</li>
-</ul>
-
-<p>4) Programming libraries should be packaged: (<code>200</code> votes)</p>
-
-<ul>
-<li><code>35%</code> Per specific tool</li>
-<li><code>47%</code> Per related set of tools</li>
-<li><code>18%</code> Comprehensively (all-in-one)</li>
-</ul>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2007-02-May" title="May 02, 2007">May 02, 2007</time>
             </div>
         </div>
         <hr>

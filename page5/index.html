@@ -62,6 +62,121 @@
     <section class="index">
         <!-- -->
         <div>
+            <h2 class="title"><a href="/2010/06/02/xdg-next-generation/" rel="prefetch">Xdg Next Generation</a></h2>
+            <p><h1>XDG NG</h1>
+
+<p>I can never stress enough the value of using the XDG directory standard to
+developers. This is one of those standards that can only really benefit us
+all if enough developers truly care to make a better eco-system.</p>
+
+<p>I have decided to take two approaches to my encouragment. The first is to
+improve the current XDG API to the point of triviality. It will be one script,
+which others can copy to their project if they prefer it to having another
+dependency. And I will make it even easier to use --one point of entry,
+and readily obvious semantics.</p>
+
+<p>But more I have decided to go beyond this and crrate a new standard --a derivation to
+the XDG standard that takes an well demonstrated Rails practice into account: convention
+over configuration. By doing so the standard can be further simplified and thus 
+become even more trivial, and hopfully in this manner become widely supported to 
+the benefit of us all.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">~/.cache
+~/.config
+~/.data
+</code></pre></div>
+<p>Update: I started a project for this. See <a href="https://github.com/tabcomputing/bds">BDS</a>.</p>
+
+<hr>
+
+<p>title      : XDG Next Generation
+author     : trans
+categories : [xdg, fhs]
+date       : 2010-06-02
+layout     : post
+published  : false</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2010-02-June" title="June 02, 2010">June 02, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
+            <h2 class="title"><a href="/2010/05/19/a-second-look-at-bundler/" rel="prefetch">A Second Look At Bundler</a></h2>
+            <p><h1>A Second Look at Bundler</h1>
+
+<p>A few days ago I wrote an article on my concerns with Bundler. Since then I&#39;ve received enough feedback to refine my thoughts. My opinion that the Ruby/Rails community is on a &quot;crazy train&quot; with regards to Bundler has everything to do with state of complexity of Rails code these days and it&#39;s infiltration into plain vanilla Ruby projects. Of course, Bundler&#39;s intent is to do just the opposite, but such is the danger of new technologies that we must be cautious of inevitable unexpected consequences. So, taking the feedback into account, here&#39;s a better breakdown of the ups and downs of Bundler as I now see them.</p>
+
+<h2>On the Upside</h2>
+
+<p><b>Bundling</b>: I have been informed that the ability to bundle gems is a useful feature for administrators of systems with limited Internet access. I did not expect this to be common enough to even warrant a tool (just use a tarball). But apparently is common enough. For this use Bundler is understandably useful. It&#39;s ability to resolve dependencies pre-runtime makes it especially good at doing so.</p>
+
+<p><b>Installs</b>: The <code>bundle install</code> feature has similar applications to bundle. It can be used to ease deployment. More specifically, a deployment script can contain a simple invoke &#39;bundle install&#39;, rather then handle the installation of each gem itself. In addition it makes it easier for developers to get up and running quickly, a simple &#39;bundle install&#39; will install everything you need to develop a project. So this feature has it&#39;s clear benefits.</p>
+
+<p><b>Groups:</b> Groups are convenient when selecting certain gems from the list of all requirement, as a means to specialize usage to the end-users needs. Although perhaps a minor benefit, one can see how it can be useful to the developer. As currently implemented Bundler only supports opt-out groups. It might be nice if it also provided for opt-in selections.</p>
+
+<p><b>Locking</b>: The locking feature is probably Bundler&#39;s most significant feature. It allows the developer to nail down their application to the latest gems that best meet all the requirements as given in the Gemfile. </p>
+
+<p><b>Gemfile</b>: Of course, Rubyists are accustomed to nice DSL to &quot;describe&quot; code. The Gemfile makes excellent use of this ability and it is especially nice to have a single clear file to describe all the dependencies of a project.</p>
+
+<h2>On the Downside</h2>
+
+<p><b>Bundling</b>: The downside of bundling comes when developers misuse the feature. Because Bundler does more than just bundle gems for special deployments, there may be a tendency towards using it in this way regardless of the need to do so. For example, yesterday I cloned the <a href="http::/github.com/qrush/gemcutter">Gemcutter</a> repository. The download consumed 22.61 MiB of space. On close inspection I discovered why. The <code>vendor/cache</code> directory contains a copy of every gem on which Gemcutter depends. Consider what this means. In effect, Bundler has undermined the entire purpose of having a package manger!</p>
+
+<p>If Bundler were an application that handled this feature and only this feature, then I think it would be a much better tool. In doing so it would help deter misuse. And the other features could be left to the domain of another library, or even better, RubyGems proper.</p>
+
+<p><b>Installs</b>: The downside of <code>bundle install</code>, is the lack of refinement it grants the end user. An example is the Rails Gemfile which will installs the sqlite3, postgresql and mysql bindings, regardless of what databases the system actually supports. There may also be other subtle conditions that need to be taken into account on installation. To account for these, the temptation will be to add conditions to the Gemfile itself, blurring the lines between it and a Capfile (as an example). But this will in turn effect the developer&#39;s use of the other features. In the end, the inter-complexities this will cause will simply prove too much.</p>
+
+<p><b>Groups</b>: You&#39;ll be happy to know there is nothing intrinsically problematic with groups. Other than the additional complexities they add to the process of designing a Gemfile and the installation thereof, they server their purpose. Sometimes additional complexity is the necessity of capability.</p>
+
+<p><b>Locking</b>: Ironically, Bundler&#39;s most useful feature is probably it&#39;s most problematic. First, in order to achieve this level of functionality, Bundler must download a slew of gems to your system in order to calculate the best fitting requirements. But worse than this, locking brings <code>Bundler.require</code> into play. <code>Bundler.require</code> admits of the same issues as <code>require &#39;rubygems&#39;</code>. It can not be used without limiting an program to the RubyGems package manager. If it is to be used congenially, special conditions will need to be put in place by the developer to ensure a program still runs whether RubyGems is being used or not. Bundler might mitigate this issue by gracefully downgrading if RubyGems is not loaded, but then it must also consider where Bundler&#39;s lock file will be located, say if setup.rb is used for installation.</p>
+
+<p><b>Gemfile</b>: As mentioned, the Gemfile is great to have as a single configuration file to describe dependencies. However, if a project has a gemspec, it still requires dependencies be stated there as well. RubyGems is not able to utilize the Gemfile. Having to state requirements twice violates the DRY principle.</p>
+
+<p>In addition, because the Gemfile is Ruby code it can be full of conditional statements, dynamic code, and all sorts of other spaghetti. All of which make the file unusable to anything but a Ruby script. Worse still, the ability to use conditions has the potential for creating a very unwieldy level of complexity. There is no way, for instance, to query the Gemfile for all requirements that may be need because some of them may be hidden by the current state of an environment variable. The clear remedy to this is to switch to a static file format. Such a format could be utilized by many tools, not just Bundler, including RubyGems itself. This would also help resolve some the issues with bundle install as mentioned above.</p>
+
+<h2>In Conclusion</h2>
+
+<p>Taking the &quot;good, the bad and ugly&quot; into account as we have, the end result would indicate the following potenial points of action:</p>
+
+<ul>
+<li>Use a static file format for the Gemfile.</li>
+<li>Allow groups to be opt-in as well as opt-out.</li>
+<li>Split Bundler into two projects. One strictly for bundling.</li>
+<li>Non-bundling features might be integrated into RubyGems proper.</li>
+<li>At the very least allow RubyGems to utilize the Gemfile for gem building.</li>
+<li>Gracefully downgrade when RubyGems/Bundler is not used.</li>
+</ul>
+
+<p>By applying these points, we can tame some of the &quot;crazy train&quot; of complexity. The principles of POLS and KISS are halmarks of a good Rubyist. Let&#39;s not loose that.</p>
+
+<hr>
+
+<p>title      : A Second Look at Bundler
+author     : trans
+categories : [bundler, rubygems]
+date       : 2010-05-19
+layout     : post</p>
+</p>
+            <div class="meta">
+                Written By <address></a> &mdash;
+                <time pubdate datetime="2010-19-May" title="May 19, 2010">May 19, 2010</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    
+    
+  
+    <section class="index">
+        <!-- -->
+        <div>
             <h2 class="title"><a href="/2010/05/15/gem-crazy/" rel="prefetch">Gem Crazy</a></h2>
             <p><h1>Gem Crazy</h1>
 
@@ -870,121 +985,6 @@ layout     : post</p>
             <div class="meta">
                 Written By <address></a> &mdash;
                 <time pubdate datetime="2010-04-February" title="February 04, 2010">February 04, 2010</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2009/12/13/a-failure-of-precedence/" rel="prefetch">A Failure Of Precedence</a></h2>
-            <p><h1>A Failure of Precedence</h1>
-
-<p>(Ruby&#39;s Operator Precedence Can Be Improved)</p>
-
-<p>There&#39;s a lot to love about Ruby. Most of us know well the many great advantages it provides, as they say, &quot;making programming fun&quot;. However, Ruby is also notoriously dogged by a few small gotchas and inconsistancies. Some of these are understandable, such as the <a href="http://eigenclass.org/hiki/The+double+inclusion+problem">Double Inclusion Problem</a>; issues that are not worth the extensive effort to fix. On the other hand, some simple issues doggedly persist for little good reason (backward compatibility not withstanding).</p>
-
-<p>One of these issues is operator precedence. Not only is operator precedence set in stone, it is also
-woefully <i>bottom heavy</i> --there is only one binary operator available for use above the common arthmetic operations.</p>
-
-<p>Here is the table as given by the <a href="https://www.cs.auckland.ac.nz/references/ruby/ProgrammingRuby/language.html">PickAxe</a>:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">Method    Operator                Description
-Y         [ ] [ ]=                Element reference, element set
-Y         **                      Exponentiation
-Y         ! ~ + -                 Not, complement, unary plus and minus (method names for the last two are +@ and -@)
-Y         * / %                   Multiply, divide, and modulo
-Y         + -                     Plus and minus
-Y         &gt;&gt; &lt;&lt;                   Right and left shift
-Y         &amp;                       Bitwise `and&#39;
-Y         ^ |                     Bitwise exclusive `or&#39; and regular `or&#39;
-Y         &lt;= &lt; &gt; &gt;=               Comparison operators
-Y         &lt;=&gt; == === != =~ !~     Equality and pattern match operators (!= and !~ may not be defined as methods)
-          &amp;&amp;                      Logical `and&#39;
-          ||                      Logical `or&#39;
-          .. ...                  Range (inclusive and exclusive)
-            ? :                     Ternary if-then-else
-          = %= { /= -= += |= &amp;=   Assignment
-          &gt;&gt;= &lt;&lt;= *= &amp;&amp;= ||= **=   
-          defined?                Check if symbol defined
-          not                     Logical negation
-          or and                  Logical composition
-          if unless while until   Expression modifiers
-          begin/end               Block expression
-</code></pre></div>
-<p>The lack of any operators other then <tt>**</tt>, above the most commonly used, <tt>* / % + -</tt>, puts
-a frustrating limitation on the flexibility of this system. On this account, the most puzzling misplacement of an operator has to be Bitwise Exlusive Or, <tt>^</tt>. In many, if not most, programming languages <tt>^</tt> is the power operator. But in Ruby that function is delegated to <tt>**</tt>. While I personally do not favor <tt>**</tt> for the use, it&#39;s not something I mind either. However, that <tt>^</tt> doesn&#39;t share the same precedence is very awkward.</p>
-
-<p>Consider for instance, the implementation of a unit system.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">**</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;4 square meters&quot;</span>
-</code></pre></div>
-<p>Notice the power operator effects the unit and the value. So how would we go about notating <code>2 square meters</code>? We need some other means. The obvious answer is to redefine <tt>^</tt>:</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;2 square meters&quot;</span>
-</code></pre></div>
-<p>Great. But wait, there is an ugliness now upon us.</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="mi">2</span><span class="o">.</span><span class="n">meters</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span>  <span class="o">=&gt;</span> <span class="s2">&quot;2 meters&quot;</span>
-</code></pre></div>
-<p>The answer should have been <tt>1 square meter</tt>, but due to precedence <tt>2 / 2</tt> is barring a <tt>1</tt> before the <tt>^</tt> power operator kicks-in.</p>
-
-<p>It is truly wonderful that Ruby&#39;s first 27 operators are actually methods, which means they can be defined to perform whatever function we would like of them. But despite being able to define these operators, there is no means of changing their precedence. Thus, the actual options we have defining new operations to suite our needs are hindered.</p>
-
-<p>Ideally we would be able to alter precedence on a per-class basis. While, some might argue that would create too much confusion, I would retort that good libraries would use the feature effectively, limiting the changes to the appropriate use-cases, so that it would not be an issue. After all, a library that scrambles precedence for no damn good reason will get little use.</p>
-
-<p>While we wait the day of true precedence freedom, I would like to see Ruby move <tt>^</tt> up with <tt>**</tt> and find a new Exclusive Or operator. Backward compatibility can be largely, although not completely, preserved by aliasing <tt>^</tt> to the new symbol. It&#39;s an obvious and simple improvement --a naggling issue that has been around for quite some time.</p>
-
-<hr>
-
-<p>title      : A Failure of Precedence
-author     : trans
-categories : [website]
-date       : 2009-12-13
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2009-13-December" title="December 13, 2009">December 13, 2009</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    
-    
-  
-    <section class="index">
-        <!-- -->
-        <div>
-            <h2 class="title"><a href="/2009/10/26/quiet-revolt-against-the-fhs/" rel="prefetch">Quiet Revolt Against The Fhs</a></h2>
-            <p><h1>Quiet Revolt Against the FHS?</h1>
-
-<p>Prompted by the disocvery of improper use of relative require in a number or Ruby project&#39;s executables, my last <a href="http://protuils.github.com/2009/10/proper-require.html">post</a> dicussed <i>why</i> and <i>when</i> to avoid using relative require. To summarize, there are two broad reasons to avoid relative loading. The first is simply YAGNI. In most cases you simply don&#39;t need to do it. Your script is on the $LOAD_PATH and all that is needed is the normal <code>require &#39;mylib/mydir/myfile&#39;</code> to load it. The second, and up until today I felt the more important concern, is conformance to the <a href="http://www.pathname.com/fhs/">File Hierarchy Standard</a>. While there is plenty of room to use relative requires and not tread on the FHS, it is easy enough to run afoul if one is not careful and aware of the issues. Such was the case with the executables.</p>
-
-<p>Now I have discovered that another popular Ruby program is &quot;broken&quot; with regards to the FHS -- RDoc. In more recent versions, RDoc designed it&#39;s auto-loading of 3rd party templates to use <code>lib/rdoc/discover.rb</code>. In other words, if you want to create a template &quot;plug-in&quot; for RDoc you need to have a <code>lib/rdoc/discover.rb</code> file in your project in which you require the file(s) that contain your actual plug-in code. There is one serious problem with this. If more than one such 3rd-party template project is installed via an old-fashioned site_ruby install (eg. using setup.rb), then the last installed project&#39;s <code>discover.rb</code> file will clobber the prior&#39;s.</p>
-
-<p>As a gem user you might not think it a big deal, but I can tell you that Linux distro maintainers do care. Any Ruby library they decide is worthy of a distro package, in particular a <code>.deb</code> package, they must ensure it conforms to the FHS. <a href="http://facets.rubyforge.org">Ruby Facets</a>, for instance, is slightly difficult in site install because it has two separate load paths. I received more that one nasty email about that when I no longer shipped a <code>setup.rb</code> script with the package. I have since updated the stand-alone version of <a href="http://proutils.github.com/setup">Ruby Setup</a> to handle such an install properly so long a <code>meta/loadpath</code> file is provided.</p>
-
-<p>But now I have to wonder. If RDoc has a site install flaw in it&#39;s latest design, and the aforementioned use of relative loading in bin scripts in other projects is likewise flawed, not to mention the numerous other violations that are surely out there... Is there a quiet revolution against the FHS going-on? Perhaps a revolution by default, because people don&#39;t know any better or forget to take it into account?</p>
-
-<p>Honestly, I have to say I hope so. In years past I had attempted to rail against the FHS. I even used <a href="http://gobolinux.org/">GoboLinux</a> as my main platform for a while. But as much as I would spout about the need to move beyond the FHS, along with <a href="http://gobolinux.org/index.php?lang=en_US&amp;page=doc/articles/clueless">other voices</a>, there never seemed to be any progress. We were stuck. And so I had given up and settled myself with the FHS way of doing things. (No doubt, this accounts in part for why I am so acutely aware Ruby code  that breaks under the standard.) But I have never been happy with it. I could only hope that one day, somehow, it would change. And maybe it has...</p>
-
-<p>Are those of you using RubyGems, and using relative requires, ready to stand with your code, in defiance of the FHS, indifferent to site_ruby installation? Can we finally all say &quot;f@#k setup.rb&quot;? Can I discontinue my maintenance of the setup.rb code base? Can I now feel free to use relative require and RDoc-like <code>discover.rb</code>&#39;s to my joyous hearts abandon?</p>
-
-<p>I wonder, is this kind of thing occurring in other language domains too, such as Perl, Python and Rebol? It would appear so. I recently learned, as one might expect, that the guys over at GoboLinux are on the forefront of this. Check out the article, <a href="http://mwh.geek.nz/2009/07/23/an-overview-of-systemaliens/">An overview of /System/Aliens</a>.</p>
-
-<p>Is the revolt under way?</p>
-
-<hr>
-
-<p>title      : Quiet Revolt Against the FHS?
-author     : trans
-categories : [ruby, require]
-date       : 2009-10-26
-layout     : post</p>
-</p>
-            <div class="meta">
-                Written By <address></a> &mdash;
-                <time pubdate datetime="2009-26-October" title="October 26, 2009">October 26, 2009</time>
             </div>
         </div>
         <hr>

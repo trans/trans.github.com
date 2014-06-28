@@ -6,9 +6,50 @@
     <atom:link href="http://trans.github.com/feed.xml" rel="self" type="application/rss+xml" />
     <description></description>
     <language>en-us</language>
-    <pubDate>Thu, 26 Jun 2014 23:24:53 +0000</pubDate>
-    <lastBuildDate>Thu, 26 Jun 2014 23:24:53 +0000</lastBuildDate>
+    <pubDate>Sat, 28 Jun 2014 16:40:41 +0000</pubDate>
+    <lastBuildDate>Sat, 28 Jun 2014 16:40:41 +0000</lastBuildDate>
 
+    
+    
+    <item>
+      <title>Lisp Rainbows</title>
+      <link>http://trans.github.com/2014/06/28/Lisp-Rainbows/</link>
+      <pubDate>Sat, 28 Jun 2014 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://trans.github.com/2014/06/28/Lisp-Rainbows</guid>
+      <description>&lt;p&gt;I always thought Skittles and Lisp should have more in common. Perhaps it&amp;#39;s just me. Perhaps I am the only one that has trouble following all those damn parentheses. It doesn&amp;#39;t take many of them, honestly. Three of four levels in and I start to get a little dizzy. Here&amp;#39;s an example I was just looking at this morning, from &lt;a href=&quot;http://docs.racket-lang.org/quick/&quot;&gt;Racket&amp;#39;s Quick Introduction&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;racket language-racket&quot; data-lang=&quot;racket&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;define &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;checker&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;p1&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;let &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;p12&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;hc-append&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;p1&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;p21&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;hc-append&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;p2&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)])&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;vc-append&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;p12&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;p21&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now, assuming that others do in fact have the same difficulty (and love for Skittles) has it not occurred any of the creators of syntax highlighting for Lisp, that perhaps it would be a good idea to color coordinate the parentheticals?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;media/lisp-highlight.png&quot; alt=&quot;Lisp the Rainbow&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Oh, yea. You can almost taste that Rainbow!&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>The Leaning Tower Of Markdown</title>
+      <link>http://trans.github.com/2014/06/27/The-Leaning-Tower-of-Markdown/</link>
+      <pubDate>Fri, 27 Jun 2014 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://trans.github.com/2014/06/27/The-Leaning-Tower-of-Markdown</guid>
+      <description>&lt;p&gt;You would think that any reasonable human being endeavoring to invent a light-weight markup format would look at &lt;code&gt;_foo_&lt;/code&gt; and naturally conclude without a second thought, that if it were to do anything at all it would render as an underlined &lt;u&gt;foo&lt;/u&gt;. But apparently, if you happen to be John Gruber and the creator of the most popular markup format in use today, Markdown, that cold case of obviousness is somehow completely wrong. Gruber instead decided it should do the exact same italic emphases as &lt;code&gt;*foo*&lt;/code&gt;. &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;Sad little _foo_. How sad for you.
+To be underlined is your sole pursue.
+But regulated to lean, like an Italian Pisa
+it would seem, never to truly be
+a truly proper underling. Oh, the irony.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;By the way, Redcarpet, Github&amp;#39;s markdown parser, does support an &lt;code&gt;:underline&lt;/code&gt; configuration option. It sure would be &lt;em&gt;nice&lt;/em&gt; if they &lt;em&gt;turned it on&lt;/em&gt;! And if others followed suite.&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -82,7 +123,7 @@
       <pubDate>Sat, 29 Mar 2014 00:00:00 +0000</pubDate>
       <author></author>
       <guid>http://trans.github.com/2014/03/29/Next-Level-Please</guid>
-      <description>&lt;p&gt;What I want my computer to do the following:&lt;/p&gt;
+      <description>&lt;p&gt;I wish my computer was more integrated. There are a number of things I want it to do right &amp;quot;out-of-the-box&amp;quot; and I want them all to come to me through a single integrated interface.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Authenticate id&lt;/li&gt;
@@ -98,40 +139,21 @@
 &lt;li&gt;Translate other languages&lt;/li&gt;
 &lt;li&gt;Search and Surf Internet&lt;/li&gt;
 &lt;li&gt;File Manager (Advanced)&lt;/li&gt;
-&lt;li&gt;Play music (personal and internet stations)&lt;/li&gt;
+&lt;li&gt;Play music  (personal and internet stations)&lt;/li&gt;
+&lt;li&gt;Play and movies (personal and internet stations)&lt;/li&gt;
 &lt;li&gt;Show pictures
 
 &lt;ul&gt;
-&lt;li&gt;Multiple i/o Dropbox, Google Drive, Local ?&lt;/li&gt;
+&lt;li&gt;Multiple sources such as Dropbox, Google Drive and Local&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Premium modules&lt;/p&gt;
-
-&lt;ul&gt;
 &lt;li&gt;Edit Photos&lt;/li&gt;
 &lt;li&gt;Vector Drawing (has own tools interface)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2&gt;Interface&lt;/h2&gt;
+&lt;p&gt;Ultimately everything should be voice driven. Voice commands are translated into a set of objectives. The user can see these objectives in simple command form and decide if it is acceptable. And that&amp;#39;s key --everything should be scriptable.&lt;/p&gt;
 
-&lt;p&gt;Everything should be voice driven. Voice commands are translated into a set of objectives. The user can see these objectives in simple command form and decide if it is acceptable. &lt;/p&gt;
-
-&lt;h2&gt;Implementation&lt;/h2&gt;
-
-&lt;p&gt;Each module shall be written to a shared interchange specification. 
-Messages are sent via JSON (or JSONP) and results received.
-Some results contain caching &lt;em&gt;functors&lt;/em&gt; which perform the same function as the original call.
-The cache allows light-weight functionality to be hosted cost-effectively, without bandwidth saturation.&lt;/p&gt;
-
-&lt;p&gt;So for example, say I want to provide a photo effect algorithm.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;---
-input:
-  - uri: *.jpg *.png
-  - return-type:
-output:
-  - File .jpg .png
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;p&gt;I wonder if we will ever have anything like.&lt;/p&gt;
+</description>
     </item>
     
     
