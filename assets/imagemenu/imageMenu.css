@@ -1,0 +1,75 @@
+
+/**************************************************************
+
+	Image Menu
+	v 2.2
+
+**************************************************************/
+
+
+#imageMenu {
+	position: relative;
+	width: 800px;
+	height: 300px;
+	overflow: hidden;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  padding: 5px 1px 5px 10px;
+}
+
+#imageMenu ul {
+	list-style: none;
+	margin: 0px;
+  padding: 0px;
+	display: block;
+	height: 300px;
+	width: 800px;
+}
+
+#imageMenu ul li {
+	float: left;
+}
+
+#imageMenu ul li a {
+	text-indent: -1000px;
+	background:#FFFFFF none repeat scroll 0%;
+	border-right: 1px solid #fff;
+	cursor:pointer;
+	display:block;
+	overflow:hidden;
+	width: 129px;
+	height: 300px;
+}
+
+/*
+#imageMenu ul li.art a {
+	background: url(images/art2.jpg) repeat scroll 0%;
+}
+
+#imageMenu ul li.links a {
+	background: url(images/links.jpg) repeat scroll 0%;
+}
+
+#imageMenu ul li.books a {
+	background: url(images/books.jpg) repeat scroll 0%;
+}
+
+#imageMenu ul li.photos a {
+	background: url(images/photos.jpg) repeat scroll 0%;
+}
+
+#imageMenu ul li.papers a {
+	background: url(images/papers.jpg) repeat scroll 0%;
+}
+
+#imageMenu ul li.blog a {
+	background: url(images/blog2.jpg) repeat scroll 0%;
+}
+*/
+
+.clear {
+	clear: both;
+}
+
+/*************************************************************/
+

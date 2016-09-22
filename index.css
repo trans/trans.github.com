@@ -1,0 +1,97 @@
+body {
+  background: black; color: white; padding: 0; margin: 0; position: relative;
+}
+
+img { vertical-align: text-top; border: none; }
+h1 { margin: 1px }
+
+#main {
+  width: 800px;
+  margin: 0 auto;
+}
+
+#banner {
+  font-size: 16pt;
+  font-family: times new roman;
+}
+
+iframe {
+  padding: 0;
+  margin: 0;
+}
+
+.ad125 {
+  float: left;
+  padding: 0;
+  margin: 0;
+  margin: 0 14px 0 0;
+}
+
+.ad200 {
+  float: left;
+  padding: 0;
+  margin: 10px 5px 15px 0;
+  text-align: center;
+  background: white;
+  width: 200px;
+  height 200px;
+}
+
+.ad200 iframe {
+  margin: 0 auto;
+}
+
+#footer {
+  font-family: sans-serif;
+  font-size: 10px;
+  color: orange;
+  margin: 0;
+  background: #111;
+  width: 100%;
+}
+
+#inner-footer {
+  margin: 0;
+  padding: 20px 10px 40px 10px;
+  background: #191919;
+  width: 790px;
+  margin: 0 auto;
+}
+
+#historical {
+  padding: 10px;
+  font-family: sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  color: white;
+}
+
+#copyright {
+  padding: 10px;
+}
+
+#imageMenu ul li.art a {
+  background: url(assets/images/art.jpg) repeat scroll 0%;
+}
+
+#imageMenu ul li.links a {
+  background: url(assets/images/links.jpg) repeat scroll 0%;
+}
+
+#imageMenu ul li.books a {
+  background: url(assets/images/books.jpg) repeat scroll 0%;
+}
+
+#imageMenu ul li.photos a {
+  background: url(assets/images/photos.jpg) repeat scroll 0%;
+}
+
+#imageMenu ul li.papers a {
+  background: url(assets/images/papers.jpg) repeat scroll 0%;
+}
+
+#imageMenu ul li.blog a {
+  background: url(assets/images/blog.jpg) repeat scroll 0%;
+}
+
+

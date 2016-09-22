@@ -1,0 +1,715 @@
+<html>
+
+<head>
+  <title>Number System</title>
+  <meta content="">
+
+  <style>
+
+    th { text-align: right;
+         height: 19px;
+         font-family: sans-serif;
+         font-size: 10pt; }
+
+    table.tabular td { text-align: right;
+                       height: 18px;
+                       width: 18px;
+                       background: #eeeeee;
+                       font-family: sans-serif;
+                       font-size: 10pt; }
+
+    table.tabular-l td { text-align: right;
+                         height: 24px;
+                         width: 24px;
+                         background: #eeeeee;
+                         font-family: sans-serif;
+                         font-size: 10pt; }
+
+    table.tabular-q td { text-align: right;
+                         height: 34px;
+                         width: 34px;
+                         background: #eeeeee;
+                         font-family: sans-serif;
+                         font-size: 10pt; }
+  </style>
+
+</head>
+
+<body>
+<center>
+<table width="800px"><tr><td style="text-align: justify; line-height: 16pt; font-size: 10pt;">
+
+  <br>
+
+  <h1>Basis of Counting</h1>
+
+  <br>
+
+  <h2>&sect;1</h2>
+
+  <p>It may suprise you to learn that the way in which you count is
+  only one of an infinite number of methods. When counting, in all likelihood
+  you utilize ten different symbols, 0-9, to represent the quanitites you intend.
+  This method is known as decimal or base-ten. But any number of symbols
+  can be used. In fact the most evident number system, and the one first
+  used by children and our ancient ancestors, is unary or base-one.
+  In this system the number of symbols directly represents the quantity.
+  Five, for instance, would simply be represented with five marks, |||||.
+  Unary is still used today when we count by ones with our fingers,
+  and Roman numerals are an progression from unary toward base-five.
+  But eventually it is realized that a purely <i>postional system</i>
+  of counting, a system with a base greater than one, is much more efficient
+  and useful.</p>
+
+  <p>Number historians generally agree that two systems in particular
+  ultimately locked-horns in the battle for minds of men: decimal and dozenal,
+  base-ten and base-twelve. Base-ten is of course the obvious contendor
+  since we have ten fingers on which we first learn to count.
+  This handedly eases the transition to a decimal postional system.
+  (Interestingly the Mayans, who developed independent of the
+  western heritage created a base-twenty system, apparently
+  they included their toes.) Appearently, as is the case with most traditions,
+  politics may have ultimately lead to the demise of the dozenal system
+  and the firm entrenchment of the decimal system on which most of the
+  world depends today. In ..., as an outgrowth of the French Revolution
+  and the Age of Elightenment, leading scientists of the day created the
+  metric system, a comprehensive system of measures, all cast in the
+  unquestioned counting system of the day, decimal. A common system
+  of measures, is of course, of great use in the interchange of ideas, and the
+  metric system being so complete and the triumph of Wlightenment principles,
+  it is understandable that it has, over the years, become the world's
+  dominant standard. Nonetheless base-twelve is often more useful because,
+  unlike ten, twelve it is evenly divisibile by 3 and 4. These divisors
+  are esspecially applicable to number intensive fields such as music, astronomy
+  geometry and even trade. This addtional utility of base-twelve has never
+  allowed it to completely fade away, despite the metric push.
+  Today we still have twelve hours on our clocks and sixty minutes to an hour
+  (five times twelve). And as everyone knows, eggs are by the dozen.</p>
+
+  <p>And so, the always curious events of history have led us to
+  the number system we use today. But was ten really the best choice?
+  The fact that we have five digits on each hand is a facet of our development
+  far predating the dawn of arithmetic. It has everything to do with
+  the physical task of survival, and little, if anything, to do with counting
+  as an art in and of itself. As with nearly every innovation of Mother Nature,
+  what was first set out to serve one task later become the mold of another.
+  The count of our fingers choose our number system for us. We did not choose
+  the count of our fingers. Yet this is not the whole story. Counting
+  must serve a purpose, otherwise there would be no point in having it.
+  In the course of serving this purpose, one system of counting may in fact
+  hold advantages over another. For instance, of great importance
+  is the convience to divide by two. To readily divide a set of items into
+  two shares is undoubtedly a fundemental requirement of any number
+  system. It is reasonable then to assume that even if man were rather adorned
+  with an odd number of fingers, we would <i>not</i> be counting with that
+  odd base. Dividing by two is simply too important. There is then
+  good reason to sepculate and to wonder. Is it possible to set out
+  proper cirteria and this determine on their basis the best system
+  possible system for human counting?</p>
+
+  <br>
+
+  <h2>&sect;2</h2>
+
+  <p>In the present digital era, another base of counting has come
+  come strongly to the fore. Binary, or Base-two, is the simpilist
+  positional number system possible, consisting of only two symbols: 0 and 1.
+  The reason for the rise of binary is, of course, that it is the
+  system upon which computers are built. Digital computers use simple
+  on and off switches to represent numbers, which is in essence the
+  very meaning of the word digital. To exmplify the simplicty of binary
+  have a look at the addition and  multiplcation tables:</p>
+
+  <table>
+  <tr>
+  <td>
+    <table class="tabular" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">+</th><th> 0</th><th> 1</th></tr>
+        <tr><th> 0</th><td> 0</td><td> 1</td></tr>
+        <tr><th> 1</th><td> 1</td><td>10</td></tr>
+      </tr>
+    </table>
+  </td>
+  <td width="40px">&nbsp;</td>
+  <td>
+    <table class="tabular" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">&times;</th><th> 0</th><th> 1</th></tr>
+        <tr><th> 0</th><td> 0</td><td> 0</td></tr>
+        <tr><th> 1</th><td> 0</td><td> 1</td></tr>
+      </tr>
+    </table>
+  </td>
+  </tr>
+  </table>
+
+  <p>While binary may be the simplist number simple, it is far from
+  the most useful for human beings. Binary numbers take nearly five times
+  as many digits to represent the equivelant decimal number.
+  For example, 237<sub>decimal</sub> is equivalent to 11101101<sub>binary</sub>.
+  Obviously 237 is much less cumbersome. Here then is one criteria we
+  may use to to judge a number system: how many digits does it require to
+  represent a a given quantity. In this regard binary does not fair well.</p>
+
+  <p>To overcome the length disadvantage of binary, computer scientists
+  use number systems with bases which are simple increaments on the power
+  of base-two. Specifically, 2<sup>3</sup> which is base-eight, aka octal,
+  and 2<sup>4</sup> which is base-sixteen, aka hexidecimal. Because they are
+  simple powers of two, a group of digits can be directly converted to-and-from
+  binary. Every three binary digits can be direclty represented by an octal digit,
+  and every four binary digits by a hexidecimal digit. Octal and hexidecimal
+  are in this fashion quite elegant systems, easy to understand and convert
+  between one another. Yet, though they may be conceptually elegant,
+  this is of limitesd utility. What is of greater importance is that they are
+  both easily divisible by 2 and 4. This is very useful, as any english
+  chef or carpenter will tell you. Yet despite being more ergonomic in this
+  manner, base-two systems also suffer form a related disadvantage. Their base
+  is not evenly divisable by 3. Which is a common enough division as to work
+  against them.</p>
+
+  <p>Here are the basic arithmetic tables for octal.</p>
+
+  <table>
+  <tr>
+  <td>
+    <table class="tabular" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">+</th><th> 0</th><th> 1</th><th> 2</th><th> 3</th><th> 4</th><th> 5</th><th> 6</th><th> 7</th></tr>
+        <tr><th> 0</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td></tr>
+        <tr><th> 1</th><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td>10</td></tr>
+        <tr><th> 2</th><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td>10</td><td>11</td></tr>
+        <tr><th> 3</th><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td>10</td><td>11</td><td>12</td></tr>
+        <tr><th> 4</th><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td>10</td><td>11</td><td>12</td><td>13</td></tr>
+        <tr><th> 5</th><td> 5</td><td> 6</td><td> 7</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td></tr>
+        <tr><th> 6</th><td> 6</td><td> 7</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr>
+        <tr><th> 7</th><td> 7</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td></tr>      </tr>
+    </table>
+  </td>
+  <td width="40px">&nbsp;</td>
+  <td>
+    <table class="tabular" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">&times;</th><th> 0</th><th> 1</th><th> 2</th><th> 3</th><th> 4</th><th> 5</th><th> 6</th><th> 7</th></tr>
+        <tr><th> 0</th><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td></tr>
+        <tr><th> 1</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td></tr>
+        <tr><th> 2</th><td> 0</td><td> 2</td><td> 4</td><td> 6</td><td>10</td><td>12</td><td>14</td><td>16</td></tr>
+        <tr><th> 3</th><td> 0</td><td> 3</td><td> 6</td><td>11</td><td>14</td><td>17</td><td>22</td><td>25</td></tr>
+        <tr><th> 4</th><td> 0</td><td> 4</td><td>10</td><td>14</td><td>20</td><td>24</td><td>30</td><td>34</td></tr>
+        <tr><th> 5</th><td> 0</td><td> 5</td><td>12</td><td>17</td><td>24</td><td>31</td><td>36</td><td>43</td></tr>
+        <tr><th> 6</th><td> 0</td><td> 6</td><td>14</td><td>22</td><td>30</td><td>36</td><td>44</td><td>52</td></tr>
+        <tr><th> 7</th><td> 0</td><td> 7</td><td>16</td><td>25</td><td>34</td><td>43</td><td>52</td><td>61</td></tr>
+      </tr>
+    </table>
+  </td>
+  </tr>
+  </table>
+  <br/>
+
+  <p>This then presents another criteria: the number and relative
+  utility of a base's divisors. Precidence, of course, goes to utility over
+  number of divisors, and unquestionably utility follows the simplicity
+  of the number: 2 is more useful than 3, which is more useful than 4,
+  which is in turn more useful than 5, and so down the line. It is
+  impossible to say just how much more useful one divisor is over
+  another, but this ranking serves as useful enough ordinal guide.</p>
+
+  <p>A final note on the base-two systems: the elegance and
+  digital utility of these number systems is strongly appealing
+  and is indeed almost enough to mute the division by three failing.
+  But not quite. Nonetheless leaning binary and the related octal and
+  hexideciaml systems is very rewarding; well worth the small effort.
+  Consider, for instance, this very simple and fun way to count in binary:
+  Let each finger represent a binary digit. Use your thumb to hold
+  down the fingers that are zeros and extend the other fingers which
+  represent ones.  In this manner you have a total of eight binary
+  digits (four in each hand) at your disposal. This allows you
+  to count from 0 to 255! See the references section below for links
+  to turorials on binary, octal and hexidecimal.</p>
+
+  <br>
+
+  <h2>&sect;3</h2>
+
+  <p> If major shortcoming of base-two and derivative systems was the
+  lack of convienent trisection, what then of a base-three system?
+  Unfortunately, base-three lacks convienent bisection --division by 2,
+  which is a mcuh worse disadvantage. So much so, in fact, that we can
+  immediately exclude any system that does not allow it.<p>
+
+  <p>Yet we must take a moment to consider base-three more carefully
+  for one simple reason. It has been shown to be the most efficient
+  of all number systems. We will not get into the scientific details
+  of this discovery, suffice to say that it isn't terribly difficult
+  to figure out that an abacus based on ternary will need the least
+  number of beads to represent any given number. This fact is directly
+  due to its closeness to the natural logorithmic number <b>e</b>
+  (2.718...). It is interesting also to consider this fact in relation to the
+  findings of psychologists regarding the inate abilities of the humn mind.
+  The typical human can only inately count to four, a base nearly as efficent
+  as ternary. You can test this on yourself by trying to <i>instantly</i>
+  recognize a quantity of items --instantly mind you is the key word here.
+  You will likely discover that you can only instantly recognize quantities
+  up to four. Quantities greater than four are only recognized if they fall
+  into particular patterns that you have come to associate with those numbers,
+  such as a cross for five, or a three-by-two grid for six. Beyond this,
+  the quanity must be broken into subgroups and systematically counted and
+  multiplied. Interestingly, because of ternary's greater efficiency we may
+  eventually see the existence of ternary based computers.
+  We should point out though, that despite ternary's efficency, like
+  binary, it is not highly compact in written form. For example, the current
+  year of 2004 decimal is 2202020.</p>
+
+  <p>For completeness here are the addition and mutiplication tables
+  for ternary.</p>
+
+  <table>
+  <tr>
+  <td>
+    <table class="tabular" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">+</th><th> 0</th><th> 1</th><th> 2</th></tr>
+        <tr><th>0</th><td> 0</td><td> 1</td><td> 2</td></tr>
+        <tr><th>1</th><td> 1</td><td> 2</td><td>10</td></tr>
+        <tr><th>2</th><td> 2</td><td>10</td><td>11</td></tr>
+      </tr>
+    </table>
+  </td>
+  <td width="40px">&nbsp;</td>
+  <td>
+    <table class="tabular" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">x</th><th> 0</th><th> 1</th><th> 2</th></tr>
+        <tr><th>0</th><td> 0</td><td> 0</td><td> 0</td></tr>
+        <tr><th>1</th><td> 0</td><td> 1</td><td> 2</td></tr>
+        <tr><th>2</th><td> 0</td><td> 2</td><td>11</td></tr>
+      </tr>
+    </table>
+  </td>
+  </tr>
+  </table>
+
+  <br>
+
+  <h2>&sect;4</h2>
+
+  <p>Now we address base-ten, the number system with which we are all
+  familiar. Decimal's obvious advantage is, of course, that we are
+  born with ten fingers. This simplifies the transistion we make as
+  pupils from the unary system with which we learned to count, to the
+  postional method we will subsequently use for the rest of our lives.</p>
+
+  <p>This indicates another important criteria: ease-of-learning.
+  The consideration of important in this regard is a number system's
+  correlation to our everyday natural abilities. This works to decimal's
+  advantage with rgrad to the number of fingers we have, but this may be
+  considered rather minor when compared to the complexity of related
+  tables and figures. If the base of the system is too great
+  then the arthmetic tables large and more difficult to memorize.
+  If the base is too small then numbers themselves, as we have already
+  seen will be too large for convienient use. So we will need to strike
+  a reasonable balance between the two.</b>
+
+  <p>Base-ten also has the advantage of being evenly divisibile by 5,
+  a divison used in statistical percentile comparisions, for example.
+  But convenient divisiblity by 5, while sometimes useful,
+  does not outweigh the greater disadvantage of not being evenly
+  divisible by 3 and 4. As we mentioned easlier, this readily noticed
+  in everyday life. Applications in which division by 3 or 4 is
+  especially useful tend to have a strong following of alternate
+  measurement. We need only consider that there are 16 ounces per cup,
+  12 inches per foot and 12 hours per half a day.</p>
+
+  <p>The only other advantage base-ten has, is its entrenched user
+  base. This may not seem a fair comparison, but we must give it at
+  least a small credit considering the long and difficult process that
+  would be invloved in transitioning to another system. We certainly
+  should ask ourselves, is it really worth the effort?</p>
+
+  <br>
+
+  <h2>&sect;5</h2>
+
+  <p>Senary, or base-six, is the first system that overcomes both
+  the 2 and 3 divisor issue. But this is not the only great advantage
+  that senary has over the other systems we have thus far considered.
+  Sernary also has the advantage of being much easier to learn.
+  All of its bae numbers are within the upper bound (5) of man's
+  innate comprension. Thus its arthmetic tables are very straightforward
+  and extremely easy to memorize.</p>
+
+  <table>
+  <tr>
+  <td>
+    <table class="tabular" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">+</th><th> 0</th><th> 1</th><th> 2</th><th> 3</th><th> 4</th><th> 5</th></tr>
+        <tr><th>0</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td></tr>
+        <tr><th>1</th><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td>10</td></tr>
+        <tr><th>2</th><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td>10</td><td>11</td></tr>
+        <tr><th>3</th><td> 3</td><td> 4</td><td> 5</td><td>10</td><td>11</td><td>12</td></tr>
+        <tr><th>4</th><td> 4</td><td> 5</td><td>10</td><td>11</td><td>12</td><td>13</td></tr>
+        <tr><th>5</th><td> 5</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td></tr>
+      </tr>
+    </table>
+  </td>
+  <td width="40px">&nbsp;</td>
+  <td>
+    <table class="tabular" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">x</th><th> 0</th><th> 1</th><th> 2</th><th> 3</th><th> 4</th><th> 5</th></tr>
+        <tr><th>0</th><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td></tr>
+        <tr><th>1</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td></tr>
+        <tr><th>2</th><td> 0</td><td> 2</td><td> 4</td><td>10</td><td>12</td><td>14</td></tr>
+        <tr><th>3</th><td> 0</td><td> 3</td><td>10</td><td>13</td><td>20</td><td>23</td></tr>
+        <tr><th>4</th><td> 0</td><td> 4</td><td>12</td><td>20</td><td>24</td><td>32</td></tr>
+        <tr><th>5</th><td> 0</td><td> 5</td><td>14</td><td>23</td><td>32</td><td>41</td></tr>
+      </tr>
+    </table>
+  </td>
+  </tr>
+  </table>
+
+  <p>Counting in base-six is also simple and strightfoward.
+  While base-ten may naturally correlate to our ten unary fingers,
+  base-six naturally correlates to our hands-as-abacus --a
+  one-for-one representation of postional counting.
+  To count in base-six simply use one hand to represent the
+  <i>ones place</i> and the other hand to represent the
+  <i>sixes place</i>. With this technique anyone can easily count
+  to thirty-five (55<sub>6</sub>).</p>
+
+  <p>But senary is not perfect. It does have two noticable disadvantages.
+  The first is that senary numbers tend to be a bit larger than their
+  decimal equivalents, although argueably mitigated by the fact that
+  senary numbers require four less symbols to denotate. The more
+  signifficant disadvantage is that senary is not readily divisibile
+  by 4, a division that is perhaps just as common as 3.</p>
+
+   <br>
+
+  <h2>&sect;6</h2>
+
+  <p>Dozenal, or base-twelve, addresses the disadvantages of senary.
+  It is more compact than decimal and is evenly divisible by
+  2, 3, 4 and 6. But for what it gains in compactness and divisibility
+  it also looses in learnability. The arthemetic tables for base-twelve
+  contain 44 more entries than thier decimal counterparts. This too may well
+  help account for dozenal's poorer fairing against decimal over the
+  course of history.</p>
+
+  <table>
+  <tr>
+  <td>
+    <table class="tabular" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">+</th><th> 0</th><th> 1</th><th> 2</th><th> 3</th><th> 4</th><th> 5</th><th> 6</th><th> 7</th><th> 8</th><th> 9</th><th> X</th><th> J</th></tr>
+        <tr><th>0</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td> X</td><td> J</td></tr>
+        <tr><th>1</th><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td> X</td><td> J</td><td>10</td></tr>
+        <tr><th>2</th><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td> X</td><td> J</td><td>10</td><td>11</td></tr>
+        <tr><th>3</th><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td> X</td><td> J</td><td>10</td><td>11</td><td>12</td></tr>
+        <tr><th>4</th><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td> X</td><td> J</td><td>10</td><td>11</td><td>12</td><td>13</td></tr>
+        <tr><th>5</th><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td> X</td><td> J</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td></tr>
+        <tr><th>6</th><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td> X</td><td> J</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr>
+        <tr><th>7</th><td> 7</td><td> 8</td><td> 9</td><td> X</td><td> J</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td></tr>
+        <tr><th>8</th><td> 8</td><td> 9</td><td> X</td><td> J</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td></tr>
+        <tr><th>9</th><td> 9</td><td> X</td><td> J</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr>
+        <tr><th>X</th><td> X</td><td> J</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td></tr>
+        <tr><th>J</th><td> J</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td></tr>
+      </tr>
+    </table>
+  </td>
+  <td width="40px">&nbsp;</td>
+  <td>
+    <table class="tabular" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">x</th><th> 0</th><th> 1</th><th> 2</th><th> 3</th><th> 4</th><th> 5</th><th> 6</th><th> 7</th><th> 8</th><th> 9</th><th> X</th><th> J</th></tr>
+        <tr><th>0</th><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td></tr>
+        <tr><th>1</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td> X</td><td> J</td></tr>
+        <tr><th>2</th><td> 0</td><td> 2</td><td> 4</td><td> 6</td><td> 8</td><td> X</td><td>10</td><td>12</td><td>14</td><td>16</td><td>18</td><td>1X</td></tr>
+        <tr><th>3</th><td> 0</td><td> 3</td><td> 6</td><td> 9</td><td>10</td><td>13</td><td>16</td><td>19</td><td>20</td><td>23</td><td>26</td><td>29</td></tr>
+        <tr><th>4</th><td> 0</td><td> 4</td><td> 8</td><td>10</td><td>14</td><td>18</td><td>20</td><td>24</td><td>28</td><td>30</td><td>34</td><td>38</td></tr>
+        <tr><th>5</th><td> 0</td><td> 5</td><td> X</td><td>13</td><td>18</td><td>21</td><td>26</td><td>2J</td><td>34</td><td>39</td><td>42</td><td>47</td></tr>
+        <tr><th>6</th><td> 0</td><td> 6</td><td>10</td><td>16</td><td>20</td><td>26</td><td>30</td><td>36</td><td>40</td><td>46</td><td>50</td><td>56</td></tr>
+        <tr><th>7</th><td> 0</td><td> 7</td><td>12</td><td>19</td><td>24</td><td>2J</td><td>36</td><td>41</td><td>48</td><td>53</td><td>5X</td><td>65</td></tr>
+        <tr><th>8</th><td> 0</td><td> 8</td><td>14</td><td>20</td><td>28</td><td>34</td><td>40</td><td>48</td><td>54</td><td>60</td><td>68</td><td>74</td></tr>
+        <tr><th>9</th><td> 0</td><td> 9</td><td>16</td><td>23</td><td>30</td><td>39</td><td>46</td><td>53</td><td>60</td><td>69</td><td>76</td><td>83</td></tr>
+        <tr><th>X</th><td> 0</td><td> X</td><td>18</td><td>26</td><td>34</td><td>42</td><td>50</td><td>5X</td><td>68</td><td>76</td><td>84</td><td>92</td></tr>
+        <tr><th>J</th><td> 0</td><td> J</td><td>1X</td><td>29</td><td>38</td><td>47</td><td>56</td><td>65</td><td>74</td><td>83</td><td>92</td><td>X1</td></tr>
+      </tr>
+    </table>
+  </td>
+  </tr>
+  </table>
+
+  <p>As for counting in base-twelve, the verdict is rather neutral.
+  Like base-six, counting in base-twelve is also a direct
+  representation of the postional system, but it is less intuitive.
+  Again, one hand represents the <i>ones place</i> and the other
+  hand represents the <i>twelves place</i>. But instead of using each
+  finger as a single digit, each finger is divided into three parts:
+  a root (just above the palm), a center and a tip. Since there are
+  four fingers per hand (excluding the thumb), this gives twelve positions.
+  The thumb is then used to point to each of these spaces on the fingers
+  in order, and applying this method to both hands, one is able to count
+  up to 156<sub>d</sub> (110<sub>dz</sub>). Although unintuitive,
+  this high number is at least an advantage.</p>
+
+  <p>Dozenal does have one other distadvantage which should be mentioned.
+  Its decimal-point representation of fractions (not to be confused,
+  with the decimal number system) can be rather complex, most notably
+  1/5 turns out to be 0.2497... (repeating). Numerous other fractions
+  require at least four or more repeating digits as well. Although it
+  is perhaps not the most improtant of criteria, it is something to
+  consider. Fortunatly none of the other systems we have examined
+  really suffer too greatly from this problem. In fact decimal would
+  probably be the next runner-up in this area and its decimal-point
+  representations are fairly better than dozenals.</p>
+
+  <br>
+
+  <h2>&sect;7</h2>
+
+  <p>What of larger bases, like base-twenty, base-thirty and base-sixty?
+  Of course the advantage that these systems is their greater
+  compactness and inclusion of many more divisors. Base-sixty, for instance,
+  can represent a number in six digits for which decimal would require ten.
+  And it has a plethora of divisors: 2, 3, 4, 5, 6, 10, 12, 15, 20 and 30.
+  Which is certainly advantageous. But despite this, these larger bases
+  suffer the disadvantage of being far too unwieldy in the number of
+  symbols they require. Imagine memorizing a multiplication table with
+  60 x 60 entries --that's 3600 possibilities! Therefore these systems
+  are best kept to very specific applications, and even then notated in
+  a smaller base, as is now done with minutes and seconds. Perhaps if the
+  human mind were a more capable, able to learn a table of a thousand
+  entries as easily as it now learns a table of 100, then base-sixty
+  would be the ultimate option. But presently it is a rather mute point.</p>
+
+  <br>
+
+  <h2>&sect;8</h2>
+
+  <p>If we were now given charge to choose a number system to
+  serve as the world's defacto standard, a <i>universally common
+  number system</i>, which would it be? Unfortunately, it is
+  still a difficult decision since there are evidently trade-offs
+  that must be made. But we can at least remove all extreme
+  possibilites. It seems fair to say that the base should be no
+  less than 5 and no greater than 16, and that any base not evenly
+  divisible by 2 should be excluded. This leaves bases 6, 8, 10,
+  12, 14 and 16.</p>
+
+  <p>At this pointt we will get bogged down in details of evaluation.
+  If we go threw each cirteria and ascribe a point to each system
+  that exmplifies the basis, we may get a somewhat, albiet imperfect,
+  ... of these systems.</p>
+
+  <p>Statring with learnability. We certainly must ascrive a point to
+  base-six since it is the simplist. And base-ten is also deserving a
+  point since it is already prevelant. We will also give one to
+  base-eight because it is relatively simple but also becasue it is
+  easily correlated to binary.</p>
+
+  <p>As for compactness, hexadecimal is no doubt best, and gets a point.
+  But not to be overly favoring, we will give a point to the two runners-up,
+  base-12 and base-14.</p>
+
+  <p>If we now ascribe a point for every significant factor of divisibiltiy
+  greater than two (3, 4 and 5), then senary, octal, decimal and hexadecimal
+  get another point, while dozenal gets two points.</p>
+
+  These are the major criteria. If we examine this simplistic tally, at this
+  point we have:
+
+  <pre>
+    Senary         1
+    Octal          1
+    Decimal        1
+    Dozenal        1
+    Base-14
+    Hexadecimal    0
+  </pre>
+
+
+   To facilitate our
+  determination further, lets take the criteria we have have explored
+  and rank the top three systems in each area.</p>
+
+  <p>We will first notice that bo matter which system we choice we
+  will have to sacrifice at least some potentially useful divisor(s).
+  We again note that smaller divisors are more importatn the larger,
+  but we make one slight exception. Despite the high utility of
+  dividing by 4, any system that already offers division by 2
+  will not benefit as greatly from the addition of it as a divisor
+  simply because one can readily divide the unit by the base again.
+  In otherwords, six sixes and ten tens are easily divisible by four.
+  For this reason it is argued that decimal just edges out hexidecimal.
+  With regards to divisors then, the ranking order is:
+  dozenal, senary, decimal.</p>
+
+  <p>With regards to compactness, obviously the larger the base the
+  better. So the ranking is simply: hexidecimal, dozenal, decimal.</p>
+
+  <p>But we should also consider the compactness of decimal-point
+  representation of fractions. Although not as important as the former,
+  it should at least make a contibution. The ranking for this
+  turns out to be the rather odd: senary, hexidecimal, decimal.</p>
+
+  <p>Ease of learning goes in the direction of the smallest base.
+  With a bonus given to decimal for the fact that it is both
+  already common and correspondent to the number of fingers on our hands.
+  The ranking therfore follows: senary, decimal, octal.<p>
+
+  <p>Likewise effiency benefits from smaller bases, those being closer
+  to the natural number e. So the ranking here is: senary, octal, decimal.
+  But this too does not seem quite as important as the ease of learning,
+  so it conribution should perps be a bit less.</p>
+
+  <p>So now we may wonder, have we convered every significant factor?
+  Perhaps new evidence will present itself. New facts are always
+  a welcome discovery. But if we are to presnetly come to a determination
+  we must go on with the criteria we have available. Thereby, if we give
+  each of the major criteria equal regard, and the two noted minor citriea
+  half as much regard, a simple of point sytem as follows may be the best
+  we can do in objectifying the outcome: +6 points for major 1st ranking,
+  +4 points for major 2nd ranking, and +2 point for a major 3rd,
+  the minors getting half so much. Applying this, the outcome is as follows:
+
+  <pre>
+    Senary         16
+    Dozenal        10
+    Decimal        10
+    Hexadecimal    10
+    Octal          4
+  </pre>
+
+  clearly senary or dozenal would serve best, winning out over
+  the other potential contendors: octal, hexidecimal and decimal.
+  But two difficulites yet present themsleves. First, which of these
+  final two do we choose? And even then, how could we ever hope to overcome the
+  entrenchment of decimal? Addressing the later question actually
+  gives us direction to the former. For one certain way in which a
+  new system may be able to gain traction is for it to be
+  simpler to learn than the its competitor. Thus senary has advantage
+  over dozenal. Yet dozenal is slightly more capable, with its
+  divisors of 4 and 6, so too in is own way dozenal sways better against decimal.
+  Also, we should not fail to mention, dozenal is still commonly used in
+  certain areas and applications. Perhaps, if we cannot settle between
+  the two readily, there is a compromise that can be made? As luck has it,
+  learning senary makes dozenal rather easy since dozenal is exactly
+  a factor of two greater than senary. Consider the simple conversion table:</p>
+
+  <table class="tabular" cellpadding="4px" cellspacing="2px" style="margin-top: 10px;">
+    <tr><th>Twelve </th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td> X</td><td> J</td><td>10</td></tr>
+    <tr><th>Six    </th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>20</td></tr>
+    <tr><td colspan="14" style="background: white; height: 1px;"></td></tr>
+    <tr><th>Decimal</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td> 5</td><td> 6</td><td> 7</td><td> 8</td><td> 9</td><td>10</td><td>11</td><td>12</td></tr>
+  </table>
+
+  <br>
+
+  <table class="tabular-l" cellpadding="4px" cellspacing="2px">
+    <tr><th> </th><th>  0</th><th>  1</th><th>  2</th><th>  3</th><th>  4</th><th>  5</th><th>  6</th><th>  7</th><th>  8</th><th>  9</th><th>  X</th><th>  J</th></tr>
+    <tr><th>0</th><td>  0</td><td>  1</td><td>  2</td><td>  3</td><td>  4</td><td>  5</td><td> 10</td><td> 11</td><td> 12</td><td> 13</td><td> 14</td><td> 15</td></tr>
+    <tr><th>1</th><td> 20</td><td> 21</td><td> 22</td><td> 23</td><td> 24</td><td> 25</td><td> 30</td><td> 31</td><td> 32</td><td> 33</td><td> 34</td><td> 35</td></tr>
+    <tr><th>2</th><td> 40</td><td> 41</td><td> 42</td><td> 43</td><td> 44</td><td> 45</td><td> 50</td><td> 51</td><td> 52</td><td> 53</td><td> 54</td><td> 55</td></tr>
+    <tr><th>3</th><td>100</td><td>101</td><td>102</td><td>103</td><td>104</td><td>105</td><td>110</td><td>111</td><td>112</td><td>113</td><td>114</td><td>115</td></tr>
+    <tr><th>4</th><td>120</td><td>121</td><td>122</td><td>123</td><td>124</td><td>125</td><td>130</td><td>131</td><td>132</td><td>133</td><td>134</td><td>135</td></tr>
+    <tr><th>5</th><td>140</td><td>141</td><td>142</td><td>143</td><td>144</td><td>145</td><td>150</td><td>151</td><td>152</td><td>153</td><td>154</td><td>155</td></tr>
+    <tr><th>6</th><td>200</td><td>201</td><td>202</td><td>203</td><td>204</td><td>205</td><td>210</td><td>211</td><td>212</td><td>213</td><td>214</td><td>215</td></tr>
+    <tr><th>7</th><td>220</td><td>221</td><td>222</td><td>223</td><td>224</td><td>225</td><td>230</td><td>231</td><td>232</td><td>233</td><td>234</td><td>235</td></tr>
+    <tr><th>8</th><td>240</td><td>241</td><td>242</td><td>243</td><td>244</td><td>245</td><td>250</td><td>251</td><td>252</td><td>253</td><td>254</td><td>255</td></tr>
+    <tr><th>9</th><td>300</td><td>301</td><td>302</td><td>303</td><td>304</td><td>305</td><td>310</td><td>311</td><td>312</td><td>313</td><td>314</td><td>315</td></tr>
+    <tr><th>X</th><td>320</td><td>321</td><td>322</td><td>323</td><td>324</td><td>325</td><td>330</td><td>331</td><td>332</td><td>333</td><td>334</td><td>335</td></tr>
+    <tr><th>J</th><td>340</td><td>341</td><td>342</td><td>343</td><td>344</td><td>345</td><td>350</td><td>351</td><td>352</td><td>353</td><td>354</td><td>355</td></tr>
+  </table>
+
+  <p>For this reason then we will ascribe that both are learned. For it makes
+  a great deal of sense that from an early age a child will become familiar
+  with more than a single number system, just as it is beneficial that should
+  be familiar with more than one language.</p>
+
+  <pre>
+    Decimal                Dozenal                Senary
+    1/2   0.5              1/2   0.6              1/2   0.3
+    1/3   0.33...          1/3   0.4              1/3   0.2
+    1/4   0.25             1/4   0.3              1/4   0.13
+    1/5   0.2              1/5   0.249724...      1/5   0.11...
+    1/6   0.166...         1/6   0.2              1/10  0.1
+    1/7   0.1428714...     1/7   0.186X3518...    1/11  0.0505...
+    1/8   0.125            1/8   0.16             1/12  0.043
+    1/9   0.11..           1/9   0.14             1/13  0.04
+    1/10  0.1              1/X   0.12497...       1/14  0.033...
+    1/11  0.0909...        1/J   0.1...           1/15
+    1/12  0.0833...        1/10  0.0JJ...         1/20  0.03
+    1/13  0.07692307...    1/11                   1/21
+    1/14  0.07142871...    1/12                   1/22  0.02323...
+    1/15  0.066...         1/13                   1/23  0.022...
+    1/16  0.0635           1/14                   1/24  0.0213
+  </pre>
+
+  <br>
+
+  <table>
+  <tr>
+  <td>
+    <table class="tabular-l" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th style="font-weight: normal;">&times;</th><th> 0</th><th> 1</th><th> 2</th><th> 3</th><th> 4</th><th> 5</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th></tr>
+        <tr><th> 0</th><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td> 0</td><td>  0</td><td>  0</td><td>  0</td><td>  0</td><td>  0</td><td>  0</td><td>  0</td></tr>
+        <tr><th> 1</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 4</td><td>  5</td><td> 10</td><td> 11</td><td> 12</td><td> 13</td><td> 14</td><td> 15</td></tr>
+        <tr><th> 2</th><td> 0</td><td> 2</td><td> 4</td><td>10</td><td>12</td><td> 14</td><td> 20</td><td> 22</td><td> 24</td><td> 30</td><td> 32</td><td> 34</td></tr>
+        <tr><th> 3</th><td> 0</td><td> 3</td><td>10</td><td>13</td><td>20</td><td> 23</td><td> 30</td><td> 33</td><td> 40</td><td> 43</td><td> 50</td><td> 53</td></tr>
+        <tr><th> 4</th><td> 0</td><td> 4</td><td>12</td><td>20</td><td>24</td><td> 32</td><td> 40</td><td> 44</td><td> 52</td><td> 60</td><td> 64</td><td> 72</td></tr>
+        <tr><th> 5</th><td> 0</td><td> 5</td><td>14</td><td>23</td><td>32</td><td> 41</td><td> 50</td><td> 55</td><td>104</td><td>113</td><td>122</td><td>131</td></tr>
+        <tr><th>10</th><td> 0</td><td>10</td><td>20</td><td>30</td><td>40</td><td> 50</td><td>100</td><td>110</td><td>120</td><td>130</td><td>140</td><td>150</td></tr>
+        <tr><th>11</th><td> 0</td><td>11</td><td>22</td><td>33</td><td>44</td><td> 55</td><td>110</td><td>121</td><td>132</td><td>143</td><td>154</td><td>205</td></tr>
+        <tr><th>12</th><td> 0</td><td>12</td><td>24</td><td>40</td><td>52</td><td>104</td><td>120</td><td>132</td><td>144</td><td>200</td><td>212</td><td>224</td></tr>
+        <tr><th>13</th><td> 0</td><td>13</td><td>30</td><td>43</td><td>60</td><td>113</td><td>130</td><td>143</td><td>200</td><td>213</td><td>230</td><td>243</td></tr>
+        <tr><th>14</th><td> 0</td><td>14</td><td>32</td><td>50</td><td>64</td><td>122</td><td>140</td><td>154</td><td>212</td><td>230</td><td>244</td><td>302</td></tr>
+        <tr><th>15</th><td> 0</td><td>15</td><td>34</td><td>53</td><td>72</td><td>131</td><td>150</td><td>205</td><td>224</td><td>243</td><td>302</td><td>321</td></tr>
+      </tr>
+    </table>
+  </td>
+  </tr>
+  </table>
+
+  <br>
+
+  <table>
+  <tr>
+  <td>
+    <table class="tabular-q" cellpadding="4px" cellspacing="2px">
+      <tr>
+        <tr><th> 2</th><td> 0</td><td> 1</td><td>10</td><td>11</td><td>100</td><td>101</td><td>110</td><td>111</td><td>1000</td><td>1001</td><td>1010</td><td>1011</td><td>1100</td></tr>
+        <tr><th> 3</th><td> 0</td><td> 1</td><td> 2</td><td>10</td><td> 11</td><td> 12</td><td> 20</td><td> 21</td><td> 22</td><td>100</td><td>101</td><td>102</td><td>110</td></tr>
+        <tr><th> 4</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td> 10</td><td> 11</td><td> 12</td><td> 13</td><td> 20</td><td> 21</td><td> 22</td><td> 23</td><td> 30</td></tr>
+        <tr><th> 5</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td>  4</td><td> 10</td><td> 11</td><td> 12</td><td> 13</td><td> 14</td><td> 20</td><td> 21</td><td> 22</td></tr>
+        <tr><th> 6</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td>  4</td><td>  5</td><td> 10</td><td> 11</td><td> 12</td><td> 13</td><td> 14</td><td> 15</td><td> 20</td></tr>
+        <tr><th> 7</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td>  4</td><td>  5</td><td>  6</td><td> 10</td><td> 11</td><td> 12</td><td> 13</td><td> 14</td><td> 15</td></tr>
+        <tr><th> 8</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td>  4</td><td>  5</td><td>  6</td><td>  7</td><td> 10</td><td> 11</td><td> 12</td><td> 13</td><td> 14</td></tr>
+        <tr><th> 9</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td>  4</td><td>  5</td><td>  6</td><td>  7</td><td>  8</td><td> 10</td><td> 11</td><td> 12</td><td> 13</td></tr>
+        <tr><th>10</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td>  4</td><td>  5</td><td>  6</td><td>  7</td><td>  8</td><td>  9</td><td> 10</td><td> 11</td><td> 12</td></tr>
+        <tr><th>11</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td>  4</td><td>  5</td><td>  6</td><td>  7</td><td>  8</td><td>  9</td><td>  X</td><td> 10</td><td> 11</td></tr>
+        <tr><th>12</th><td> 0</td><td> 1</td><td> 2</td><td> 3</td><td>  4</td><td>  5</td><td>  6</td><td>  7</td><td>  8</td><td>  9</td><td>  X</td><td>  J</td><td> 10</td></tr>
+
+      </tr>
+    </table>
+  </td>
+  </tr>
+  </table>
+
+  <br>
+
+  <h2>References</h2>
+  <a href="http://en.wikipedia.org/wiki/Numeral_system">Wikipedia Entry on Numeral Systems</a>
+  <a href="http://www.intuitor.com/counting/">How to Count to 1,023 on your Fingers</a><br>
+  <a href="http://www.americanscientist.org/Issues/Comsci01/Compsci2001-11.html">Third Base</a>, Brian Hayes
+
+  <br><br>
+
+</td></tr></table>
+</center>
+</body>
+
+</html>
