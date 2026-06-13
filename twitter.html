@@ -1,6 +1,10 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>7r4n5 Tweets</title>
 
@@ -14,23 +18,22 @@
     #header h1 { font-size: 48pt; letter-spacing: 2pt; margin: 10px 0px; }
     .block { padding: 2px; border: 0px solid black; }
 
-    #twitter_div{
-      font-size: 10px; font-family: monospace;
-    }
+    #tweets h1 { font-size: 28pt; letter-spacing: 2pt; margin: 10px 0px; }
 
-    #twitter_div ul {
-    	margin: 10px;
-      padding: 0px;
-    	display: block;
+    .follow {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 22px;
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 14px;
+      color: #fff;
+      background: #1d1d1d;
+      border: 2px solid #CC4444;
+      border-radius: 6px;
+      text-decoration: none;
     }
-    #twitter_div li {
-    	margin: 10px;
-    }
-
-   #twitter_div a {
-    	color: gray;
-    }
-
+    .follow:hover { background: #CC4444; color: #1d1d1d; }
   </style>
 
 </head>
@@ -38,16 +41,17 @@
 <body>
 
   <div id="tweets" class="block" style="text-align: center;">
-    <img src="assets/images/mic.png" style="width: 300px;"/>
+    <img src="assets/images/mic.png" style="width: 300px;" alt="TransGigaMic"/>
 
     <h1>TransGigaMic</h1>
 
-    <div id="twitter_div"><ul id="twitter_update_list"></ul></div>
-    <script type="text/javascript" src="http://twitter.com/javascripts/blogger.js"></script>
-    <script type="text/javascript" src="http://twitter.com/statuses/user_timeline/transgigamic.json?callback=twitterCallback2&count=5"></script>
+    <!-- Twitter's legacy timeline JSON / blogger.js API was removed years ago, so the
+         old auto-updating feed no longer works. Link straight to the profile instead. -->
+    <a class="follow" href="https://x.com/transgigamic" target="_blank" rel="noopener">
+      @transgigamic on X &rarr;
+    </a>
   </div>
 
 </body>
 
 </html>
-
