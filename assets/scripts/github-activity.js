@@ -52,7 +52,7 @@
     if (body) {
       body.innerHTML = '<p style="color:#888;font-size:13px;margin:0;">' +
         'Couldn\'t load activity right now. ' +
-        '<a href="https://github.com/' + USER + '" style="color:orange;font-weight:bold;text-decoration:none;">' +
+        '<a href="https://github.com/' + USER + '" style="color:#FFC72C;font-weight:bold;text-decoration:none;">' +
         'View @' + USER + ' on GitHub &rarr;</a></p>';
     }
   }
@@ -96,7 +96,7 @@
 
     body.innerHTML = stats +
       '<ul style="list-style:none;margin:0 0 14px;padding:0;">' + items.join('') + '</ul>' +
-      '<a href="https://github.com/' + USER + '" style="color:orange;font-size:13px;font-weight:bold;text-decoration:none;">' +
+      '<a href="https://github.com/' + USER + '" style="margin-top:auto;padding-top:12px;color:#FFC72C;font-size:13px;font-weight:bold;text-decoration:none;">' +
         '@' + USER + ' on GitHub &rarr;</a>';
   }
 
