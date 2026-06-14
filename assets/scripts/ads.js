@@ -41,21 +41,29 @@
     var box = document.getElementById('ads');
     if (!box || !ADS.length) return;
 
-    var mode = box.getAttribute('data-mode') === 'one' ? 'one' : 'four';
-    var perPage = mode === 'one' ? 1 : 4;
-    box.className = 'ads-' + mode;
+    // data-mode: "one" or "four" pins a single layout; anything else
+    // (e.g. "oscillate") alternates one <-> four on each beat.
+    var setting = box.getAttribute('data-mode');
+    var fixed = setting === 'one' || setting === 'four';
+    var mode = setting === 'one' ? 'one' : 'four';
 
     var at = 0;
     function paint() {
+      box.className = 'ads-' + mode;
+      var perPage = mode === 'one' ? 1 : 4;
       var html = '';
       for (var i = 0; i < perPage; i++) html += card(ADS[(at + i) % ADS.length]);
       box.style.opacity = '0';
       setTimeout(function () { box.innerHTML = html; box.style.opacity = '1'; }, 250);
+      at = (at + perPage) % ADS.length;
     }
 
     paint();
-    if (ADS.length > perPage) {
-      setInterval(function () { at = (at + perPage) % ADS.length; paint(); }, INTERVAL);
+    if (ADS.length > 1) {
+      setInterval(function () {
+        if (!fixed) mode = (mode === 'one') ? 'four' : 'one';
+        paint();
+      }, INTERVAL);
     }
   }
 
