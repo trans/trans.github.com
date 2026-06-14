@@ -20,26 +20,48 @@ iframe {
   margin: 0;
 }
 
-.ad125 {
-  float: left;
-  padding: 0;
-  margin: 0;
-  margin: 0 14px 0 0;
-}
+/* custom rotating project ads */
+#ads { height: 100%; transition: opacity 0.4s ease; }
+.ads-four { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 12px; }
+.ads-one  { display: grid; grid-template-columns: 1fr; grid-auto-rows: 1fr; gap: 12px; }
 
-.ad200 {
-  float: left;
-  padding: 0;
-  margin: 10px 5px 15px 0;
-  text-align: center;
-  background: white;
-  width: 200px;
-  height: 200px;
+.myad {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px solid #333;
+  background: #111;
+  border-radius: 6px;
+  padding: 16px;
+  text-decoration: none;
+  color: #fff;
+  font-family: sans-serif;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
+.myad:hover { border-color: #FFC72C; background: #161616; }
+.myad-name { font-size: 19px; font-weight: bold; color: #FFC72C; letter-spacing: 0.5px; }
+.myad-tag { font-size: 12px; color: #bbb; margin: 8px 0 0; line-height: 1.35; }
+.myad-cta { font-size: 11px; color: #888; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px; }
 
-.ad200 iframe {
-  margin: 0 auto;
+.ads-one .myad-name { font-size: 30px; }
+.ads-one .myad-tag { font-size: 16px; margin-top: 12px; }
+.ads-one .myad-cta { font-size: 12px; }
+
+/* image creative: picture fills the card, caption on a gradient at the bottom */
+.myad-img {
+  padding: 0;
+  justify-content: flex-end;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
 }
+.myad-cap {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.85));
+}
+.myad-img .myad-tag { margin-top: 4px; }
 
 #footer {
   font-family: sans-serif;
