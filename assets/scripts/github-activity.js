@@ -3,7 +3,7 @@
    60 req/hr per IP). No third-party rendering service to rot. */
 (function () {
   var USER = 'trans';
-  var MAX = 7;
+  var MAX = 12;
 
   function $(id) { return document.getElementById(id); }
 
@@ -71,16 +71,16 @@
         '</div>';
     }
 
-    var seen = {}, items = [], i;
+    var lastKey = null, items = [], i;
     for (i = 0; i < events.length && items.length < MAX; i++) {
       var e = events[i];
       var d = describe(e);
       if (!d || !d.repo) continue;
-      /* collapse repeats of the same action on the same repo (e.g. a burst
-         of releases) to the most recent, so the feed shows variety */
+      /* collapse only CONSECUTIVE repeats of the same action on the same repo
+         (e.g. a burst of releases) -- a repo returned to later still shows */
       var key = e.type + '|' + d.repo;
-      if (seen[key]) continue;
-      seen[key] = 1;
+      if (key === lastKey) continue;
+      lastKey = key;
       items.push(
         '<li style="margin:0 0 11px;font-size:13px;line-height:1.35;">' +
           '<span style="color:#ccc;">' + esc(d.verb) + '</span> ' +
@@ -105,7 +105,7 @@
     var api = 'https://api.github.com/users/' + USER;
     Promise.all([
       fetch(api).then(function (r) { return r.ok ? r.json() : null; }),
-      fetch(api + '/events/public').then(function (r) { return r.ok ? r.json() : []; })
+      fetch(api + '/events/public?per_page=100').then(function (r) { return r.ok ? r.json() : []; })
     ]).then(function (res) {
       var events = Array.isArray(res[1]) ? res[1] : [];
       render(res[0], events);
