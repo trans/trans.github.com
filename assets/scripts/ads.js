@@ -10,8 +10,7 @@
     { name: 'jargon',  tag: 'JSON Schema as a CLI interface',            url: 'https://github.com/trans/jargon' },
     { name: 'ruby.cr', tag: 'A Ruby compatibility layer for Crystal',    url: 'https://github.com/trans/ruby.cr' },
     { name: 'arcana',  tag: 'An interface to AI',                        url: 'https://github.com/trans/arcana', img: 'assets/images/ad-arcana.webp' },
-    { name: 'bai',     tag: 'Ask an AI for the bash command you need',   url: 'https://github.com/trans/bai' },
-    { name: 'ignore',  tag: 'Ignore-file parser and matcher',           url: 'https://github.com/trans/ignore' }
+    { name: 'bai',     tag: 'Ask an AI for the bash command you need',   url: 'https://github.com/trans/bai' }
   ];
   var INTERVAL = 7000; // ms between rotations
   // ---------------------------------------------------------------------- //
