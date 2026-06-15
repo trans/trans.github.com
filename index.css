@@ -30,15 +30,15 @@ iframe {
   flex-direction: column;
   justify-content: center;
   border: 2px solid #333;
-  background: #111;
+  background-color: #111;
   border-radius: 6px;
   padding: 16px;
   text-decoration: none;
   color: #fff;
   font-family: sans-serif;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
-.myad:hover { border-color: #FFC72C; background: #161616; }
+.myad:hover { border-color: #FFC72C; background-color: #161616; }
 .myad-name { font-size: 19px; font-weight: bold; color: #FFC72C; letter-spacing: 0.5px; }
 .myad-tag { font-size: 12px; color: #bbb; margin: 8px 0 0; line-height: 1.35; }
 .myad-cta { font-size: 11px; color: #888; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px; }
