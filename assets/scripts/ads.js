@@ -6,6 +6,7 @@
   var ADS = [
     { name: 'c0data',  tag: 'Super-fast structured serialization',       url: 'https://github.com/trans/c0data', img: 'assets/images/ad-c0data.jpg' },
     { name: 'yam',     tag: 'Fast YAML 1.2 parser & emitter in C11',     url: 'https://github.com/trans/yam', img: 'assets/images/ad-yam.webp' },
+    { name: 'facets',  tag: 'The Ruby super-library of core extensions', url: 'https://github.com/rubyworks/facets', img: 'assets/images/ad-facets.webp' },
     { name: 'jargon',  tag: 'JSON Schema as a CLI interface',            url: 'https://github.com/trans/jargon' },
     { name: 'ruby.cr', tag: 'A Ruby compatibility layer for Crystal',    url: 'https://github.com/trans/ruby.cr' },
     { name: 'arcana',  tag: 'An interface to AI',                        url: 'https://github.com/trans/arcana' },
