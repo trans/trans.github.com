@@ -1,2 +1,6 @@
 _scrap/
 blog.old/
+
+# The blog is its own repo (trans/blog), served separately at /blog/.
+# Vendored here as a local working copy only -- never committed to this repo.
+blog/
