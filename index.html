@@ -15,6 +15,7 @@
   <script type="text/javascript" src="assets/mootools/mootools.js"></script>
   <script type="text/javascript" src="assets/imagemenu/imageMenu.js"></script>
   <script type="text/javascript" src="assets/scripts/github-activity.js"></script>
+  <script type="text/javascript" src="assets/scripts/blog-posts.js"></script>
   <script type="text/javascript" src="assets/scripts/ads.js"></script>
 
   <script>
@@ -55,13 +56,20 @@
 
   <br/><br/>
 
+  <!-- Custom rotating project ads + TransGigaMic, side by side -->
+  <div style="display: flex; gap: 20px; height: 500px; align-items: stretch;">
+    <div id="ads" data-mode="oscillate" style="flex: 1;"></div>
+    <div style="flex: 0 0 325px;">
+      <iframe id="twitter_frame" src="twitter.html" width="325" height="500" style="border: none; display: block;"></iframe>
+    </div>
+  </div>
+
   <!-- Recent blog posts + GitHub activity, side by side -->
-  <div style="display: flex; gap: 20px; align-items: stretch;">
+  <div style="display: flex; gap: 20px; margin-top: 20px; align-items: stretch;">
 
     <div style="flex: 1; display: flex; flex-direction: column; border: 2px solid #333; background: #111; box-sizing: border-box; padding: 16px 18px; font-family: sans-serif;">
-      <h2 style="margin: 0 0 14px; font-size: 16px; color: #FFC72C; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 10px;">FROM THE BLOG</h2>
-      <p style="color: #bbb; font-size: 14px; line-height: 1.5; margin: 0;">Notes on Ruby, Crystal, language design, and assorted technical wanderings &mdash; going back to 2006.</p>
-      <a href="/blog/" style="margin-top: auto; padding-top: 12px; color: #FFC72C; font-size: 13px; font-weight: bold; text-decoration: none;">Read the blog &rarr;</a>
+      <h2 style="margin: 0 0 14px; font-size: 16px; color: #FFC72C; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 10px;">RECENT BLOG POSTS</h2>
+      <div id="blog-body" style="flex: 1; display: flex; flex-direction: column;"><p style="color: #888; font-size: 13px; margin: 0;">Loading recent posts&hellip;</p></div>
     </div>
 
     <div id="github-activity" style="flex: 1; display: flex; flex-direction: column; border: 2px solid #333; background: #111; box-sizing: border-box; padding: 16px 18px; font-family: sans-serif;">
@@ -69,14 +77,6 @@
       <div id="gh-body" style="flex: 1; display: flex; flex-direction: column;"><p style="color: #888; font-size: 13px; margin: 0;">Loading recent activity&hellip;</p></div>
     </div>
 
-  </div>
-
-  <!-- Custom rotating project ads + TransGigaMic, side by side -->
-  <div style="display: flex; gap: 20px; margin-top: 20px; height: 500px; align-items: stretch;">
-    <div id="ads" data-mode="oscillate" style="flex: 1;"></div>
-    <div style="flex: 0 0 325px;">
-      <iframe id="twitter_frame" src="twitter.html" width="325" height="500" style="border: none; display: block;"></iframe>
-    </div>
   </div>
 
   <div style="background: url(assets/images/rainbow.gif); text-align: center; color: black; clear: both;">
