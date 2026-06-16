@@ -7,7 +7,7 @@
     { name: 'C0DATA',      tag: 'Super-fast structured serialization',       url: 'https://github.com/trans/c0data', img: 'assets/images/ad-c0data.jpg' },
     { name: 'YAM',         tag: 'Fast YAML 1.2 parser & emitter in C11',     url: 'https://github.com/trans/yam', img: 'assets/images/ad-yam.webp' },
     { name: 'Ruby Facets', tag: 'The Ruby super-library of core extensions', url: 'https://github.com/rubyworks/facets', img: 'assets/images/ad-facets.webp' },
-    { name: 'Jargon',      tag: 'JSON Schema as a CLI interface',            url: 'https://github.com/trans/jargon' },
+    { name: 'Jargon',      tag: 'JSON Schema as a CLI interface',            url: 'https://github.com/trans/jargon', img: 'assets/images/ad-jargon.webp' },
     { name: 'ruby.cr',     tag: 'A Ruby compatibility layer for Crystal',    url: 'https://github.com/trans/ruby.cr' },
     { name: 'Arcana',      tag: 'An interface to AI',                        url: 'https://github.com/trans/arcana', img: 'assets/images/ad-arcana.webp' },
     { name: 'bai',         tag: 'Ask an AI for the bash command you need',   url: 'https://github.com/trans/bai' }
