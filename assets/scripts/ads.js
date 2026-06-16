@@ -4,13 +4,13 @@
 (function () {
   // --- Edit me: each entry is one little ad. Add/remove/reorder freely. -- //
   var ADS = [
-    { name: 'c0data',  tag: 'Super-fast structured serialization',       url: 'https://github.com/trans/c0data', img: 'assets/images/ad-c0data.jpg' },
-    { name: 'yam',     tag: 'Fast YAML 1.2 parser & emitter in C11',     url: 'https://github.com/trans/yam', img: 'assets/images/ad-yam.webp' },
-    { name: 'facets',  tag: 'The Ruby super-library of core extensions', url: 'https://github.com/rubyworks/facets', img: 'assets/images/ad-facets.webp' },
-    { name: 'jargon',  tag: 'JSON Schema as a CLI interface',            url: 'https://github.com/trans/jargon' },
-    { name: 'ruby.cr', tag: 'A Ruby compatibility layer for Crystal',    url: 'https://github.com/trans/ruby.cr' },
-    { name: 'arcana',  tag: 'An interface to AI',                        url: 'https://github.com/trans/arcana', img: 'assets/images/ad-arcana.webp' },
-    { name: 'bai',     tag: 'Ask an AI for the bash command you need',   url: 'https://github.com/trans/bai' }
+    { name: 'C0DATA',      tag: 'Super-fast structured serialization',       url: 'https://github.com/trans/c0data', img: 'assets/images/ad-c0data.jpg' },
+    { name: 'YAM',         tag: 'Fast YAML 1.2 parser & emitter in C11',     url: 'https://github.com/trans/yam', img: 'assets/images/ad-yam.webp' },
+    { name: 'Ruby Facets', tag: 'The Ruby super-library of core extensions', url: 'https://github.com/rubyworks/facets', img: 'assets/images/ad-facets.webp' },
+    { name: 'Jargon',      tag: 'JSON Schema as a CLI interface',            url: 'https://github.com/trans/jargon' },
+    { name: 'ruby.cr',     tag: 'A Ruby compatibility layer for Crystal',    url: 'https://github.com/trans/ruby.cr' },
+    { name: 'Arcana',      tag: 'An interface to AI',                        url: 'https://github.com/trans/arcana', img: 'assets/images/ad-arcana.webp' },
+    { name: 'bai',         tag: 'Ask an AI for the bash command you need',   url: 'https://github.com/trans/bai' }
   ];
   var INTERVAL = 7000; // ms between rotations
   // ---------------------------------------------------------------------- //
@@ -42,27 +42,33 @@
     var box = document.getElementById('ads');
     if (!box || !ADS.length) return;
 
-    // data-mode: "one" or "four" pins a single layout; anything else
-    // (e.g. "oscillate") alternates one <-> four on each beat.
+    // data-mode pins one layout ("four" = 2x2, "rows" = 4 stacked, "one" =
+    // single big card); anything else ("oscillate") cycles through them.
+    var MODES = ['four', 'rows', 'one'];
     var setting = box.getAttribute('data-mode');
-    var fixed = setting === 'one' || setting === 'four';
-    var mode = setting === 'one' ? 'one' : 'four';
+    var fixed = MODES.indexOf(setting) !== -1;
+    var idx = fixed ? MODES.indexOf(setting) : 0;
+    var mode = MODES[idx];
+
+    function perPage(m) { return m === 'one' ? 1 : 4; }
 
     var at = 0;
     function paint() {
-      box.className = 'ads-' + mode;
-      var perPage = mode === 'one' ? 1 : 4;
+      var n = perPage(mode);
       var html = '';
-      for (var i = 0; i < perPage; i++) html += card(ADS[(at + i) % ADS.length]);
+      for (var i = 0; i < n; i++) html += card(ADS[(at + i) % ADS.length]);
+      var cls = 'ads-' + mode;
       box.style.opacity = '0';
-      setTimeout(function () { box.innerHTML = html; box.style.opacity = '1'; }, 250);
-      at = (at + perPage) % ADS.length;
+      // swap class + content together (after the fade) so there are no
+      // transient mismatched layouts mid-transition
+      setTimeout(function () { box.className = cls; box.innerHTML = html; box.style.opacity = '1'; }, 250);
+      at = (at + n) % ADS.length;
     }
 
     paint();
     if (ADS.length > 1) {
       setInterval(function () {
-        if (!fixed) mode = (mode === 'one') ? 'four' : 'one';
+        if (!fixed) { idx = (idx + 1) % MODES.length; mode = MODES[idx]; }
         paint();
       }, INTERVAL);
     }
