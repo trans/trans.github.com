@@ -14,6 +14,7 @@ working on the code needs belongs in the project's own docs, not here.
 
 | File | What it holds |
 |---|---|
+| [blog-migration.md](blog-migration.md) | Personal-site direction and pending review of blog posts for project homes. |
 
 Keep each note short and dated (`*Updated YYYY-MM-DD*`), with absolute
 dates and commit hashes. Check the code or `git log` before acting on
