@@ -1,7 +1,7 @@
 # Blog migration
 
-*Updated 2026-11-08*
+*Updated 2026-11-09*
 
-- **In progress.** The user wants this to remain a personal website and is moving Ruby writing from the personal blog to the Ruby Facets blog (2026-11-08). The selected group has 10 articles intended for publication there and 21 unpublished articles being revised. The Facets checkout has all 31 under `docs/_posts/`. The personal blog has not been changed for this migration.
+- **Ruby migration complete.** The user wants this to remain a personal website and approved removing 31 Ruby articles that now live in the Ruby Facets blog. Blog commit `44bc57e` (2026-11-09) removed the 31 source articles, kept 18 old public URLs as redirects to Facets, deleted 13 hidden articles, and removed two examples copied to Facets. The blog's GitHub Pages deployment succeeded. The two unrelated local edits to `Should-You-Go.md` and `Transpilers-to-Watch.md` remain unstaged.
 - **Editorial review.** The Facets blog's scope includes Ruby methods, the object model, and Facets. "Ruby AOP Made Simple" discusses Cuts, but the user chose Facets as its home over the personal blog (2026-11-08). "Taskable" explores a separate task system, and "Setting Priorities Trumps Warnings" began as a test-framework design; both fit the wider Ruby archive. No exceptions to the selected group are pending.
 - **Provisional assessment.** Among the four published 2026 posts, "Helm's Big Index Problem" has an Oyl/Tab Computing home and "The Other Half of the Holodeck" has an Overlore home. "A Quarter Inch" and the cross-project "Also, Today" read as personal writing. This is advice, not a user decision.
