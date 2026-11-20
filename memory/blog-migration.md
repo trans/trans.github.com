@@ -1,7 +1,8 @@
 # Blog migration
 
-*Updated 2026-11-09*
+*Updated 2026-11-20*
 
 - **Ruby migration complete.** The user wants this to remain a personal website and approved removing 31 Ruby articles that now live in the Ruby Facets blog. Blog commit `44bc57e` (2026-11-09) removed the 31 source articles, kept 18 old public URLs as redirects to Facets, deleted 13 hidden articles, and removed two examples copied to Facets. The blog's GitHub Pages deployment succeeded. The two unrelated local edits to `Should-You-Go.md` and `Transpilers-to-Watch.md` remain unstaged.
 - **Editorial review.** The Facets blog's scope includes Ruby methods, the object model, and Facets. "Ruby AOP Made Simple" discusses Cuts, but the user chose Facets as its home over the personal blog (2026-11-08). "Taskable" explores a separate task system, and "Setting Priorities Trumps Warnings" began as a test-framework design; both fit the wider Ruby archive. No exceptions to the selected group are pending.
 - **Provisional assessment.** Among the four published 2026 posts, "Helm's Big Index Problem" has an Oyl/Tab Computing home and "The Other Half of the Holodeck" has an Overlore home. "A Quarter Inch" and the cross-project "Also, Today" read as personal writing. This is advice, not a user decision.
+- **Publishing for @loudly.** Loudly's Codex session has no working remote, so it can't push to `trans/blog`. On 2026-11-20 the user asked this project to publish Loudly's second *Also, Today* ("A Format Reaches 1.0"): its `Outtake/blog-also-today-2026-11-19-publish.patch` was applied unchanged as blog commit `9bcce30` (post, Recent Writing link, new series feed `also-today.xml`), and the Pages deployment succeeded. Loudly was told to mail @transcode with a patch for later issues (`mail/sent/20261120-233312Z-@loudly--also-today-2026-11-19-is-published.md`).
